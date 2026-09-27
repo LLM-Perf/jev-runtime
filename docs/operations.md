@@ -4,6 +4,10 @@ Use separate Python environments for SGLang and vLLM. A gateway may attach to an
 already-running engine without owning its process. Native plugins share the host
 engine's lifetime. Do not use a plugin update to restart an unrelated service.
 
+For versioned wheels, offline dependency locks and independent gateway environments,
+see [release packaging](release-packaging.md). Retain complete prior environments
+for rollback; an install receipt does not replace real serving/readiness checks.
+
 Periodic engine canaries now withdraw readiness and block new typed dispatch when
 scoring fails or its evidence expires. See [health configuration and recovery](serving-health.md)
 for per-worker scope, probe leases, explicit recovery and outstanding replica failover.
@@ -299,3 +303,17 @@ rates; automatic multi-worker Prometheus aggregation remains outstanding. Use
 `X-Jev-Timing: 1` for a request-bound phase header when profiling through a shared
 HTTP endpoint. It changes no decision JSON or scoring behavior. See performance
 for the exact timing boundaries and missing-observation rules.
+
+## Installed environments and tokenizer upgrades
+
+Both engines have a scoped [installed-wheel gateway upgrade/rollback report](release-rollout-validation.md).
+The successful exercise preserves a registry route while replacing gateway processes;
+it includes a maintenance interruption and does not certify uninterrupted routing.
+Keep the previous environment and manifest for rollback. Match the full native/gateway
+model and tokenizer identity before allowing the candidate to score.
+
+For pinned SmolLM2, use the report's explicit checkpoint-preserving tokenizer recipe
+in both native engine and gateway. Default AutoTokenizer changes the number splitting
+pipeline in the tested environments. Changing tokenizer identity requires new bundles
+and calibration plus process restart; prior numerical, quality, performance and LoRA
+evidence is not automatically valid for that new profile.

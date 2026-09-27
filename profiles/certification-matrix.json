@@ -1036,28 +1036,35 @@
       "engine": "sglang",
       "gated": false,
       "functional": "passed",
-      "numerical": "partial",
+      "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
-        "evidence/dsw/sglang-smollm17b-contract.json"
+        "evidence/dsw/sglang-smollm17b-contract.json",
+        "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-contract.json",
+        "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-precision.json",
+        "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/cleanup.json",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
       ],
-      "source_commit": "a90e002",
+      "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
       "public_quality": {
         "status": "completed_development_evaluation",
         "release_gate_passed": false,
-        "evidence": "evidence/dsw/sglang-public-quality-97271f8/report.json"
+        "evidence": "evidence/dsw/sglang-public-quality-97271f8/report.json",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_performance": {
         "status": "completed_short_colocated_measurements",
         "release_gate_passed": false,
-        "evidence": "evidence/dsw/sglang-benchmark-4e5203f/report.json"
+        "evidence": "evidence/dsw/sglang-benchmark-4e5203f/report.json",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_lora": {
         "status": "passed_single_frozen_profile",
         "source_commit": "febb5d86451d9f66520088e263de21495a901159",
         "evidence": "evidence/dsw/sglang-lora-febb5d8.json",
-        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
+        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "functional_rechecks": [
         {
@@ -1087,6 +1094,14 @@
           "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/contract.json",
           "cleanup_evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/cleanup.json",
           "scope": "BF16 backbone/readout TP1 API1 eager, new precision binding, four types/native parity and 1000 switches; not LoRA/multiworker/quality/performance recertification"
+        },
+        {
+          "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+          "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+          "status": "passed",
+          "evidence": "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-contract.json",
+          "cleanup_evidence": "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile."
         }
       ],
       "development_generation_comparison": {
@@ -1095,7 +1110,8 @@
         "harness_source_commit": "444fd1b1dc9a6d74aa350572568005e4508234f3",
         "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
         "evidence": "evidence/dsw/sglang-generation-444fd1b/report.json",
-        "quality_equivalence_established": false
+        "quality_equivalence_established": false,
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_multi_input_profiling": {
         "status": "completed_short_colocated_measurements",
@@ -1104,7 +1120,8 @@
         "runtime_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
         "evidence": "evidence/dsw/sglang-input300-c11d2b3/report.json",
         "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
-        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
+        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_shared_admission": {
         "status": "passed_targeted_two_worker_two_tenant_checks",
@@ -1113,7 +1130,8 @@
         "cleanup_evidence": "evidence/dsw/sglang-shared-admission-4944efd/cleanup.json",
         "timing_evidence": "evidence/dsw/sglang-shared-admission-perf-4944efd/report.json",
         "release_gate_passed": false,
-        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
+        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_quota_crash_recovery": {
         "status": "passed_scoped_gateway_and_native_process_group_checks",
@@ -1124,7 +1142,8 @@
         "native_evidence": "evidence/dsw/sglang-native-quota-crash-0df49a1/quota-crash.json",
         "native_cleanup_evidence": "evidence/dsw/sglang-native-quota-crash-0df49a1/cleanup.json",
         "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
-        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
+        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_lora_crash_recovery": {
         "status": "passed_scoped_native_process_group_checks",
@@ -1134,7 +1153,8 @@
         "cleanup_evidence": "evidence/dsw/sglang-lora-crash-533549a/cleanup.json",
         "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
         "release_gate_passed": false,
-        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
+        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_serving_health": {
         "status": "passed_scoped_gateway_engine_pause_resume",
@@ -1144,7 +1164,8 @@
         "validation_evidence": "evidence/dsw/health-validation-40b78c2.json",
         "release_gate_passed": false,
         "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification",
-        "preserved_failure": "evidence/dsw/gateway-sglang-health-40b78c2/health.json"
+        "preserved_failure": "evidence/dsw/gateway-sglang-health-40b78c2/health.json",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_cache_state_numerics": {
         "evidence": "evidence/dsw/gateway-sglang-health-40b78c2/native-cache-diagnostics.json",
@@ -1157,7 +1178,8 @@
         "no_process_pause_or_restart_during_replay": true,
         "business_quality_evaluated": false,
         "status": "observed_probability_difference_requires_separate_evaluation",
-        "release_gate_passed": false
+        "release_gate_passed": false,
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_readout_precision": {
         "status": "passed_targeted_functional_binding_and_single_position_reference",
@@ -1172,15 +1194,53 @@
         "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
         "reference_max_absolute_logprob_error": 0.00016123056411743164,
         "release_gate_passed": false,
-        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
+      },
+      "historical_numerical": {
+        "status": "partial",
+        "detail": {
+          "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
+          "atol": 0.15,
+          "max_absolute_logprob_error": 0.00016123056411743164,
+          "single_position_passed": true,
+          "full_gate_passed": false,
+          "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/reference-cpu.json"
+        },
+        "qualification": "Historical tokenizer profile; not transferred to the explicit checkpoint-preserving profile tested in the wheel rollout."
       },
       "numerical_detail": {
-        "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
-        "atol": 0.15,
-        "max_absolute_logprob_error": 0.00016123056411743164,
-        "single_position_passed": true,
-        "full_gate_passed": false,
-        "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/reference-cpu.json"
+        "scope": "Explicit checkpoint-preserving Smol tokenizer profile: independent numerical reference not run. Previous targeted results remain under historical_numerical.",
+        "full_gate_passed": false
+      },
+      "historical_source_commit": "a90e002",
+      "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile.",
+      "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_1005_checkpoint_comparisons_and_live_input_parity",
+        "evidence": [
+          "evidence/dsw/release-packaging-4e49524/smol-explicit-profile.json",
+          "evidence/dsw/release-packaging-4e49524/smol-explicit-native-equality.json",
+          "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json"
+        ],
+        "default_auto_mismatches": 232,
+        "attempted_inputs": 1005,
+        "source_tokenizer_sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+        "profile_files": {
+          "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+          "tokenizer_config.json": "10e1a7f285ffe48c95225828556cb756c81fae5233869dcc9f4e9ff267fa19b9"
+        },
+        "qualification": "Default AutoTokenizer reconstructs a different pre-tokenizer; the explicit profile is required for this functional qualification. Finite corpus equality is not universal equivalence."
+      },
+      "development_installed_wheel_rollout": {
+        "status": "passed_scoped_maintenance_upgrade_and_rollback",
+        "candidate_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+        "previous_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "evidence": "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json",
+        "validation_evidence": "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "zero_downtime_certified": false,
+        "release_gate_passed": false
       }
     },
     {
@@ -1189,28 +1249,35 @@
       "engine": "vllm",
       "gated": false,
       "functional": "passed",
-      "numerical": "partial",
+      "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
-        "evidence/dsw/vllm-smollm17b-contract.json"
+        "evidence/dsw/vllm-smollm17b-contract.json",
+        "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-contract.json",
+        "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-precision.json",
+        "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/cleanup.json",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
       ],
-      "source_commit": "a90e002",
+      "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
       "public_quality": {
         "status": "completed_development_evaluation",
         "release_gate_passed": false,
-        "evidence": "evidence/dsw/vllm-public-quality-97271f8/report.json"
+        "evidence": "evidence/dsw/vllm-public-quality-97271f8/report.json",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_performance": {
         "status": "completed_short_colocated_measurements",
         "release_gate_passed": false,
-        "evidence": "evidence/dsw/vllm-benchmark-fad1d84/report.json"
+        "evidence": "evidence/dsw/vllm-benchmark-fad1d84/report.json",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_lora": {
         "status": "passed_single_frozen_profile",
         "source_commit": "febb5d86451d9f66520088e263de21495a901159",
         "evidence": "evidence/dsw/vllm-lora-febb5d8.json",
-        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
+        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "functional_rechecks": [
         {
@@ -1240,6 +1307,14 @@
           "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/contract.json",
           "cleanup_evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/cleanup.json",
           "scope": "BF16 backbone/readout TP1 API1 eager, new precision binding, four types/native parity and 1000 switches; not LoRA/multiworker/quality/performance recertification"
+        },
+        {
+          "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+          "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+          "status": "passed",
+          "evidence": "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-contract.json",
+          "cleanup_evidence": "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile."
         }
       ],
       "development_generation_comparison": {
@@ -1248,7 +1323,8 @@
         "harness_source_commit": "444fd1b1dc9a6d74aa350572568005e4508234f3",
         "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
         "evidence": "evidence/dsw/vllm-generation-444fd1b/report.json",
-        "quality_equivalence_established": false
+        "quality_equivalence_established": false,
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_multi_input_profiling": {
         "status": "completed_short_colocated_measurements",
@@ -1257,7 +1333,8 @@
         "runtime_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
         "evidence": "evidence/dsw/vllm-input300-c11d2b3/report.json",
         "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
-        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
+        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_shared_admission": {
         "status": "passed_targeted_two_worker_two_tenant_checks",
@@ -1266,7 +1343,8 @@
         "cleanup_evidence": "evidence/dsw/vllm-shared-admission-4944efd/cleanup.json",
         "timing_evidence": "evidence/dsw/vllm-shared-admission-perf-4944efd/report.json",
         "release_gate_passed": false,
-        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
+        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_quota_crash_recovery": {
         "status": "passed_scoped_gateway_and_native_process_group_checks",
@@ -1277,7 +1355,8 @@
         "native_evidence": "evidence/dsw/vllm-native-quota-crash-0df49a1/quota-crash.json",
         "native_cleanup_evidence": "evidence/dsw/vllm-native-quota-crash-0df49a1/cleanup.json",
         "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
-        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
+        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_lora_crash_recovery": {
         "status": "passed_scoped_native_process_group_checks",
@@ -1287,7 +1366,8 @@
         "cleanup_evidence": "evidence/dsw/vllm-lora-crash-5176a82/cleanup.json",
         "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
         "release_gate_passed": false,
-        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
+        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_serving_health": {
         "status": "passed_scoped_gateway_engine_pause_resume",
@@ -1296,7 +1376,8 @@
         "evidence": "evidence/dsw/gateway-vllm-health-40b78c2/health.json",
         "validation_evidence": "evidence/dsw/health-validation-40b78c2.json",
         "release_gate_passed": false,
-        "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification"
+        "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
       },
       "development_readout_precision": {
         "status": "passed_targeted_functional_binding_and_single_position_reference",
@@ -1311,15 +1392,53 @@
         "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
         "reference_max_absolute_logprob_error": 0.103232741355896,
         "release_gate_passed": false,
-        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification",
+        "profile_qualification": "Historical execution/tokenizer profile as recorded by its cited artifacts; not requalified for the explicit Smol profile used in the installed-wheel rollout."
+      },
+      "historical_numerical": {
+        "status": "partial",
+        "detail": {
+          "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
+          "atol": 0.15,
+          "max_absolute_logprob_error": 0.103232741355896,
+          "single_position_passed": true,
+          "full_gate_passed": false,
+          "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/reference-cpu.json"
+        },
+        "qualification": "Historical tokenizer profile; not transferred to the explicit checkpoint-preserving profile tested in the wheel rollout."
       },
       "numerical_detail": {
-        "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
-        "atol": 0.15,
-        "max_absolute_logprob_error": 0.103232741355896,
-        "single_position_passed": true,
-        "full_gate_passed": false,
-        "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/reference-cpu.json"
+        "scope": "Explicit checkpoint-preserving Smol tokenizer profile: independent numerical reference not run. Previous targeted results remain under historical_numerical.",
+        "full_gate_passed": false
+      },
+      "historical_source_commit": "a90e002",
+      "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile.",
+      "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_1005_checkpoint_comparisons_and_live_input_parity",
+        "evidence": [
+          "evidence/dsw/release-packaging-4e49524/smol-explicit-profile.json",
+          "evidence/dsw/release-packaging-4e49524/smol-explicit-native-equality.json",
+          "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json"
+        ],
+        "default_auto_mismatches": 232,
+        "attempted_inputs": 1005,
+        "source_tokenizer_sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+        "profile_files": {
+          "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+          "tokenizer_config.json": "10e1a7f285ffe48c95225828556cb756c81fae5233869dcc9f4e9ff267fa19b9"
+        },
+        "qualification": "Default AutoTokenizer reconstructs a different pre-tokenizer; the explicit profile is required for this functional qualification. Finite corpus equality is not universal equivalence."
+      },
+      "development_installed_wheel_rollout": {
+        "status": "passed_scoped_maintenance_upgrade_and_rollback",
+        "candidate_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+        "previous_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "evidence": "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json",
+        "validation_evidence": "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "zero_downtime_certified": false,
+        "release_gate_passed": false
       }
     }
   ],

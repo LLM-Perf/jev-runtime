@@ -1,0 +1,31 @@
+{
+  "integrity_and_accounting_passed": true,
+  "release_gate_passed": false,
+  "zero_downtime_certified": false,
+  "rows": [
+    {
+      "engine": "vllm",
+      "native_switches": 1000,
+      "native_strict_requests": 458,
+      "persistent_route_requests": 32,
+      "sdk_suites": 3,
+      "upgrade_seconds": 3.3460893630981445,
+      "rollback_seconds": 3.2138419151306152,
+      "native_identity_unchanged": true
+    },
+    {
+      "engine": "sglang",
+      "native_switches": 1000,
+      "native_strict_requests": 546,
+      "persistent_route_requests": 32,
+      "sdk_suites": 3,
+      "upgrade_seconds": 3.4870619773864746,
+      "rollback_seconds": 2.9755373001098633,
+      "native_identity_unchanged": true
+    }
+  ],
+  "corpus_inputs": 1005,
+  "default_auto_mismatches": 232,
+  "owned_records_checked": 108,
+  "numerical_quality_performance_requalified": false
+}

@@ -1,0 +1,51 @@
+{
+  "source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+  "started_at": 1790538910.1652896,
+  "qualification": "co-located gateway functional test",
+  "checks": {
+    "python_sdk_real_decision": {
+      "request_id": "dec-19d7a333f9c24a8d86fa2cd11df6a115",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4",
+      "generation": 5,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.8354835289107309,
+            "false": 0.16451647108926923
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9207953050550244,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 85,
+        "engine_prompt_tokens": 85,
+        "engine_completion_tokens": 1,
+        "cached_prompt_tokens": 80
+      },
+      "latency_ms": 26.449233293533325
+    },
+    "cancellation_http499_no_gateway_leases_then_recovery": true,
+    "gateway_disable_native_chat_survives_and_rollback": true
+  },
+  "passed": true,
+  "finished_at": 1790538910.5634875
+}

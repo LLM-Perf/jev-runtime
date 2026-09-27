@@ -26,6 +26,8 @@ Model weights, credentials, private workload text, and raw service logs are excl
 from this repository.
 
 See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
+[immutable packages and offline installation](docs/release-packaging.md),
+[installed-wheel DSW upgrade/rollback and Smol tokenizer fidelity](docs/release-rollout-validation.md),
 [calibration](docs/calibration.md), [public quality checks](docs/public-quality.md),
 [readout precision and bundle migration](docs/readout-precision.md),
 [TP4 model validation](docs/tp4-model-validation.md),

@@ -1,0 +1,18 @@
+{
+  "identity": {
+    "pid": 2685398,
+    "start_ticks": "429443800",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "mode": "gateway-wheel",
+  "command": [
+    "/root/jev-runtime/envs/gateway-wheel-861ed3a/bin/python",
+    "-I",
+    "/root/jev-runtime/envs/gateway-wheel-861ed3a/bin/jevctl",
+    "serve",
+    "/root/jev-runtime/runs/vllm-release-wheels-4e49524/candidate-canary/config.json"
+  ],
+  "port": 18797,
+  "version": "861ed3a",
+  "created_at": 1790538898.673822
+}

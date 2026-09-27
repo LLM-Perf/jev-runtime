@@ -1,0 +1,187 @@
+Processing ./jev-runtime/release-packaging-861ed3a/wheels-861ed3a/wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl (from jev-runtime-core==0.1.0a1)
+Collecting pip==26.2.1
+  Downloading pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+Collecting setuptools==80.10.2
+  Downloading setuptools-80.10.2-py3-none-any.whl.metadata (6.6 kB)
+Collecting fastapi<1,>=0.115 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading fastapi-0.136.3-py3-none-any.whl.metadata (27 kB)
+Collecting httpx<1,>=0.28 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting jinja2<4,>=3.1 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting numpy<3,>=1.26 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Collecting prometheus-client<1,>=0.21 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+Collecting pydantic<3,>=2.10 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading pydantic-2.13.5-py3-none-any.whl.metadata (110 kB)
+Collecting pyyaml<7,>=6 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting safetensors<1,>=0.5 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting typer<1,>=0.15 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading typer-0.27.2-py3-none-any.whl.metadata (16 kB)
+Collecting uvicorn<1,>=0.32 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting tiktoken<1,>=0.9 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (6.7 kB)
+Collecting transformers<6,>=4.51 (from jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading transformers-5.17.0-py3-none-any.whl.metadata (32 kB)
+Collecting starlette>=0.46.0 (from fastapi<1,>=0.115->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting typing-extensions>=4.8.0 (from fastapi<1,>=0.115->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting typing-inspection>=0.4.2 (from fastapi<1,>=0.115->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-doc>=0.0.2 (from fastapi<1,>=0.115->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+Collecting anyio (from httpx<1,>=0.28->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx<1,>=0.28->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1,>=0.28->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx<1,>=0.28->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.28->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting MarkupSafe>=2.0 (from jinja2<4,>=3.1->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading markupsafe-3.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3,>=2.10->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.46.5 (from pydantic<3,>=2.10->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Collecting regex (from tiktoken<1,>=0.9->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading regex-2026.9.10-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+Collecting requests (from tiktoken<1,>=0.9->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting huggingface-hub<2.0,>=1.5.0 (from transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading huggingface_hub-1.33.0-py3-none-any.whl.metadata (16 kB)
+Collecting packaging>=20.0 (from transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting tokenizers<0.24.0,>=0.23.1 (from transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading tokenizers-0.23.2-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.8 kB)
+Collecting tqdm>=4.60 (from transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface-hub<2.0,>=1.5.0->transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting filelock>=3.10.0 (from huggingface-hub<2.0,>=1.5.0->transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading filelock-4.0.4-py3-none-any.whl.metadata (2.0 kB)
+Collecting fsspec>=2023.5.0 (from huggingface-hub<2.0,>=1.5.0->transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub<2.0,>=1.5.0->transformers<6,>=4.51->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+Collecting shellingham>=1.3.0 (from typer<1,>=0.15->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+Collecting rich>=13.8.0 (from typer<1,>=0.15->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting markdown-it-py>=2.2.0 (from rich>=13.8.0->typer<1,>=0.15->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.8.0->typer<1,>=0.15->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.8.0->typer<1,>=0.15->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting charset_normalizer<4,>=2 (from requests->tiktoken<1,>=0.9->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading charset_normalizer-3.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (45 kB)
+Collecting urllib3<3,>=1.26 (from requests->tiktoken<1,>=0.9->jev-runtime-core==0.1.0a1->jev-runtime-core==0.1.0a1)
+  Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Downloading pip-26.2.1-py3-none-any.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 202.4 MB/s  0:00:00
+Downloading setuptools-80.10.2-py3-none-any.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 591.2 MB/s  0:00:00
+Downloading fastapi-0.136.3-py3-none-any.whl (117 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 438.7 MB/s  0:00:00
+Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+Downloading pydantic-2.13.5-py3-none-any.whl (472 kB)
+Downloading pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 779.8 MB/s  0:00:00
+Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 707.2 MB/s  0:00:00
+Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (516 kB)
+Downloading tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 647.3 MB/s  0:00:00
+Downloading transformers-5.17.0-py3-none-any.whl (12.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.3/12.3 MB 483.8 MB/s  0:00:00
+Downloading huggingface_hub-1.33.0-py3-none-any.whl (846 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 846.4/846.4 kB 691.4 MB/s  0:00:00
+Downloading click-8.5.0-py3-none-any.whl (125 kB)
+Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 104.0 MB/s  0:00:00
+Downloading tokenizers-0.23.2-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 532.7 MB/s  0:00:00
+Downloading typer-0.27.2-py3-none-any.whl (123 kB)
+Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading filelock-4.0.4-py3-none-any.whl (108 kB)
+Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading markupsafe-3.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Downloading regex-2026.9.10-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (804 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 804.6/804.6 kB 550.7 MB/s  0:00:00
+Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 587.5 MB/s  0:00:00
+Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+Downloading starlette-1.7.0-py3-none-any.whl (78 kB)
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+Downloading charset_normalizer-3.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (248 kB)
+Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/pip-26.2.1-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/setuptools-80.10.2-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/fastapi-0.136.3-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/httpx-0.28.1-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/httpcore-1.0.9-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/jinja2-3.1.6-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/prometheus_client-0.26.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/pydantic-2.13.5-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/transformers-5.17.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/huggingface_hub-1.33.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/click-8.5.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/tokenizers-0.23.2-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/typer-0.27.2-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/uvicorn-0.54.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/annotated_doc-0.0.5-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/annotated_types-0.8.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/filelock-4.0.4-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/fsspec-2026.9.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/h11-0.16.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/markupsafe-3.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/packaging-26.3-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/regex-2026.9.10-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/rich-15.0.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/pygments-2.21.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/markdown_it_py-4.2.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/mdurl-0.1.2-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/shellingham-1.5.4-py2.py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/starlette-1.7.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/anyio-4.15.1-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/idna-3.20-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/tqdm-4.70.1-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/typing_extensions-4.16.0-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/typing_inspection-0.4.4-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/certifi-2026.7.22-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/requests-2.34.2-py3-none-any.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/charset_normalizer-3.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+Saved ./jev-runtime/release-packaging-861ed3a/gateway-861ed3a/wheels/urllib3-2.8.0-py3-none-any.whl
+Successfully downloaded jev-runtime-core pip setuptools fastapi httpx httpcore jinja2 numpy prometheus-client pydantic pydantic-core pyyaml safetensors tiktoken transformers huggingface-hub click hf-xet tokenizers typer uvicorn annotated-doc annotated-types filelock fsspec h11 MarkupSafe packaging regex rich pygments markdown-it-py mdurl shellingham starlette anyio idna tqdm typing-extensions typing-inspection certifi requests charset_normalizer urllib3

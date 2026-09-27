@@ -1,0 +1,12 @@
+{"signal_sent": "SIGTERM", "identity": {"pid": 2684476, "start_ticks": "429440042", "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"}, "exit_confirmed": false}
+Traceback (most recent call last):
+  File "/root/jev-runtime/release-packaging-861ed3a/campaign.py", line 152, in <module>
+    cleaned=cleanup(root,record);write(root/'cleanup.json',cleaned);attempt['native_cleanup']=cleaned
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/release-packaging-861ed3a/campaign.py", line 28, in write
+    with p.open('x') as f:json.dump(d,f,indent=2);f.write('\n')
+         ^^^^^^^^^^^
+  File "/root/.pyenv/versions/3.12.11/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/root/jev-runtime/runs/vllm-release-wheels-4e49524/cleanup.json'

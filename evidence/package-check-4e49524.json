@@ -1,0 +1,13 @@
+{
+  "source_commit": "4e49524b54aade12988a8249faad6a90c736a173",
+  "pytest": {
+    "passed": 317,
+    "result": "317 passed in 9.35s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "101 files already formatted",
+  "pip_check": "No broken requirements found",
+  "package_artifact_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+  "previous_artifact_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "qualification": "Local tests and immutable build checks; real installed-environment DSW checks recorded separately. TypeScript not rerun."
+}

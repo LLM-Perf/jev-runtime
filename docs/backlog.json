@@ -157,12 +157,15 @@
         "src/jev_runtime/compiler.py",
         "tests/integration/tokenizer_contract.py",
         "docs/explicit-chat-templates.md",
-        "docs/mistral-validation.md"
+        "docs/mistral-validation.md",
+        "docs/release-rollout-validation.md",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
       ],
       "progress_notes": [
         "Frozen continuation and implementation fingerprints are enforced.",
         "The 20-checkpoint tokenizer inventory retains inaccessible and unsupported entries.",
-        "At e17918e, explicit local Jinja/JSON templates require a SHA256 match and a standard HF renderer; plugin compilation does not mutate the host tokenizer. Effective template digests remain bound to bundles/calibration. At 75649bf, explicit regex options are checked against actual host vocabulary and implementation fingerprints before serving."
+        "At e17918e, explicit local Jinja/JSON templates require a SHA256 match and a standard HF renderer; plugin compilation does not mutate the host tokenizer. Effective template digests remain bound to bundles/calibration. At 75649bf, explicit regex options are checked against actual host vocabulary and implementation fingerprints before serving.",
+        "At 4e49524, a real installed-gateway mismatch exposed default Smol AutoTokenizer dropping the checkpoint Digits pre-tokenizer. An explicit standard fast profile preserves original data: 1,005 checkpoint/native encoding equalities, while default Auto differs on 232 inputs. Both native engines and all gateway stages pass strict fingerprint/input-ID parity. A generic automatic profile builder remains unimplemented."
       ],
       "acceptance_complete": false
     },
@@ -487,7 +490,9 @@
         "docs/mistral-validation.md",
         "docs/public-model-pair-validation.md",
         "docs/glm-r1-model-validation.md",
-        "evidence/dsw/glm-r1-validation-c48f18d.json"
+        "evidence/dsw/glm-r1-validation-c48f18d.json",
+        "docs/release-rollout-validation.md",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
       ],
       "progress_notes": [
         "10/40 engine/checkpoint functional combinations have development GPU evidence (5/20 per engine).",
@@ -499,7 +504,8 @@
         "Harness b8742bd adds reusable isolated launch/readiness/topology/contract/precision/reference/cleanup orchestration, with fresh directories and retained failures. Qwen3-8B and OLMo-2 pass both native engines at BF16 TP4, raising fixed coverage to 14/40 (7/20 per engine); required 18/20 per engine and denominator 20 remain unchanged.",
         "Mistral7B adds two native functional passes: fixed coverage is 16/40 (8/20 each), still requiring 18/20 each. Mistral Small passes 16/16 explicit-HF tokenizer cases per environment at 75649bf but remains GPU-not-run. Missing-template/common-renderer failures and GLM custom-loader rejection remain recorded; no model was removed or replaced.",
         "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change.",
-        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete."
+        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete.",
+        "Installed-wheel rollout requalifies Smol functional serving on both engines with its explicit checkpoint-preserving tokenizer. Coverage stays 24/40 (12/20 each). Historical numerical/development results retain their original profiles; the new profile has numerical/quality/performance/LoRA not run. Default AutoTokenizer mismatch is preserved."
       ],
       "acceptance_complete": false
     },
@@ -726,11 +732,17 @@
         "src/jev_runtime/cli.py",
         "packages/typescript",
         "deployment",
-        "evidence/package-check-febb5d8.json"
+        "evidence/package-check-febb5d8.json",
+        "docs/release-rollout-validation.md",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "deployment/release.py",
+        "docs/release-packaging.md",
+        "tests/test_release.py"
       ],
       "progress_notes": [
         "Python/TypeScript SDKs, CLI and three wheel builds have evidence.",
-        "Container image builds and final release packaging remain."
+        "Container image builds and final release packaging remain.",
+        "Immutable Git-snapshot three-wheel builds, platform-specific hash-locked gateway wheelhouses, offline fresh-environment install and installed-code audits are implemented at 4e49524. Both engines served actual wheel-installed previous/candidate/rollback gateways; three live Python SDK suites per engine pass. Engine images and final release acceptance remain incomplete."
       ],
       "acceptance_complete": false
     },
@@ -816,7 +828,9 @@
         "docs/mistral-validation.md",
         "docs/public-model-pair-validation.md",
         "docs/glm-r1-model-validation.md",
-        "evidence/dsw/glm-r1-validation-c48f18d.json"
+        "evidence/dsw/glm-r1-validation-c48f18d.json",
+        "docs/release-rollout-validation.md",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
       ],
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
@@ -828,7 +842,8 @@
         "Four new TP4 native suites pass at runtime f6bda1a/harness b8742bd: Qwen3-8B and OLMo-2 on both engines, four output types/native parity/lifecycle/precision guards. All owned groups exited and all four GPU UUID/free-memory snapshots returned to baseline; no dependency/core upgrade or broader LoRA/performance certification.",
         "Mistral7B native BF16 TP4/API1/eager runs at e17918e pass four types, native parity, precision guards and lifecycle. Each verifies its official template snapshot and live topology; both groups exit and all selected GPUs return to baseline. Later 75649bf tokenizer work has CPU/real-tokenizer evidence, not broad final-source GPU recertification.",
         "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change.",
-        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete."
+        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete.",
+        "At native c48f18d/harness 861ed3a, explicit-profile Smol passes 1,000 switches per engine (vLLM 458 / SGLang 546 strict traffic requests, zero mixed versions). Wheel-installed gateway 3377c95 -> 861ed3a -> 3377c95 preserves the registry route; 64 persistent decisions and six SDK suites pass across both engines. Native process identities stay unchanged; all owned groups exit. No controlled performance/mixed-load or new-profile numerical certification."
       ],
       "acceptance_complete": false
     },
@@ -969,13 +984,19 @@
         "灰度、回退、值守与移交演练通过"
       ],
       "deliverable": "v0.1-release-candidate",
-      "status": "not_started",
+      "status": "partial",
       "original_status": "planned",
       "actual_deliverables": [
-        "docs/completion-ledger.md"
+        "docs/completion-ledger.md",
+        "docs/release-rollout-validation.md",
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "deployment/release.py",
+        "docs/release-packaging.md",
+        "tests/test_release.py"
       ],
       "progress_notes": [
-        "Formal release, canary rollout and operational handoff depend on unmet acceptance gates."
+        "Formal release, canary rollout and operational handoff depend on unmet acceptance gates.",
+        "At 4e49524, offline locked candidate/previous gateway environments and installation verification pass. Both engines pass previous/candidate-canary/active/rollback stages with persisted route identity and SDK cancellation/coexistence. Upgrade transitions are 3.346/3.487 s and rollback 3.214/2.976 s (vLLM/SGLang), with observed maintenance interruption. Original controller, tokenizer and dependency-resolution failures remain. Automatic uninterrupted traffic routing, migrations, images and operational handoff are still incomplete."
       ],
       "acceptance_complete": false
     }

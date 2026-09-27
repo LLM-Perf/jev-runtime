@@ -1,0 +1,45 @@
+{
+  "source_sha256": "1150719b60247ea837f4a4035688462625c55c003eca487c2f56a0afa0884e6a",
+  "auto_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+  "native_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+  "differences": [
+    {
+      "path": "/pre_tokenizer/add_prefix_space",
+      "auto": false,
+      "native": null
+    },
+    {
+      "path": "/pre_tokenizer/pretokenizers",
+      "auto": null,
+      "native": [
+        {
+          "type": "Digits",
+          "individual_digits": true
+        },
+        {
+          "type": "ByteLevel",
+          "add_prefix_space": false,
+          "trim_offsets": true,
+          "use_regex": true
+        }
+      ]
+    },
+    {
+      "path": "/pre_tokenizer/type",
+      "auto": "ByteLevel",
+      "native": "Sequence"
+    },
+    {
+      "path": "/pre_tokenizer/trim_offsets",
+      "auto": true,
+      "native": null
+    },
+    {
+      "path": "/pre_tokenizer/use_regex",
+      "auto": true,
+      "native": null
+    }
+  ],
+  "auto_class": "GPT2Tokenizer",
+  "native_class": "GPT2Tokenizer"
+}

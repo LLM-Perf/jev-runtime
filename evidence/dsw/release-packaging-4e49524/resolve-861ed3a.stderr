@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/root/jev-runtime/release-packaging-861ed3a/release.py", line 420, in <module>
+    main()
+  File "/root/jev-runtime/release-packaging-861ed3a/release.py", line 409, in main
+    result = resolve(args.bundle, args.manifest_sha256, args.output, args.constraints)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/release-packaging-861ed3a/release.py", line 259, in resolve
+    info = wheel_info(path)
+           ^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/release-packaging-861ed3a/release.py", line 68, in wheel_info
+    raise ValueError("Wheel must have one metadata record")
+ValueError: Wheel must have one metadata record

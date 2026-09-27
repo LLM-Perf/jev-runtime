@@ -380,6 +380,26 @@ replacement for any requirement in `implementation-plan.md`.
   three source-matched wheels pass. No quality/performance/soak release gate is
   closed. See [GLM/R1 validation](glm-r1-model-validation.md).
 
+- At installer `4e49524`, immutable three-wheel Git snapshots, exact platform locks,
+  offline fresh gateway installation and installed-code verification pass. DSW
+  candidate `861ed3a` (44 packages) and previous `3377c95` (40 packages) serve both
+  native engines at `c48f18d`. Previous/canary/active/rollback stages preserve the
+  same registry route; 64 persistent decisions and six complete Python SDK suites
+  pass. Native process identities remain unchanged. Measured maintenance upgrade
+  intervals are 3.346/3.487 s and rollback 3.214/2.976 s (vLLM/SGLang); automatic
+  uninterrupted rollout is not implemented. The initial metadata-resolution,
+  duplicate-cleanup controller, tokenizer-identity and alternate-constraint
+  failures remain. All 108 historical owned records have no live match/group.
+  A Smol default AutoTokenizer fidelity defect is exposed: 232/1,005 inputs differ
+  from its checkpoint Digits pipeline. An explicit standard fast profile matches
+  checkpoint/native encodings on all 1,005 inputs and both engines pass another
+  1,000 switches (458/546 strict traffic requests). Functional coverage stays
+  24/40. Historical numerical and development results retain their original
+  profiles; the new profile has no independent numerical/quality/performance or
+  LoRA requalification. Local 317 tests, Ruff and pip check pass; rebuilt `4e49524`
+  wheels are byte-identical to the tested candidate. P18/P24 remain partial. See
+  [installed-wheel rollout validation](release-rollout-validation.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
@@ -395,7 +415,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
-| SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
+| SDKs and deployment productization | SDK checks, immutable wheels/offline locks, both installed-wheel gateway upgrade/rollback exercises pass | Deployment images, uninterrupted routing, migration/downgrade, handoff and final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Engine health and fault routing | Periodic real canaries, stale/failure circuits and gateway pause/resume checks pass on both engines | Certified compatible-replica selection/failover and expanded load/fault profiles |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |

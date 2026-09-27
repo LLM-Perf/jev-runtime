@@ -1,0 +1,78 @@
+"""Verify terminal owned processes, artifacts, installations and pinned model inputs."""
+import hashlib,importlib.util,json,subprocess,sys,tarfile,time
+from pathlib import Path
+from huggingface_hub import HfApi
+ROOT=Path('/root/jev-runtime');ART=ROOT/'release-packaging-861ed3a'
+SOURCE='861ed3ad99df9028ef5d3df2d1dfc4127ab0a946';NATIVE='c48f18dfc9715dae09588e0c592c38e25c9e4b80'
+sys.path.insert(0,str(ROOT/'releases'/SOURCE))
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import group_members
+spec=importlib.util.spec_from_file_location('release_tool',ART/'release-compatible.py');release=importlib.util.module_from_spec(spec);spec.loader.exec_module(release)
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+out=ART/'final-audit.json';assert not out.exists()
+final=read(ART/'rollout-campaign-explicit-profile.json');assert final['completed']
+assert all(a['passed'] and a['native_cleanup']['passed'] and all(g['cleanup']['passed'] for g in a['gateways']) for a in final['attempts'])
+records=[]
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ d=read(p);identity=d.get('identity')
+ if identity:records.append({'record':str(p),'identity':identity,'matching_live_process':process_identity(identity['pid'])==identity,'live_group':group_members(identity['pid'])})
+assert all(not r['matching_live_process'] and not r['live_group'] for r in records)
+gpu=get_gpu(7);assert gpu['uuid']=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(gpu['free_mib'])==11990
+installations={}
+for tag,resolved_name in [('3377c95','3377c95'),('861ed3a','861ed3a-r2')]:
+ resolved=read(ART/f'resolve-{resolved_name}.json')
+ installations[tag]=release.inspect_install(ROOT/'envs'/f'gateway-wheel-{tag}',Path(resolved['path']),resolved['manifest_sha256'])
+source_files={}
+for commit in (SOURCE,NATIVE):
+ release_dir=ROOT/'releases'/commit
+ paths=[]
+ for part in ('src','packages/sglang/src','packages/vllm/src','deployment','tests/integration'):
+  paths.extend((release_dir/part).rglob('*.py'))
+ source_files[commit]={str(p.relative_to(release_dir)):sha(p) for p in sorted(paths)}
+environments={}
+for engine in ('vllm','sglang'):
+ script="import json,importlib,importlib.metadata as m; names=['jev_runtime','jev_runtime.compiler','jev_"+engine+"'];print(json.dumps({'versions':{n:m.version(n) for n in ['"+engine+"','torch','transformers']},'imports':{n:importlib.import_module(n).__file__ for n in names}}))"
+ d=json.loads(subprocess.check_output([str(ROOT/'envs'/engine/'bin/python'),'-c',script],text=True))
+ assert all('/releases/'+NATIVE+'/' in p for p in d['imports'].values());environments[engine]=d
+model=ROOT/'models/SmolLM2-1.7B-Instruct';identity=read(model/'jev-source.json')
+info=HfApi().model_info(identity['model_id'],revision=identity['revision'],files_metadata=True,token=False)
+assert info.sha==identity['revision'];remote={s.rfilename:s for s in info.siblings};model_files=[]
+paths=list(model.glob('*.safetensors'))+[model/n for n in ('config.json','generation_config.json','tokenizer.json','tokenizer_config.json','special_tokens_map.json') if (model/n).exists()]
+for p in sorted(paths):
+ before=p.stat();digest=sha(p);after=p.stat();expected=remote[p.name]
+ assert before.st_size==after.st_size==expected.size and before.st_mtime_ns==after.st_mtime_ns
+ if expected.lfs is not None:assert digest==expected.lfs.sha256;remote_digest=expected.lfs.sha256;kind='lfs_sha256'
+ else:
+  blob=hashlib.sha1(b'blob '+str(after.st_size).encode()+b'\0'+p.read_bytes()).hexdigest();assert blob==expected.blob_id;remote_digest=blob;kind='git_blob_sha1'
+ model_files.append({'name':p.name,'sha256':digest,'size_bytes':after.st_size,'remote_digest':remote_digest,'remote_digest_kind':kind})
+profile=ROOT/'tokenizers/SmolLM2-original-fast-31b70e2';profile_report=read(ART/'smol-explicit-profile.json')
+assert sha(profile/'tokenizer.json')==sha(model/'tokenizer.json')==profile_report['checkpoint_tokenizer_sha256']
+assert all(sha(profile/n)==d for n,d in profile_report['files'].items())
+expected=read(model/'tokenizer_config.json');expected['tokenizer_class']='PreTrainedTokenizerFast';expected.pop('auto_map',None)
+assert read(profile/'tokenizer_config.json')==expected
+artifacts=read(ART/'artifacts/artifact-inventory.json')
+assert all(sha(ART/'artifacts'/n)==d['sha256'] and (ART/'artifacts'/n).stat().st_size==d['size_bytes'] for n,d in artifacts.items())
+report={'script_sha256':sha(Path(__file__)),'checked_at':time.time(),'passed':True,'owned_records_checked':len(records),'records':records,'gpu7':gpu,'installations':installations,'source_files':source_files,'native_environments':environments,'model':identity,'model_files':model_files,'profile_files':profile_report['files'],'artifacts':artifacts}
+out.write_text(json.dumps(report,indent=2)+'\n')
+files={}
+for n in ('final-audit.json','rollout-campaign.json','rollout-campaign.log','rollout-campaign-sglang-followup.json','rollout-campaign-sglang-followup.log','rollout-campaign-explicit-profile.json','smol-tokenizer-diagnosis.json','smol-explicit-profile.json','smol-explicit-native-equality.json','tested-vllm-constraints.txt','tested-sglang-constraints.txt','resolve-861ed3a.stderr','resolve-sglang-861ed3a.stderr','resolve-sglang-3377c95.stderr','resolve-861ed3a-r2.json','resolve-3377c95.json','install-861ed3a.json','install-3377c95.json'):
+ files[n]=ART/n
+for tag in ('wheels-861ed3a','wheels-3377c95','gateway-861ed3a-r2','gateway-3377c95'):
+ files[tag+'/manifest.json']=ART/tag/'manifest.json'
+ for n in ('requirements.txt','constraints.txt'):
+  if (ART/tag/n).exists():files[tag+'/'+n]=ART/tag/n
+for tag in ('gateway-861ed3a','gateway-sglang-861ed3a','gateway-sglang-3377c95'):
+ files[tag+'/failure-resolve.log']=ART/tag/'resolve.log'
+allowed={'process.json','cleanup.json','topology.json','profile.json','validation.json','gateway-contract.json','native-contract.json','native-precision.json'}
+for name in ('vllm-release-wheels-4e49524','sglang-release-wheels-4e49524','vllm-release-wheels-explicit-4e49524','sglang-release-wheels-explicit-4e49524'):
+ run=ROOT/'runs'/name
+ for p in run.rglob('*.json'):
+  if p.name in allowed:files['runs/'+str(p.relative_to(ROOT/'runs'))]=p
+manifest={'script_sha256':sha(Path(__file__)),'artifacts':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in sorted(files.items())}}
+mp=ART/'export-manifest.json';assert not mp.exists();mp.write_text(json.dumps(manifest,indent=2)+'\n');files[mp.name]=mp
+archive=ROOT/'release-packaging-evidence-4e49524.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for n,p in sorted(files.items()):tar.add(p,arcname=n,recursive=False)
+print(json.dumps({'exported_files':len(files),'owned_records_checked':len(records),'model_files':len(model_files),'archive':str(archive),'archive_bytes':archive.stat().st_size}))

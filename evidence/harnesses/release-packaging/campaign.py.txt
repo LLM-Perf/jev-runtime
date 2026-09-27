@@ -1,0 +1,156 @@
+"""Owned DSW native engines with wheel-only gateway canary/upgrade/rollback checks."""
+import hashlib,importlib.util,json,os,signal,socket,subprocess,sys,time,traceback
+from pathlib import Path
+from types import SimpleNamespace
+import httpx
+
+ROOT=Path('/root/jev-runtime');HARNESS='861ed3ad99df9028ef5d3df2d1dfc4127ab0a946'
+NATIVE='c48f18dfc9715dae09588e0c592c38e25c9e4b80'
+SOURCE=ROOT/'releases'/HARNESS;ART=ROOT/'release-packaging-861ed3a'
+sys.path.insert(0,str(SOURCE))
+from deployment import dsw_service
+from tests.integration.run_native_validation import wait_ready,topology,cleanup,group_members,require_owner
+from jev_runtime.schema import Bundle
+spec=importlib.util.spec_from_file_location('release_tool',ART/'release-compatible.py')
+release=importlib.util.module_from_spec(spec);spec.loader.exec_module(release)
+# Resolve documents bind each immutable installation, including distinct prior extras.
+VERSIONS={}
+for tag,name in [('3377c95','3377c95'),('861ed3a','861ed3a-r2')]:
+ resolved=json.loads((ART/f'resolve-{name}.json').read_text())
+ VERSIONS[tag]={'environment':ROOT/'envs'/f'gateway-wheel-{tag}','lock':Path(resolved['path']),'digest':resolved['manifest_sha256']}
+report={'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'harness_source_commit':HARNESS,
+        'release_tool_sha256':hashlib.sha256((ART/'release-compatible.py').read_bytes()).hexdigest(),
+        'native_runtime_source_commit':NATIVE,'started_at':time.time(),
+        'qualification':'colocated, one native engine per campaign; explicit maintenance restart, not zero-downtime traffic routing','attempts':[]}
+out=ART/'rollout-campaign.json';assert not out.exists()
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+def write(p,d):
+ with p.open('x') as f:json.dump(d,f,indent=2);f.write('\n')
+def api(port,key,path,body=None):
+ with httpx.Client(base_url=f'http://127.0.0.1:{port}',headers={'Authorization':'Bearer '+key},timeout=40) as c:
+  r=c.get(path) if body is None else c.post(path,json=body);r.raise_for_status();return r.json()
+def clean_env():return {k:v for k,v in os.environ.items() if not k.startswith('PYTHON')}
+def stop_gateway(row):
+ if row.get('cleanup'):return
+ identity=row['record']['identity'];now=dsw_service.process_identity(identity['pid'])
+ if now is not None:
+  assert now==identity,'Owned PID identity mismatch';os.killpg(identity['pid'],signal.SIGTERM)
+ deadline=time.monotonic()+45
+ while group_members(identity['pid']) and time.monotonic()<deadline:time.sleep(.1)
+ row['cleanup']={'group_members':group_members(identity['pid']),'stopped_at':time.time()}
+ row['cleanup']['passed']=not row['cleanup']['group_members']
+ write(Path(row['run'])/'cleanup.json',row['cleanup']);save()
+ assert row['cleanup']['passed'],'Owned gateway group did not exit'
+def start_gateway(root,label,version,port,keys,config,attempt):
+ run=root/label;run.mkdir()
+ verify=release.inspect_install(VERSIONS[version]['environment'],VERSIONS[version]['lock'],VERSIONS[version]['digest'])
+ assert (VERSIONS[version]['environment']/'jev-install-complete.json').is_file()
+ cfg={**config,'port':port,'registry_path':str(root/'gateway-registry.db'),'workers':1}
+ write(run/'config.json',cfg)
+ fd=os.open(run/'keys.json',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+ with os.fdopen(fd,'w') as f:json.dump(keys,f)
+ with socket.socket() as sock:
+  sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1);sock.bind(('127.0.0.1',port))
+ env=clean_env();env.update(JEV_API_KEY=keys['api'],JEV_ADMIN_KEY=keys['admin'],JEV_ENGINE_API_KEY=keys['api'],CUDA_VISIBLE_DEVICES='',HF_HUB_OFFLINE='1')
+ executable=VERSIONS[version]['environment']/'bin/python'
+ command=[str(executable),'-I',str(executable.with_name('jevctl')),'serve',str(run/'config.json')]
+ with (run/'gateway.log').open('ab') as log:p=subprocess.Popen(command,env=env,stdout=log,stderr=log,start_new_session=True)
+ identity=dsw_service.process_identity(p.pid);assert identity is not None
+ record={'identity':identity,'mode':'gateway-wheel','command':command,'port':port,'version':version,'created_at':time.time()}
+ write(run/'process.json',record)
+ row={'label':label,'run':str(run),'record':record,'installation':verify,'started_at':time.time()};attempt['gateways'].append(row);save()
+ deadline=time.monotonic()+90;last=None
+ while time.monotonic()<deadline:
+  assert dsw_service.process_identity(p.pid)==identity,'Gateway exited during startup'
+  try:
+   ready=api(port,keys['api'],'/ready')
+   if ready['ready']:break
+  except (httpx.TransportError,httpx.HTTPStatusError) as exc:last=type(exc).__name__
+  time.sleep(.2)
+ else:raise TimeoutError(f'Gateway readiness deadline, last={last}')
+ row['ready_at']=time.time();row['ready']=ready
+ cmdline=Path(f'/proc/{p.pid}/cmdline').read_bytes().split(b'\0');assert cmdline[0].decode()==str(executable)
+ row['live_executable']=os.readlink(f'/proc/{p.pid}/exe');assert row['live_executable']==str(executable)
+ row['profile']=api(port,keys['admin'],'/admin/profile');write(run/'profile.json',row['profile']);save();return row
+BODY={'model':'decision-model','input':{'text':'I need a refund.'},'questions':[{'id':'refund','type':'boolean','instruction':'Is a refund requested?'}]}
+def inspect_gateway(row,keys,native_port,full=False):
+ port=row['record']['port'];run=Path(row['run'])
+ compiled=api(port,keys['admin'],'/admin/compile',BODY)
+ native=api(native_port,keys['admin'],'/plugins/jev-runtime/admin/compile',BODY)
+ assert [(s['input_ids'],s['label_ids']) for s in compiled['sequences']]==[(s['input_ids'],s['label_ids']) for s in native['sequences']]
+ assert compiled['bundle']['model']==native['bundle']['model']
+ row['native_input_parity']={'passed':True,'gateway':compiled,'native':native}
+ responses=[]
+ for i in range(8):
+  response=api(port,keys['api'],'/v1/decisions',{**BODY,'model':'release-persisted'})
+  assert response['status']=='completed' and response['usage']['successful_questions']==1
+  assert response['bundle']=='release-round-trip@1'
+  responses.append(response)
+ row['persistent_route_responses']=responses
+ if full:
+  command=[str(VERSIONS[row['record']['version']]['environment']/'bin/python'),'-I',str(SOURCE/'tests/integration/live_gateway.py'),
+           '--run-dir',str(run),'--output',str(run/'gateway-contract.json'),'--source-commit',HARNESS]
+  with (run/'contract.log').open('wb') as log:
+   r=subprocess.run(command,stdout=log,stderr=log,env=clean_env(),timeout=180)
+  row['contract_returncode']=r.returncode
+  if (run/'gateway-contract.json').exists():row['contract']=json.loads((run/'gateway-contract.json').read_text())
+  assert r.returncode==0 and row['contract']['passed'],'Gateway functional suite failed'
+ snapshot=api(port,keys['admin'],'/admin/bundles');assert not snapshot['leases']
+ route=next(r for r in snapshot['routes'] if r['alias']=='release-persisted')
+ assert route['ref']=='release-round-trip@1' and route['generation']==1
+ row['persisted_route']=route;row['postcheck']=api(port,keys['admin'],'/admin/profile')
+ assert all(row['postcheck']['admission'][k]==0 for k in ('requests','expanded_tokens','expanded_branches','queued_requests'))
+ write(run/'validation.json',{'passed':True,'native_input_parity':row['native_input_parity'],'persistent_route_responses':responses,'persisted_route':route,'postcheck':row['postcheck']});save()
+for engine in ('vllm','sglang'):
+ root=ROOT/'runs'/f'{engine}-release-wheels-4e49524';assert not root.exists();root.mkdir()
+ native_python=ROOT/'envs'/engine/'bin/python';native_port=18795 if engine=='vllm' else 18794
+ attempt={'engine':engine,'run':str(root),'gateways':[],'started_at':time.time()};report['attempts'].append(attempt);save();record=None
+ try:
+  launch=[str(native_python),str(SOURCE/'deployment/dsw_service.py'),'launch','--run-dir',str(root),'--engine',engine,'--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),'--gpus','7','--port',str(native_port),'--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072']
+  with (root/'launch.log').open('wb') as log:r=subprocess.run(launch,stdout=log,stderr=log,timeout=60)
+  if (root/'process.json').exists():record=json.loads((root/'process.json').read_text())
+  assert r.returncode==0 and record is not None
+  keys=json.loads((root/'keys.json').read_text());config=json.loads((root/'config.json').read_text())
+  attempt['native_ready']=wait_ready(record,keys['api'],300);write(root/'topology.json',topology(root,record))
+  attempt['native_identity']=record['identity'];attempt['native_profile']=api(native_port,keys['admin'],'/plugins/jev-runtime/admin/profile')
+  old=start_gateway(root,'previous','3377c95',18796,keys,config,attempt)
+  bundle=Bundle(id='release-round-trip',version=1,model=old['profile']['model'])
+  api(18796,keys['admin'],'/admin/bundles',bundle.model_dump(mode='json'))
+  api(18796,keys['admin'],'/admin/bundles/prepare',{'reference':bundle.reference})
+  api(18796,keys['admin'],'/admin/bundles/activate',{'alias':'release-persisted','reference':bundle.reference,'expected_generation':0})
+  inspect_gateway(old,keys,native_port,full=True)
+  candidate=start_gateway(root,'candidate-canary','861ed3a',18797,keys,config,attempt)
+  inspect_gateway(candidate,keys,native_port)
+  # Both workers must still serve before the explicit maintenance transition.
+  assert api(18796,keys['api'],'/v1/decisions',BODY)['status']=='completed'
+  assert api(18797,keys['api'],'/v1/decisions',BODY)['status']=='completed'
+  attempt['overlap_canary_passed']=True;save()
+  started=time.time();stop_gateway(old)
+  unavailable=False
+  try:api(18796,keys['api'],'/ready')
+  except httpx.TransportError:unavailable=True
+  assert unavailable
+  stop_gateway(candidate)
+  current=start_gateway(root,'candidate-active','861ed3a',18796,keys,config,attempt)
+  attempt['upgrade_transition']={'started_at':started,'ready_at':current['ready_at'],'seconds':current['ready_at']-started,'observed_unavailable':unavailable}
+  inspect_gateway(current,keys,native_port,full=True)
+  started=time.time();stop_gateway(current)
+  rollback=start_gateway(root,'rollback','3377c95',18796,keys,config,attempt)
+  attempt['rollback_transition']={'started_at':started,'ready_at':rollback['ready_at'],'seconds':rollback['ready_at']-started,'mode':'explicit maintenance restart'}
+  inspect_gateway(rollback,keys,native_port,full=True)
+  require_owner(record);assert api(native_port,keys['api'],'/plugins/jev-runtime/ready')['ready']
+  attempt['native_identity_unchanged']=dsw_service.process_identity(record['identity']['pid'])==record['identity']
+  stop_gateway(rollback);attempt['passed']=True
+ except BaseException as exc:
+  attempt['passed']=False;attempt['failure']={'type':type(exc).__name__,'message':str(exc)};traceback.print_exc()
+ finally:
+  for row in reversed(attempt['gateways']):
+   try:stop_gateway(row)
+   except BaseException as exc:row['cleanup_error']={'type':type(exc).__name__,'message':str(exc)}
+  if record is None and (root/'process.json').exists():record=json.loads((root/'process.json').read_text())
+  if record is not None:
+   cleaned=cleanup(root,record);write(root/'cleanup.json',cleaned);attempt['native_cleanup']=cleaned
+  attempt['finished_at']=time.time();save();print(json.dumps({'engine':engine,'passed':attempt['passed'],'gateway_processes':len(attempt['gateways']),'failure':attempt.get('failure'),'native_cleanup':attempt.get('native_cleanup',{}).get('passed')}),flush=True)
+ if not attempt.get('native_cleanup',{}).get('passed') or any(not x.get('cleanup',{}).get('passed') for x in attempt['gateways']):break
+report['completed']=len(report['attempts'])==2 and all(a['passed'] for a in report['attempts'])
+report['finished_at']=time.time();save()

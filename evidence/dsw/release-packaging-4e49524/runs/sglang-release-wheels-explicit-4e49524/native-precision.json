@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+  "runtime_source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+  "started_at": 1790539561.7314105,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-a22c660c1b16451caf582897a7594418@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-fc29af0ccbf24aeb947aaa3e7f26b6e7@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=float32 differs from engine report bfloat16; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+    "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+    "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "passed": true,
+  "finished_at": 1790539566.9484153
+}

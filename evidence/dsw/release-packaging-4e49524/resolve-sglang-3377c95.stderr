@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/root/jev-runtime/release-packaging-861ed3a/release-compatible.py", line 441, in <module>
+    main()
+  File "/root/jev-runtime/release-packaging-861ed3a/release-compatible.py", line 430, in main
+    result = resolve(args.bundle, args.manifest_sha256, args.output, args.constraints)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/release-packaging-861ed3a/release-compatible.py", line 270, in resolve
+    run(command, output / "resolve.log")
+  File "/root/jev-runtime/release-packaging-861ed3a/release-compatible.py", line 136, in run
+    raise RuntimeError(f"Command failed with status {result.returncode}; inspect {log}")
+RuntimeError: Command failed with status 1; inspect /root/jev-runtime/release-packaging-861ed3a/gateway-sglang-3377c95/resolve.log

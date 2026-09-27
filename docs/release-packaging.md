@@ -106,3 +106,7 @@ zero-downtime rollout remain separate work. A stop/start rollback exercise must
 be reported with its interruption window and must not be called uninterrupted
 service. Never roll back across an incompatible database/schema or scoring
 identity change merely because an older wheel is available.
+
+The first real installation and maintenance rollout on both engines is recorded in
+[the DSW validation report](release-rollout-validation.md), including exact artifact
+commits, dependency counts, interruption intervals and preserved failed attempts.

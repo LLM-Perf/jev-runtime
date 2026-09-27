@@ -1,0 +1,51 @@
+{
+  "source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
+  "started_at": 1790539580.4430585,
+  "qualification": "co-located gateway functional test",
+  "checks": {
+    "python_sdk_real_decision": {
+      "request_id": "dec-5037c82d68fa425993349e82b467abe7",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+      "generation": 3,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.8175744806385543,
+            "false": 0.18242551936144574
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9131633035983571,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 85,
+        "engine_prompt_tokens": 85,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 84
+      },
+      "latency_ms": 44.20836176723242
+    },
+    "cancellation_http499_no_gateway_leases_then_recovery": true,
+    "gateway_disable_native_chat_survives_and_rollback": true
+  },
+  "passed": true,
+  "finished_at": 1790539580.9198818
+}

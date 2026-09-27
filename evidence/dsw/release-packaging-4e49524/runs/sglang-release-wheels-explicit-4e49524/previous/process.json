@@ -1,0 +1,18 @@
+{
+  "identity": {
+    "pid": 2689863,
+    "start_ticks": "429510765",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "mode": "gateway-wheel",
+  "command": [
+    "/root/jev-runtime/envs/gateway-wheel-3377c95/bin/python",
+    "-I",
+    "/root/jev-runtime/envs/gateway-wheel-3377c95/bin/jevctl",
+    "serve",
+    "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/previous/config.json"
+  ],
+  "port": 18796,
+  "version": "3377c95",
+  "created_at": 1790539568.3214843
+}
