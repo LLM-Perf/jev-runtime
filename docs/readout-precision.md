@@ -98,6 +98,10 @@ The earlier BF16 failures in [the Phi TP2 report](phi-tp2-validation.md) remain
 failures. A passing FP32 profile cannot overwrite that column or increase the
 count of distinct model/engine combinations.
 
+For memory-bounded CUDA references and the later Qwen/R1 attention/device
+diagnosis, see [numerical reference execution profiles](numerical-reference-diagnostics.md).
+The original CPU eager default and its failure records are retained.
+
 
 ## DSW validation, 2026-09-28 (Asia/Shanghai)
 

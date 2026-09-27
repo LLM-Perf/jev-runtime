@@ -303,7 +303,11 @@
         "docs/tp4-model-validation.md",
         "docs/native-validation-runner.md",
         "docs/explicit-chat-templates.md",
-        "docs/mistral-validation.md"
+        "docs/mistral-validation.md",
+        "tests/integration/reference_device.py",
+        "tests/integration/check_reference_offload.py",
+        "docs/numerical-reference-diagnostics.md",
+        "evidence/dsw/reference-diagnostics-5730449.json"
       ],
       "progress_notes": [
         "Reference tooling exists; frozen BF16 tolerance failures remain unresolved.",
@@ -311,7 +315,8 @@
         "At 737d814, four CPU BF16 selected-position checks were retained: both Phi-3 engines and vLLM Phi-4 exceed atol=0.15; SGLang Phi-4 passes one position only. No tolerance was relaxed or full numerical gate accepted.",
         "At f6bda1a, Phi-4 BF16-backbone/FP32-readout TP2 and default BF16 SmolLM2 TP1 pass one saved CPU reference position per engine at the existing development atol=0.15. FP32 max errors are 0.049655 SGLang / 0.089940 vLLM. Original BF16 failures remain; full profile-specific numerical budgets and multi-example/tie/cache-state certification remain incomplete.",
         "Qwen3-8B/OLMo-2 BF16 TP4 CPU single-position checks at runtime f6bda1a: Qwen/vLLM fails 0.25 > 0.15; Qwen/SGLang passes 0.125 and both OLMo positions pass ~0.062. Full numerical budgets remain open; identical per-model input/label IDs permit a limited cross-engine diagnostic, not accuracy certification.",
-        "Mistral7B BF16 TP4 one-position CPU checks pass at unchanged 0.15 development tolerance (SGLang 0.148433685, vLLM 0.093746185) with top-label agreement. This is not a completed per-profile numerical budget; prior Qwen/Phi failures remain."
+        "Mistral7B BF16 TP4 one-position CPU checks pass at unchanged 0.15 development tolerance (SGLang 0.148433685, vLLM 0.093746185) with top-label agreement. This is not a completed per-profile numerical budget; prior Qwen/Phi failures remain.",
+        "At 5730449, a bounded CUDA reference helper passes 24 resident/offload full-logit equalities in both engine Python environments. Eighteen new matched reference profiles on two saved Qwen/R1 inputs produce nine passes and nine failures at unchanged atol=0.15. Attention/device affects the comparison; GPU SDPA does not resolve SGLang Qwen FP32-head error (0.289116). Original CPU eager failures remain, and full held-out dtype/TP budgets, near ties and cache/batch-state validation remain incomplete."
       ],
       "acceptance_complete": false
     },

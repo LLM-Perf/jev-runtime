@@ -1,0 +1,113 @@
+"""Bounded numerical diagnosis; never changes a serving model or qualification."""
+import argparse
+import hashlib
+import json
+import os
+import time
+from pathlib import Path
+
+import torch
+import transformers
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument('--model', type=Path, required=True)
+    p.add_argument('--contract', type=Path, required=True)
+    p.add_argument('--output', type=Path, required=True)
+    a = p.parse_args()
+    assert not a.output.exists()
+    report = json.loads(a.contract.read_text())
+    source = json.loads((a.model/'jev-source.json').read_text())
+    assert (source['model_id'], source['revision']) == (report['model']['id'], report['model']['revision'])
+    example = report['reference_logits']
+    torch.set_num_threads(2)
+    free, total = torch.cuda.mem_get_info()
+    reserve = 3 * 1024**3
+    budget = min(6 * 1024**3, free - reserve)
+    assert budget >= 4 * 1024**3
+    torch.cuda.set_per_process_memory_fraction(budget / total)
+    result = dict(source=source, script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  contract_sha256=hashlib.sha256(a.contract.read_bytes()).hexdigest(),
+                  torch_version=torch.__version__, transformers_version=transformers.__version__,
+                  input_ids=example['input_ids'], label_ids=example['label_ids'],
+                  baseline_engine_logprobs=example['logprobs'],
+                  qualification='independent reference diagnosis; no certification threshold change',
+                  pid=os.getpid(), start_ticks=Path('/proc/self/stat').read_text().rsplit(')',1)[1].split()[19],
+                  boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
+                  cuda_visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'),
+                  free_bytes_before=free, allocator_budget_bytes=budget, started_at=time.time(), profiles=[])
+    def save():
+        a.output.write_text(json.dumps(result, indent=2)+'\n')
+    save()
+    try:
+        model = transformers.AutoModelForCausalLM.from_pretrained(str(a.model), dtype=torch.bfloat16,
+                trust_remote_code=False, attn_implementation='eager', local_files_only=True).eval()
+        head = model.get_output_embeddings()
+        assert isinstance(head, torch.nn.Linear)
+        for device in ('cpu', 'cuda'):
+            for attention in ('eager', 'sdpa'):
+                model.set_attn_implementation(attention)
+                for readout in ('bfloat16', 'float32'):
+                    record = dict(device=device, attention=attention, readout_dtype=readout,
+                                  offload='module-owned leaves' if device=='cuda' else None, started_at=time.time())
+                    handles=[]
+                    observed=[]
+                    def project(module, inputs, output):
+                        if readout=='float32':
+                            output=torch.nn.functional.linear(inputs[0].float(), module.weight.float(),
+                                None if module.bias is None else module.bias.float())
+                        observed.append(str(output.dtype))
+                        return output
+                    handles.append(head.register_forward_hook(project))
+                    moved=[]
+                    def upload(module, inputs):
+                        module.to('cuda')
+                    def download(module, inputs, output):
+                        module.to('cpu')
+                    if device=='cuda':
+                        for name,module in model.named_modules():
+                            direct=list(module.parameters(recurse=False))+list(module.buffers(recurse=False))
+                            if not direct:
+                                continue
+                            assert not any(list(child.parameters()) or list(child.buffers()) for child in module.children()), name
+                            assert all(t.device.type=='cpu' for t in direct), name
+                            moved.append(name)
+                            handles.append(module.register_forward_pre_hook(upload))
+                            handles.append(module.register_forward_hook(download, always_call=True))
+                        torch.cuda.reset_peak_memory_stats()
+                    try:
+                        ids=torch.tensor([example['input_ids']], dtype=torch.long, device=device)
+                        with torch.inference_mode():
+                            logits=model(ids,use_cache=False).logits[0,-1].float()
+                            scores=torch.log_softmax(logits,dim=-1)[example['label_ids']].tolist()
+                            record.update(logprobs=scores, selected_logits=logits[example['label_ids']].tolist(),
+                                          logsumexp=logits.logsumexp(-1).item(),
+                                          abs_engine_errors=[abs(x-y) for x,y in zip(scores,example['logprobs'])],
+                                          observed_readout_dtypes=observed, offloaded_modules=moved)
+                        del ids,logits
+                    finally:
+                        for handle in handles:
+                            handle.remove()
+                        model.to('cpu')
+                        if device=='cuda':
+                            torch.cuda.synchronize()
+                            record['peak_allocated_bytes']=torch.cuda.max_memory_allocated()
+                            record['peak_reserved_bytes']=torch.cuda.max_memory_reserved()
+                            torch.cuda.empty_cache()
+                    record['finished_at']=time.time()
+                    result['profiles'].append(record)
+                    save()
+                    print(json.dumps({k:v for k,v in record.items() if k!='offloaded_modules'}),flush=True)
+        result['completed']=True
+    except BaseException as exc:
+        result['completed']=False
+        result['failure']={'type':type(exc).__name__, 'message':str(exc)}
+        raise
+    finally:
+        result['finished_at']=time.time()
+        result['free_bytes_after']=torch.cuda.mem_get_info()[0]
+        save()
+
+if __name__=='__main__':
+    main()

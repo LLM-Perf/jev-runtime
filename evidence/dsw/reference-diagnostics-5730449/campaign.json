@@ -1,0 +1,837 @@
+{
+  "source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+  "controller_sha256": "e48f3058718ede2ce065b8755d0138e532df1a89ded6d2398d651e60d41de1df",
+  "source_files": {
+    "reference_device.py": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+    "check_reference_offload.py": "0f26279b49c7137c54e0ac8b6b69d6d14ecc9eadf70680eea107d72b0b5ea0be",
+    "reference_logits.py": "ed8dd3c0a4184ac870e9c98ad6fc57c3ce816fd31c89a2839fb44522347d552e"
+  },
+  "qualification": "paired reference profiles on saved inputs; no engine or matrix gate promoted",
+  "started_at": 1790534343.0493422,
+  "attempts": [
+    {
+      "name": "sglang-helper-equality",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/check_reference_offload.py",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-smol-bf16head-f6bda1a/contract.json",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-helper-equality.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534343.1452646,
+      "identity": {
+        "pid": 2672939,
+        "pgid": 2672939,
+        "start_ticks": 428988248,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534382.8182771,
+      "reported_passed": true,
+      "artifact_sha256": "4ae51c4cd535ed7119143fc1a6ffca30a0eda44555faad6ba18271eb57d584a2"
+    },
+    {
+      "name": "vllm-qwen25-7b-model-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-model-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534382.9137137,
+      "identity": {
+        "pid": 2673086,
+        "pgid": 2673086,
+        "start_ticks": 428992224,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534394.5070124,
+      "reported_passed": true,
+      "artifact_sha256": "1554adbdb630355730a39e5fba06b38b99d19d7cccfff63236a36a9b66fe9a2e"
+    },
+    {
+      "name": "vllm-qwen25-7b-model-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-model-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534394.606426,
+      "identity": {
+        "pid": 2673162,
+        "pgid": 2673162,
+        "start_ticks": 428993394,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "finished_at": 1790534416.971668,
+      "reported_passed": false,
+      "artifact_sha256": "6ae31517b4f4590bb7fd12df055fa479a731c6197c4502e192312fb7e5a3d3d7"
+    },
+    {
+      "name": "vllm-qwen25-7b-model-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-model-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "started_at": 1790534417.0546956,
+      "identity": {
+        "pid": 2673245,
+        "pgid": 2673245,
+        "start_ticks": 428995639,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534439.489711,
+      "reported_passed": true,
+      "artifact_sha256": "564b5183b70a53497e104fea40faf17eb6e29f126c4085b58d9c5d4a757f7b54"
+    },
+    {
+      "name": "vllm-qwen25-7b-float32-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-float32-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 3
+      },
+      "started_at": 1790534439.5917873,
+      "identity": {
+        "pid": 2673327,
+        "pgid": 2673327,
+        "start_ticks": 428997892,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534452.5966792,
+      "reported_passed": true,
+      "artifact_sha256": "80996b63bc33361fe49010f1d0a70fd4470886369a97f27e54fb9eb5cbf0bac2"
+    },
+    {
+      "name": "vllm-qwen25-7b-float32-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-float32-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534452.700111,
+      "identity": {
+        "pid": 2673403,
+        "pgid": 2673403,
+        "start_ticks": 428999203,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534474.823276,
+      "reported_passed": false,
+      "artifact_sha256": "8c0a2956c63f4ff9cc4faa779069a9afef19798fb47a4a5e2de99077a3c07aed"
+    },
+    {
+      "name": "vllm-qwen25-7b-float32-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-qwen25-7b-float32-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534474.9362354,
+      "identity": {
+        "pid": 2673484,
+        "pgid": 2673484,
+        "start_ticks": 429001427,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534496.8565304,
+      "reported_passed": true,
+      "artifact_sha256": "595c63e75938ab3727fdb56f560fea9be7d1f23ccf27468f23852ba7208fd512"
+    },
+    {
+      "name": "vllm-r1-llama8b-bytelevel-model-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-r1-llama8b-bytelevel-model-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534496.9418259,
+      "identity": {
+        "pid": 2673565,
+        "pgid": 2673565,
+        "start_ticks": 429003627,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534508.2824395,
+      "reported_passed": false,
+      "artifact_sha256": "2830259605e1039762af0fca723e5f385da144b73c7d730b20b0277dfd2c7183"
+    },
+    {
+      "name": "vllm-r1-llama8b-bytelevel-model-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-r1-llama8b-bytelevel-model-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534508.389023,
+      "identity": {
+        "pid": 2673641,
+        "pgid": 2673641,
+        "start_ticks": 429004772,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534530.50265,
+      "reported_passed": true,
+      "artifact_sha256": "336dd4a2de182a65bae8bf345624605afa08c80867face867cb96eee7067d443"
+    },
+    {
+      "name": "vllm-r1-llama8b-bytelevel-model-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/vllm-r1-llama8b-bytelevel-model-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 3
+      },
+      "started_at": 1790534530.6039116,
+      "identity": {
+        "pid": 2673722,
+        "pgid": 2673722,
+        "start_ticks": 429006993,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "finished_at": 1790534553.1696653,
+      "reported_passed": true,
+      "artifact_sha256": "2ce730d2127cacac729a35336da46dd1f69ee1e6582ab2b86d8ccd8aba881aa3"
+    },
+    {
+      "name": "sglang-qwen25-7b-model-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-model-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "started_at": 1790534553.2853017,
+      "identity": {
+        "pid": 2673803,
+        "pgid": 2673803,
+        "start_ticks": 429009262,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534565.1406999,
+      "reported_passed": false,
+      "artifact_sha256": "0578076af28374174d9b9b5f0e03e2092b03463a518ae447f605dc1e410bba44"
+    },
+    {
+      "name": "sglang-qwen25-7b-model-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-model-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534565.23423,
+      "identity": {
+        "pid": 2673942,
+        "pgid": 2673942,
+        "start_ticks": 429010457,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534587.4529011,
+      "reported_passed": false,
+      "artifact_sha256": "0edd4f31147d54b47d51d68089897653e8bb8f09f47c88f41809e91457bef275"
+    },
+    {
+      "name": "sglang-qwen25-7b-model-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-model-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 3
+      },
+      "started_at": 1790534587.551739,
+      "identity": {
+        "pid": 2674086,
+        "pgid": 2674086,
+        "start_ticks": 429012688,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "finished_at": 1790534610.1799555,
+      "reported_passed": true,
+      "artifact_sha256": "e328052fd67c8311c10a57c574fbe206e68295ee141f22f4f8dccb5ef704beae"
+    },
+    {
+      "name": "sglang-qwen25-7b-float32-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-float32-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 4
+      },
+      "started_at": 1790534610.2809398,
+      "identity": {
+        "pid": 2674230,
+        "pgid": 2674230,
+        "start_ticks": 429014961,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534623.6484463,
+      "reported_passed": false,
+      "artifact_sha256": "50b72d333eeb40227c1b216885f4c9a9b71145bde3a39b896fcc78cc9dd0ea73"
+    },
+    {
+      "name": "sglang-qwen25-7b-float32-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-float32-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534623.7512548,
+      "identity": {
+        "pid": 2674371,
+        "pgid": 2674371,
+        "start_ticks": 429016308,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534646.6862772,
+      "reported_passed": false,
+      "artifact_sha256": "e28ed38bab75b1abcd5281f9c187238cb210104f08321ace04b422799519a55a"
+    },
+    {
+      "name": "sglang-qwen25-7b-float32-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "float32",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-qwen25-7b-float32-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 6
+      },
+      "started_at": 1790534646.7890637,
+      "identity": {
+        "pid": 2674515,
+        "pgid": 2674515,
+        "start_ticks": 429018612,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 6
+      },
+      "finished_at": 1790534670.1246223,
+      "reported_passed": false,
+      "artifact_sha256": "4c0ead432c2eaf11e95093d8f2db144db561d90688757850ad15c83adad80042"
+    },
+    {
+      "name": "sglang-r1-llama8b-bytelevel-model-cpu-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cpu",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-r1-llama8b-bytelevel-model-cpu-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 6
+      },
+      "started_at": 1790534670.2880633,
+      "identity": {
+        "pid": 2674660,
+        "pgid": 2674660,
+        "start_ticks": 429020962,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 1,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534682.2375243,
+      "reported_passed": false,
+      "artifact_sha256": "220975d97d4b13c16658683426cb2dd5088a5f21b486d5281fa99bf1803930ee"
+    },
+    {
+      "name": "sglang-r1-llama8b-bytelevel-model-cuda-eager",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "eager",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-r1-llama8b-bytelevel-model-cuda-eager.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "started_at": 1790534682.404902,
+      "identity": {
+        "pid": 2674799,
+        "pgid": 2674799,
+        "start_ticks": 429022174,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 1
+      },
+      "finished_at": 1790534705.4214177,
+      "reported_passed": true,
+      "artifact_sha256": "2caa7e7aafbeb8326153683296902b8c6a67110a1bb83f0faed050f8870107f9"
+    },
+    {
+      "name": "sglang-r1-llama8b-bytelevel-model-cuda-sdpa",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/reference-releases/5730449e7936e9de46941a2e43c7574b889c8905/tests/integration/reference_logits.py",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--contract-report",
+        "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "--device",
+        "cuda",
+        "--attention",
+        "sdpa",
+        "--readout-dtype",
+        "model",
+        "--atol",
+        ".15",
+        "--cpu-offload",
+        "--output",
+        "/root/jev-runtime/reference-campaign-5730449/sglang-r1-llama8b-bytelevel-model-cuda-sdpa.json"
+      ],
+      "gpus_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 1
+      },
+      "started_at": 1790534705.5231376,
+      "identity": {
+        "pid": 2674944,
+        "pgid": 2674944,
+        "start_ticks": 429024485,
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "same_process_live_after": false,
+      "gpus_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "free_mib": 11990,
+        "utilization": 0
+      },
+      "finished_at": 1790534728.8535643,
+      "reported_passed": true,
+      "artifact_sha256": "e9131c3f1fc56f2b5f671f2912c9936e5df136c402c0157da44aac36ed99c7b4"
+    }
+  ],
+  "vllm_helper_check_sha256": "ccc0d866cd17e0d3bc3776151d893dcd777796f29c72090df915c558c8873149",
+  "completed": true,
+  "finished_at": 1790534728.85479
+}

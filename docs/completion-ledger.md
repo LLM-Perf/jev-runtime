@@ -352,6 +352,19 @@ replacement for any requirement in `implementation-plan.md`.
   match. Local checks pass 292 tests, with unchanged core/plugin source packages.
   See [public-model pair validation](public-model-pair-validation.md).
 
+- Reference tooling at `5730449` adds bounded module-state offload for independent
+  CUDA computation. Both installed Python environments passed 24 full-logit
+  resident/offload equalities across tiny Qwen2, tied Llama and real SmolLM2,
+  including state and exception cleanup. Eighteen new matched reference profiles
+  cover only two saved Qwen2.5/R1 compiled inputs: nine pass and nine fail the
+  unchanged 0.15 development threshold. GPU SDPA checks pass for both BF16 model
+  rows on both engines, but SGLang Qwen's FP32-head profile still fails (0.289116).
+  Reference attention/device affects the result; this is not a resolved full
+  numerical gate. Core/plugins and 20/40 functional coverage remain unchanged.
+  Local checks passed 298 tests. Model-file rehash and final owned-process/group
+  checks passed, and GPU7 returned to 11,990 MiB free. See
+  [reference diagnosis](numerical-reference-diagnostics.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

@@ -181,6 +181,13 @@
         "reference_max_absolute_logprob_error": 0.8663520812988281,
         "release_gate_passed": false,
         "scope": "Separate BF16-backbone FP32-head profile; unchanged atol=0.15, no replacement of default BF16 failure"
+      },
+      "reference_execution_diagnostics": {
+        "harness_source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+        "scope": "Matched CPU/GPU eager/SDPA references over the same saved answer position; no fresh engine serving or full numerical certification",
+        "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -233,6 +240,13 @@
         "reference_max_absolute_logprob_error": 1.1217460632324219,
         "release_gate_passed": false,
         "scope": "Separate BF16-backbone FP32-head profile; unchanged atol=0.15, no replacement of default BF16 failure"
+      },
+      "reference_execution_diagnostics": {
+        "harness_source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+        "scope": "Matched CPU/GPU eager/SDPA references over the same saved answer position; no fresh engine serving or full numerical certification",
+        "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -727,7 +741,14 @@
         },
         "original_vllm_default_loader": "failed: saved input IDs differ from original checkpoint tokenizer.json; preserved in fidelity report"
       },
-      "preserved_initial_attempt": "evidence/dsw/sglang-r1-llama8b-tp4-3377c95/validation.json"
+      "preserved_initial_attempt": "evidence/dsw/sglang-r1-llama8b-tp4-3377c95/validation.json",
+      "reference_execution_diagnostics": {
+        "harness_source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+        "scope": "Matched CPU/GPU eager/SDPA references over the same saved answer position; no fresh engine serving or full numerical certification",
+        "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
+      }
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
@@ -770,7 +791,14 @@
         },
         "original_vllm_default_loader": "failed: saved input IDs differ from original checkpoint tokenizer.json; preserved in fidelity report"
       },
-      "preserved_initial_attempt": "evidence/dsw/vllm-r1-llama8b-tp4-3377c95/validation.json"
+      "preserved_initial_attempt": "evidence/dsw/vllm-r1-llama8b-tp4-3377c95/validation.json",
+      "reference_execution_diagnostics": {
+        "harness_source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+        "scope": "Matched CPU/GPU eager/SDPA references over the same saved answer position; no fresh engine serving or full numerical certification",
+        "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
+      }
     },
     {
       "model_id": "zai-org/glm-4-9b-chat",

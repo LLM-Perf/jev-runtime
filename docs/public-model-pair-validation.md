@@ -59,6 +59,10 @@ The SGLang R1 result covers one answer position only and therefore remains
 `partial` in the full numerical column. All quality/performance columns remain
 `not_run` for these model combinations.
 
+The later [reference-execution diagnosis](numerical-reference-diagnostics.md)
+compares CPU/GPU and eager/SDPA on these saved inputs. It preserves all results
+above and does not promote the numerical gate.
+
 ## Tokenizer mismatch and the compatible profile
 
 The R1 checkpoint ships a ByteLevel tokenizer in `tokenizer.json` while declaring

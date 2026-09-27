@@ -1,0 +1,45 @@
+{
+  "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+  "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+  "reference": "Transformers cpu BF16 sdpa forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+  "contract_sha256": "44991332599f1f1d7cf7eedf92e3715db8032a8d9cb5d52c5031be80c2ab95bd",
+  "reference_script_sha256": "ed8dd3c0a4184ac870e9c98ad6fc57c3ce816fd31c89a2839fb44522347d552e",
+  "device_helper_sha256": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+  "attention": "sdpa",
+  "device": "cpu",
+  "placement": {
+    "strategy": "resident"
+  },
+  "cuda": null,
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "math_settings": {
+    "float32_matmul_precision": "highest",
+    "cuda_matmul_allow_tf32": false,
+    "cuda_matmul_allow_bf16_reduced_precision_reduction": true,
+    "deterministic_algorithms": false
+  },
+  "engine_logprobs": [
+    -17.259008407592773,
+    -16.634008407592773,
+    -19.634008407592773
+  ],
+  "reference_logprobs": [
+    -17.258968353271484,
+    -16.790218353271484,
+    -19.696468353271484
+  ],
+  "absolute_errors": [
+    4.00543212890625e-05,
+    0.15620994567871094,
+    0.06245994567871094
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": false,
+  "started_at": 1790534673.3983536,
+  "finished_at": 1790534680.699967
+}

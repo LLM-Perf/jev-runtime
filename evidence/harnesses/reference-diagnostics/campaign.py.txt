@@ -1,0 +1,104 @@
+"""Retain all numerical attempts; serving runtime/checkpoint files are read-only."""
+import hashlib
+import json
+import os
+import signal
+import subprocess
+import time
+from pathlib import Path
+
+ROOT=Path('/root/jev-runtime')
+SOURCE='5730449e7936e9de46941a2e43c7574b889c8905'
+HARNESS=ROOT/'reference-releases'/SOURCE/'tests/integration'
+RUN=ROOT/'reference-campaign-5730449'
+RUN.mkdir(exist_ok=False)
+OUT=RUN/'campaign.json'
+GPU_UUID='GPU-b57fb933-0e5a-dd28-7041-a177da03405e'
+
+def gpu():
+    raw=subprocess.check_output(['nvidia-smi','--id=7','--query-gpu=uuid,memory.free,utilization.gpu','--format=csv,noheader,nounits'],text=True).strip()
+    uuid,free,util=[x.strip() for x in raw.split(',')]
+    return {'uuid':uuid,'free_mib':int(free),'utilization':int(util)}
+
+def identity(pid):
+    try:
+        fields=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split()
+        return {'pid':pid,'pgid':int(fields[2]),'start_ticks':int(fields[19]),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}
+    except FileNotFoundError:
+        return None
+
+report={'source_commit':SOURCE,'controller_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'source_files':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in HARNESS.glob('*.py')},
+        'qualification':'paired reference profiles on saved inputs; no engine or matrix gate promoted',
+        'started_at':time.time(),'attempts':[]}
+
+def save():
+    OUT.write_text(json.dumps(report,indent=2)+'\n')
+
+def execute(name,command):
+    before=gpu()
+    assert before['uuid']==GPU_UUID and before['free_mib']>=11500, before
+    assert not (RUN/(name+'.json')).exists()
+    command=command+['--output',str(RUN/(name+'.json'))]
+    attempt={'name':name,'command':command,'gpus_before':before,'started_at':time.time()}
+    report['attempts'].append(attempt)
+    with (RUN/(name+'.log')).open('x') as file:
+        child=subprocess.Popen(command,stdout=file,stderr=subprocess.STDOUT,env={**os.environ,'CUDA_VISIBLE_DEVICES':'7'},start_new_session=True)
+        attempt['identity']=identity(child.pid)
+        save()
+        try:
+            attempt['returncode']=child.wait(timeout=300)
+        except subprocess.TimeoutExpired:
+            attempt['timeout']=True
+            if identity(child.pid)==attempt['identity']:
+                os.killpg(child.pid,signal.SIGTERM)
+            try:
+                child.wait(timeout=15)
+            except subprocess.TimeoutExpired:
+                if identity(child.pid)==attempt['identity']:
+                    os.killpg(child.pid,signal.SIGKILL)
+                child.wait(timeout=15)
+            attempt['returncode']=child.returncode
+    attempt['same_process_live_after']=identity(child.pid)==attempt['identity']
+    # CUDA allocator teardown can finish slightly after the process wait.
+    deadline=time.monotonic()+20
+    while True:
+        after=gpu()
+        if after['free_mib']>=before['free_mib'] or time.monotonic()>deadline:
+            break
+        time.sleep(.5)
+    attempt['gpus_after']=after
+    attempt['finished_at']=time.time()
+    if (RUN/(name+'.json')).exists():
+        data=json.loads((RUN/(name+'.json')).read_text())
+        attempt['reported_passed']=data.get('passed')
+        attempt['artifact_sha256']=hashlib.sha256((RUN/(name+'.json')).read_bytes()).hexdigest()
+        assert attempt['returncode']==(0 if data['passed'] else 1), attempt
+    save()
+    print(json.dumps(attempt),flush=True)
+    assert not attempt['same_process_live_after'] and after['uuid']==before['uuid'] and after['free_mib']>=before['free_mib'],attempt
+
+try:
+    prior=json.loads((ROOT/'reference-offload-equality-vllm-5730449.json').read_text())
+    assert prior['passed']
+    report['vllm_helper_check_sha256']=hashlib.sha256((ROOT/'reference-offload-equality-vllm-5730449.json').read_bytes()).hexdigest()
+    execute('sglang-helper-equality',[str(ROOT/'envs/sglang/bin/python'),str(HARNESS/'check_reference_offload.py'),
+        '--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),
+        '--contract-report',str(ROOT/'runs/sglang-smol-bf16head-f6bda1a/contract.json')])
+    for engine in ('vllm','sglang'):
+        for model,base in [('Qwen2.5-7B-Instruct','qwen25-7b'),('DeepSeek-R1-Distill-Llama-8B','r1-llama8b-bytelevel')]:
+            for readout in (('model','float32') if base=='qwen25-7b' else ('model',)):
+                suffix=('qwen25-7b-f32-tp4-3377c95' if readout=='float32' else 'qwen25-7b-tp4-3377c95') if base=='qwen25-7b' else 'r1-llama8b-bytelevel-tp4-b28bb46'
+                for device,attention in [('cpu','sdpa'),('cuda','eager'),('cuda','sdpa')]:
+                    name=f'{engine}-{base}-{readout}-{device}-{attention}'
+                    command=[str(ROOT/'envs'/engine/'bin/python'),str(HARNESS/'reference_logits.py'),
+                        '--model-path',str(ROOT/'models'/model),'--contract-report',str(ROOT/'runs'/f'{engine}-{suffix}'/'contract.json'),
+                        '--device',device,'--attention',attention,'--readout-dtype',readout,'--atol','.15']
+                    if device=='cuda':command+=['--cpu-offload']
+                    execute(name,command)
+    report['completed']=True
+except BaseException as exc:
+    report['completed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)}
+    raise
+finally:
+    report['finished_at']=time.time();save()

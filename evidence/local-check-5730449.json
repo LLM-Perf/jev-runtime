@@ -1,0 +1,58 @@
+{
+  "source_commit": "5730449e7936e9de46941a2e43c7574b889c8905",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "pytest": {
+    "command": [
+      ".venv/bin/pytest",
+      "-q"
+    ],
+    "returncode": 0,
+    "summary": "298 passed in 19.70s",
+    "evidence_note": "Completed before the first lint invocation; captured from the tracked command result, not rerun after the path-only lint correction."
+  },
+  "preserved_initial_lint_failure": {
+    "command": [
+      ".venv/bin/ruff",
+      "check",
+      "src",
+      "plugins",
+      "tests",
+      "deployment",
+      "evidence/harnesses/verify_reference_diagnostics_5730449.py"
+    ],
+    "returncode": 1,
+    "output": "E902 No such file or directory (os error 2)\n--> plugins:1:1",
+    "correction": "Use the actual packages directory; no source fix or test rerun required."
+  },
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "src",
+        "packages",
+        "tests",
+        "deployment",
+        "evidence/harnesses/verify_reference_diagnostics_5730449.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.05045294761657715,
+      "output": "All checks passed!\n"
+    },
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "format",
+        "--check",
+        "tests/integration/reference_logits.py",
+        "tests/integration/reference_device.py",
+        "tests/integration/check_reference_offload.py",
+        "tests/test_reference_device.py",
+        "evidence/harnesses/verify_reference_diagnostics_5730449.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.03512883186340332,
+      "output": "5 files already formatted\n"
+    }
+  ]
+}

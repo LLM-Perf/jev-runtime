@@ -1,0 +1,45 @@
+{
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "reference": "Transformers cpu BF16 sdpa forward; FP32 log_softmax",
+  "readout_dtype": "float32",
+  "observed_readout_dtype": "float32",
+  "contract_report": "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95/contract.json",
+  "contract_sha256": "d6f600d581c255d9df9a73ed2db909b7f3781ec39f458115ddfeafd0ade4897f",
+  "reference_script_sha256": "ed8dd3c0a4184ac870e9c98ad6fc57c3ce816fd31c89a2839fb44522347d552e",
+  "device_helper_sha256": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+  "attention": "sdpa",
+  "device": "cpu",
+  "placement": {
+    "strategy": "resident"
+  },
+  "cuda": null,
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "math_settings": {
+    "float32_matmul_precision": "highest",
+    "cuda_matmul_allow_tf32": false,
+    "cuda_matmul_allow_bf16_reduced_precision_reduction": true,
+    "deterministic_algorithms": false
+  },
+  "engine_logprobs": [
+    0.0,
+    -26.344970703125,
+    -27.40917205810547
+  ],
+  "reference_logprobs": [
+    0.0,
+    -26.44613265991211,
+    -27.45057487487793
+  ],
+  "absolute_errors": [
+    0.0,
+    0.10116195678710938,
+    0.04140281677246094
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790534442.7654822,
+  "finished_at": 1790534451.2298517
+}

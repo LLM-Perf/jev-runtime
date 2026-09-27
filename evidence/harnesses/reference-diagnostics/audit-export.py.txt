@@ -1,0 +1,66 @@
+import hashlib
+import json
+import subprocess
+import tarfile
+import time
+from pathlib import Path
+
+ROOT=Path('/root/jev-runtime'); RUN=ROOT/'reference-campaign-5730449'
+campaign=json.loads((RUN/'campaign.json').read_text()); assert campaign['completed']
+out=RUN/'final-audit.json'; assert not out.exists()
+boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+def same(record):
+    try:
+        fields=Path(f"/proc/{record['pid']}/stat").read_text().rsplit(')',1)[1].split()
+        return fields[0]!='Z' and int(fields[19])==int(record['start_ticks']) and boot==record['boot_id']
+    except FileNotFoundError:
+        return False
+identities=[a['identity'] for a in campaign['attempts']]
+legacy=[]
+for p in (ROOT/'runs').glob('*/process.json'):
+    r=json.loads(p.read_text())
+    if 'identity' in r:
+        legacy.append(r['identity'])
+identities+=legacy
+probe=json.loads((ROOT/'qwen25-reference-diagnosis-b005f46.json').read_text())
+identities.append({k:probe[k] for k in ('pid','start_ticks','boot_id')})
+live=[r for r in identities if same(r)]
+assert not live, live
+groups={r.get('pgid',r['pid']) for r in identities}
+members=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdecimal():continue
+    try:fields=(p/'stat').read_text().rsplit(')',1)[1].split()
+    except (FileNotFoundError,ProcessLookupError):continue
+    if fields[0]!='Z' and int(fields[2]) in groups:
+        members.append({'pid':int(p.name),'pgid':int(fields[2])})
+assert not members, members
+def sha(path):
+    with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+verification=json.loads((ROOT/'model-verification-public-pair-3377c95.json').read_text())
+files=[]
+for model in verification['models']:
+    for expected in model['files']:
+        p=Path(model['path'])/expected['name']; before=p.stat(); digest=sha(p); after=p.stat()
+        assert before.st_size==after.st_size==expected['size_bytes'] and before.st_mtime_ns==after.st_mtime_ns
+        assert digest==expected['sha256'],p
+        files.append({'model_id':model['model_id'],'revision':model['revision'],'name':expected['name'],
+                      'size_bytes':after.st_size,'sha256':digest,'verified':True})
+uuid,free,util=[x.strip() for x in subprocess.check_output(['nvidia-smi','--id=7','--query-gpu=uuid,memory.free,utilization.gpu','--format=csv,noheader,nounits'],text=True).strip().split(',')]
+assert uuid=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(free)==11990
+result={'script_sha256':sha(Path(__file__)),'checked_at':time.time(),'passed':True,
+        'checked_owned_identities':len(identities),'legacy_owned_records':len(legacy),
+        'live_owned_identities':live,'live_owned_group_members':members,
+        'verified_model_files':len(files),'model_files':files,
+        'gpu':{'uuid':uuid,'free_mib':int(free),'utilization':int(util)}}
+out.write_text(json.dumps(result,indent=2)+'\n')
+paths={p.name:p for p in RUN.glob('*.json')}
+paths['vllm-helper-equality.json']=ROOT/'reference-offload-equality-vllm-5730449.json'
+manifest={'source_commit':campaign['source_commit'],'files':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in sorted(paths.items())}}
+manifest_path=ROOT/'reference-export-manifest-5730449.json'; assert not manifest_path.exists()
+manifest_path.write_text(json.dumps(manifest,indent=2)+'\n')
+target=ROOT/'reference-evidence-5730449.tar.gz'; assert not target.exists()
+with tarfile.open(target,'w:gz') as tar:
+    for name,path in sorted(paths.items()):tar.add(path,arcname=name,recursive=False)
+    tar.add(manifest_path,arcname='export-manifest.json',recursive=False)
+print(json.dumps({'passed':True,'model_files':len(files),'owned_process_records':len(identities),'exported_artifacts':len(paths),'archive':str(target)}))
