@@ -359,3 +359,15 @@ groups exited and GPU7 returned to 11,990 MiB free. Evidence:
 [shared-quota and timing validation](../evidence/dsw/shared-admission-validation-4944efd.json),
 [vLLM raw timing report](../evidence/dsw/vllm-shared-admission-perf-4944efd/report.json),
 [SGLang raw timing report](../evidence/dsw/sglang-shared-admission-perf-4944efd/report.json).
+
+
+## Atomic journal and admission comparison
+
+The `3377c95` change combines recovery IDs and shared quota in one durable commit.
+Matched two-worker BF16 TP1 checks on both engines completed 45,970/45,970 timed
+requests across 48 cohorts. Combined journal/queue time decreases, while the
+single-concurrency profile remains below 90% of native throughput. High-concurrency
+results were already above 90% before the change. These are short colocated samples,
+not a consistent throughput-gain or release certification claim. Both plugins also
+pass real two-tenant quota and peer-cancel checks at the new source. See the
+[full comparison, failure-inclusive artifacts and reproduction](atomic-admission-performance.md).

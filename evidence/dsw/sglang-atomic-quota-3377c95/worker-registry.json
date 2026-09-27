@@ -1,0 +1,44 @@
+{
+  "observed_at": 1790531186.7952163,
+  "qualification": "Post-cleanup read-only registry observation; not live worker liveness",
+  "workers": [
+    {
+      "owner": "22e87f546db347039eff33601f7d5f6d",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2656929, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"428668269\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "976e2f413df14959a6c38192d15f83ea",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2656928, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"428668269\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "22e87f546db347039eff33601f7d5f6d",
+      "ref": "default@1",
+      "digest": "sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769"
+    },
+    {
+      "owner": "976e2f413df14959a6c38192d15f83ea",
+      "ref": "default@1",
+      "digest": "sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769"
+    },
+    {
+      "owner": "976e2f413df14959a6c38192d15f83ea",
+      "ref": "quotas-58b7bed4163a4afebd1298fa725494e8@1",
+      "digest": "sha256:34d257dd5b8ca44fc3bda4eed862f425641f3630e33709dcc171356773c83df3"
+    },
+    {
+      "owner": "22e87f546db347039eff33601f7d5f6d",
+      "ref": "quotas-58b7bed4163a4afebd1298fa725494e8@1",
+      "digest": "sha256:34d257dd5b8ca44fc3bda4eed862f425641f3630e33709dcc171356773c83df3"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "admission_tickets": 0
+  }
+}

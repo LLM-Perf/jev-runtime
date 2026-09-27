@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,subprocess,sys,time
+source='3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1'
+root=Path('/root/jev-runtime')
+sys.path.insert(0,str(root/'releases'/source))
+from deployment.dsw_service import process_identity
+records=[]
+for p in sorted((root/'runs').rglob('process.json')):
+ record=json.loads(p.read_text());expected=record.get('identity')
+ if expected:records.append({'record':str(p),'identity':expected,'matching_live_process':process_identity(expected['pid'])==expected})
+value={'observed_at':time.time(),'source_commit':source,'owned_records_checked':len(records),'matching_live_owned_records':[r for r in records if r['matching_live_process']],
+       'records':records,'gpu_snapshot':subprocess.check_output(['nvidia-smi','--query-gpu=index,uuid,memory.free,memory.total,utilization.gpu','--format=csv,noheader,nounits'],text=True)}
+assert not value['matching_live_owned_records']
+p=root/'preflight-atomic-3377c95.json'
+with p.open('x') as f:json.dump(value,f,indent=2);f.write('\n')
+print(json.dumps({'owned_records_checked':len(records),'matching_live_owned_records':[],'gpu_snapshot':value['gpu_snapshot']}))

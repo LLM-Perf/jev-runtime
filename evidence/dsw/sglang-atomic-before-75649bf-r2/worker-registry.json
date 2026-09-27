@@ -1,0 +1,54 @@
+{
+  "observed_at": 1790531186.7934232,
+  "qualification": "Post-cleanup read-only registry observation; not live worker liveness",
+  "workers": [
+    {
+      "owner": "082c0fcd941d452ba1d2b6af3af8d123",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2651834, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"428605013\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "356ed847fd21481692fbd9de82dfcfed",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2651833, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"428605013\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "082c0fcd941d452ba1d2b6af3af8d123",
+      "ref": "default@1",
+      "digest": "sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769"
+    },
+    {
+      "owner": "356ed847fd21481692fbd9de82dfcfed",
+      "ref": "default@1",
+      "digest": "sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769"
+    },
+    {
+      "owner": "082c0fcd941d452ba1d2b6af3af8d123",
+      "ref": "bench-88bb4122095e4caca030e2d0e019d34f@1",
+      "digest": "sha256:4af95a718763d9a724b4b0327b04550ca861f5c4084296f0ae2b6ad392559165"
+    },
+    {
+      "owner": "356ed847fd21481692fbd9de82dfcfed",
+      "ref": "bench-88bb4122095e4caca030e2d0e019d34f@1",
+      "digest": "sha256:4af95a718763d9a724b4b0327b04550ca861f5c4084296f0ae2b6ad392559165"
+    },
+    {
+      "owner": "082c0fcd941d452ba1d2b6af3af8d123",
+      "ref": "bench-931761ad8e7848569697cbe0f7040120@1",
+      "digest": "sha256:b7583ff30a256e777b4ed5cbde3836b659a55651c74b8f1dcf358cbc5fccf2a1"
+    },
+    {
+      "owner": "356ed847fd21481692fbd9de82dfcfed",
+      "ref": "bench-931761ad8e7848569697cbe0f7040120@1",
+      "digest": "sha256:b7583ff30a256e777b4ed5cbde3836b659a55651c74b8f1dcf358cbc5fccf2a1"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "admission_tickets": 0
+  }
+}

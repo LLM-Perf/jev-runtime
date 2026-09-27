@@ -509,13 +509,15 @@
         "tests/test_shared_admission.py",
         "tests/integration/live_shared_admission.py",
         "evidence/dsw/shared-admission-validation-4944efd.json",
-        "evidence/dsw/quota-crash-validation-0df49a1.json"
+        "evidence/dsw/quota-crash-validation-0df49a1.json",
+        "docs/atomic-admission-performance.md"
       ],
       "progress_notes": [
         "Pre-dispatch branch/token budgets and per-tenant fairness are implemented. Default runtimes, gateways and plugins now share durable request/token/expanded-branch and queue budgets across same-host workers using one exact engine identity and local registry.",
         "Uncertain aborts and failed durable cleanup retain capacity until confirmed recovery. Policy changes require stopped workers and drained leases. Three actual Python processes passed an atomic branch-reservation race locally.",
         "At 4944efd both native engines passed targeted real two-worker/two-tenant shared quota, queue-full, eligible-tenant progress, queued deadline/cancel and peer-owner cancellation checks; lease/ticket tables drained. Controlled representative mixed-load performance, hardware/LoRA/database fault profiles and multi-node quotas remain.",
-        "Four DSW cases passed durable admission and queued-ticket retention across SIGKILL/restart: gateways on both engines at aba3b52 and native API/GPU process groups at 0df49a1. Original settings/credentials, withheld capacity, ordered explicit recovery and final drain were verified; native groups exited and GPU memory returned before same-command restart. This is a single-worker SmolLM2 profile, not a broad fault certification."
+        "Four DSW cases passed durable admission and queued-ticket retention across SIGKILL/restart: gateways on both engines at aba3b52 and native API/GPU process groups at 0df49a1. Original settings/credentials, withheld capacity, ordered explicit recovery and final drain were verified; native groups exited and GPU memory returned before same-command restart. This is a single-worker SmolLM2 profile, not a broad fault certification.",
+        "At 3377c95 both native engines again pass two-worker/two-tenant shared quotas, queue-full rejection, eligible-tenant progress, queued cancel/deadline and peer-owner cancellation; journal and quota now commit atomically. Unconfirmed abort retention remains covered by local recovery tests."
       ],
       "acceptance_complete": false
     },
@@ -585,13 +587,15 @@
         "evidence/dsw/sglang-generation-truncated-444fd1b/report.json",
         "evidence/dsw/vllm-input300-c11d2b3/report.json",
         "evidence/dsw/sglang-input300-c11d2b3/report.json",
-        "evidence/dsw/input300-validation-c11d2b3.json"
+        "evidence/dsw/input300-validation-c11d2b3.json",
+        "docs/atomic-admission-performance.md"
       ],
       "progress_notes": [
         "144 scenarios, strict native-vs-typed paired accounting and structured-generation choice baseline are implemented.",
         "Both engines completed three five-second colocated SmolLM2 repeats at harness 444fd1b/runtime 60b3415; actual generation prompt/output IDs and all-attempt costs are retained. HTTP 200 truncation is rejected in a real SGLang negative check.",
         "Generation and selected-label decisions disagree on the synthetic fixture; no equivalent-quality speedup is claimed. Plugin/native throughput remains below 90% in several repeats.",
-        "A frozen 300-input scoring pool completed both engines with exact per-variant parity, round-robin indices and all-attempt phase observations. Multi-input generation, representative workloads, remaining candidate/other Jev baselines and the controlled matrix remain incomplete."
+        "A frozen 300-input scoring pool completed both engines with exact per-variant parity, round-robin indices and all-attempt phase observations. Multi-input generation, representative workloads, remaining candidate/other Jev baselines and the controlled matrix remain incomplete.",
+        "Same-harness before/after BF16 TP1/API2 C=1/16 warm-fixture measurements retain all 45,970 successful timed attempts across 48 cohorts. Summaries, exact input/label IDs, settings, cleanup and 117 artifact hashes were independently verified. This is not the controlled 144-case release matrix."
       ],
       "acceptance_complete": false
     },
@@ -622,7 +626,8 @@
         "src/jev_runtime/telemetry.py",
         "benchmarks/compare_compiler.py",
         "packages/vllm/src/jev_vllm/tokenizer.py",
-        "evidence/dsw/vllm-encoding-comparison-c11d2b3.json"
+        "evidence/dsw/vllm-encoding-comparison-c11d2b3.json",
+        "docs/atomic-admission-performance.md"
       ],
       "progress_notes": [
         "CPU profiles motivated bounded encoding caching and persistent FULL-synchronous WAL connections.",
@@ -630,7 +635,8 @@
         "Per-request phase profiling separates warm-input and 300-variant compilation costs. The IDs-only path preserves exact full-context checks; vLLM uses a verified private copy of the host pool prototype.",
         "On the 300-input colocated vLLM check, mean compilation fell from 3.85–3.91 ms to 1.78–1.90 ms, but plugin/native throughput remains about 80%. This is not controlled release certification.",
         "SGLang at c11d2b3 completed all 2,078 attempts on the same 300 input/label-ID lists; compile means 2.28–2.41 ms and plugin/native throughput 76–83%. No matching pre-change varying-input GPU cohort was run for SGLang.",
-        "After shared admission, short two-worker warm-input cohorts at 4944efd completed all attempts: 1324 vLLM and 1168 SGLang. Ratios remain 83.0–88.9% and 79.9–83.9%; configuration differs from earlier checkpoints, so no isolated admission regression magnitude is claimed."
+        "After shared admission, short two-worker warm-input cohorts at 4944efd completed all attempts: 1324 vLLM and 1168 SGLang. Ratios remain 83.0–88.9% and 79.9–83.9%; configuration differs from earlier checkpoints, so no isolated admission regression magnitude is claimed.",
+        "At 3377c95 immediately admitted requests use three durable commits instead of four. Journal+queue time falls in both native engines, but C=1 plugin/native throughput remains below 90% and no consistent overall throughput gain is claimed. C=16 was already above 90% before the change; see docs/atomic-admission-performance.md."
       ],
       "acceptance_complete": false
     },

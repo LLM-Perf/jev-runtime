@@ -325,6 +325,20 @@ replacement for any requirement in `implementation-plan.md`.
   See [Mistral validation](mistral-validation.md) and
   [explicit template configuration](explicit-chat-templates.md).
 
+- At `3377c95`, shared admission journals recovery IDs and reserves quota in one
+  FULL-synchronous transaction, reducing immediately admitted requests from four
+  commits to three. Atomic visibility, rollback, before-dispatch persistence and
+  uncertain-abort retention pass local tests (284 total). Both engines completed
+  matched before/after two-worker BF16 TP1 cohorts: 45,970/45,970 timed requests,
+  zero warm-fixture native/plugin probability difference, and independently
+  recomputed summaries. Journal-plus-queue time decreases, but single-concurrency
+  throughput remains below 90%; high-concurrency results were already above 90%
+  before the change and do not show a stable overall gain. Both new plugins pass
+  real two-worker/two-tenant quotas and peer cancellation. All groups exit, GPU7
+  returns to baseline, and 79 owned records have no matching live process.
+  The failed readiness setup is retained. No model count or release gate changes.
+  See [atomic admission comparison](atomic-admission-performance.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

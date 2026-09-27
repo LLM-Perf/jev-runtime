@@ -1,0 +1,132 @@
+{
+  "harness_source_commit": "322782a3343e131807715bad7f3d5495e95072f2",
+  "runtime_source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "engine": "vllm",
+  "qualification": "colocated development measurement, not release certification",
+  "wrapper_sha256": "5484001347a260679f857a1b2fffd8aafb998efca9c70161094b93a4a7a7a896",
+  "started_at": 1790530302.141774,
+  "stages": {
+    "ready": {
+      "ready": true,
+      "elapsed_seconds": 42.10929317120463
+    },
+    "c1": {
+      "completed": true
+    },
+    "c16": {
+      "completed": true
+    },
+    "postcheck": {
+      "zero_leases": true,
+      "zero_admission": true,
+      "all_active_bundles_healthy": true,
+      "active_routes": [
+        {
+          "alias": "bench-68600b48aa2746ce80d2bc2fc9f989b9",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "bench-ec1b9721dab2448fbde9844b090c8691",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "decision-model",
+          "ref": "default@1",
+          "generation": 1
+        }
+      ]
+    },
+    "cleanup": {
+      "process_record": {
+        "identity": {
+          "pid": 2649998,
+          "start_ticks": "428584161",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "engine": "vllm",
+        "mode": "native-plugin",
+        "command": [
+          "/root/jev-runtime/envs/vllm/bin/vllm",
+          "serve",
+          "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "--served-model-name",
+          "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "18795",
+          "--dtype",
+          "bfloat16",
+          "--max-model-len",
+          "2048",
+          "--max-num-seqs",
+          "4",
+          "--max-num-batched-tokens",
+          "512",
+          "--max-logprobs",
+          "128",
+          "--gpu-memory-utilization",
+          "0.07",
+          "--enforce-eager",
+          "--api-server-count",
+          "2"
+        ],
+        "model": {
+          "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+        },
+        "gpu_before": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "gpus_before": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "tensor_parallel_size": 1,
+        "readout_dtype": "bfloat16",
+        "chat_template_source": null,
+        "chat_template_snapshot": null,
+        "created": 1790530302.2844567,
+        "port": 18795,
+        "qualification": "colocated-functional-test",
+        "memory_budget_denominator": "total_mib"
+      },
+      "checked_at": 1790530478.8041735,
+      "remaining_process_group_members": [],
+      "gpus_after": [
+        {
+          "index": 7,
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        }
+      ],
+      "gpu_uuids_match": true,
+      "passed": true
+    }
+  },
+  "import_paths": {
+    "jev_runtime": "/root/jev-runtime/releases/75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5/src/jev_runtime/__init__.py",
+    "jev_vllm": "/root/jev-runtime/releases/75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5/packages/vllm/src/jev_vllm/__init__.py"
+  },
+  "passed": true,
+  "finished_at": 1790530482.0448697
+}

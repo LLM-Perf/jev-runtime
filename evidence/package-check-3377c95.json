@@ -1,0 +1,30 @@
+{
+  "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "pytest": {
+    "passed": 284,
+    "result": "284 passed in 8.97s"
+  },
+  "ruff_check": "passed",
+  "git_diff_check": "passed",
+  "wheel_builds": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "2a55d6d7aa0fe19b48c05ebab55b2f41985d818ec3675ff54694c648274b4325",
+      "python_files_verified": 28
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "0ebaf934ef98bae20d47dcb8ddf84f61d0802f7ed5638ab27bb246585d893ecb",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "python_files_verified": 4
+    }
+  ],
+  "qualification": "Local CPU and package checks; DSW measurements reported separately.",
+  "ruff_format": "95 checked files formatted, including evidence verifier",
+  "pip_check": "No broken requirements found",
+  "typescript_tests_rerun": false
+}

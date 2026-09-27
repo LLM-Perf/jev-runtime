@@ -33,7 +33,8 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [Mistral validation](docs/mistral-validation.md),
 [reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
-[performance experiments](docs/performance.md), and
+[performance experiments](docs/performance.md),
+[atomic admission comparison](docs/atomic-admission-performance.md), and
 [the TypeScript SDK](packages/typescript/README.md).
 
 ## Design

@@ -1,0 +1,30 @@
+from pathlib import Path
+import hashlib,json,tarfile,sqlite3,time
+root=Path('/root/jev-runtime')
+labels=['vllm-atomic-before-75649bf']+[f'{e}-atomic-{s}' for e in ('vllm','sglang') for s in ('before-75649bf-r2','after-3377c95','quota-3377c95')]
+allowed={'process.json','topology.json','profile.json','environment.json','cleanup.json','performance-attempt.json','quota-attempt.json','quota.json','limits.json','worker-registry.json'}
+files={}
+for label in labels:
+ run=root/'runs'/label
+ if not any((run/name).exists() for name in ('performance-attempt.json','quota-attempt.json')):continue
+ snapshot=run/'worker-registry.json'
+ if not snapshot.exists() and (run/'registry.db').exists():
+  with sqlite3.connect(f'file:{run}/registry.db?mode=ro',uri=True) as db:
+   db.row_factory=sqlite3.Row
+   workers=[dict(r) for r in db.execute('SELECT w.*,o.identity FROM workers w JOIN owners o ON o.owner=w.owner')]
+   prepared=[dict(r) for r in db.execute('SELECT owner,ref,digest FROM worker_bundles')]
+   counts={t:db.execute('SELECT COUNT(*) FROM '+t).fetchone()[0] for t in ('leases','admission_tickets')}
+  snapshot.write_text(json.dumps({'observed_at':time.time(),'qualification':'Post-cleanup read-only registry observation; not live worker liveness','workers':workers,'prepared':prepared,'retained_counts':counts},indent=2)+'\n')
+ for p in run.iterdir():
+  if p.is_file() and p.name in allowed:files[label+'/'+p.name]=p
+ for case in ('c1','c16'):
+  for p in (run/case).glob('*.json*'):
+   if p.suffix in ('.json','.jsonl'):files[label+'/'+case+'/'+p.name]=p
+for name in ('source-upload-3377c95.json','install-vllm-3377c95.json','install-sglang-3377c95.json'):
+ p=root/name
+ if p.exists():files[name]=p
+manifest={'artifacts':{name:hashlib.sha256(path.read_bytes()).hexdigest() for name,path in files.items()}}
+p=root/'atomic-export-manifest.json';p.write_text(json.dumps(manifest,indent=2)+'\n');files[p.name]=p
+with tarfile.open(root/'atomic-evidence.tar.gz','w:gz') as tar:
+ for name,path in sorted(files.items()):tar.add(path,arcname=name,recursive=False)
+print(json.dumps({'files':len(files),'bytes':(root/'atomic-evidence.tar.gz').stat().st_size,'runs':[label for label in labels if label+'/cleanup.json' in files]}))

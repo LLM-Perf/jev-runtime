@@ -1,0 +1,88 @@
+{
+  "process_record": {
+    "identity": {
+      "pid": 2651401,
+      "start_ticks": "428602181",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18794",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--tokenizer-worker-num",
+      "2"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "gpus_before": [
+      {
+        "index": 7,
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      }
+    ],
+    "tensor_parallel_size": 1,
+    "readout_dtype": "bfloat16",
+    "chat_template_source": null,
+    "chat_template_snapshot": null,
+    "created": 1790530482.4843378,
+    "port": 18794,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "checked_at": 1790530661.3963149,
+  "remaining_process_group_members": [],
+  "gpus_after": [
+    {
+      "index": 7,
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "gpu_uuids_match": true,
+  "passed": true
+}
