@@ -1,0 +1,44 @@
+"""Owned real-engine gateway rollout validation, sequential GPU7 with finally cleanup."""
+import hashlib,json,os,subprocess,sys,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='773914587b4fab287ca1e4b17f60ff66eb20d261';release=ROOT/'releases'/SOURCE
+sys.path[:0]=[str(release),str(release/'src')]
+from tests.integration.run_native_validation import cleanup,wait_ready
+out=ROOT/'rollout-native-7739145.json';assert not out.exists()
+report={'source_commit':SOURCE,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'started_at':time.time(),'attempts':[],
+'qualification':'Two installed-wheel versions (accef86 to 7739145 and back) on native TP1 Smol engines; not cross-engine failover or performance certificate'}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+try:
+ for engine in ['vllm','sglang']:
+  python=ROOT/'envs'/engine/'bin/python';native=ROOT/'runs'/f'rollout-{engine}-native-7739145';gateway=ROOT/'runs'/f'rollout-{engine}-7739145'
+  assert not native.exists() and not gateway.exists()
+  env={k:v for k,v in os.environ.items() if not k.startswith('PYTHON')};env.update(PYTHONPATH=f'{release}/src:{release}',HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
+  with (ROOT/f'rollout-install-{engine}-7739145.log').open('x') as stream:
+   subprocess.run([str(python),'-m','pip','--isolated','install','--index-url','https://pypi.org/simple','--no-deps','-e',str(release),'-e',str(release/'packages'/engine)],stdout=stream,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(python),'-m','pip','check'],stdout=stream,stderr=subprocess.STDOUT,check=True)
+  profile=ROOT/'tokenizers'/f'SmolLM2-1.7B-Instruct-preserved-{engine}-cdd0caf'
+  cmd=[str(python),str(release/'deployment/dsw_service.py'),'launch','--run-dir',str(native),'--engine',engine,'--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),
+   '--tokenizer-path',str(profile),'--gpus','7','--port','18795' if engine=='vllm' else '18794','--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072']
+  attempt={'engine':engine,'native_run':str(native),'gateway_run':str(gateway),'started_at':time.time(),'launch_command':cmd}
+  report['attempts'].append(attempt);save();record=None
+  try:
+   with (ROOT/f'rollout-native-{engine}-launch-7739145.log').open('x') as stream:subprocess.run(cmd,env=env,cwd=release,stdout=stream,stderr=subprocess.STDOUT,check=True)
+   record=json.loads((native/'process.json').read_text());key=json.loads((native/'keys.json').read_text())['api'];attempt['readiness']=wait_ready(record,key,300);save()
+   command=[str(python),'-m','tests.integration.live_rollout','--run-dir',str(gateway),'--haproxy',str(ROOT/'proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy'),
+    '--source-commit',SOURCE,'--engine-run-dir',str(native),'--switches','10','--blue-python',str(ROOT/'envs/rollout-wheel-accef86/bin/python'),'--green-python',str(ROOT/'envs/rollout-wheel-7739145/bin/python'),'--blue-release','accef862f11bcc8ebb666225f328f8f088270713','--green-release',SOURCE]
+   with (ROOT/f'rollout-{engine}-7739145.log').open('x') as stream:result=subprocess.run(command,env=env,cwd=release,stdout=stream,stderr=subprocess.STDOUT,timeout=500)
+   attempt['returncode']=result.returncode
+   if (gateway/'report.json').exists():attempt['gateway']=json.loads((gateway/'report.json').read_text())
+   from deployment.dsw_service import process_identity
+   attempt['same_native_engine_identity']=process_identity(record['identity']['pid'])==record['identity']
+   attempt['passed']=result.returncode==0 and attempt.get('gateway',{}).get('passed') is True and attempt['same_native_engine_identity']
+   print(json.dumps({'engine':engine,'passed':attempt['passed'],'requests':attempt.get('gateway',{}).get('traffic_successes'),'failure':attempt.get('gateway',{}).get('failure')}),flush=True)
+  except BaseException as exc:
+   attempt['passed']=False;attempt['failure']={'type':type(exc).__name__,'message':str(exc)}
+  finally:
+   if record is None and (native/'process.json').exists():record=json.loads((native/'process.json').read_text())
+   if record is not None:attempt['cleanup']=cleanup(native,record)
+   attempt['finished_at']=time.time();save()
+  assert attempt.get('cleanup',{}).get('passed'),attempt
+ report['completed']=True;report['passed']=all(a['passed'] for a in report['attempts'])
+finally:report['finished_at']=time.time();save()

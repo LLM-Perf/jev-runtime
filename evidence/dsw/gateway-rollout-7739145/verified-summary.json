@@ -1,0 +1,74 @@
+{
+  "verified": true,
+  "source_commit": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+  "rows": [
+    {
+      "source": "accef862f11bcc8ebb666225f328f8f088270713",
+      "fixture": true,
+      "requests": 1116,
+      "errors": 0,
+      "by_slot": {
+        "blue": 600,
+        "green": 516
+      },
+      "switches": 14
+    },
+    {
+      "source": "accef862f11bcc8ebb666225f328f8f088270713",
+      "fixture": false,
+      "requests": 446,
+      "errors": 0,
+      "by_slot": {
+        "blue": 250,
+        "green": 196
+      },
+      "switches": 13,
+      "engine": "vllm",
+      "installed_wheels": false
+    },
+    {
+      "source": "accef862f11bcc8ebb666225f328f8f088270713",
+      "fixture": false,
+      "requests": 326,
+      "errors": 0,
+      "by_slot": {
+        "blue": 166,
+        "green": 160
+      },
+      "switches": 13,
+      "engine": "sglang",
+      "installed_wheels": false
+    },
+    {
+      "source": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+      "fixture": false,
+      "requests": 333,
+      "errors": 0,
+      "by_slot": {
+        "blue": 182,
+        "green": 151
+      },
+      "switches": 13,
+      "engine": "vllm",
+      "installed_wheels": true
+    },
+    {
+      "source": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+      "fixture": false,
+      "requests": 338,
+      "errors": 0,
+      "by_slot": {
+        "blue": 186,
+        "green": 152
+      },
+      "switches": 13,
+      "engine": "sglang",
+      "installed_wheels": true
+    }
+  ],
+  "owned_records_terminal": 129,
+  "gpu7_free_mib": 11990,
+  "model_files_rehashed": 6,
+  "installed_core_files_per_slot": 30,
+  "limitation": "Same-host compatible gateway releases only; not engine failover, multi-node HA, performance, quality, or full release acceptance"
+}

@@ -1,0 +1,25 @@
+"""Pin, resolve and install two isolated offline wheel environments for rollout."""
+import hashlib,json,subprocess,tarfile
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='773914587b4fab287ca1e4b17f60ff66eb20d261';release=ROOT/'releases'/SOURCE
+base=ROOT/'rollout-packaging-7739145';base.mkdir(exist_ok=False)
+for file,sha,destination in [(ROOT/'source-7739145.tar.gz','cf61ab8e168703b4bcbe15b381df51cde4fb7b6628ca147b355e4f716837cf31',release),
+ (ROOT/'rollout-wheels.tar.gz','afb1db1bff3b26de8f00833ba9ed87e095884f75da3956395ed6d4aa2c5a7e8a',base)]:
+ assert hashlib.sha256(file.read_bytes()).hexdigest()==sha
+ destination.mkdir(exist_ok=True,parents=True)
+ with tarfile.open(file) as tar:tar.extractall(destination,filter='data')
+old=json.loads((ROOT/'release-packaging-861ed3a/gateway-3377c95/manifest.json').read_text())
+constraints=base/'constraints.txt';constraints.write_text(''.join(f'{name}=={row["version"]}\n' for name,row in sorted(old['distributions'].items())))
+python=ROOT/'envs/gateway-wheel-3377c95/bin/python';script=release/'deployment/release.py'
+report={'source_commit':SOURCE,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'profiles':[]}
+for short,sha in [('accef86','79d14c67db9a1235ed2da1a34c1f0707202e4221b2f637535b9b36b1a4de225b'),('7739145','2a097d0e01bd6aae3ea5db98bbdd47eb11acac31027965b60ef92ee30f2c985a')]:
+ wheel=base/f'wheels-{short}';gateway=base/f'gateway-{short}';venv=ROOT/'envs'/f'rollout-wheel-{short}'
+ assert hashlib.sha256((wheel/'manifest.json').read_bytes()).hexdigest()==sha
+ with (base/f'resolve-{short}.log').open('x') as log:
+  subprocess.run([str(python),str(script),'resolve','--bundle',str(wheel),'--manifest-sha256',sha,'--output',str(gateway),'--constraints',str(constraints)],check=True,stdout=log,stderr=subprocess.STDOUT)
+ gateway_sha=hashlib.sha256((gateway/'manifest.json').read_bytes()).hexdigest()
+ with (base/f'install-{short}.log').open('x') as log:
+  subprocess.run([str(python),str(script),'install','--bundle',str(gateway),'--manifest-sha256',gateway_sha,'--output',str(venv)],check=True,stdout=log,stderr=subprocess.STDOUT)
+ row={'source':short,'wheel_manifest_sha256':sha,'gateway_manifest_sha256':gateway_sha,'environment':str(venv),'installation':json.loads((venv/'jev-install-complete.json').read_text())}
+ report['profiles'].append(row);(base/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'source':short,'installed':True}),flush=True)
+report['passed']=True;(base/'report.json').write_text(json.dumps(report,indent=2)+'\n')

@@ -8,6 +8,12 @@ For versioned wheels, offline dependency locks and independent gateway environme
 see [release packaging](release-packaging.md). Retain complete prior environments
 for rollback; an install receipt does not replace real serving/readiness checks.
 
+For same-host compatible gateway code changes, use the
+[journaled proxy rollout procedure](gateway-rollout.md). It qualifies every worker,
+switches requests through a stable listener and observes HTTP/lease drain before
+graceful retirement. See the [two-engine installed-wheel exercise](gateway-rollout-validation.md)
+for its tested scope; engine/CUDA rollout and schema migration remain separate.
+
 Periodic engine canaries now withdraw readiness and block new typed dispatch when
 scoring fails or its evidence expires. See [health configuration and recovery](serving-health.md)
 for per-worker scope, probe leases, explicit recovery and outstanding replica failover.

@@ -421,6 +421,21 @@ replacement for any requirement in `implementation-plan.md`.
 
 ## Required evidence still outstanding
 
+At `7739145`, a journaled HAProxy gateway rollout controller qualifies all workers,
+binds registry/model/bundle/auth identities, runs a real candidate canary, switches
+one live map entry, reconciles interrupted operations without replay and observes
+HTTP stream/queue plus durable-lease drain. Both native engines pass actual
+offline-installed `accef86` ↔ `7739145` wheel upgrades/rollback: two workers per
+slot, 13 switches each, 333 vLLM/338 SGLang continuous requests, zero request errors,
+unchanged proxy/native process identities. Initial same-code exercises separately
+pass 446/326 native requests and 1,116 CPU fixture requests; the fixture also tests
+cross-slot cancellation. All 129 historical owned records are terminal, GPU7 is
+back to 11,990 MiB free, and six public model files rehash. Local 357 tests and both
+sets of three source-matched wheels pass. This qualifies one compatible-schema
+single-host gateway profile, not engine failover, GPU upgrade cancellation, SLOs,
+images, migration, soak or complete release acceptance. See
+[gateway rollout validation](gateway-rollout-validation.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
@@ -434,7 +449,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
-| SDKs and deployment productization | SDK checks, immutable wheels/offline locks, both installed-wheel gateway upgrade/rollback exercises pass | Deployment images, uninterrupted routing, migration/downgrade, handoff and final-source recertification |
+| SDKs and deployment productization | SDKs, immutable wheels/offline locks, and stable-proxy two-worker installed-wheel gateway upgrade/rollback pass on both engines | Expanded rollout faults/load, deployment images, migration/downgrade, handoff and final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Engine health and fault routing | Periodic real canaries, stale/failure circuits and gateway pause/resume checks pass on both engines | Certified compatible-replica selection/failover and expanded load/fault profiles |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |

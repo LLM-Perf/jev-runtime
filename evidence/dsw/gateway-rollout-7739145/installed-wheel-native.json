@@ -1,0 +1,5962 @@
+{
+  "source_commit": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+  "script_sha256": "2798a322bca91c4b8f1f422922c40c971a279889cc050e7a5d44a007177e6eaf",
+  "started_at": 1790544684.096995,
+  "attempts": [
+    {
+      "engine": "vllm",
+      "native_run": "/root/jev-runtime/runs/rollout-vllm-native-7739145",
+      "gateway_run": "/root/jev-runtime/runs/rollout-vllm-7739145",
+      "started_at": 1790544689.9249806,
+      "launch_command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/773914587b4fab287ca1e4b17f60ff66eb20d261/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/rollout-vllm-native-7739145",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--reserve-mib",
+        "3072"
+      ],
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 37.10101880971342
+      },
+      "returncode": 0,
+      "gateway": {
+        "checks": {
+          "blue_qualified": {
+            "all_workers": [
+              "09d900acb43b4803b7160bba0b7c63e5",
+              "cc0178389e4a498b96e41ac21b3c5ad7"
+            ],
+            "auth_policy": "5e0a09fb377792c7339ddf3e664cd39901c761f2f41dc3e5c603240d7914f60b",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": 1,
+              "cancellation": true,
+              "engine": "vllm",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.30.0+cu129"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "blue-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8262439
+              },
+              "release": "accef862f11bcc8ebb666225f328f8f088270713"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "09d900acb43b4803b7160bba0b7c63e5",
+              "cc0178389e4a498b96e41ac21b3c5ad7"
+            ]
+          },
+          "continuous_switches": 10,
+          "green_qualified": {
+            "all_workers": [
+              "1f09990232d444d4a33f5ee8d351704e",
+              "bc1098b093e5462d97368514d9fd1f30"
+            ],
+            "auth_policy": "5e0a09fb377792c7339ddf3e664cd39901c761f2f41dc3e5c603240d7914f60b",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": 1,
+              "cancellation": true,
+              "engine": "vllm",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.30.0+cu129"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "green-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8262439
+              },
+              "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "1f09990232d444d4a33f5ee8d351704e",
+              "bc1098b093e5462d97368514d9fd1f30"
+            ]
+          },
+          "incorrect_release_rejected": true,
+          "keepalive_next_request_uses_new_slot": true,
+          "old_slot_drain": {
+            "drained": true,
+            "generation": 1,
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2700825",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430027290"
+            },
+            "remaining_leases": 0,
+            "slot": "blue",
+            "stats": {
+              "BACKEND": {
+                "qcur": 0,
+                "scur": 0
+              },
+              "gateway": {
+                "qcur": 0,
+                "scur": 0
+              }
+            },
+            "workers": [
+              "09d900acb43b4803b7160bba0b7c63e5",
+              "cc0178389e4a498b96e41ac21b3c5ad7"
+            ]
+          },
+          "partial_body_survives_switch_and_prevents_early_drain": true,
+          "reconciled": {
+            "canary": {
+              "bundle": "default@1",
+              "generation": 1,
+              "request_id": "rollout-032d25756fa245a48c2a0345390c6fac",
+              "worker": "bc1098b093e5462d97368514d9fd1f30"
+            },
+            "completed": 1790544742.4042912,
+            "created": 1790544742.310594,
+            "generation": 13,
+            "id": "interrupted",
+            "intent": {
+              "canary_digest": "fc94f2f4d3b0ad7aaa8156c6c978b6329a0dfcc849bee842ab1ad4b6aab6e911",
+              "deployment_id": "green-test",
+              "expected_generation": 12,
+              "release_id": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+              "target": "green"
+            },
+            "observed": "green",
+            "outcome": "reconciled_observation",
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2700825",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430027290"
+            },
+            "source": "blue",
+            "source_snapshot": {
+              "all_workers": [
+                "09d900acb43b4803b7160bba0b7c63e5",
+                "cc0178389e4a498b96e41ac21b3c5ad7"
+              ],
+              "auth_policy": "5e0a09fb377792c7339ddf3e664cd39901c761f2f41dc3e5c603240d7914f60b",
+              "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+              "bindings": [
+                [
+                  "default@1",
+                  "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                  "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+                ]
+              ],
+              "capabilities": {
+                "api_workers": 1,
+                "cancellation": true,
+                "engine": "vllm",
+                "lora": false,
+                "max_context_tokens": 2048,
+                "max_label_tokens": 128,
+                "model_dtype": "bfloat16",
+                "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+                "prefix_cache": true,
+                "raw_logprobs": true,
+                "readout_dtype": "bfloat16",
+                "selected_logprobs": true,
+                "verified": false,
+                "version": "0.30.0+cu129"
+              },
+              "deployment": {
+                "expected_workers": 2,
+                "id": "blue-test",
+                "protocol": 1,
+                "registry": {
+                  "device": 152,
+                  "host": "dsw-501084-677cf96c94-zdgmr",
+                  "inode": 8262439
+                },
+                "release": "accef862f11bcc8ebb666225f328f8f088270713"
+              },
+              "model": {
+                "adapter_id": null,
+                "adapter_revision": null,
+                "dtype": "bfloat16",
+                "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+                "quantization": null,
+                "readout_dtype": "bfloat16",
+                "revision": "31b70e2e869a7173562077fd711b654946d38674",
+                "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+                "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+                "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+              },
+              "routes": [
+                {
+                  "alias": "decision-model",
+                  "generation": 1,
+                  "ref": "default@1"
+                }
+              ],
+              "workers": [
+                "09d900acb43b4803b7160bba0b7c63e5",
+                "cc0178389e4a498b96e41ac21b3c5ad7"
+              ]
+            },
+            "target": "green",
+            "target_snapshot": {
+              "all_workers": [
+                "1f09990232d444d4a33f5ee8d351704e",
+                "bc1098b093e5462d97368514d9fd1f30"
+              ],
+              "auth_policy": "5e0a09fb377792c7339ddf3e664cd39901c761f2f41dc3e5c603240d7914f60b",
+              "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+              "bindings": [
+                [
+                  "default@1",
+                  "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                  "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+                ]
+              ],
+              "capabilities": {
+                "api_workers": 1,
+                "cancellation": true,
+                "engine": "vllm",
+                "lora": false,
+                "max_context_tokens": 2048,
+                "max_label_tokens": 128,
+                "model_dtype": "bfloat16",
+                "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+                "prefix_cache": true,
+                "raw_logprobs": true,
+                "readout_dtype": "bfloat16",
+                "selected_logprobs": true,
+                "verified": false,
+                "version": "0.30.0+cu129"
+              },
+              "deployment": {
+                "expected_workers": 2,
+                "id": "green-test",
+                "protocol": 1,
+                "registry": {
+                  "device": 152,
+                  "host": "dsw-501084-677cf96c94-zdgmr",
+                  "inode": 8262439
+                },
+                "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+              },
+              "model": {
+                "adapter_id": null,
+                "adapter_revision": null,
+                "dtype": "bfloat16",
+                "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+                "quantization": null,
+                "readout_dtype": "bfloat16",
+                "revision": "31b70e2e869a7173562077fd711b654946d38674",
+                "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+                "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+                "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+              },
+              "routes": [
+                {
+                  "alias": "decision-model",
+                  "generation": 1,
+                  "ref": "default@1"
+                }
+              ],
+              "workers": [
+                "1f09990232d444d4a33f5ee8d351704e",
+                "bc1098b093e5462d97368514d9fd1f30"
+              ]
+            }
+          },
+          "same_proxy_pid": true
+        },
+        "cleanup": [
+          {
+            "name": "haproxy",
+            "remaining": [],
+            "returncode": -15
+          },
+          {
+            "name": "green",
+            "remaining": [],
+            "returncode": 0
+          },
+          {
+            "name": "blue",
+            "remaining": [],
+            "returncode": 0
+          }
+        ],
+        "finished_at": 1790544743.387417,
+        "fixture": false,
+        "installed_code": {
+          "blue": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "fbd45c96deac962d99bde68bad92814db88507fcf411d83fd4d40dd9693bb69c",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-accef86/lib/python3.12/site-packages/jev_runtime"
+          },
+          "green": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-7739145/lib/python3.12/site-packages/jev_runtime"
+          }
+        },
+        "native_engine_identity": {
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "pid": 2699316,
+          "start_ticks": "430022942"
+        },
+        "passed": true,
+        "processes": [
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-accef86/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18801",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2700042,
+              "start_ticks": "430026685"
+            },
+            "name": "blue",
+            "port": 18801
+          },
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18802",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2700433,
+              "start_ticks": "430026982"
+            },
+            "name": "green",
+            "port": 18802
+          },
+          {
+            "command": [
+              "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+              "-db",
+              "-f",
+              "/root/jev-runtime/runs/rollout-vllm-7739145/proxy/haproxy.cfg"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2700825,
+              "start_ticks": "430027290"
+            },
+            "name": "haproxy",
+            "port": 18800
+          }
+        ],
+        "proxy_identity": {
+          "Nbthread": "1",
+          "Pid": "2700825",
+          "Version": "3.2.24-70b0913",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "start_ticks": "430027290"
+        },
+        "qualification": "Colocated rollout functional test; no performance certification",
+        "script_sha256": "3fd3e117ea778b1560b71d8c110d80a0eb0c9c030966ec8ec6091892fe427f3b",
+        "slot_releases": {
+          "blue": "accef862f11bcc8ebb666225f328f8f088270713",
+          "green": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+        },
+        "source_commit": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+        "started_at": 1790544727.474772,
+        "traffic": [
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 78.27960699796677,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 79.02683690190315,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.60895697027445,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.600879445672035,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.61601173877716,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.48941273242235,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.58957267552614,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.7179421260953,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.6444284170866,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.91038280725479,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.500795520842075,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.34601343423128,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.66654813289642,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.48964992910624,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.42796439677477,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.578363843262196,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.404181867837906,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.93770260363817,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.18832039833069,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.63049822300673,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.26146347820759,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.62645531445742,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.097954735159874,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.147496439516544,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.65860784053802,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.2730039730668,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.67710452526808,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.41811040043831,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.96416783332825,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.13016381114721,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.22104641795158,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.4103330746293,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.70378226041794,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 76.58721134066582,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.80536550283432,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 79.94708698242903,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.12416751682758,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.466913782060146,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.24155393987894,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.610941618680954,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.805178582668304,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.0576917976141,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.16813372820616,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.76091419905424,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.23908783495426,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.80734730511904,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.01616457104683,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 70.10622415691614,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.64105495065451,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.34280210733414,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.90010276436806,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.59971413761377,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.43870988488197,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.843274384737015,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.368635594844818,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.93556925654411,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.37910535186529,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.098428562283516,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.272158458828926,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.321461744606495,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.891244024038315,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.55101468414068,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.712924994528294,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.0632586479187,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 100.74392333626747,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.04073771089315,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.24878640472889,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.46496803313494,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.27923283725977,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.75139333307743,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.996590077877045,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.6487373188138,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.59894508868456,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.44423471391201,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.26228594779968,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.144998632371426,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.25828641653061,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.7809507548809,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.484443970024586,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 66.36418867856264,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.552600622177124,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.427574560046196,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 80.09123150259256,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.119495898485184,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.823778957128525,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.40557365119457,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.15893494337797,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.04060235619545,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.07372435182333,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.06753183156252,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.87360163033009,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 80.56481927633286,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.01495122164488,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 117.93955788016319,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.934183530509472,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.38982252031565,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.76189438253641,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.476940624415874,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.900848865509033,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.43820958584547,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.588591411709785,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.39675145596266,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.668540850281715,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.8588141053915,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.38753617554903,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.397257439792156,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.90950060635805,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.534612610936165,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.46180510520935,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.15820772200823,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.29329405725002,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.38057652115822,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 94.9756633490324,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.423051834106445,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.079716101288795,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.240067444741726,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 24.723942391574383,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 70.83708979189396,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 24.858135730028152,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.65003827214241,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 81.0741987079382,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 66.426245495677,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.9188079982996,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.793167151510715,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.99271961301565,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.57044771313667,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.85902579128742,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.44995478540659,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.20650240778923,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.33783823251724,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.719677694141865,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.32088476419449,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.228943839669228,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 79.44701984524727,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.534902200102806,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.316053561866283,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.366889141499996,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.66238002479076,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 67.30732414871454,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.073071502149105,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.221924014389515,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.24007357656956,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.649253599345684,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.528559781610966,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.540289521217346,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.422675862908363,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 70.1151667162776,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.03888839483261,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 73.48366919904947,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.892417542636395,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.01768683642149,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.650722458958626,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.414195507764816,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.763509795069695,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 80.69145027548075,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.96815987676382,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.633787125349045,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.86660319566727,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.5852003544569,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.902342811226845,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.17325556278229,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.09902083128691,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.51437333226204,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.982834719121456,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.647198781371117,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.65844935178757,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.9758832603693,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.47721479833126,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.28517501056194,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.701058365404606,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.381052151322365,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.46463402360678,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.50231269747019,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.014820396900177,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.92809665203094,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.360915422439575,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.28130344301462,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.05669232457876,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.52164800465107,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.96200293302536,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.50072555989027,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.524551808834076,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.23973051458597,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.389815010130405,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.12077235430479,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.29322498291731,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 94.15145870298147,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.74780385941267,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.167992666363716,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.90143655985594,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.879272148013115,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.19978185743093,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.35739632695913,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 66.59417971968651,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.41033089905977,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.77994291484356,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.630123034119606,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 95.64796835184097,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.44587345421314,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.32862016558647,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.71061772853136,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.33889550715685,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.30905568599701,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.42443934082985,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.248857483267784,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.20946127921343,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.968513503670692,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.68076855689287,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.349355950951576,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.6103006452322,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.2860549390316,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.566829092800617,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.22370758652687,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.242421217262745,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.869706369936466,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 78.91285046935081,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.69040222465992,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.52437699586153,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.82500534504652,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.943664394319057,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.71262794733047,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.694394528865814,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.4611653983593,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 76.9048510119319,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.133438505232334,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.11208140105009,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.784323811531067,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.03004006296396,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.14944235980511,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.0610751286149,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.676845736801624,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 107.50929731875658,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.68292535096407,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.425928086042404,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.388763055205345,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.59838881343603,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.55978116393089,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.70195637643337,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.51435902714729,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.5969555079937,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.02164709568024,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.698805928230286,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.90921729058027,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.94190537184477,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.86254559457302,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.337746031582355,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.38000884652138,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.056942529976368,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.15942157059908,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.56352410465479,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.82321633398533,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.06567266583443,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 68.83428525179625,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.544992372393608,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.902808360755444,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.84070339053869,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.03298534452915,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.06123701483011,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.035568833351135,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.018064469099045,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.34693203121424,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.39623911678791,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.812537737190723,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 95.56945413351059,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.176782816648483,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.8692464902997,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.788960970938206,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.6816393584013,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.71928095072508,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.625900745391846,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.44868063181639,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 103.62060647457838,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 103.80243696272373,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.95232825726271,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.589093551039696,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 60.213472694158554,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.813023447990417,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 96.52792848646641,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.292500734329224,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.02337311208248,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.70503204315901,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.964777909219265,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.87801173329353,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.81071436405182,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.52672058343887,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.743867479264736,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.091394662857056,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.108600966632366,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.39367713779211,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 74.15473274886608,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.32346899807453,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.14612574875355,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.461981773376465,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.30215235799551,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.38119403272867,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.31182912737131,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.362696431577206,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.706048771739006,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.321281515061855,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.96210198104382,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.81320795416832,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.821785166859627,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.696662463247776,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.90354771912098,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.46034226566553,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.91445553302765,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.44081120938063,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.69041162729263,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.715874992311,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.73972649127245,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.939791947603226,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.604861952364445,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.33545786142349,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.888619668781757,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.3429382070899,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.03230240941048,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.30463121086359,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.57472620904446,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.554143980145454,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.256754107773304,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.01834402233362,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 108.51110983639956,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.405698388814926,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.86073959618807,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 78.1052028760314,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.20833005011082,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.443429619073868,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.87838418781757,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.753187119960785,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.45382723212242,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.58703514933586,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.10162080079317,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.55737194418907,
+            "slot": "green",
+            "status": 200
+          }
+        ],
+        "traffic_errors": 0,
+        "traffic_successes": 333
+      },
+      "same_native_engine_identity": true,
+      "passed": true,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2699316,
+            "start_ticks": "430022942",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--tokenizer",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790544690.0889947,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790544743.5071337,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790544744.6611392
+    },
+    {
+      "engine": "sglang",
+      "native_run": "/root/jev-runtime/runs/rollout-sglang-native-7739145",
+      "gateway_run": "/root/jev-runtime/runs/rollout-sglang-7739145",
+      "started_at": 1790544750.8598757,
+      "launch_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/773914587b4fab287ca1e4b17f60ff66eb20d261/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/rollout-sglang-native-7739145",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".5",
+        "--reserve-mib",
+        "3072"
+      ],
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 32.112703506834805
+      },
+      "returncode": 0,
+      "gateway": {
+        "checks": {
+          "blue_qualified": {
+            "all_workers": [
+              "0f2c395e9301412fb89ba071e4bb0bf8",
+              "32ae189e1f934ce3bb1a9543adb8e2f7"
+            ],
+            "auth_policy": "5afc1ca51e574a6c558fa67f3d1f46f9c8ab343abe8bbdb85ecf293ab226207b",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": null,
+              "cancellation": true,
+              "engine": "sglang",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.5.19"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "blue-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8262574
+              },
+              "release": "accef862f11bcc8ebb666225f328f8f088270713"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "0f2c395e9301412fb89ba071e4bb0bf8",
+              "32ae189e1f934ce3bb1a9543adb8e2f7"
+            ]
+          },
+          "continuous_switches": 10,
+          "green_qualified": {
+            "all_workers": [
+              "06cb292c253c4db38c5a4cb9c1975c91",
+              "d6d20fc7d7e04145923131f359cac5c9"
+            ],
+            "auth_policy": "5afc1ca51e574a6c558fa67f3d1f46f9c8ab343abe8bbdb85ecf293ab226207b",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": null,
+              "cancellation": true,
+              "engine": "sglang",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.5.19"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "green-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8262574
+              },
+              "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "06cb292c253c4db38c5a4cb9c1975c91",
+              "d6d20fc7d7e04145923131f359cac5c9"
+            ]
+          },
+          "incorrect_release_rejected": true,
+          "keepalive_next_request_uses_new_slot": true,
+          "old_slot_drain": {
+            "drained": true,
+            "generation": 1,
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2702289",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430032883"
+            },
+            "remaining_leases": 0,
+            "slot": "blue",
+            "stats": {
+              "BACKEND": {
+                "qcur": 0,
+                "scur": 0
+              },
+              "gateway": {
+                "qcur": 0,
+                "scur": 0
+              }
+            },
+            "workers": [
+              "0f2c395e9301412fb89ba071e4bb0bf8",
+              "32ae189e1f934ce3bb1a9543adb8e2f7"
+            ]
+          },
+          "partial_body_survives_switch_and_prevents_early_drain": true,
+          "reconciled": {
+            "canary": {
+              "bundle": "default@1",
+              "generation": 1,
+              "request_id": "rollout-991ebe00a20b47b7905ce15fed40191c",
+              "worker": "06cb292c253c4db38c5a4cb9c1975c91"
+            },
+            "completed": 1790544798.946494,
+            "created": 1790544798.827133,
+            "generation": 13,
+            "id": "interrupted",
+            "intent": {
+              "canary_digest": "fc94f2f4d3b0ad7aaa8156c6c978b6329a0dfcc849bee842ab1ad4b6aab6e911",
+              "deployment_id": "green-test",
+              "expected_generation": 12,
+              "release_id": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+              "target": "green"
+            },
+            "observed": "green",
+            "outcome": "reconciled_observation",
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2702289",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430032883"
+            },
+            "source": "blue",
+            "source_snapshot": {
+              "all_workers": [
+                "0f2c395e9301412fb89ba071e4bb0bf8",
+                "32ae189e1f934ce3bb1a9543adb8e2f7"
+              ],
+              "auth_policy": "5afc1ca51e574a6c558fa67f3d1f46f9c8ab343abe8bbdb85ecf293ab226207b",
+              "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+              "bindings": [
+                [
+                  "default@1",
+                  "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                  "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+                ]
+              ],
+              "capabilities": {
+                "api_workers": null,
+                "cancellation": true,
+                "engine": "sglang",
+                "lora": false,
+                "max_context_tokens": 2048,
+                "max_label_tokens": 128,
+                "model_dtype": "bfloat16",
+                "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+                "prefix_cache": true,
+                "raw_logprobs": true,
+                "readout_dtype": "bfloat16",
+                "selected_logprobs": true,
+                "verified": false,
+                "version": "0.5.19"
+              },
+              "deployment": {
+                "expected_workers": 2,
+                "id": "blue-test",
+                "protocol": 1,
+                "registry": {
+                  "device": 152,
+                  "host": "dsw-501084-677cf96c94-zdgmr",
+                  "inode": 8262574
+                },
+                "release": "accef862f11bcc8ebb666225f328f8f088270713"
+              },
+              "model": {
+                "adapter_id": null,
+                "adapter_revision": null,
+                "dtype": "bfloat16",
+                "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+                "quantization": null,
+                "readout_dtype": "bfloat16",
+                "revision": "31b70e2e869a7173562077fd711b654946d38674",
+                "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+                "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+                "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+              },
+              "routes": [
+                {
+                  "alias": "decision-model",
+                  "generation": 1,
+                  "ref": "default@1"
+                }
+              ],
+              "workers": [
+                "0f2c395e9301412fb89ba071e4bb0bf8",
+                "32ae189e1f934ce3bb1a9543adb8e2f7"
+              ]
+            },
+            "target": "green",
+            "target_snapshot": {
+              "all_workers": [
+                "06cb292c253c4db38c5a4cb9c1975c91",
+                "d6d20fc7d7e04145923131f359cac5c9"
+              ],
+              "auth_policy": "5afc1ca51e574a6c558fa67f3d1f46f9c8ab343abe8bbdb85ecf293ab226207b",
+              "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+              "bindings": [
+                [
+                  "default@1",
+                  "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                  "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+                ]
+              ],
+              "capabilities": {
+                "api_workers": null,
+                "cancellation": true,
+                "engine": "sglang",
+                "lora": false,
+                "max_context_tokens": 2048,
+                "max_label_tokens": 128,
+                "model_dtype": "bfloat16",
+                "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+                "prefix_cache": true,
+                "raw_logprobs": true,
+                "readout_dtype": "bfloat16",
+                "selected_logprobs": true,
+                "verified": false,
+                "version": "0.5.19"
+              },
+              "deployment": {
+                "expected_workers": 2,
+                "id": "green-test",
+                "protocol": 1,
+                "registry": {
+                  "device": 152,
+                  "host": "dsw-501084-677cf96c94-zdgmr",
+                  "inode": 8262574
+                },
+                "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+              },
+              "model": {
+                "adapter_id": null,
+                "adapter_revision": null,
+                "dtype": "bfloat16",
+                "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+                "quantization": null,
+                "readout_dtype": "bfloat16",
+                "revision": "31b70e2e869a7173562077fd711b654946d38674",
+                "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+                "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+                "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+              },
+              "routes": [
+                {
+                  "alias": "decision-model",
+                  "generation": 1,
+                  "ref": "default@1"
+                }
+              ],
+              "workers": [
+                "06cb292c253c4db38c5a4cb9c1975c91",
+                "d6d20fc7d7e04145923131f359cac5c9"
+              ]
+            }
+          },
+          "same_proxy_pid": true
+        },
+        "cleanup": [
+          {
+            "name": "haproxy",
+            "remaining": [],
+            "returncode": -15
+          },
+          {
+            "name": "green",
+            "remaining": [],
+            "returncode": 0
+          },
+          {
+            "name": "blue",
+            "remaining": [],
+            "returncode": 0
+          }
+        ],
+        "finished_at": 1790544799.890528,
+        "fixture": false,
+        "installed_code": {
+          "blue": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "fbd45c96deac962d99bde68bad92814db88507fcf411d83fd4d40dd9693bb69c",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-accef86/lib/python3.12/site-packages/jev_runtime"
+          },
+          "green": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-7739145/lib/python3.12/site-packages/jev_runtime"
+          }
+        },
+        "native_engine_identity": {
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "pid": 2700932,
+          "start_ticks": "430029040"
+        },
+        "passed": true,
+        "processes": [
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-accef86/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18801",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2701506,
+              "start_ticks": "430032285"
+            },
+            "name": "blue",
+            "port": 18801
+          },
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18802",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2701897,
+              "start_ticks": "430032583"
+            },
+            "name": "green",
+            "port": 18802
+          },
+          {
+            "command": [
+              "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+              "-db",
+              "-f",
+              "/root/jev-runtime/runs/rollout-sglang-7739145/proxy/haproxy.cfg"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2702289,
+              "start_ticks": "430032883"
+            },
+            "name": "haproxy",
+            "port": 18800
+          }
+        ],
+        "proxy_identity": {
+          "Nbthread": "1",
+          "Pid": "2702289",
+          "Version": "3.2.24-70b0913",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "start_ticks": "430032883"
+        },
+        "qualification": "Colocated rollout functional test; no performance certification",
+        "script_sha256": "3fd3e117ea778b1560b71d8c110d80a0eb0c9c030966ec8ec6091892fe427f3b",
+        "slot_releases": {
+          "blue": "accef862f11bcc8ebb666225f328f8f088270713",
+          "green": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+        },
+        "source_commit": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+        "started_at": 1790544783.4787924,
+        "traffic": [
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 111.94285936653614,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 115.76786451041698,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.94971913099289,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.32553304731846,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.65465236455202,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.90102383494377,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.72340741753578,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.87979434430599,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.07144396007061,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.19493651390076,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.91978621482849,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 134.74704325199127,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.67057804018259,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.557564295828342,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 89.68305680900812,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.79895696789026,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.33555690944195,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.56477803736925,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.74177945405245,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.74007262289524,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 80.69958072155714,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.936158038675785,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.948822990059853,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.40480057895184,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.95204782485962,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.49002965539694,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.93672639876604,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.27662058919668,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.81612332165241,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.91781207919121,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.00881379842758,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.59036223590374,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.8195978179574,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.29270708560944,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.42164450138807,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.17271337658167,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.05893871188164,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.34194980561733,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.809194289147854,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.5379770770669,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.15738555788994,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.53967123478651,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.26398745179176,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.12665596604347,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 68.32207925617695,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.417377561330795,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.4487417191267,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.89128750562668,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.175092071294785,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 64.83920849859715,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.14333489537239,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.233433954417706,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.94219212979078,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.788232401013374,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.45473959296942,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.727749198675156,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.11745666712523,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.38002851605415,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.06010162830353,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.8522279933095,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.922417901456356,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.26936328411102,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.998258017003536,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.830771155655384,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.35618281364441,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.35336123406887,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.88761629164219,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.08254759758711,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 100.65083671361208,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.63009541481733,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.82311026751995,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.895889453589916,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.00327916443348,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.27544301003218,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.31720910221338,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 58.49904008209705,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.66263287514448,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.61448314040899,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.20160085707903,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 95.45744862407446,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.92297554761171,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.89535032957792,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.706179708242416,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.4724293500185,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.401727952063084,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.0933402851224,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 58.83037205785513,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.54569288343191,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.59276460856199,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.692278243601322,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.56177006661892,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.27330546081066,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.02854868769646,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 60.12340262532234,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.120487816631794,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.92069175839424,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.70157244801521,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.14635156840086,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 62.55262438207865,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 62.45243549346924,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.378249794244766,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.341158010065556,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.44379173219204,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.519792318344116,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.96361505240202,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.207686342298985,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.074482783675194,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.06758330017328,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.53508988767862,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.309428296983242,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.74823684245348,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.181692741811275,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.19836922734976,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.857826575636864,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.53761415183544,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.84670642018318,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.270377933979034,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.97924419492483,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.20791221410036,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 95.70891223847866,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.78557467460632,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.88654249161482,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.38181093335152,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.24303051829338,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.85856741666794,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.806796945631504,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.69887901097536,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.18702691793442,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.811752676963806,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.24103261530399,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.1024651825428,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.213726565241814,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.73881221562624,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 94.28294003009796,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.96746449917555,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.174901872873306,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 73.75979423522949,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.54367996752262,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.867931485176086,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 95.71155533194542,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.19291024655104,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.88820341229439,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.25068062543869,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.85527240484953,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.31908269226551,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.551876701414585,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.30052939802408,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.95252652466297,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.83805859833956,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.2639664337039,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.444855242967606,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 60.05290616303682,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.90420199930668,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 71.05562929064035,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.73294372856617,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 112.50435560941696,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.9368923380971,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.1899337247014,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.04898601025343,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.543452501297,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.836558893322945,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.294795513153076,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.43726819753647,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.50181257724762,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.77296528220177,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.198821030557156,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.43297220766544,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 64.36000484973192,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.593177512288094,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.1806849911809,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 58.85829217731953,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.46209276467562,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.37089660018682,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 71.96853216737509,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 79.83533199876547,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.314746633172035,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.80546422302723,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.162174575030804,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.77518555521965,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.91620318591595,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 60.84731034934521,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.63173974305391,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.77045339345932,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.579681180417538,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 96.79842833429575,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.60229741036892,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.18170304596424,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.43956434726715,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.48090203106403,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.88896255195141,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.054699786007404,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.514736488461494,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.42939012497663,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.545062869787216,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.99580727517605,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.41333819925785,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.18702878057957,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.08655337244272,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.90551434457302,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.071188636124134,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.01400151848793,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.46267270296812,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.64802135527134,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.63519109785557,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.489641450345516,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.90813722461462,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.462896056473255,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.85302056372166,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.81280030310154,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.909558594226837,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 94.32428143918514,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.50906736403704,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.6181880235672,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 76.98510866612196,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 58.769586496055126,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.77977839112282,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 66.2813875824213,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.5483370795846,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 89.16889317333698,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 66.41852296888828,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.42318704724312,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 97.06634283065796,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.11915108561516,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.53611592948437,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.8028142824769,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.856750294566154,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.261321038007736,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.93743871152401,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.8095478489995,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 62.02605087310076,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.42244675010443,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.097548350691795,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.53339586406946,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.874306611716747,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 89.29782453924417,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.493481516838074,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.88873466104269,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 70.92183455824852,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.88528224825859,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.331782549619675,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 38.87869883328676,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 81.75690937787294,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 81.62669092416763,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.65011594444513,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.52087477594614,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.491492100059986,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.711573265492916,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.99239885061979,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.031100682914257,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.87945087999105,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.90390359610319,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.963648930191994,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.75943546742201,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.960066244006157,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 89.7838706150651,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.32515996694565,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.02313710004091,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.38040651381016,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.17188185453415,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 78.19307502359152,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.83483406156301,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.865979820489883,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.70515514165163,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.87844743579626,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.85894096642733,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.19341327250004,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.23211334645748,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.25687764585018,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.30672373622656,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.72434759885073,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.08749258518219,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.895147524774075,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 44.769217260181904,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.36487939953804,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.304514959454536,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.35794620215893,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.79089897871017,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.78433607518673,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.756752111017704,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.45480637252331,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.704128712415695,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.712407894432545,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 64.29874897003174,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 77.07786746323109,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 73.61392304301262,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 67.78362300246954,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.93155177682638,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 101.81073937565088,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.09181189537048,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.794188052415848,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 74.75002948194742,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.40617260336876,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.45697959512472,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.05300514400005,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.76154727488756,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.767891831696033,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.17628940939903,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.238819904625416,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.74168260395527,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.88748361170292,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.829083167016506,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.50920508801937,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.641199573874474,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.49111184477806,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.34525927901268,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.16862463951111,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.929833322763443,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.56935974210501,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.15074560791254,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.224693775177002,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.36146772652864,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.43134630471468,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.590585105121136,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 103.40234637260437,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.070940800011158,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.88699313253164,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.62518510222435,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.07293650507927,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.94599290937185,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.80255898833275,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.270329512655735,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.24500244110823,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.05197922885418,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.91397739201784,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 75.92456135898829,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 35.05470883101225,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.586054988205433,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.16461451351643,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.60897598415613,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.636684969067574,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.47844211757183,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.78878632187843,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.911868877708912,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 89.52980488538742,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.804804518818855,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.51156758517027,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.49258826673031,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.89003470540047,
+            "slot": "green",
+            "status": 200
+          }
+        ],
+        "traffic_errors": 0,
+        "traffic_successes": 338
+      },
+      "same_native_engine_identity": true,
+      "passed": true,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2700932,
+            "start_ticks": "430029040",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "sglang",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18794",
+            "--dtype",
+            "bfloat16",
+            "--context-length",
+            "2048",
+            "--max-running-requests",
+            "4",
+            "--chunked-prefill-size",
+            "512",
+            "--max-total-tokens",
+            "2048",
+            "--mem-fraction-static",
+            "0.5",
+            "--disable-cuda-graph",
+            "--attention-backend",
+            "triton",
+            "--tokenizer-path",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790544751.0689173,
+          "port": 18794,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "free_mib"
+        },
+        "checked_at": 1790544800.0534372,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790544806.4549842
+    }
+  ],
+  "qualification": "Two installed-wheel versions (accef86 to 7739145 and back) on native TP1 Smol engines; not cross-engine failover or performance certificate",
+  "completed": true,
+  "passed": true,
+  "finished_at": 1790544806.4610062
+}
