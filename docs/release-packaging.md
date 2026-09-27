@@ -73,7 +73,9 @@ A failed operation keeps its incomplete output/log for diagnosis; it cannot be
 retried onto that same directory. Do not serve an incomplete environment.
 
 The interpreter and operating-system libraries are external prerequisites; this
-is not a container image or OS-level dependency lock. The first environment
+is not a container image or OS-level dependency lock. See
+[gateway image preparation](container-images.md) for digest-bound build contexts
+and the remaining container validation gates. The first environment
 creation uses that interpreter's bundled `venv`/`ensurepip` before installing the
 locked pip wheel. Hash-checked installation follows the
 [pip installation guidance](https://pip.pypa.io/en/stable/topics/secure-installs/).

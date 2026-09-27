@@ -1,11 +1,28 @@
-FROM python:3.12-slim
-WORKDIR /app
-COPY pyproject.toml README.md ./
-COPY src ./src
-RUN pip install --no-cache-dir '.[tokenizers]' \
-    && useradd --create-home --uid 10001 jev \
-    && mkdir -p /app/.jev /data/jev \
-    && chown -R 10001:10001 /app/.jev /data/jev
-USER jev
-ENTRYPOINT ["jevctl", "serve"]
-CMD ["/config/gateway.yaml"]
+# Template: generate a verified context with python -m deployment.image_context prepare.
+# BuildKit's bundled Dockerfile frontend is used; RUN --network=none is required.
+FROM __JEV_BASE_IMAGE__ AS builder
+USER 0:0
+WORKDIR /opt/jev-build
+COPY release.py ./release.py
+COPY locked ./locked
+RUN --network=none python -I release.py install \
+    --bundle /opt/jev-build/locked --manifest-sha256 __JEV_LOCK_SHA256__ \
+    --output /opt/jev/venv
+RUN --network=none python -I -c "import os; os.makedirs('/data/jev', exist_ok=True); os.chown('/data/jev', 10001, 10001)"
+
+FROM __JEV_BASE_IMAGE__
+LABEL org.opencontainers.image.revision="__JEV_SOURCE_COMMIT__" \
+      io.jev.gateway-lock-sha256="__JEV_LOCK_SHA256__"
+COPY --from=builder /opt/jev/venv /opt/jev/venv
+COPY --from=builder --chown=10001:10001 /data/jev /data/jev
+COPY container_gateway.py image.json /opt/jev/
+ENV PATH="/opt/jev/venv/bin:$PATH" HOME="/data/jev" \
+    PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 JEV_CONFIG="/config/gateway.yaml"
+WORKDIR /data/jev
+USER 10001:10001
+EXPOSE 8795
+STOPSIGNAL SIGTERM
+HEALTHCHECK --interval=15s --timeout=10s --start-period=180s --retries=3 \
+    CMD ["/opt/jev/venv/bin/python", "-I", "/opt/jev/container_gateway.py", "healthcheck"]
+ENTRYPOINT ["/opt/jev/venv/bin/python", "-I", "/opt/jev/container_gateway.py", "serve"]

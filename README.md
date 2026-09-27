@@ -27,6 +27,7 @@ from this repository.
 
 See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
 [immutable packages and offline installation](docs/release-packaging.md),
+[offline gateway image preparation](docs/container-images.md),
 [installed-wheel DSW upgrade/rollback and Smol tokenizer fidelity](docs/release-rollout-validation.md),
 [gateway traffic switching and drain](docs/gateway-rollout.md),
 [DSW installed-wheel rollout validation](docs/gateway-rollout-validation.md),
