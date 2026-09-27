@@ -40,6 +40,8 @@ class Settings(Contract):
     host: str = "127.0.0.1"
     port: int = Field(default=8795, ge=1, le=65535)
     workers: int = Field(default=1, ge=1, le=128)
+    compiler_cache_tokens: int = Field(default=262144, ge=0)
+    compiler_cache_entries: int = Field(default=256, ge=0)
     api_key_env: str = "JEV_API_KEY"
     admin_key_env: str = "JEV_ADMIN_KEY"
     engine_key_env: str = "JEV_ENGINE_API_KEY"
@@ -74,7 +76,7 @@ def load_compiler(settings: Settings) -> Compiler:
     if not Path(settings.tokenizer or settings.model_id).is_dir():
         kwargs["revision"] = revision
     tokenizer = AutoTokenizer.from_pretrained(settings.tokenizer or settings.model_id, **kwargs)
-    return Compiler(tokenizer)
+    return Compiler(tokenizer, settings.compiler_cache_tokens, settings.compiler_cache_entries)
 
 
 def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:

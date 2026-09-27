@@ -36,7 +36,13 @@ def configure_http_app():
                     if settings.backend != "sglang":
                         raise ValueError("JEV_CONFIG backend must match the host engine")
                     runtime = await build_runtime(
-                        settings, native_backend=backend, compiler=Compiler(manager.tokenizer)
+                        settings,
+                        native_backend=backend,
+                        compiler=Compiler(
+                            manager.tokenizer,
+                            settings.compiler_cache_tokens,
+                            settings.compiler_cache_entries,
+                        ),
                     )
                     await runtime.start()
                     await bootstrap(runtime, settings)

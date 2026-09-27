@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 73 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 79 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -46,7 +46,11 @@ replacement for any requirement in `implementation-plan.md`.
 - Server-side input export, a fixed 144-case performance manifest, paired native
   and typed HTTP runner, and strict cohort accounting are implemented. The runner
   preserves parity/setup failures, actual token lengths, drain and unknown cache
-  observations. Real harness validation and the full performance suite remain pending.
+  observations. Five-second colocated SmolLM2 paired runs completed on both engines;
+  the initial SGLang parity failure is preserved. They expose plugin overhead and
+  do not certify performance. Bounded exact compiler caching and a persistent
+  FULL-synchronous registry connection have local contract/crash-persistence tests;
+  GPU revalidation of the optimization and the full performance suite remain pending.
 
 ## Required evidence still outstanding
 

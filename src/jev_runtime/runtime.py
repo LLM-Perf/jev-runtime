@@ -86,7 +86,10 @@ class Runtime:
         try:
             await cancel_and_drain(tasks)
         finally:
-            await self.backend.close()
+            try:
+                await self.backend.close()
+            finally:
+                self.registry.close()
 
     def _validate_bundle(self, bundle: Bundle) -> None:
         self.compiler.verify_bundle(bundle)

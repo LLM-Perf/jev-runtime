@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "source_commit": "ebec8b38f2f08e8931608d211e152d01fccf77b2",
+  "provided_runtime_source_commit": "5c4fcbe7d4d1bff4226c9b06d4c2b487b48e23fd",
+  "started_at": 1790500953.390408,
+  "qualification": "development HTTP measurements; not release performance certification",
+  "release_gate_passed": false,
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "scenario": {
+    "context_tokens": 256,
+    "candidates": 8,
+    "concurrency": 1,
+    "cache": "hot",
+    "scoring_mode": "joint-label"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674"
+  },
+  "duration_seconds": 5.0,
+  "repeats": 1,
+  "warmup_requests_per_method": 8,
+  "service_process_identity": {
+    "pid": 2586742,
+    "start_ticks": "425633905",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager"
+  ],
+  "measurements": [
+    {
+      "repeat": 1,
+      "method": "native-label",
+      "rows": "1-native-label.jsonl",
+      "summary": {
+        "dispatched_requests": 228,
+        "strict_success_requests": 228,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 228,
+        "window_seconds": 5.0,
+        "drain_seconds": 0.006744749844074249,
+        "makespan_seconds": 5.006744749844074,
+        "strict_success_rps_over_full_cohort": 45.53857074641176,
+        "strict_success_rps_completed_in_window": 45.4,
+        "successful_questions_per_second_over_full_cohort": 45.53857074641176,
+        "latency_successful_requests": {
+          "samples": 228,
+          "p50_ms": 21.446711383759975,
+          "p95_ms": 24.904963094741102,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 228,
+          "p50_ms": 21.446711383759975,
+          "p95_ms": 24.904963094741102,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 228
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 228
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 0,
+          "request_denominator": 228,
+          "observed_prompt_tokens": 0,
+          "observed_cached_tokens": 0,
+          "observed_token_weighted_ratio": null,
+          "full_cohort_token_weighted_ratio": null
+        }
+      }
+    },
+    {
+      "repeat": 1,
+      "method": "native-plugin",
+      "rows": "1-native-plugin.jsonl",
+      "summary": {
+        "dispatched_requests": 144,
+        "strict_success_requests": 144,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 144,
+        "window_seconds": 5.0,
+        "drain_seconds": 0.02154064178466797,
+        "makespan_seconds": 5.021540641784668,
+        "strict_success_rps_over_full_cohort": 28.676458137521326,
+        "strict_success_rps_completed_in_window": 28.6,
+        "successful_questions_per_second_over_full_cohort": 28.676458137521326,
+        "latency_successful_requests": {
+          "samples": 144,
+          "p50_ms": 33.68229977786541,
+          "p95_ms": 42.81932506710291,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 144,
+          "p50_ms": 33.68229977786541,
+          "p95_ms": 42.81932506710291,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 144
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 144
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 144,
+          "request_denominator": 144,
+          "observed_prompt_tokens": 36864,
+          "observed_cached_tokens": 34560,
+          "observed_token_weighted_ratio": 0.9375,
+          "full_cohort_token_weighted_ratio": 0.9375
+        }
+      }
+    }
+  ],
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false
+  },
+  "cache_definition": "repeated exact prompt after warmup",
+  "fixture_digest": "sha256:1b36eb33ebe0bbdfb3a17004173f85bc47c4536b7e9d008be311f7f099a5adaf",
+  "sequence_lengths": [
+    256
+  ],
+  "bundle_digest": "sha256:2c26fb781aeae84eef591532b14ccbb2b762ff3b0fc96aafb5eaafad677e28c4",
+  "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+  "parity_warmup_requests_per_method": 8,
+  "native_typed_probability_parity": {
+    "max_absolute_error": 0.0,
+    "tolerance": 0.0001,
+    "passed": true,
+    "native_cached_tokens_per_branch": [
+      null
+    ],
+    "typed_cached_prompt_tokens": 240
+  },
+  "measurement_complete": true,
+  "all_attempts_successful": true,
+  "temporary_alias_retired": true,
+  "finished_at": 1790500964.9983833
+}

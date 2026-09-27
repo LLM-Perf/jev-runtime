@@ -12,6 +12,24 @@ the native branches serially and records that distinction. Structured generation
 other Jev implementations, upstream decisions, open-loop saturation sweeps and
 full GPU/CPU telemetry collection remain separate outstanding work.
 
+The first colocated SmolLM2 development runs at runtime `5c4fcbe` and runner
+`ebec8b3` completed on both engines. SGLang recorded 202/202 native and 132/132
+typed successes; vLLM recorded 228/228 and 144/144. Each method ran for only five
+seconds. These expose overhead and validate the runner, not the release gates.
+SGLang's initial pre-warmup parity failure is retained; after both paths were
+warmed, their selected-label probabilities matched exactly at the unchanged
+1e-4 tolerance. Cold/cache numerical differences remain a separate investigation.
+
+The compiler now caches exact rendered-prompt/label encodings within each worker,
+bounded by `compiler_cache_tokens` (262144 token IDs) and `compiler_cache_entries`
+(256 entries). Set either to zero to disable it. Entries retain token IDs and a
+prompt digest, not raw text. Changed input, labels or template cause misses;
+request IDs, bundle limits and routing are checked afresh. Repeated-prompt results
+must therefore be reported separately from varying-input/cache-disabled tests.
+The registry reuses one serialized connection per owner while keeping WAL and
+`synchronous=FULL`. This avoids per-transaction connection and final-WAL-close
+overhead without removing durable dispatch journals or reducing crash guarantees.
+
 ## Exact inputs and denominators
 
 The administrator-only `/admin/compile` endpoint pins the active bundle and uses

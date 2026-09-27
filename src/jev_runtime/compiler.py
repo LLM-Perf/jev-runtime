@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import json
 import string
+import threading
+from collections import OrderedDict
 from dataclasses import dataclass
+from hashlib import sha256
 from typing import Any
 
 from jev_runtime.backends.base import ScoreInput
@@ -19,8 +22,15 @@ class CompiledQuestion:
 
 
 class Compiler:
-    def __init__(self, tokenizer: Any):
+    def __init__(self, tokenizer: Any, cache_tokens: int = 262144, cache_entries: int = 256):
+        if cache_tokens < 0 or cache_entries < 0:
+            raise ValueError("Compiler cache bounds cannot be negative")
         self.tokenizer = tokenizer
+        self._cache_tokens = cache_tokens
+        self._cache_entries = cache_entries
+        self._cached_tokens = 0
+        self._encoding_cache: OrderedDict = OrderedDict()
+        self._cache_lock = threading.Lock()
         if not getattr(tokenizer, "chat_template", None):
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
         self.template_digest = content_digest(tokenizer.chat_template)
@@ -64,8 +74,25 @@ class Compiler:
                 "template_error", f"Template rendering failed: {type(exc).__name__}"
             ) from exc
 
-    def _encode(self, prompt: str, labels: list[str]) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    def _encode(
+        self, prompt: str, labels: list[str], max_input_tokens: int
+    ) -> tuple[tuple[int, ...], tuple[int, ...]]:
+        # An exact rendered-prompt digest and exact labels identify this entry.
+        # No suffix heuristic is safe for arbitrary tokenizer normalizers/BPE.
+        # Raw input strings are not retained. Both token and entry counts bound
+        # the per-worker cache; request IDs and bundle policy are never cached.
+        key = (sha256(prompt.encode()).digest(), tuple(labels))
+        with self._cache_lock:
+            cached = self._encoding_cache.get(key)
+            if cached is not None:
+                self._encoding_cache.move_to_end(key)
+        if cached is not None:
+            if len(cached[0]) > max_input_tokens:
+                raise JevError("context_budget", "Compiled prompt exceeds context budget", 413)
+            return cached
         ids = self.tokenizer.encode(prompt, add_special_tokens=False)
+        if len(ids) > max_input_tokens:
+            raise JevError("context_budget", "Compiled prompt exceeds context budget", 413)
         label_ids = []
         for label in labels:
             extended = self.tokenizer.encode(prompt + label, add_special_tokens=False)
@@ -74,7 +101,22 @@ class Compiler:
             label_ids.append(extended[-1])
         if len(set(label_ids)) != len(label_ids):
             raise JevError("label_encoding", "Answer labels do not map to distinct tokens")
-        return tuple(ids), tuple(label_ids)
+        encoded = tuple(ids), tuple(label_ids)
+        size = len(ids) + len(label_ids)
+        if self._cache_entries and size <= self._cache_tokens:
+            with self._cache_lock:
+                previous = self._encoding_cache.pop(key, None)
+                if previous is not None:
+                    self._cached_tokens -= sum(map(len, previous))
+                self._encoding_cache[key] = encoded
+                self._cached_tokens += size
+                while (
+                    self._cached_tokens > self._cache_tokens
+                    or len(self._encoding_cache) > self._cache_entries
+                ):
+                    _, evicted = self._encoding_cache.popitem(last=False)
+                    self._cached_tokens -= sum(map(len, evicted))
+        return encoded
 
     @staticmethod
     def _label_sets(count: int, binary: bool = False) -> list[list[str]]:
@@ -144,12 +186,14 @@ class Compiler:
                 body += "\nReturn exactly one answer label."
                 prompt = self._render(body, bundle)
                 try:
-                    input_ids, label_ids = self._encode(prompt, labels)
+                    input_ids, label_ids = self._encode(
+                        prompt, labels, bundle.policy.max_input_tokens
+                    )
                 except JevError as exc:
+                    if exc.code != "label_encoding":
+                        raise
                     error = exc
                     continue
-                if len(input_ids) > bundle.policy.max_input_tokens:
-                    raise JevError("context_budget", "Compiled prompt exceeds context budget", 413)
                 sequences.append(
                     ScoreInput(
                         request_id=f"{request_id}.{question.id}.{index}",

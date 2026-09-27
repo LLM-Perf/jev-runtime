@@ -4,6 +4,7 @@ import json
 import os
 import socket
 import sqlite3
+import threading
 import time
 import uuid
 from collections.abc import Iterator
@@ -35,6 +36,9 @@ class Registry:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.owner = uuid.uuid4().hex
+        self._pid = os.getpid()
+        self._connection_lock = threading.RLock()
+        self._db: sqlite3.Connection | None = None
         with self._connection() as db:
             db.executescript("""
                 PRAGMA journal_mode=WAL;
@@ -129,13 +133,26 @@ class Registry:
 
     @contextmanager
     def _connection(self) -> Iterator[sqlite3.Connection]:
-        db = sqlite3.connect(self.path, timeout=5, isolation_level=None)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA foreign_keys=ON")
-        try:
-            yield db
-        finally:
-            db.close()
+        if os.getpid() != self._pid:
+            raise RuntimeError("Create a new Registry in each worker; never reuse one after fork")
+        # Keep one connection per registry owner. Closing the last connection
+        # after every transaction forces WAL cleanup/checkpoint work onto every
+        # request. Serialize access across threads without weakening durability.
+        with self._connection_lock:
+            if self._db is None:
+                self._db = sqlite3.connect(
+                    self.path, timeout=5, isolation_level=None, check_same_thread=False
+                )
+                self._db.row_factory = sqlite3.Row
+                self._db.execute("PRAGMA foreign_keys=ON")
+                self._db.execute("PRAGMA synchronous=FULL")
+            yield self._db
+
+    def close(self) -> None:
+        with self._connection_lock:
+            if self._db is not None:
+                self._db.close()
+                self._db = None
 
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
