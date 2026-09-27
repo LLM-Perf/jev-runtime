@@ -110,8 +110,15 @@ Clients may set a unique `request_id` before submitting. Cancellation is scoped 
 the authenticated tenant. `/v1/requests/{request_id}/cancel` confirms cancellation
 only after cleanup; a failed engine abort returns `cancellation_unconfirmed` and
 retains the bundle lease. Duplicate in-flight IDs are rejected across workers
-sharing the registry. Cancellation lookup currently belongs to the handling API
-process; use sticky routing for an explicit cancellation call in a multi-worker setup.
+sharing the registry. Workers sharing the same local registry route explicit
+cancellations through a durable owner-addressed command. Tenant and engine identity
+are checked against the persisted lease; its random lease ID prevents a delayed
+command from cancelling a later request that reuses the public request ID. Only
+the owning worker calls the engine abort and confirms cleanup. A dead/unreachable
+owner, failed abort or ten-second control timeout returns `cancellation_unconfirmed`
+instead of acknowledging success. Administrative recovery remains explicit.
+This covers local API workers, not multiple nodes or a multi-worker vLLM HTTP bridge.
+Readiness fails while the local cancellation control loop reports database errors.
 
 Client disconnects and request deadlines propagate to scoring branches. `partial`
 retains per-question errors; unknown or incomplete engine usage is `null`, not zero.

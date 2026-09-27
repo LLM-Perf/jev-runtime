@@ -73,6 +73,17 @@ class Registry:
                     lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
                     branches TEXT NOT NULL, phase TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS lease_tenants (
+                    lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
+                    tenant TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS cancel_commands (
+                    id TEXT PRIMARY KEY, lease_id TEXT NOT NULL UNIQUE,
+                    owner TEXT NOT NULL, request_id TEXT NOT NULL,
+                    tenant TEXT NOT NULL, state TEXT NOT NULL, created REAL NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS cancel_commands_by_owner
+                    ON cancel_commands(owner,state);
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
                     action TEXT NOT NULL, details TEXT NOT NULL
@@ -394,7 +405,14 @@ class Registry:
             self._event(db, "disable", alias=alias, generation=generation)
             return {"alias": alias, "bundle": None, "generation": generation}
 
-    def acquire(self, alias: str, request_id: str, reference: str | None, backend: str) -> Snapshot:
+    def acquire(
+        self,
+        alias: str,
+        request_id: str,
+        reference: str | None,
+        backend: str,
+        tenant: str = "default",
+    ) -> Snapshot:
         with self._transaction() as db:
             if db.execute("SELECT 1 FROM leases WHERE request_id=?", (request_id,)).fetchone():
                 raise JevError("duplicate_request", "Request ID is already in flight", 409)
@@ -422,11 +440,88 @@ class Registry:
                 ),
             )
             db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
+            db.execute("INSERT INTO lease_tenants VALUES(?,?)", (lease, tenant))
             return Snapshot(Bundle.model_validate_json(row["manifest"]), route["generation"], lease)
 
     def release(self, lease_id: str) -> None:
         with self._transaction() as db:
+            # A cancellation not yet claimed lost the race to normal request
+            # completion. RUNNING commands are settled by their owning worker.
+            db.execute(
+                "UPDATE cancel_commands SET state='COMPLETED' "
+                "WHERE lease_id=? AND owner=? AND state='PENDING'",
+                (lease_id, self.owner),
+            )
             db.execute("DELETE FROM leases WHERE id=? AND owner=?", (lease_id, self.owner))
+
+    def request_cancel(self, request_id: str, tenant: str, backend: str) -> str | None:
+        """Authorize against persisted ownership and address one exact lease."""
+        with self._transaction() as db:
+            row = db.execute(
+                "SELECT l.* FROM leases l JOIN lease_tenants t ON t.lease_id=l.id "
+                "JOIN bundles b ON b.ref=l.ref "
+                "WHERE l.request_id=? AND t.tenant=? AND b.backend=?",
+                (request_id, tenant, backend),
+            ).fetchone()
+            if row is None:
+                return None
+            previous = db.execute(
+                "SELECT id FROM cancel_commands WHERE lease_id=?", (row["id"],)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            command = uuid.uuid4().hex
+            db.execute(
+                "INSERT INTO cancel_commands VALUES(?,?,?,?,?,'PENDING',?)",
+                (command, row["id"], row["owner"], request_id, tenant, time.time()),
+            )
+            # Retain pending/uncertain work indefinitely; terminal control
+            # responses only need a bounded observation window.
+            db.execute(
+                "DELETE FROM cancel_commands WHERE state IN ('CONFIRMED','COMPLETED') "
+                "AND created<?",
+                (time.time() - 3600,),
+            )
+            return command
+
+    def pending_cancel_commands(self) -> list[dict]:
+        with self._connection() as db:
+            return [
+                dict(row)
+                for row in db.execute(
+                    "SELECT * FROM cancel_commands WHERE owner=? AND state='PENDING'",
+                    (self.owner,),
+                )
+            ]
+
+    def claim_cancel(self, command: str) -> bool:
+        with self._transaction() as db:
+            return (
+                db.execute(
+                    "UPDATE cancel_commands SET state='RUNNING' "
+                    "WHERE id=? AND owner=? AND state='PENDING'",
+                    (command, self.owner),
+                ).rowcount
+                == 1
+            )
+
+    def finish_cancel(self, command: str, state: str) -> None:
+        if state not in {"CONFIRMED", "COMPLETED", "UNCONFIRMED"}:
+            raise ValueError("Invalid terminal cancellation state")
+        with self._transaction() as db:
+            db.execute(
+                "UPDATE cancel_commands SET state=? WHERE id=? AND owner=? AND state='RUNNING'",
+                (state, command, self.owner),
+            )
+
+    def cancel_status(self, command: str) -> str | None:
+        with self._connection() as db:
+            row = db.execute("SELECT state FROM cancel_commands WHERE id=?", (command,)).fetchone()
+            return row["state"] if row else None
+
+    def has_lease(self, lease_id: str) -> bool:
+        with self._connection() as db:
+            return db.execute("SELECT 1 FROM leases WHERE id=?", (lease_id,)).fetchone() is not None
 
     def record_branches(self, lease_id: str, branches: list[str]) -> None:
         """Persist engine IDs before dispatch, including canaries and queued work."""
@@ -531,6 +626,10 @@ class Registry:
             ):
                 raise JevError("recovery_conflict", "Lease changed during recovery", 409)
             db.execute("DELETE FROM leases WHERE id=?", (row["id"],))
+            db.execute(
+                "UPDATE cancel_commands SET state='CONFIRMED' WHERE lease_id=?",
+                (row["id"],),
+            )
             db.execute(
                 "UPDATE bundles SET state='FAILED',error='preparation owner exited' "
                 "WHERE ref=? AND state='PREPARING'",

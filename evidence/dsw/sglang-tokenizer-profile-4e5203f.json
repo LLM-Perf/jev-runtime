@@ -1,0 +1,49 @@
+{
+  "source_commit": "4e5203f2534ac88aaf1cb96f08781347de9e321a",
+  "passed": true,
+  "profile": {
+    "worker_id": "12046a5328a54356a921517af7163fee",
+    "model": {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+      "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+      "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "sglang",
+      "version": "0.5.19",
+      "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": null,
+      "verified": false
+    }
+  },
+  "prepared": {
+    "reference": "profile-proof@1",
+    "digest": "sha256:8aa080ebc109576e3ebf3365129b4ae2bd4cda1d8905f9b4f071eeba284c897b",
+    "state": "READY",
+    "backend": "sglang:http://127.0.0.1:18796:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+    "error": null,
+    "inflight": 0,
+    "worker_id": "12046a5328a54356a921517af7163fee"
+  },
+  "same_vocab_changed_implementation_rejected": {
+    "error": {
+      "code": "tokenizer_implementation_mismatch",
+      "message": "Bundle tokenizer normalization/pretokenization/BPE implementation differs"
+    }
+  }
+}

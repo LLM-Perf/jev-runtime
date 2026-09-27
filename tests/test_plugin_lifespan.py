@@ -46,7 +46,8 @@ async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp
     config = tmp_path / "config.json"
     config.write_text(
         '{"backend":"vllm","model_id":"fixture","model_revision":"'
-        + "a" * 40 + '","compiler_cache_tokens":0}'
+        + "a" * 40
+        + '","compiler_cache_tokens":0}'
     )
     engine = SimpleNamespace(
         model_config=SimpleNamespace(model="fixture", max_model_len=2048),

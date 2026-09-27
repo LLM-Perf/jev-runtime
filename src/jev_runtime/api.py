@@ -151,6 +151,8 @@ def install_routes(
     @router.get("/ready")
     async def ready(request: Request):
         instance = runtime(request)
+        if not instance.control_healthy:
+            raise JevError("control_unavailable", "Worker cancellation control is unhealthy", 503)
         routes = instance.registry.list()["routes"]
         prepared = [
             route["ref"] for route in routes if route["ref"] and instance.is_prepared(route["ref"])

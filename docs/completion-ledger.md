@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 84 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 88 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -53,12 +53,19 @@ replacement for any requirement in `implementation-plan.md`.
   vLLM completed three ten-second paired repeats after optimization, with exact
   probability parity and all attempts successful. A real vLLM gateway SIGKILL and
   recovery retest passed with the reused WAL connection. These remain colocated
-  development checks; SGLang optimization revalidation and the full suite are pending.
+  development checks. SGLang also completed three ten-second paired repeats with
+  all requests successful; its throughput still falls below the 90% target in some
+  repeats. Neither result fills the controlled release matrix.
 - New fast-tokenizer bundles bind the backend implementation fingerprint. Both
   native plugins use the host tokenizer. An admin profile and remote bundle-build
   CLI avoid a separately loaded tokenizer; old immutable digests are preserved,
   while serving requires rebuilding legacy bundles with the stronger identity.
-  Contract tests pass; GPU revalidation of this identity change remains pending.
+  Contract tests and a real SGLang remote-build/prepare/reject-mismatched-fingerprint
+  check pass. vLLM host-tokenizer revalidation remains pending.
+- Explicit cancellation now addresses the original local API worker through a
+  durable command, bound to tenant/backend/lease ID. Peer-worker success, failed
+  abort retention, ownership and reused-ID races have local tests. Real two-worker
+  GPU-serving validation is pending; this is not multi-node routing.
 
 ## Required evidence still outstanding
 

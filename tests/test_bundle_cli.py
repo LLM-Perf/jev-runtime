@@ -16,8 +16,15 @@ def test_build_remote_preserves_serving_profile_and_refuses_overwrite(
     monkeypatch.setattr(cli, "admin_request", profile)
     destination = tmp_path / "bundle.json"
     args = [
-        "bundle", "build-remote", str(destination), "--url", "http://localhost/plugin",
-        "--name", "bound", "--version", "2",
+        "bundle",
+        "build-remote",
+        str(destination),
+        "--url",
+        "http://localhost/plugin",
+        "--name",
+        "bound",
+        "--version",
+        "2",
     ]
     result = CliRunner().invoke(cli.app, args)
     assert result.exit_code == 0, result.output

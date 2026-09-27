@@ -47,9 +47,15 @@ class Runtime:
         self._management_lock = asyncio.Lock()
         self._active: dict[str, asyncio.Task] = {}
         self._tenants: dict[str, str] = {}
+        self._active_leases: dict[str, str] = {}
         self._prepared: set[str] = set()
+        self._control_task: asyncio.Task | None = None
+        self._cancel_jobs: set[asyncio.Task] = set()
+        self.control_healthy = False
 
     async def start(self) -> None:
+        if self._control_task is not None and not self._control_task.done():
+            raise RuntimeError("Runtime is already started")
         self._prepared.clear()
         self.registry.start_worker(self.backend_identity)
         self.capabilities = await self.backend.probe()
@@ -69,6 +75,45 @@ class Runtime:
                 # sends startup back through validation before joining traffic.
                 if self.registry.serve_worker(self.backend_identity):
                     break
+        self.control_healthy = True
+        self._control_task = asyncio.create_task(self._watch_cancellations())
+
+    async def _watch_cancellations(self) -> None:
+        while True:
+            try:
+                for command in self.registry.pending_cancel_commands():
+                    if self.registry.claim_cancel(command["id"]):
+                        task = asyncio.create_task(self._perform_remote_cancel(command))
+                        self._cancel_jobs.add(task)
+                        task.add_done_callback(self._cancel_job_done)
+                self.control_healthy = True
+            except Exception:
+                self.control_healthy = False
+                logger.exception("Jev cancellation control polling failed")
+            await asyncio.sleep(0.05)
+
+    def _cancel_job_done(self, task: asyncio.Task) -> None:
+        self._cancel_jobs.discard(task)
+        if not task.cancelled() and task.exception() is not None:
+            self.control_healthy = False
+            logger.error("Jev cancellation result could not be persisted: %s", task.exception())
+
+    async def _perform_remote_cancel(self, command: dict) -> None:
+        state = "UNCONFIRMED"
+        try:
+            # Caller IDs can be reused after completion. An old queued command
+            # must never cancel a new request with the same public ID.
+            if self._active_leases.get(command["request_id"]) != command["lease_id"]:
+                state = (
+                    "UNCONFIRMED" if self.registry.has_lease(command["lease_id"]) else "COMPLETED"
+                )
+            else:
+                cancelled = await self._cancel_local(command["request_id"], command["tenant"])
+                state = "CONFIRMED" if cancelled else "COMPLETED"
+        except Exception:
+            logger.exception("Jev owner could not confirm cancellation")
+        finally:
+            self.registry.finish_cancel(command["id"], state)
 
     def is_prepared(self, reference: str) -> bool:
         return reference in self._prepared
@@ -82,7 +127,10 @@ class Runtime:
 
     async def close(self) -> None:
         self.registry.stop_worker()
-        tasks = list(self._active.values())
+        self.control_healthy = False
+        tasks = [*self._active.values(), *self._cancel_jobs]
+        if self._control_task is not None:
+            tasks.append(self._control_task)
         try:
             await cancel_and_drain(tasks)
         finally:
@@ -294,8 +342,9 @@ class Runtime:
         try:
             async with asyncio.timeout(request.execution.timeout_ms / 1000):
                 snapshot = self.registry.acquire(
-                    request.model, rid, request.bundle, self.backend_identity
+                    request.model, rid, request.bundle, self.backend_identity, tenant
                 )
+                self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
                 compiled, sequences, total_tokens = self._compile_request(
                     request, bundle, engine_rid
@@ -388,6 +437,7 @@ class Runtime:
                     self.registry.release(snapshot.lease_id)
             self._active.pop(rid, None)
             self._tenants.pop(rid, None)
+            self._active_leases.pop(rid, None)
 
     async def recover_cancelled(self, request_id: str) -> bool:
         snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)
@@ -403,6 +453,29 @@ class Runtime:
         return self.registry.recovery_candidates()
 
     async def cancel(self, request_id: str, tenant: str = "default") -> bool:
+        if request_id in self._active:
+            return await self._cancel_local(request_id, tenant)
+        command = self.registry.request_cancel(request_id, tenant, self.backend_identity)
+        if command is None:
+            return False
+        try:
+            async with asyncio.timeout(10):
+                while True:
+                    state = self.registry.cancel_status(command)
+                    if state == "CONFIRMED":
+                        return True
+                    if state == "COMPLETED":
+                        return False
+                    if state in {None, "UNCONFIRMED"}:
+                        break
+                    await asyncio.sleep(0.025)
+        except TimeoutError:
+            pass
+        raise JevError(
+            "cancellation_unconfirmed", "The owning API worker has not confirmed cleanup", 503
+        )
+
+    async def _cancel_local(self, request_id: str, tenant: str) -> bool:
         if self._tenants.get(request_id) != tenant:
             return False
         task = self._active.get(request_id)
