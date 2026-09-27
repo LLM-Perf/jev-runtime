@@ -1,0 +1,84 @@
+{
+  "build_tools": {
+    "build": "1.6.1",
+    "hatchling": "1.32.4"
+  },
+  "builder_sha256": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7",
+  "builder_target": {
+    "implementation": "CPython",
+    "machine": "arm64",
+    "platform": "darwin",
+    "python": "3.12",
+    "soabi": "cpython-312-darwin"
+  },
+  "distributions": {
+    "jev-runtime-core": {
+      "name": "jev-runtime-core",
+      "requires": [
+        "fastapi<1,>=0.115",
+        "httpx<1,>=0.28",
+        "jinja2<4,>=3.1",
+        "numpy<3,>=1.26",
+        "prometheus-client<1,>=0.21",
+        "pydantic<3,>=2.10",
+        "pyyaml<7,>=6",
+        "safetensors<1,>=0.5",
+        "typer<1,>=0.15",
+        "uvicorn<1,>=0.32",
+        "build>=1.2; extra == 'dev'",
+        "hatchling>=1.26; extra == 'dev'",
+        "pytest-asyncio<2,>=0.25; extra == 'dev'",
+        "pytest<10,>=8; extra == 'dev'",
+        "ruff<1,>=0.9; extra == 'dev'",
+        "pyarrow<26,>=18; extra == 'quality-data'",
+        "torch>=2.6; extra == 'reference'",
+        "transformers<6,>=4.51; extra == 'reference'",
+        "tiktoken<1,>=0.9; extra == 'tokenizer-conversion'",
+        "transformers<6,>=4.51; extra == 'tokenizer-conversion'",
+        "transformers<6,>=4.51; extra == 'tokenizers'"
+      ],
+      "verified_python_files": 30,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl"
+    },
+    "jev-sglang": {
+      "name": "jev-sglang",
+      "requires": [
+        "jev-runtime-core==0.1.0a1"
+      ],
+      "verified_python_files": 4,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_sglang-0.1.0a1-py3-none-any.whl"
+    },
+    "jev-vllm": {
+      "name": "jev-vllm",
+      "requires": [
+        "jev-runtime-core==0.1.0a1"
+      ],
+      "verified_python_files": 4,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_vllm-0.1.0a1-py3-none-any.whl"
+    }
+  },
+  "files": {
+    "build.log": {
+      "sha256": "dc3cfbf3d420e4b2443719dfff0af5057aa574a05b3688b9eee2dbbf015539f4",
+      "size_bytes": 355
+    },
+    "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl": {
+      "sha256": "0f7a6e1658f4a88130ac7786b09a7ca6a706de2e6a4651d130c9e1fe493135c6",
+      "size_bytes": 90850
+    },
+    "wheels/jev_sglang-0.1.0a1-py3-none-any.whl": {
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "size_bytes": 3979
+    },
+    "wheels/jev_vllm-0.1.0a1-py3-none-any.whl": {
+      "sha256": "0ebaf934ef98bae20d47dcb8ddf84f61d0802f7ed5638ab27bb246585d893ecb",
+      "size_bytes": 3661
+    }
+  },
+  "kind": "jev-wheels-v1",
+  "schema_version": 1,
+  "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3"
+}

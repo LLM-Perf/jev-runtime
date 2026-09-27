@@ -101,3 +101,7 @@ routing, multi-node coordination, schema migration/downgrade, engine/CUDA rollou
 performance certification, 24-hour soak, deployment images and handoff remain
 separate unfinished gates. Model functional coverage remains **24/40 combinations**;
 numerical and business-quality gates are separate. P18/P19/P24 remain partial.
+
+The later [native cancellation follow-up](native-rollout-cancellation.md) exercises
+real scoring RPCs across a different installed-wheel rollback on both engines.
+It retains separate source identities, traffic denominators and initial failures.

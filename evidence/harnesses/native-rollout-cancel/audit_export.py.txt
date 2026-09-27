@@ -1,0 +1,70 @@
+"""Failure-inclusive rollout export allowlist and terminal process/source audit."""
+import hashlib,json,subprocess,sys,tarfile,time
+from pathlib import Path
+from huggingface_hub import HfApi
+ROOT=Path('/root/jev-runtime');SOURCE='b20d3f43d91c2e13ed2b044a77d35cc3037eb62b';GREEN='6f0cda85f72619193be7a1d1cc89d75142899bf3';PREVIOUS='773914587b4fab287ca1e4b17f60ff66eb20d261';release=ROOT/'releases'/SOURCE
+sys.path[:0]=[str(release),str(release/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import group_members
+from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+files={'initial-attempt.json':ROOT/'native-cancel-campaign-6f0cda8.json','retest.json':ROOT/'native-cancel-campaign-b20d3f4.json'}
+first=read(files['initial-attempt.json']);retest=read(files['retest.json'])
+assert first['completed'] and not first['passed'] and retest['completed'] and retest['passed']
+assert retest['initial_report_sha256']==sha(files['initial-attempt.json'])
+reports=[]
+for c in [first,retest]:
+ assert len(c['attempts'])==2
+ for a in c['attempts']:
+  assert a['cleanup']['passed'];reports.append(a['gateway'])
+records=[];seen=set()
+def add_record(record,identity):
+ key=(identity['boot_id'],identity['pid'],identity['start_ticks'])
+ if key not in seen:
+  seen.add(key);records.append({'record':record,'identity':identity})
+prior=ROOT/'rollout-audit-7739145.json'
+for row in read(prior)['records']:add_record(row['record'],row['identity'])
+for path in sorted((ROOT/'runs').rglob('process.json')):
+ r=read(path)
+ if r.get('identity'):add_record(str(path),r['identity'])
+for report in reports:
+ for row in report['processes']:add_record('native-cancel-report:'+row['name'],row['identity'])
+for row in records:
+ i=row['identity'];row['matching_live_process']=process_identity(i['pid'])==i;row['live_group']=group_members(i['pid'])
+assert all(not r['matching_live_process'] and not r['live_group'] for r in records)
+gpu=get_gpu(7);assert gpu['uuid']=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(gpu['free_mib'])==11990
+profiles=[]
+for engine in ['vllm','sglang']:
+ p=ROOT/'tokenizers'/f'SmolLM2-1.7B-Instruct-preserved-{engine}-cdd0caf';m=verify_tokenizer_profile(p)
+ profiles.append({'path':str(p),'manifest_sha256':sha(p/'jev-tokenizer-profile.json'),'payload_verified':True})
+model=ROOT/'models/SmolLM2-1.7B-Instruct';identity=read(model/'jev-source.json');info=HfApi().model_info(identity['model_id'],revision=identity['revision'],files_metadata=True,token=False);assert info.sha==identity['revision'];remote={s.rfilename:s for s in info.siblings};model_files=[]
+for p in sorted(list(model.glob('*.safetensors'))+[model/n for n in ['config.json','generation_config.json','tokenizer.json','tokenizer_config.json','special_tokens_map.json'] if (model/n).exists()]):
+ before=p.stat();h=sha(p);after=p.stat();r=remote[p.name];assert before.st_mtime_ns==after.st_mtime_ns and before.st_size==after.st_size==r.size
+ if r.lfs is not None:assert h==r.lfs.sha256
+ else:assert hashlib.sha1(b'blob '+str(after.st_size).encode()+b'\0'+p.read_bytes()).hexdigest()==r.blob_id
+ model_files.append({'name':p.name,'sha256':h,'size_bytes':after.st_size,'hub_digest_verified':True})
+source_files={c:{str(p.relative_to(ROOT/'releases'/c)):sha(p) for p in (ROOT/'releases'/c).rglob('*.py')} for c in [PREVIOUS,GREEN,SOURCE]}
+proxy=ROOT/'proxy/haproxy-3.2.24';binary=proxy/'haproxy-3.2.24/haproxy';proxy_record={'source_url':'https://www.haproxy.org/download/3.2/src/haproxy-3.2.24.tar.gz','source_sha256':sha(proxy/'source.tar.gz'),'binary_sha256':sha(binary),'version':subprocess.check_output([str(binary),'-vv'],text=True)}
+assert proxy_record['source_sha256']=='f765638cc4819f25e20d974a4a1bc24ed54342467c88363d7fc34a1fa95b725a'
+envs={}
+for e in ['vllm','sglang']:
+ code="import json,importlib,importlib.metadata as m;print(json.dumps({'versions':{n:m.version(n) for n in ['"+e+"','torch','transformers','tokenizers']},'imports':{n:importlib.import_module(n).__file__ for n in ['jev_runtime','jev_runtime.rollout','jev_"+e+"']}}))"
+ envs[e]=json.loads(subprocess.check_output([str(ROOT/'envs'/e/'bin/python'),'-c',code],text=True));assert all('/releases/'+SOURCE+'/' in s for s in envs[e]['imports'].values())
+audit={'source_commit':SOURCE,'candidate_wheel_source':GREEN,'prior_audit_sha256':sha(prior),'script_sha256':sha(Path(__file__)),'checked_at':time.time(),'passed':True,'records':records,'owned_records_checked':len(records),'gpu7':gpu,'profiles':profiles,'model':identity,'model_files':model_files,'environments':envs,'source_files':source_files,'proxy':proxy_record}
+p=ROOT/'native-cancel-audit-b20d3f4.json';assert not p.exists();p.write_text(json.dumps(audit,indent=2)+'\n');files['audit.json']=p
+base=ROOT/'native-cancel-packaging-6f0cda8'
+files['wheels-6f0cda8-manifest.json']=base/'wheels/manifest.json'
+files['gateway-6f0cda8-manifest.json']=base/'gateway/manifest.json'
+for short in ['6f0cda8','b20d3f4']:
+ for e in ['vllm','sglang']:
+  run=ROOT/'runs'/f'native-cancel-{e}-engine-{short}'
+  for n in ['process.json','cleanup.json']:files[f'native-{e}-{short}/{n}']=run/n
+manifest={'script_sha256':sha(Path(__file__)),'artifacts':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in files.items()}}
+p=ROOT/'native-cancel-export-b20d3f4.json';assert not p.exists();p.write_text(json.dumps(manifest,indent=2)+'\n');files['export-manifest.json']=p
+archive=ROOT/'native-cancel-evidence-b20d3f4.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for n,p in sorted(files.items()):tar.add(p,arcname=n,recursive=False)
+print(json.dumps({'archive':str(archive),'sha256':sha(archive),'size_bytes':archive.stat().st_size,'owned_records_checked':len(records),'model_files':len(model_files)}))

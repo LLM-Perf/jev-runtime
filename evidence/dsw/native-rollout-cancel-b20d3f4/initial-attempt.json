@@ -1,0 +1,2028 @@
+{
+  "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "previous_source": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+  "script_sha256": "f581f943bcfbc6fb367a7dc2f3960eb910aa28f95171d93565b55463d3f0a8e0",
+  "started_at": 1790546035.3190486,
+  "attempts": [
+    {
+      "engine": "vllm",
+      "native_run": "/root/jev-runtime/runs/native-cancel-vllm-engine-6f0cda8",
+      "gateway_run": "/root/jev-runtime/runs/native-cancel-vllm-6f0cda8",
+      "started_at": 1790546070.3489654,
+      "launch_command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/6f0cda85f72619193be7a1d1cc89d75142899bf3/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/native-cancel-vllm-engine-6f0cda8",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--reserve-mib",
+        "3072"
+      ],
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 36.08926493115723
+      },
+      "validation_command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "tests.integration.live_rollout",
+        "--run-dir",
+        "/root/jev-runtime/runs/native-cancel-vllm-6f0cda8",
+        "--haproxy",
+        "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+        "--source-commit",
+        "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "--engine-run-dir",
+        "/root/jev-runtime/runs/native-cancel-vllm-engine-6f0cda8",
+        "--switches",
+        "10",
+        "--blue-python",
+        "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+        "--green-python",
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "--blue-release",
+        "773914587b4fab287ca1e4b17f60ff66eb20d261",
+        "--green-release",
+        "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "--native-cancel",
+        "--native-cancel-slot",
+        "green"
+      ],
+      "returncode": 1,
+      "gateway": {
+        "checks": {
+          "blue_qualified": {
+            "all_workers": [
+              "4ec79773f6494f4daeec8252fe9c2dce",
+              "7ae2a8d98fed4c39b091bc99079c1707"
+            ],
+            "auth_policy": "1c78d35668d858a3b5a217cedb56b395ad919855edd6112cbf0235c14fb6bdc8",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": 1,
+              "cancellation": true,
+              "engine": "vllm",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.30.0+cu129"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "blue-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8263557
+              },
+              "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "4ec79773f6494f4daeec8252fe9c2dce",
+              "7ae2a8d98fed4c39b091bc99079c1707"
+            ]
+          },
+          "green_qualified": {
+            "all_workers": [
+              "28da9d138d0c4fc0a04fb7361b4d4bec",
+              "bebb5a2e4a7346148b6c8bda5fc732c6"
+            ],
+            "auth_policy": "1c78d35668d858a3b5a217cedb56b395ad919855edd6112cbf0235c14fb6bdc8",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": 1,
+              "cancellation": true,
+              "engine": "vllm",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.30.0+cu129"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "green-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8263557
+              },
+              "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "28da9d138d0c4fc0a04fb7361b4d4bec",
+              "bebb5a2e4a7346148b6c8bda5fc732c6"
+            ]
+          },
+          "keepalive_next_request_uses_new_slot": true,
+          "old_slot_drain": {
+            "drained": true,
+            "generation": 1,
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2704203",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430165259"
+            },
+            "remaining_leases": 0,
+            "slot": "blue",
+            "stats": {
+              "BACKEND": {
+                "qcur": 0,
+                "scur": 0
+              },
+              "gateway": {
+                "qcur": 0,
+                "scur": 0
+              }
+            },
+            "workers": [
+              "4ec79773f6494f4daeec8252fe9c2dce",
+              "7ae2a8d98fed4c39b091bc99079c1707"
+            ]
+          },
+          "partial_body_survives_switch_and_prevents_early_drain": true
+        },
+        "cleanup": [
+          {
+            "name": "haproxy",
+            "remaining": [],
+            "returncode": -15
+          },
+          {
+            "name": "green",
+            "remaining": [],
+            "returncode": 0
+          },
+          {
+            "name": "blue",
+            "remaining": [],
+            "returncode": 0
+          }
+        ],
+        "failure": {
+          "message": "Cannot open a client instance more than once.",
+          "type": "RuntimeError"
+        },
+        "finished_at": 1790546116.4295266,
+        "fixture": false,
+        "installed_code": {
+          "blue": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-7739145/lib/python3.12/site-packages/jev_runtime"
+          },
+          "green": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "c4bba7d3a1574f733564b1d2b247b94853c879f74d9e1e2ac94fca3b91f60243",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "f9d990baf66f05f8ae7f1e8d1b6e3fe0226cca66cb5bc16f0ed78899e0a10854",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "f947398844cd9d8b4b51c48a9ba6059fba2b972226d415c2d1c5d135b85ec5f5",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime"
+          }
+        },
+        "native_engine_identity": {
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "pid": 2702694,
+          "start_ticks": "430160982"
+        },
+        "passed": false,
+        "processes": [
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18801",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2703420,
+              "start_ticks": "430164625"
+            },
+            "name": "blue",
+            "port": 18801
+          },
+          {
+            "command": [
+              "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18802",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2703811,
+              "start_ticks": "430164920"
+            },
+            "name": "green",
+            "port": 18802
+          },
+          {
+            "command": [
+              "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+              "-db",
+              "-f",
+              "/root/jev-runtime/runs/native-cancel-vllm-6f0cda8/proxy/haproxy.cfg"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2704203,
+              "start_ticks": "430165259"
+            },
+            "name": "haproxy",
+            "port": 18800
+          }
+        ],
+        "proxy_identity": {
+          "Nbthread": "1",
+          "Pid": "2704203",
+          "Version": "3.2.24-70b0913",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "start_ticks": "430165259"
+        },
+        "qualification": "Colocated rollout functional test; no performance certification",
+        "script_sha256": "04da65ce7f46d3e1aa0626cb5be73e367a04d90970db3311a99bbc1c3a1dc8ab",
+        "slot_releases": {
+          "blue": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+          "green": "6f0cda85f72619193be7a1d1cc89d75142899bf3"
+        },
+        "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "started_at": 1790546106.8775234,
+        "traffic": [
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.1960412338376,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 75.08566044270992,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.35153157263994,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.899048171937466,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.291537307202816,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.521489560604095,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.04386231303215,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.125212088227272,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.48467874526978,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.86299476027489,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.86224477738142,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.16728959977627,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.55500517785549,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.049593187868595,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 97.16108534485102,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.893829211592674,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.321670532226562,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.41135413199663,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.58464112877846,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.63598061352968,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.95044396072626,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.36273176968098,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.191431917250156,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 92.86254923790693,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 37.2680239379406,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.954260490834713,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.43787167966366,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 34.62222870439291,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.190091744065285,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.79634798318148,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.08590577542782,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.92511194944382,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.266587778925896,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.690867990255356,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.01963011920452,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.47844284772873,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.74421314895153,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.71460919827223,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 56.766439229249954,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 58.60713217407465,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.56393124908209,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.74378267675638,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.87790956348181,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.989602483808994,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.67956785857677,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 42.788974940776825,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.697419911623,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.9786289781332,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.613498859107494,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.160037361085415,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 25.911716744303703,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 94.26916670054197,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 49.15217217057943,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.7963430210948,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.79863324761391,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 30.83139006048441,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 86.1239992082119,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.69576543569565,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.985298238694668,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 79.0581526234746,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 39.64017517864704,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 91.0367351025343,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.8312694132328,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.37121007591486,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 62.92315199971199,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.10976155102253,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.475305669009686,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.93597991764545,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 26.40649490058422,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.48108845949173,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.42025392502546,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.27937330305576,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 90.260099619627,
+            "slot": "blue",
+            "status": 200
+          }
+        ],
+        "traffic_errors": 0,
+        "traffic_successes": 73
+      },
+      "same_native_engine_identity": true,
+      "passed": false,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2702694,
+            "start_ticks": "430160982",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--tokenizer",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790546070.491195,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790546116.5317152,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790546117.701361
+    },
+    {
+      "engine": "sglang",
+      "native_run": "/root/jev-runtime/runs/native-cancel-sglang-engine-6f0cda8",
+      "gateway_run": "/root/jev-runtime/runs/native-cancel-sglang-6f0cda8",
+      "started_at": 1790546124.087181,
+      "launch_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/6f0cda85f72619193be7a1d1cc89d75142899bf3/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/native-cancel-sglang-engine-6f0cda8",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".5",
+        "--reserve-mib",
+        "3072"
+      ],
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 32.06086968258023
+      },
+      "validation_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "tests.integration.live_rollout",
+        "--run-dir",
+        "/root/jev-runtime/runs/native-cancel-sglang-6f0cda8",
+        "--haproxy",
+        "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+        "--source-commit",
+        "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "--engine-run-dir",
+        "/root/jev-runtime/runs/native-cancel-sglang-engine-6f0cda8",
+        "--switches",
+        "10",
+        "--blue-python",
+        "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+        "--green-python",
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "--blue-release",
+        "773914587b4fab287ca1e4b17f60ff66eb20d261",
+        "--green-release",
+        "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "--native-cancel",
+        "--native-cancel-slot",
+        "green"
+      ],
+      "returncode": 1,
+      "gateway": {
+        "checks": {
+          "blue_qualified": {
+            "all_workers": [
+              "f48fc9210da943298907dabda1d8bbbc",
+              "f57d7331a0e6426f8845bd315c8ebdb9"
+            ],
+            "auth_policy": "1b17aa9768c6d51b16474741dcde831eabf55d856d7010adb862407146d0c514",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": null,
+              "cancellation": true,
+              "engine": "sglang",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.5.19"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "blue-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8263531
+              },
+              "release": "773914587b4fab287ca1e4b17f60ff66eb20d261"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "f48fc9210da943298907dabda1d8bbbc",
+              "f57d7331a0e6426f8845bd315c8ebdb9"
+            ]
+          },
+          "green_qualified": {
+            "all_workers": [
+              "2a6d7290c0544b909f01ad1278e1afa2",
+              "39edcb0bf44b479d8b00693f255f06bd"
+            ],
+            "auth_policy": "1b17aa9768c6d51b16474741dcde831eabf55d856d7010adb862407146d0c514",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "bindings": [
+              [
+                "default@1",
+                "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+                "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+              ]
+            ],
+            "capabilities": {
+              "api_workers": null,
+              "cancellation": true,
+              "engine": "sglang",
+              "lora": false,
+              "max_context_tokens": 2048,
+              "max_label_tokens": 128,
+              "model_dtype": "bfloat16",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "prefix_cache": true,
+              "raw_logprobs": true,
+              "readout_dtype": "bfloat16",
+              "selected_logprobs": true,
+              "verified": false,
+              "version": "0.5.19"
+            },
+            "deployment": {
+              "expected_workers": 2,
+              "id": "green-test",
+              "protocol": 1,
+              "registry": {
+                "device": 152,
+                "host": "dsw-501084-677cf96c94-zdgmr",
+                "inode": 8263531
+              },
+              "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3"
+            },
+            "model": {
+              "adapter_id": null,
+              "adapter_revision": null,
+              "dtype": "bfloat16",
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "quantization": null,
+              "readout_dtype": "bfloat16",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef"
+            },
+            "routes": [
+              {
+                "alias": "decision-model",
+                "generation": 1,
+                "ref": "default@1"
+              }
+            ],
+            "workers": [
+              "2a6d7290c0544b909f01ad1278e1afa2",
+              "39edcb0bf44b479d8b00693f255f06bd"
+            ]
+          },
+          "keepalive_next_request_uses_new_slot": true,
+          "old_slot_drain": {
+            "drained": true,
+            "generation": 1,
+            "proxy": {
+              "Nbthread": "1",
+              "Pid": "2705667",
+              "Version": "3.2.24-70b0913",
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "start_ticks": "430170177"
+            },
+            "remaining_leases": 0,
+            "slot": "blue",
+            "stats": {
+              "BACKEND": {
+                "qcur": 0,
+                "scur": 0
+              },
+              "gateway": {
+                "qcur": 0,
+                "scur": 0
+              }
+            },
+            "workers": [
+              "f48fc9210da943298907dabda1d8bbbc",
+              "f57d7331a0e6426f8845bd315c8ebdb9"
+            ]
+          },
+          "partial_body_survives_switch_and_prevents_early_drain": true
+        },
+        "cleanup": [
+          {
+            "name": "haproxy",
+            "remaining": [],
+            "returncode": -15
+          },
+          {
+            "name": "green",
+            "remaining": [],
+            "returncode": 0
+          },
+          {
+            "name": "blue",
+            "remaining": [],
+            "returncode": 0
+          }
+        ],
+        "failure": {
+          "message": "Cannot open a client instance more than once.",
+          "type": "RuntimeError"
+        },
+        "finished_at": 1790546165.0646029,
+        "fixture": false,
+        "installed_code": {
+          "blue": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "23275c1f2409523bf14c588b1db401456b400a294fb0e1166ad1444effbb8015",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "96c20aee508cfd57ba0bd02b71846cfb524d62733b89ed63e71a8b3839091f0d",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "4e1f91ed8520537b95732d767ef2cc03291569891675659cd2cd682287bff226",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/rollout-wheel-7739145/lib/python3.12/site-packages/jev_runtime"
+          },
+          "green": {
+            "files": {
+              "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+              "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+              "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+              "api.py": "c4bba7d3a1574f733564b1d2b247b94853c879f74d9e1e2ac94fca3b91f60243",
+              "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+              "backends/base.py": "8a7cd0b4ccdeb1889f3bdc672a36e6a4e7177cb02ff1f264cad37d60467ae37b",
+              "backends/sglang.py": "342e8407ba8d9af14574f0a5a6d29b183b6241f4ffc193d9fd29e5a0cd76b2b6",
+              "backends/vllm.py": "56ea107e53a8eb59350742549b585eb1c281835b90a672acd6d1d208c53391e9",
+              "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+              "cli.py": "e179c38185ebb330c189d5262bfc0f81e9ab3f6535fa8f33c698388eaeb3664d",
+              "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+              "config.py": "3da6449949b19d173c8893ce0bf2b7600d18aad4f0837c35f05dbd97b5f27ac8",
+              "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+              "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+              "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+              "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+              "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+              "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+              "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+              "registry.py": "61f0b68cba2bbf574659e7b43555d63026d5578bb6f318796eac8c7c2dde0216",
+              "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+              "runtime.py": "f9d990baf66f05f8ae7f1e8d1b6e3fe0226cca66cb5bc16f0ed78899e0a10854",
+              "schema.py": "fafda58bddfdb509cae4b0854f0343e8ca75c13f900c5678dc45949f28710413",
+              "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+              "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+              "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+              "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+              "telemetry.py": "f947398844cd9d8b4b51c48a9ba6059fba2b972226d415c2d1c5d135b85ec5f5",
+              "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+              "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594"
+            },
+            "path": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime"
+          }
+        },
+        "native_engine_identity": {
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "pid": 2704311,
+          "start_ticks": "430166356"
+        },
+        "passed": false,
+        "processes": [
+          {
+            "command": [
+              "/root/jev-runtime/envs/rollout-wheel-7739145/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18801",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2704884,
+              "start_ticks": "430169596"
+            },
+            "name": "blue",
+            "port": 18801
+          },
+          {
+            "command": [
+              "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+              "-I",
+              "-m",
+              "uvicorn",
+              "jev_runtime.api:create_app_from_env",
+              "--factory",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "18802",
+              "--workers",
+              "2"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2705275,
+              "start_ticks": "430169881"
+            },
+            "name": "green",
+            "port": 18802
+          },
+          {
+            "command": [
+              "/root/jev-runtime/proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy",
+              "-db",
+              "-f",
+              "/root/jev-runtime/runs/native-cancel-sglang-6f0cda8/proxy/haproxy.cfg"
+            ],
+            "identity": {
+              "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+              "pid": 2705667,
+              "start_ticks": "430170177"
+            },
+            "name": "haproxy",
+            "port": 18800
+          }
+        ],
+        "proxy_identity": {
+          "Nbthread": "1",
+          "Pid": "2705667",
+          "Version": "3.2.24-70b0913",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+          "start_ticks": "430170177"
+        },
+        "qualification": "Colocated rollout functional test; no performance certification",
+        "script_sha256": "04da65ce7f46d3e1aa0626cb5be73e367a04d90970db3311a99bbc1c3a1dc8ab",
+        "slot_releases": {
+          "blue": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+          "green": "6f0cda85f72619193be7a1d1cc89d75142899bf3"
+        },
+        "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+        "started_at": 1790546156.5782044,
+        "traffic": [
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.74076320230961,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 84.45495180785656,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.98902368545532,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.0150001347065,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.31829650700092,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 47.23454546183348,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.393302105367184,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 33.65376777946949,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.20361874252558,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 40.20330868661404,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 27.63944398611784,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 87.27488107979298,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.590345203876495,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 28.273927979171276,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 88.16352486610413,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.43677585572004,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.14314610511065,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 55.01641798764467,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 36.34665720164776,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 57.517414912581444,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 98.61328825354576,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.03176338225603,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 32.8024560585618,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 59.04233083128929,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 60.93895435333252,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.73349895328283,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 97.17370104044676,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 31.28308430314064,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 82.43961352854967,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 85.43595857918262,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 76.94872003048658,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.185043036937714,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.81522338837385,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.8017915263772,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 61.862717382609844,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.588364876806736,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 52.38638631999493,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 93.80553849041462,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 77.26087234914303,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.6038401722908,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.63625671714544,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.07233005017042,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 50.14547798782587,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.59882187843323,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 51.13798938691616,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.94589304178953,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 41.225467808544636,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 53.96358389407396,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 54.10747043788433,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.90711556375027,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.91118823736906,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 43.024455197155476,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 29.580941423773766,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.25161505490541,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 83.97828135639429,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 72.936843149364,
+            "slot": "green",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.06160368025303,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 48.441276885569096,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 46.50591965764761,
+            "slot": "blue",
+            "status": 200
+          },
+          {
+            "bundle": "default@1",
+            "generation": 1,
+            "latency_ms": 45.874870382249355,
+            "slot": "blue",
+            "status": 200
+          }
+        ],
+        "traffic_errors": 0,
+        "traffic_successes": 60
+      },
+      "same_native_engine_identity": true,
+      "passed": false,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2704311,
+            "start_ticks": "430166356",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "sglang",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18794",
+            "--dtype",
+            "bfloat16",
+            "--context-length",
+            "2048",
+            "--max-running-requests",
+            "4",
+            "--chunked-prefill-size",
+            "512",
+            "--max-total-tokens",
+            "2048",
+            "--mem-fraction-static",
+            "0.5",
+            "--disable-cuda-graph",
+            "--attention-backend",
+            "triton",
+            "--tokenizer-path",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790546124.233934,
+          "port": 18794,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "free_mib"
+        },
+        "checked_at": 1790546165.1435153,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790546171.4452853
+    }
+  ],
+  "qualification": "Real 128-branch request progress before/after installed-wheel rollback and peer cancellation; native scoring RPC evidence, not CUDA kernel residency or performance certification",
+  "installation": {
+    "wheel_manifest_sha256": "fbf28a3191465e37443bd4e7d3ee30fd04245737ce610419f46fe01fd6280e8f",
+    "gateway_manifest_sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+    "receipt": {
+      "base_prefix": "/root/.pyenv/versions/3.12.11",
+      "core_files": {
+        "jev_runtime/__init__.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/__init__.py",
+        "jev_runtime/adapters.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/adapters.py",
+        "jev_runtime/admission.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/admission.py",
+        "jev_runtime/api.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/api.py",
+        "jev_runtime/backends/__init__.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/backends/__init__.py",
+        "jev_runtime/backends/base.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/backends/base.py",
+        "jev_runtime/backends/sglang.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/backends/sglang.py",
+        "jev_runtime/backends/vllm.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/backends/vllm.py",
+        "jev_runtime/calibration.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/calibration.py",
+        "jev_runtime/cli.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/cli.py",
+        "jev_runtime/compiler.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/compiler.py",
+        "jev_runtime/config.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/config.py",
+        "jev_runtime/errors.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/errors.py",
+        "jev_runtime/evaluation.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/evaluation.py",
+        "jev_runtime/generation_baseline.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/generation_baseline.py",
+        "jev_runtime/health.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/health.py",
+        "jev_runtime/lifecycle.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/lifecycle.py",
+        "jev_runtime/performance.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/performance.py",
+        "jev_runtime/plugin_api.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/plugin_api.py",
+        "jev_runtime/registry.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/registry.py",
+        "jev_runtime/rollout.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/rollout.py",
+        "jev_runtime/runtime.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/runtime.py",
+        "jev_runtime/schema.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/schema.py",
+        "jev_runtime/scoring.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/scoring.py",
+        "jev_runtime/sdk.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/sdk.py",
+        "jev_runtime/shared_admission.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/shared_admission.py",
+        "jev_runtime/systemone.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/systemone.py",
+        "jev_runtime/telemetry.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/telemetry.py",
+        "jev_runtime/templates.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/templates.py",
+        "jev_runtime/tokenizer_profiles.py": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/tokenizer_profiles.py"
+      },
+      "core_path": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/lib/python3.12/site-packages/jev_runtime/__init__.py",
+      "manifest_sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+      "packages": {
+        "Jinja2": "3.1.6",
+        "MarkupSafe": "3.0.3",
+        "PyYAML": "6.0.3",
+        "Pygments": "2.21.0",
+        "annotated-doc": "0.0.5",
+        "annotated-types": "0.8.0",
+        "anyio": "4.15.1",
+        "certifi": "2026.7.22",
+        "charset-normalizer": "3.5.1",
+        "click": "8.5.0",
+        "fastapi": "0.136.3",
+        "filelock": "4.0.4",
+        "fsspec": "2026.9.0",
+        "h11": "0.16.0",
+        "hf-xet": "1.6.0",
+        "httpcore": "1.0.9",
+        "httpx": "0.28.1",
+        "huggingface_hub": "1.33.0",
+        "idna": "3.20",
+        "jev-runtime-core": "0.1.0a1",
+        "markdown-it-py": "4.2.0",
+        "mdurl": "0.1.2",
+        "numpy": "2.3.5",
+        "packaging": "26.3",
+        "pip": "26.2.1",
+        "prometheus_client": "0.26.0",
+        "pydantic": "2.13.5",
+        "pydantic_core": "2.46.5",
+        "regex": "2026.9.10",
+        "requests": "2.34.2",
+        "rich": "15.0.0",
+        "safetensors": "0.8.0",
+        "setuptools": "80.10.2",
+        "shellingham": "1.5.4",
+        "starlette": "1.7.0",
+        "tiktoken": "0.14.0",
+        "tokenizers": "0.23.2",
+        "tqdm": "4.70.1",
+        "transformers": "5.17.0",
+        "typer": "0.27.2",
+        "typing-inspection": "0.4.4",
+        "typing_extensions": "4.16.0",
+        "urllib3": "2.8.0",
+        "uvicorn": "0.54.0"
+      },
+      "prefix": "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8",
+      "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+      "target": {
+        "implementation": "CPython",
+        "machine": "x86_64",
+        "platform": "linux",
+        "python": "3.12",
+        "soabi": "cpython-312-x86_64-linux-gnu"
+      },
+      "verified_core_files": 30
+    }
+  },
+  "completed": true,
+  "passed": false,
+  "finished_at": 1790546171.5402286
+}

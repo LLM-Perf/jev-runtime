@@ -1,0 +1,72 @@
+{
+  "verified": true,
+  "harness_source": "b20d3f43d91c2e13ed2b044a77d35cc3037eb62b",
+  "candidate_wheel_source": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "previous_wheel_source": "773914587b4fab287ca1e4b17f60ff66eb20d261",
+  "initial_failures_preserved": [
+    {
+      "engine": "vllm",
+      "phase": "admin connection setup",
+      "continuous_requests_before_failure": 73
+    },
+    {
+      "engine": "sglang",
+      "phase": "admin connection setup",
+      "continuous_requests_before_failure": 60
+    }
+  ],
+  "results": [
+    {
+      "engine": "vllm",
+      "continuous_requests": 580,
+      "continuous_errors": 0,
+      "by_slot": {
+        "blue": 338,
+        "green": 242
+      },
+      "proxy_map_generations": 19,
+      "cancellation_cases": [
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 10
+        },
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 9
+        },
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 9
+        }
+      ]
+    },
+    {
+      "engine": "sglang",
+      "continuous_requests": 627,
+      "continuous_errors": 0,
+      "by_slot": {
+        "blue": 343,
+        "green": 284
+      },
+      "proxy_map_generations": 19,
+      "cancellation_cases": [
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 11
+        },
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 6
+        },
+        {
+          "completed_rpc_before": 2,
+          "completed_rpc_after": 10
+        }
+      ]
+    }
+  ],
+  "owned_records_terminal": 145,
+  "gpu7_free_mib": 11990,
+  "model_files_rehashed": 6,
+  "qualification": "One colocated BF16 SmolLM2 TP1 profile, two gateway workers per slot; native scoring RPC progress and cancellation, not CUDA kernel occupancy, quality or performance certification."
+}

@@ -584,13 +584,16 @@
         "tests/integration/live_remote_cancel.py",
         "tests/test_branch_identity.py",
         "tests/integration/live_abort_prefix.py",
-        "evidence/dsw/sglang-prefix-0421d50/abort-prefix.json"
+        "evidence/dsw/sglang-prefix-0421d50/abort-prefix.json",
+        "docs/native-rollout-cancellation.md",
+        "evidence/dsw/native-rollout-cancel-b20d3f4/verified-summary.json"
       ],
       "progress_notes": [
         "Durable cancellation ownership and uncertain-abort retention are implemented.",
         "Both native engines have peer-worker cancellation evidence; expanded fault suites remain.",
         "A real SGLang prefix-abort collision was reproduced and fixed with fixed-length branch IDs. The live serving compiler retest preserves sibling completion; both engines pass their functional/1,000-switch suites at 0421d50.",
-        "Shared admission retains the full work reservation with uncertain-abort leases; synchronous compilation/admission cannot dispatch after the request deadline. Local regressions cover both boundaries."
+        "Shared admission retains the full work reservation with uncertain-abort leases; synchronous compilation/admission cannot dispatch after the request deadline. Local regressions cover both boundaries.",
+        "At b20d3f4, both native engines pass three real scoring cancellations across installed-wheel rollback (6f0cda8 to 7739145), with completed and active RPC observations, pinned bundle/worker/lease, blocked early drain, HTTP 499, released lease and resumed serving. Continuous traffic passes 580/580 vLLM and 627/627 SGLang over 19 proxy-map generations each; initial admin-client setup failures remain. Local 368 tests pass; all 145 distinct historical owned records are terminal. This is one shared-GPU SmolLM2 TP1 two-gateway-worker profile; broader fault, engine-process upgrade, performance, image, migration and soak gates remain open."
       ],
       "acceptance_complete": false
     },
@@ -800,7 +803,9 @@
         "src/jev_runtime/rollout.py",
         "docs/gateway-rollout.md",
         "docs/gateway-rollout-validation.md",
-        "evidence/dsw/gateway-rollout-7739145/verified-summary.json"
+        "evidence/dsw/gateway-rollout-7739145/verified-summary.json",
+        "docs/native-rollout-cancellation.md",
+        "evidence/dsw/native-rollout-cancel-b20d3f4/verified-summary.json"
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
@@ -810,7 +815,8 @@
         "docs/readout-precision.md documents explicit engine flags, reporting limits, opt-in FP32 and migration using a fresh registry/endpoint. Active unbound manifests require new versions; no silent digest or calibration rewrite.",
         "docs/native-validation-runner.md documents fixed source identity, live rank/topology checks, failure-inclusive reports, owned-group cleanup and export allowlists. Unidentified orphans and missing launch identities fail cleanup certification instead of being killed or silently retried.",
         "docs/explicit-chat-templates.md documents file/snapshot hashes, startup-only renderer configuration, default behavior, standard-HF-only override support and native host profile matching. It distinguishes Jev configuration from the host engine tokenizer/chat endpoint configuration.",
-        "At 7739145, journaled HAProxy gateway rollout qualifies every worker, checks shared registry/model/bundle/auth identity, runs a candidate canary, switches a runtime map and reconciles ambiguity without replay. Two-worker-per-slot offline installed accef86 to 7739145 upgrades and rollback pass on both native engines: 13 switches each, 333 vLLM / 338 SGLang continuous requests, zero errors and unchanged native/proxy identities. Same-code and CPU fixture exercises remain separate. All 129 historical owned records are terminal; GPU7 returns to 11990 MiB free; six model files rehash. Local 357 tests and source-matched wheels pass. Same-host compatible-schema gateway evidence does not close engine failover, GPU upgrade cancellation, performance, images, migration, 24h soak or handoff; acceptance remains partial."
+        "At 7739145, journaled HAProxy gateway rollout qualifies every worker, checks shared registry/model/bundle/auth identity, runs a candidate canary, switches a runtime map and reconciles ambiguity without replay. Two-worker-per-slot offline installed accef86 to 7739145 upgrades and rollback pass on both native engines: 13 switches each, 333 vLLM / 338 SGLang continuous requests, zero errors and unchanged native/proxy identities. Same-code and CPU fixture exercises remain separate. All 129 historical owned records are terminal; GPU7 returns to 11990 MiB free; six model files rehash. Local 357 tests and source-matched wheels pass. Same-host compatible-schema gateway evidence does not close engine failover, GPU upgrade cancellation, performance, images, migration, 24h soak or handoff; acceptance remains partial.",
+        "At b20d3f4, both native engines pass three real scoring cancellations across installed-wheel rollback (6f0cda8 to 7739145), with completed and active RPC observations, pinned bundle/worker/lease, blocked early drain, HTTP 499, released lease and resumed serving. Continuous traffic passes 580/580 vLLM and 627/627 SGLang over 19 proxy-map generations each; initial admin-client setup failures remain. Local 368 tests pass; all 145 distinct historical owned records are terminal. This is one shared-GPU SmolLM2 TP1 two-gateway-worker profile; broader fault, engine-process upgrade, performance, image, migration and soak gates remain open."
       ],
       "acceptance_complete": false
     },
@@ -1022,12 +1028,15 @@
         "src/jev_runtime/rollout.py",
         "docs/gateway-rollout.md",
         "docs/gateway-rollout-validation.md",
-        "evidence/dsw/gateway-rollout-7739145/verified-summary.json"
+        "evidence/dsw/gateway-rollout-7739145/verified-summary.json",
+        "docs/native-rollout-cancellation.md",
+        "evidence/dsw/native-rollout-cancel-b20d3f4/verified-summary.json"
       ],
       "progress_notes": [
         "Formal release, canary rollout and operational handoff depend on unmet acceptance gates.",
         "At 4e49524, offline locked candidate/previous gateway environments and installation verification pass. Both engines pass previous/candidate-canary/active/rollback stages with persisted route identity and SDK cancellation/coexistence. Upgrade transitions are 3.346/3.487 s and rollback 3.214/2.976 s (vLLM/SGLang), with observed maintenance interruption. Original controller, tokenizer and dependency-resolution failures remain. Automatic uninterrupted traffic routing, migrations, images and operational handoff are still incomplete.",
-        "At 7739145, journaled HAProxy gateway rollout qualifies every worker, checks shared registry/model/bundle/auth identity, runs a candidate canary, switches a runtime map and reconciles ambiguity without replay. Two-worker-per-slot offline installed accef86 to 7739145 upgrades and rollback pass on both native engines: 13 switches each, 333 vLLM / 338 SGLang continuous requests, zero errors and unchanged native/proxy identities. Same-code and CPU fixture exercises remain separate. All 129 historical owned records are terminal; GPU7 returns to 11990 MiB free; six model files rehash. Local 357 tests and source-matched wheels pass. Same-host compatible-schema gateway evidence does not close engine failover, GPU upgrade cancellation, performance, images, migration, 24h soak or handoff; acceptance remains partial."
+        "At 7739145, journaled HAProxy gateway rollout qualifies every worker, checks shared registry/model/bundle/auth identity, runs a candidate canary, switches a runtime map and reconciles ambiguity without replay. Two-worker-per-slot offline installed accef86 to 7739145 upgrades and rollback pass on both native engines: 13 switches each, 333 vLLM / 338 SGLang continuous requests, zero errors and unchanged native/proxy identities. Same-code and CPU fixture exercises remain separate. All 129 historical owned records are terminal; GPU7 returns to 11990 MiB free; six model files rehash. Local 357 tests and source-matched wheels pass. Same-host compatible-schema gateway evidence does not close engine failover, GPU upgrade cancellation, performance, images, migration, 24h soak or handoff; acceptance remains partial.",
+        "At b20d3f4, both native engines pass three real scoring cancellations across installed-wheel rollback (6f0cda8 to 7739145), with completed and active RPC observations, pinned bundle/worker/lease, blocked early drain, HTTP 499, released lease and resumed serving. Continuous traffic passes 580/580 vLLM and 627/627 SGLang over 19 proxy-map generations each; initial admin-client setup failures remain. Local 368 tests pass; all 145 distinct historical owned records are terminal. This is one shared-GPU SmolLM2 TP1 two-gateway-worker profile; broader fault, engine-process upgrade, performance, image, migration and soak gates remain open."
       ],
       "acceptance_complete": false
     }

@@ -30,6 +30,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [installed-wheel DSW upgrade/rollback and Smol tokenizer fidelity](docs/release-rollout-validation.md),
 [gateway traffic switching and drain](docs/gateway-rollout.md),
 [DSW installed-wheel rollout validation](docs/gateway-rollout-validation.md),
+[native request cancellation across rollback](docs/native-rollout-cancellation.md),
 [calibration](docs/calibration.md), [public quality checks](docs/public-quality.md),
 [readout precision and bundle migration](docs/readout-precision.md),
 [TP4 model validation](docs/tp4-model-validation.md),

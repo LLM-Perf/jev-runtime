@@ -1,0 +1,57 @@
+{
+  "script_sha256": "f5380e901deab62a651ecaf7f76fa1171277aeb7a6454bc107baccf781d0383c",
+  "artifacts": {
+    "initial-attempt.json": {
+      "sha256": "bca218eee0622e2fb9f36ffd47f25327e93a33ecf4a393be95761354969bbd13",
+      "size_bytes": 74551
+    },
+    "retest.json": {
+      "sha256": "acbd901a85a5c002c8d3ef00b2af5fe9e1a0a2eaac487cfc8d136d7e62cec2ab",
+      "size_bytes": 471732
+    },
+    "audit.json": {
+      "sha256": "5bc014f88f7fd7c59bf5632512398409241e6403078e5982cf219851499605a4",
+      "size_bytes": 83610
+    },
+    "wheels-6f0cda8-manifest.json": {
+      "sha256": "fbf28a3191465e37443bd4e7d3ee30fd04245737ce610419f46fe01fd6280e8f",
+      "size_bytes": 2659
+    },
+    "gateway-6f0cda8-manifest.json": {
+      "sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+      "size_bytes": 54603
+    },
+    "native-vllm-6f0cda8/process.json": {
+      "sha256": "717f4feee49399a1aa231aabca6b97b9b4fa9b7145f9d1b737a19df32b583eb4",
+      "size_bytes": 1792
+    },
+    "native-vllm-6f0cda8/cleanup.json": {
+      "sha256": "ef3a56d1752c7f9e038eb3300502c0405082ec32719af332202d6f8431e9ddb7",
+      "size_bytes": 2322
+    },
+    "native-sglang-6f0cda8/process.json": {
+      "sha256": "142084031cc486176bcdd0590f97e20aa1c7695b3cca25bc95abf328f7c68b5e",
+      "size_bytes": 1905
+    },
+    "native-sglang-6f0cda8/cleanup.json": {
+      "sha256": "97f7647d412f6a0a76fe5a7472680dcdfe761e3dde3fc91af84946e97ca95715",
+      "size_bytes": 2443
+    },
+    "native-vllm-b20d3f4/process.json": {
+      "sha256": "ee9beb05957c0e1318a30bd2b979cb81eb493cff14393187ade3760eeaeb2dfd",
+      "size_bytes": 1792
+    },
+    "native-vllm-b20d3f4/cleanup.json": {
+      "sha256": "e83e306c262fbd98b273b7616ef7b62075320ceffbef05240e7c69707a83898b",
+      "size_bytes": 2321
+    },
+    "native-sglang-b20d3f4/process.json": {
+      "sha256": "8c8de5482e6090095bfe2a36091265845793955f6500f3b6c5599e26e818ea18",
+      "size_bytes": 1906
+    },
+    "native-sglang-b20d3f4/cleanup.json": {
+      "sha256": "29a637b484440c49dc999b5d338eebbb61f44a6a0d329b898306a1c5d4de8b9b",
+      "size_bytes": 2444
+    }
+  }
+}

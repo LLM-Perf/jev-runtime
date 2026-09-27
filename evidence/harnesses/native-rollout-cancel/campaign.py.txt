@@ -1,0 +1,57 @@
+"""Install the new locked wheel, then observe native scoring across gateway rollback."""
+import hashlib,json,os,subprocess,sys,tarfile,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='6f0cda85f72619193be7a1d1cc89d75142899bf3';PREVIOUS='773914587b4fab287ca1e4b17f60ff66eb20d261'
+release=ROOT/'releases'/SOURCE;base=ROOT/'native-cancel-packaging-6f0cda8';base.mkdir(exist_ok=False)
+for p,sha,d in [(ROOT/'native-cancel-source-6f0cda8.tar.gz','0e780ea555858bf5a5aeaf6d1895a37c73531292718f05413a38271ba4ab793c',release),(ROOT/'native-cancel-wheels-6f0cda8.tar.gz','7f39820ebdd72bab1187a7f47f7530acae2453f951e9da16bc5415181f60e85f',base)]:
+ assert hashlib.sha256(p.read_bytes()).hexdigest()==sha
+ d.mkdir(parents=True,exist_ok=True)
+ with tarfile.open(p) as tar:tar.extractall(d,filter='data')
+sys.path[:0]=[str(release),str(release/'src')]
+from tests.integration.run_native_validation import cleanup,wait_ready,group_members
+from deployment.dsw_service import process_identity
+out=ROOT/'native-cancel-campaign-6f0cda8.json';assert not out.exists()
+report={'source_commit':SOURCE,'previous_source':PREVIOUS,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'started_at':time.time(),'attempts':[],
+ 'qualification':'Real 128-branch request progress before/after installed-wheel rollback and peer cancellation; native scoring RPC evidence, not CUDA kernel residency or performance certification'}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+try:
+ constraints=ROOT/'rollout-packaging-7739145/constraints.txt';python=ROOT/'envs/gateway-wheel-3377c95/bin/python';script=release/'deployment/release.py'
+ sha='fbf28a3191465e37443bd4e7d3ee30fd04245737ce610419f46fe01fd6280e8f';wheel=base/'wheels';gateway=base/'gateway';venv=ROOT/'envs/native-cancel-wheel-6f0cda8'
+ assert hashlib.sha256((wheel/'manifest.json').read_bytes()).hexdigest()==sha
+ with (base/'resolve.log').open('x') as log:subprocess.run([str(python),str(script),'resolve','--bundle',str(wheel),'--manifest-sha256',sha,'--output',str(gateway),'--constraints',str(constraints)],check=True,stdout=log,stderr=subprocess.STDOUT)
+ gsha=hashlib.sha256((gateway/'manifest.json').read_bytes()).hexdigest()
+ with (base/'install.log').open('x') as log:subprocess.run([str(python),str(script),'install','--bundle',str(gateway),'--manifest-sha256',gsha,'--output',str(venv)],check=True,stdout=log,stderr=subprocess.STDOUT)
+ report['installation']={'wheel_manifest_sha256':sha,'gateway_manifest_sha256':gsha,'receipt':json.loads((venv/'jev-install-complete.json').read_text())};save();print(json.dumps({'installed':True}),flush=True)
+ for engine in ['vllm','sglang']:
+  python=ROOT/'envs'/engine/'bin/python';native=ROOT/'runs'/f'native-cancel-{engine}-engine-6f0cda8';gateway_run=ROOT/'runs'/f'native-cancel-{engine}-6f0cda8'
+  assert not native.exists() and not gateway_run.exists()
+  for p in (ROOT/'runs').rglob('process.json'):
+   record=json.loads(p.read_text());identity=record['identity'];assert process_identity(identity['pid'])!=identity,('live owned process',p)
+  env={k:v for k,v in os.environ.items() if not k.startswith('PYTHON')};env.update(PYTHONPATH=f'{release}/src:{release}',HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
+  with (ROOT/f'native-cancel-install-{engine}-6f0cda8.log').open('x') as stream:
+   subprocess.run([str(python),'-m','pip','--isolated','install','--index-url','https://pypi.org/simple','--no-deps','-e',str(release),'-e',str(release/'packages'/engine)],stdout=stream,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(python),'-m','pip','check'],stdout=stream,stderr=subprocess.STDOUT,check=True)
+  cmd=[str(python),str(release/'deployment/dsw_service.py'),'launch','--run-dir',str(native),'--engine',engine,'--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),'--tokenizer-path',str(ROOT/'tokenizers'/f'SmolLM2-1.7B-Instruct-preserved-{engine}-cdd0caf'),'--gpus','7','--port','18795' if engine=='vllm' else '18794','--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072']
+  attempt={'engine':engine,'native_run':str(native),'gateway_run':str(gateway_run),'started_at':time.time(),'launch_command':cmd};report['attempts'].append(attempt);save();record=None
+  try:
+   with (ROOT/f'native-cancel-launch-{engine}-6f0cda8.log').open('x') as stream:subprocess.run(cmd,env=env,cwd=release,stdout=stream,stderr=subprocess.STDOUT,check=True)
+   record=json.loads((native/'process.json').read_text());keys=json.loads((native/'keys.json').read_text());attempt['readiness']=wait_ready(record,keys['api'],300);save()
+   command=[str(python),'-m','tests.integration.live_rollout','--run-dir',str(gateway_run),'--haproxy',str(ROOT/'proxy/haproxy-3.2.24/haproxy-3.2.24/haproxy'),'--source-commit',SOURCE,'--engine-run-dir',str(native),'--switches','10','--blue-python',str(ROOT/'envs/rollout-wheel-7739145/bin/python'),'--green-python',str(venv/'bin/python'),'--blue-release',PREVIOUS,'--green-release',SOURCE,'--native-cancel','--native-cancel-slot','green']
+   attempt['validation_command']=command;save()
+   with (ROOT/f'native-cancel-{engine}-6f0cda8.log').open('x') as stream:result=subprocess.run(command,env=env,cwd=release,stdout=stream,stderr=subprocess.STDOUT,timeout=500)
+   attempt['returncode']=result.returncode
+   if (gateway_run/'report.json').exists():attempt['gateway']=json.loads((gateway_run/'report.json').read_text())
+   if (gateway_run/'native-cancellation.json').exists():attempt['cancellation']=json.loads((gateway_run/'native-cancellation.json').read_text())
+   attempt['same_native_engine_identity']=process_identity(record['identity']['pid'])==record['identity']
+   attempt['passed']=result.returncode==0 and attempt.get('gateway',{}).get('passed') is True and attempt.get('cancellation',{}).get('passed') is True and attempt['same_native_engine_identity']
+   print(json.dumps({'engine':engine,'passed':attempt['passed'],'requests':attempt.get('gateway',{}).get('traffic_successes'),'failure':attempt.get('gateway',{}).get('failure'),'cancel_failure':attempt.get('cancellation',{}).get('failure')}),flush=True)
+  except BaseException as exc:attempt['passed']=False;attempt['failure']={'type':type(exc).__name__,'message':str(exc)}
+  finally:
+   if record is None and (native/'process.json').exists():record=json.loads((native/'process.json').read_text())
+   if record is not None:attempt['cleanup']=cleanup(native,record)
+   attempt['finished_at']=time.time();save()
+  assert attempt.get('cleanup',{}).get('passed'),attempt
+  if attempt.get('gateway'):
+   assert all(not group_members(x['identity']['pid']) for x in attempt['gateway']['processes']), 'gateway process group remains'
+ report['completed']=True;report['passed']=all(a['passed'] for a in report['attempts'])
+finally:report['finished_at']=time.time();save()

@@ -436,6 +436,19 @@ single-host gateway profile, not engine failover, GPU upgrade cancellation, SLOs
 images, migration, soak or complete release acceptance. See
 [gateway rollout validation](gateway-rollout-validation.md).
 
+At harness `b20d3f4`, both engines also pass three real native scoring cancellations
+across rollback from installed green `6f0cda8` to blue `7739145`. Every cancelled
+request has 128 planned sequences, at least two completed scoring RPCs and one
+active RPC at both observations. The same worker/request/bundle/lease remains
+pinned; early drain blocks, cancellation through blue returns 499 in green,
+leases disappear and serving resumes. Continuous traffic is 580/580 vLLM and
+627/627 SGLang, separate from the six expected cancellations; each observes 19
+map generations. Both initial admin-client setup failures are retained. The
+independent audit finds 145 distinct owned records terminal and GPU7 at 11,990
+MiB free. Local 368 tests pass. This covers gateway rollback while native requests
+execute, not an engine-process upgrade or the full fault/performance/soak gates.
+See [native cancellation validation](native-rollout-cancellation.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
