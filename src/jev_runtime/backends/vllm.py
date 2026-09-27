@@ -9,9 +9,17 @@ from jev_runtime.errors import JevError
 
 
 class VLLMNative:
-    def __init__(self, engine_client: Any, model_id: str, max_context: int, version: str):
+    def __init__(
+        self,
+        engine_client: Any,
+        model_id: str,
+        max_context: int,
+        version: str,
+        api_workers: int = 1,
+    ):
         self.engine_client = engine_client
         self.model_id, self.max_context, self.version = model_id, max_context, version
+        self.api_workers = api_workers
 
     async def probe(self) -> Capabilities:
         return Capabilities(
@@ -20,6 +28,7 @@ class VLLMNative:
             model_id=self.model_id,
             max_context_tokens=self.max_context,
             max_label_tokens=128,
+            api_workers=self.api_workers,
         )
 
     async def score(self, request: ScoreInput) -> ScoreResult:
@@ -94,7 +103,19 @@ class VLLMHTTP:
         try:
             response = await self.client.get(self.prefix + "/scoring-capabilities")
             response.raise_for_status()
-            return Capabilities.model_validate(response.json())
+            capabilities = Capabilities.model_validate(response.json())
+            if capabilities.engine == "vllm" and capabilities.api_workers != 1:
+                # AsyncLLM.abort resolves external IDs in this API worker's
+                # OutputProcessor. Sending cancellation to another frontend
+                # can acknowledge an empty abort list. Do not treat that as
+                # confirmed cleanup for a gateway lease.
+                raise JevError(
+                    "cancellation_routing_unsupported",
+                    "The vLLM HTTP bridge requires one verified engine API worker; "
+                    "use native typed endpoints for multiple engine API workers",
+                    503,
+                )
+            return capabilities
         except (httpx.HTTPError, ValueError) as exc:
             raise JevError(
                 "engine_probe_failed", "vLLM requires the Jev scoring endpoint plugin", 503

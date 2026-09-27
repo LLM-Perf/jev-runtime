@@ -56,6 +56,15 @@ class Registry:
                 CREATE TABLE IF NOT EXISTS owners (
                     owner TEXT PRIMARY KEY, identity TEXT NOT NULL, created REAL NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS workers (
+                    owner TEXT PRIMARY KEY REFERENCES owners(owner),
+                    backend TEXT NOT NULL, state TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS worker_bundles (
+                    owner TEXT NOT NULL REFERENCES workers(owner),
+                    ref TEXT NOT NULL REFERENCES bundles(ref), digest TEXT NOT NULL,
+                    PRIMARY KEY(owner, ref)
+                );
                 CREATE TABLE IF NOT EXISTS lease_work (
                     lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
                     branches TEXT NOT NULL, phase TEXT NOT NULL
@@ -243,6 +252,70 @@ class Registry:
             raise JevError("bundle_not_found", f"Unknown bundle {reference}", 404)
         return row
 
+    def start_worker(self, backend: str) -> None:
+        with self._transaction() as db:
+            db.execute(
+                "INSERT INTO workers VALUES(?,?,'STARTING') ON CONFLICT(owner) DO UPDATE SET "
+                "backend=excluded.backend,state='STARTING'",
+                (self.owner, backend),
+            )
+            db.execute("DELETE FROM worker_bundles WHERE owner=?", (self.owner,))
+
+    def record_worker_prepared(self, reference: str) -> None:
+        with self._transaction() as db:
+            bundle = self._get(db, reference)
+            worker = db.execute("SELECT * FROM workers WHERE owner=?", (self.owner,)).fetchone()
+            if not worker or worker["backend"] != bundle["backend"]:
+                raise JevError("worker_mismatch", "Worker is not registered for this engine", 409)
+            db.execute(
+                "INSERT INTO worker_bundles VALUES(?,?,?) ON CONFLICT(owner,ref) DO UPDATE "
+                "SET digest=excluded.digest",
+                (self.owner, reference, bundle["digest"]),
+            )
+
+    def forget_worker_prepared(self, reference: str) -> None:
+        with self._transaction() as db:
+            db.execute(
+                "DELETE FROM worker_bundles WHERE owner=? AND ref=?", (self.owner, reference)
+            )
+
+    def serve_worker(self, backend: str) -> bool:
+        """Join traffic only if every current route was validated by this worker."""
+        with self._transaction() as db:
+            missing = db.execute(
+                "SELECT 1 FROM routes r JOIN bundles b ON b.ref=r.ref "
+                "LEFT JOIN worker_bundles w ON w.ref=b.ref AND w.owner=? AND w.digest=b.digest "
+                "WHERE b.backend=? AND w.owner IS NULL LIMIT 1",
+                (self.owner, backend),
+            ).fetchone()
+            if missing:
+                return False
+            db.execute("UPDATE workers SET state='SERVING' WHERE owner=?", (self.owner,))
+            return True
+
+    def stop_worker(self) -> None:
+        with self._transaction() as db:
+            db.execute("UPDATE workers SET state='STOPPED' WHERE owner=?", (self.owner,))
+
+    def worker_status(self) -> list[dict]:
+        with self._connection() as db:
+            rows = db.execute(
+                "SELECT w.*,o.identity FROM workers w JOIN owners o ON o.owner=w.owner"
+            ).fetchall()
+            prepared = db.execute("SELECT owner,ref FROM worker_bundles").fetchall()
+        return [
+            {
+                "worker_id": row["owner"],
+                "backend": row["backend"],
+                "state": row["state"],
+                "owner_status": self._owner_status(json.loads(row["identity"])),
+                "prepared": sorted(
+                    item["ref"] for item in prepared if item["owner"] == row["owner"]
+                ),
+            }
+            for row in rows
+        ]
+
     def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
         with self._transaction() as db:
             bundle = self._get(db, reference)
@@ -253,6 +326,25 @@ class Registry:
             if expected_generation != generation:
                 raise JevError(
                     "generation_conflict", "Active generation changed; refresh before retry", 409
+                )
+            workers = db.execute(
+                "SELECT w.owner,o.identity,p.digest FROM workers w "
+                "JOIN owners o ON o.owner=w.owner "
+                "LEFT JOIN worker_bundles p ON p.owner=w.owner AND p.ref=? "
+                "WHERE w.backend=? AND w.state='SERVING'",
+                (reference, bundle["backend"]),
+            ).fetchall()
+            unprepared = [
+                row["owner"]
+                for row in workers
+                if row["digest"] != bundle["digest"]
+                and self._owner_status(json.loads(row["identity"])) != "dead"
+            ]
+            if unprepared:
+                raise JevError(
+                    "replicas_not_ready",
+                    f"Prepare this version on {len(unprepared)} remaining serving worker(s)",
+                    409,
                 )
             if route and route["ref"] == reference:
                 return {"alias": alias, "bundle": reference, "generation": generation}

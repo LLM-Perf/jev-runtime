@@ -3,6 +3,7 @@ import pytest
 
 from jev_runtime.backends.base import ScoreInput
 from jev_runtime.backends.sglang import SGLangHTTP, parse_sglang
+from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.errors import JevError
 
 
@@ -66,3 +67,29 @@ async def test_sglang_transport_contract():
     assert calls[0][1]["input_ids"] == [1, 2]
     assert calls[1][1] == {"rid": "r", "abort_all": False}
     await backend.close()
+
+
+@pytest.mark.parametrize("workers", [1, 2, None])
+async def test_vllm_http_requires_safe_cancellation_routing(workers):
+    async def handler(request):
+        return httpx.Response(
+            200,
+            json={
+                "engine": "vllm",
+                "version": "0.30.0",
+                "model_id": "fixture",
+                "api_workers": workers,
+            },
+        )
+
+    client = httpx.AsyncClient(transport=httpx.MockTransport(handler), base_url="http://fixture")
+    backend = VLLMHTTP("http://fixture", client=client)
+    try:
+        if workers == 1:
+            assert (await backend.probe()).api_workers == 1
+        else:
+            with pytest.raises(JevError) as error:
+                await backend.probe()
+            assert error.value.code == "cancellation_routing_unsupported"
+    finally:
+        await backend.close()

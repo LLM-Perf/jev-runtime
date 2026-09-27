@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse, Response
 from prometheus_client import CollectorRegistry, Counter, Histogram, generate_latest
 from pydantic import Field
 
-from jev_runtime.config import Settings, bootstrap, build_runtime, tenant_keys
+from jev_runtime.config import Settings, bootstrap, build_runtime, load_settings, tenant_keys
 from jev_runtime.errors import JevError
 from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
@@ -107,7 +107,8 @@ def install_routes(
     management = APIRouter(prefix=prefix + "/admin", dependencies=[Depends(admin)])
 
     @router.post("/v1/decisions")
-    async def decisions(body: DecisionRequest, request: Request):
+    async def decisions(body: DecisionRequest, request: Request, http_response: Response):
+        http_response.headers["X-Jev-Worker"] = runtime(request).registry.owner
         with latency.time():
             try:
                 response = await disconnect_guard(
@@ -160,6 +161,7 @@ def install_routes(
             "ready": True,
             "engine": instance.capabilities.engine,
             "prepared_bundles": sorted(set(prepared)),
+            "worker_id": instance.registry.owner,
         }
 
     @router.get("/metrics")
@@ -169,6 +171,10 @@ def install_routes(
     @management.get("/bundles")
     async def list_bundles(request: Request):
         return runtime(request).registry.list()
+
+    @management.get("/workers")
+    async def workers(request: Request):
+        return {"workers": runtime(request).registry.worker_status()}
 
     @management.post("/bundles")
     async def upload(body: Bundle, request: Request):
@@ -237,3 +243,11 @@ def create_app(
         tenants=tenant_keys(settings) if settings else None,
     )
     return app
+
+
+def create_app_from_env() -> FastAPI:
+    """Uvicorn factory: create an independent runtime after each worker is spawned."""
+    path = os.environ.get("JEV_CONFIG")
+    if not path:
+        raise ValueError("JEV_CONFIG is required for a multi-worker gateway")
+    return create_app(load_settings(path))

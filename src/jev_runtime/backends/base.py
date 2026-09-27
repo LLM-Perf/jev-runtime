@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
+from pydantic import Field
+
 from jev_runtime.schema import Contract
 
 
@@ -17,6 +19,7 @@ class Capabilities(Contract):
     cancellation: bool = True
     lora: bool = False
     prefix_cache: bool | None = None
+    api_workers: int | None = Field(default=None, ge=1)
     verified: bool = False
 
 

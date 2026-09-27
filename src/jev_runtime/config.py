@@ -39,6 +39,7 @@ class Settings(Contract):
     registry_path: str = ".jev/registry.db"
     host: str = "127.0.0.1"
     port: int = Field(default=8795, ge=1, le=65535)
+    workers: int = Field(default=1, ge=1, le=128)
     api_key_env: str = "JEV_API_KEY"
     admin_key_env: str = "JEV_ADMIN_KEY"
     engine_key_env: str = "JEV_ENGINE_API_KEY"
@@ -141,13 +142,21 @@ async def bootstrap(runtime: Runtime, settings: Settings) -> None:
                 }:
                     raise
                 await asyncio.sleep(0.05)
-    routes = {route["alias"]: route for route in runtime.registry.list()["routes"]}
-    if settings.bootstrap_alias not in routes:
-        try:
-            runtime.activate(settings.bootstrap_alias, bundle.reference, 0)
-        except JevError as exc:
-            if exc.code != "generation_conflict":
-                raise
-            current = {r["alias"]: r for r in runtime.registry.list()["routes"]}
-            if current.get(settings.bootstrap_alias, {}).get("ref") != bundle.reference:
-                raise
+    async with asyncio.timeout(180):
+        while True:
+            routes = {route["alias"]: route for route in runtime.registry.list()["routes"]}
+            if settings.bootstrap_alias in routes:
+                return
+            try:
+                runtime.activate(settings.bootstrap_alias, bundle.reference, 0)
+                return
+            except JevError as exc:
+                if exc.code == "replicas_not_ready":
+                    await asyncio.sleep(0.05)
+                    continue
+                if exc.code != "generation_conflict":
+                    raise
+                current = {r["alias"]: r for r in runtime.registry.list()["routes"]}
+                if current.get(settings.bootstrap_alias, {}).get("ref") != bundle.reference:
+                    raise
+                return

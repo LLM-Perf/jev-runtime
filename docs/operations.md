@@ -61,10 +61,22 @@ SQLite's online backup API, not by copying a live `.db` without its WAL.
 
 Each API worker also prepares its own engine path. On restart it revalidates active
 versions; a shared database's READY state does not bypass that worker's canary.
-Prepare a version on every traffic-serving worker before activation. A worker that
-has not prepared the newly active version rejects it with `replica_not_ready`.
-Coordinated multi-replica rollout is still under development. Concurrent initial
-bootstrap waits for the global preparation and then runs each worker's local canary.
+Prepare a version on every traffic-serving worker before activation. Inspect
+`/admin/workers` to see each local worker's state and prepared versions. Preparation
+returns the worker ID; `/ready` and the `X-Jev-Worker` decision response header
+identify the handling process. The activation transaction rejects a version until
+all serving workers for that backend have prepared its digest. Verified exited or
+explicitly stopped workers do not block it; unknown owners fail closed. Startup
+joins serving only after its active-route snapshot is rechecked atomically.
+Concurrent initial bootstrap waits for global and per-worker preparation. This
+coordinates a shared local registry; multi-node rollout remains under development.
+
+Set `workers: 2` for a multi-process standalone gateway. Native engine API worker
+counts are controlled by their own engine flags. The vLLM HTTP scoring bridge
+currently requires exactly one verified **engine API worker** because upstream
+`AsyncLLM.abort` resolves external IDs in that worker's OutputProcessor. A gateway
+refuses an unknown or multi-worker vLLM bridge instead of acknowledging a potentially
+misrouted cancellation. Native typed endpoints may use multiple engine API workers.
 
 ## Cancellation and failure accounting
 
@@ -103,8 +115,9 @@ jevctl recovery recover config.yaml prepare-REQUEST_ID
 The recovery CLI does not activate routes or clear unknown leases. It contacts the
 configured engine and applies the same owner, backend and abort checks as the API.
 Unit tests cover cross-instance recovery and fail-closed identity checks. A real
-SGLang gateway SIGKILL/restart test and offline CLI recovery passed; see
-`evidence/dsw/gateway-sglang-crash-7eee70e.json`. The engine survived throughout,
+SGLang and vLLM gateway SIGKILL/restart tests and SGLang offline CLI recovery passed;
+see `evidence/dsw/gateway-sglang-crash-7eee70e.json` and
+`evidence/dsw/gateway-vllm-crash-7eee70e.json`. Each engine survived throughout,
 but this does not establish multi-node recovery or a GPU unload barrier.
 Unattended recovery is not certified.
 

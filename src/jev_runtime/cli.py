@@ -46,7 +46,17 @@ def serve(config: Path):
     from jev_runtime.api import create_app
 
     settings = load_settings(config)
-    uvicorn.run(create_app(settings), host=settings.host, port=settings.port)
+    if settings.workers == 1:
+        uvicorn.run(create_app(settings), host=settings.host, port=settings.port)
+    else:
+        os.environ["JEV_CONFIG"] = str(config.resolve())
+        uvicorn.run(
+            "jev_runtime.api:create_app_from_env",
+            factory=True,
+            host=settings.host,
+            port=settings.port,
+            workers=settings.workers,
+        )
 
 
 def serve_entrypoint():

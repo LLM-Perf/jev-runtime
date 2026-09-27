@@ -89,6 +89,7 @@ def launch(args):
         "bootstrap_bundle_id": "default",
         "host": "127.0.0.1",
         "port": args.port,
+        "workers": args.api_workers,
     }
     (root / "config.json").write_text(json.dumps(config, indent=2) + "\n")
     keys = root / "keys.json"
@@ -146,6 +147,8 @@ def launch(args):
             str(args.memory_fraction),
             "--enforce-eager",
         ]
+        if args.api_workers > 1:
+            command.extend(["--api-server-count", str(args.api_workers)])
     else:
         env["SGLANG_PLUGINS"] = "jev_runtime"
         command = [
@@ -176,6 +179,8 @@ def launch(args):
             "--attention-backend",
             "triton",
         ]
+        if args.api_workers > 1:
+            command.extend(["--tokenizer-worker-num", str(args.api_workers)])
     with (root / "engine.log").open("ab") as log:
         child = subprocess.Popen(command, env=env, stdout=log, stderr=log, start_new_session=True)
     identity = process_identity(child.pid)
@@ -237,6 +242,7 @@ def main():
     parser.add_argument("--gateway", action="store_true")
     parser.add_argument("--engine-url")
     parser.add_argument("--engine-run-dir", type=Path)
+    parser.add_argument("--api-workers", type=int, default=1)
     args = parser.parse_args()
     if args.action == "launch":
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
@@ -245,6 +251,8 @@ def main():
             parser.error("gateway requires an explicit existing engine URL")
         if args.engine_run_dir and not args.gateway:
             parser.error("engine-run-dir only supplies credentials for a gateway")
+        if not 1 <= args.api_workers <= 128:
+            parser.error("api-workers must be between 1 and 128")
     {"launch": launch, "status": status, "stop": stop}[args.action](args)
 
 

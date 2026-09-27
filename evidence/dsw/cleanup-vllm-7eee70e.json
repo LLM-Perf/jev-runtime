@@ -1,0 +1,31 @@
+{
+  "time": 1790497609.5578704,
+  "processes": [
+    {
+      "run": "gateway-vllm-crash-7eee70e",
+      "recorded_identity": {
+        "pid": 2580806,
+        "start_ticks": "425294876",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null
+    },
+    {
+      "run": "vllm-smollm17b-7eee70e",
+      "recorded_identity": {
+        "pid": 2579811,
+        "start_ticks": "425286933",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null
+    }
+  ],
+  "gpu_after": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  }
+}

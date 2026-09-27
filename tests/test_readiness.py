@@ -40,20 +40,44 @@ async def test_failed_new_worker_canary_preserves_existing_route(runtime, bundle
     await worker.close()
 
 
-async def test_worker_rejects_new_version_until_locally_prepared(runtime, bundle, question):
+async def test_activation_waits_for_all_serving_workers(runtime, bundle, question):
     worker = replica(runtime)
     await worker.start()
     second = bundle.model_copy(update={"version": 2})
     runtime.registry.upload(second)
     await runtime.prepare(second.reference)
-    runtime.activate("model", second.reference, 1)
     body = DecisionRequest(model="model", input=TextInput(text="refund"), questions=(question,))
     with pytest.raises(JevError) as error:
-        await worker.decide(body)
-    assert error.value.code == "replica_not_ready"
+        runtime.activate("model", second.reference, 1)
+    assert error.value.code == "replicas_not_ready"
+    assert (await worker.decide(body)).bundle == bundle.reference
+    assert (await runtime.decide(body)).bundle == bundle.reference
     await worker.prepare(second.reference)
+    runtime.activate("model", second.reference, 1)
+    assert (await runtime.decide(body)).bundle == second.reference
     assert (await worker.decide(body)).bundle == second.reference
     assert runtime.registry.list()["routes"][0]["generation"] == 2
+    await worker.close()
+
+
+async def test_stopped_worker_does_not_block_publication(runtime, bundle):
+    worker = replica(runtime)
+    await worker.start()
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    await runtime.prepare(second.reference)
+    await worker.close()
+    assert runtime.activate("model", second.reference, 1)["generation"] == 2
+
+
+async def test_verified_dead_worker_does_not_block_publication(runtime, bundle, monkeypatch):
+    worker = replica(runtime)
+    await worker.start()
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    await runtime.prepare(second.reference)
+    monkeypatch.setattr(Registry, "_owner_status", staticmethod(lambda identity: "dead"))
+    assert runtime.activate("model", second.reference, 1)["generation"] == 2
     await worker.close()
 
 

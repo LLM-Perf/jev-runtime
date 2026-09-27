@@ -49,16 +49,24 @@ class Runtime:
 
     async def start(self) -> None:
         self._prepared.clear()
+        self.registry.start_worker(self.backend_identity)
         self.capabilities = await self.backend.probe()
         if not self.capabilities.selected_logprobs or not self.capabilities.raw_logprobs:
             raise JevError(
                 "unsupported_engine", "Engine must return complete raw selected logprobs", 503
             )
-        listing = self.registry.list()
-        active = {route["ref"] for route in listing["routes"] if route["ref"]}
-        for bundle in listing["bundles"]:
-            if bundle["ref"] in active and bundle["backend"] == self.backend_identity:
-                await self.prepare(bundle["ref"])
+        async with asyncio.timeout(180):
+            while True:
+                listing = self.registry.list()
+                active = {route["ref"] for route in listing["routes"] if route["ref"]}
+                for bundle in listing["bundles"]:
+                    if bundle["ref"] in active and bundle["backend"] == self.backend_identity:
+                        if not self.is_prepared(bundle["ref"]):
+                            await self.prepare(bundle["ref"])
+                # Atomic against activation: a concurrently published route
+                # sends startup back through validation before joining traffic.
+                if self.registry.serve_worker(self.backend_identity):
+                    break
 
     def is_prepared(self, reference: str) -> bool:
         return reference in self._prepared
@@ -71,6 +79,7 @@ class Runtime:
         return self.registry.activate(alias, reference, expected_generation)
 
     async def close(self) -> None:
+        self.registry.stop_worker()
         tasks = list(self._active.values())
         try:
             await cancel_and_drain(tasks)
@@ -134,6 +143,7 @@ class Runtime:
             except BaseException as exc:
                 error = exc.message if isinstance(exc, JevError) else type(exc).__name__
                 self._prepared.discard(reference)
+                self.registry.forget_worker_prepared(reference)
                 raise
             finally:
                 if fresh:
@@ -144,7 +154,8 @@ class Runtime:
                     self.registry.release(lease_id)
                 self._active.pop(request_id, None)
             self._prepared.add(reference)
-            return self.registry.inspect(reference)
+            self.registry.record_worker_prepared(reference)
+            return {**self.registry.inspect(reference), "worker_id": self.registry.owner}
 
     def _validate_sequences(self, sequences: tuple[ScoreInput, ...], bundle: Bundle) -> int:
         if self.capabilities is None:

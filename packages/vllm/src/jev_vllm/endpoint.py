@@ -37,7 +37,13 @@ class JevEndpointPlugin:
         if engine_client is None:
             return
         config = engine_client.model_config
-        backend = VLLMNative(engine_client, config.model, config.max_model_len, version("vllm"))
+        backend = VLLMNative(
+            engine_client,
+            config.model,
+            config.max_model_len,
+            version("vllm"),
+            api_workers=getattr(args, "api_server_count", None) or 1,
+        )
         state.jev_backend = backend
         path = os.environ.get("JEV_CONFIG")
         if path:
