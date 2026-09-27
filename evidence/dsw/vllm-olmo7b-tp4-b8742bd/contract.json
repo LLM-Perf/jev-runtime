@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "started_at": 1790527263.419786,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "allenai/OLMo-2-1124-7B-Instruct",
+    "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "5bbfa8896e20404f9558333b5ad6d557"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-512de24b2dfe4051a26520af5b0666d8",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:1ddab0d02f151f21bdd8977614e65279aecfe213bb43d686b6cf32ac63824a5a",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9910149428646855,
+            "technical": 0.006677407018521053,
+            "other": 0.0023076501167934626
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9994365012451089,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.946596673024956,
+            "false": 0.05340332697504391
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.998166043191389,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 9.236236591941353,
+          "probabilities": {
+            "low": 0.002540820600636222,
+            "medium": 0.14767104041045714,
+            "high": 0.8497881389889066
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9962835935237347,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "sales",
+            "payments",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.29664104621301846,
+            "engineering": 0.1491604853582429,
+            "sales": 0.5541984684287387
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9895699378929054,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 345,
+        "engine_prompt_tokens": 345,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 128
+      },
+      "latency_ms": 281.5498122945428
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 14,
+        "total_tokens": 22,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-64b6f89b93a145e18a4334ba5b71d528",
+      "status": "completed",
+      "bundle": "cert-aa5dd3e18f23@1",
+      "bundle_digest": "sha256:244d6bc4342f9118b629d43c276c3e7e317b997a4defa7eb3763fabb59e861bc",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.990284198941975,
+            "technical": 0.007102819711731723,
+            "other": 0.0026129813462933715
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9994229072469718,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9399133481428692,
+            "false": 0.0600866518571309
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9979778233020062,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 9.237658685100484,
+          "probabilities": {
+            "low": 0.0023872479733124284,
+            "medium": 0.14769376703327836,
+            "high": 0.8499189849934092
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9962426306643032,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "sales",
+            "payments",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.2938145430239654,
+            "engineering": 0.15726759201866203,
+            "sales": 0.5489178649573725
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9897441803207768,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 345,
+        "engine_prompt_tokens": 345,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 320
+      },
+      "latency_ms": 120.04986498504877
+    },
+    "independent_candidate": {
+      "request_id": "dec-84532d5309324ea7923149d8e8369603",
+      "status": "completed",
+      "bundle": "cert-aa5dd3e18f23@2",
+      "bundle_digest": "sha256:025436c49648bdb7a8bac3d5fb875b07c80aee267d4cb793a09ca094577d17e3",
+      "generation": 2,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9698165892014485,
+            "technical": 0.0011434837968588504,
+            "other": 0.029039927001692566
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.5312093733737563,
+            "technical": 0.0006263342140729864,
+            "other": 0.01590639054554718
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.946596673024956,
+            "false": 0.05340332697504391
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.998166043191389,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 8.600904958453851,
+          "probabilities": {
+            "low": 0.04005514277458491,
+            "medium": 0.19970872276005963,
+            "high": 0.7602361344653554
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.01912403619184777,
+            "medium": 0.09534947518185825,
+            "high": 0.3629692055196168
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.4164991657742011,
+            "engineering": 0.34561826216237224,
+            "sales": 0.23788257206342658
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.005554923551280935,
+            "engineering": 0.004609572316116922,
+            "sales": 0.0031726822298386082
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 880,
+        "engine_prompt_tokens": 880,
+        "engine_completion_tokens": 10,
+        "cached_prompt_tokens": 512
+      },
+      "latency_ms": 195.19159011542797
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 215,
+      "versions_seen": [
+        "cert-aa5dd3e18f23@1",
+        "cert-aa5dd3e18f23@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "serving_profile": {
+    "worker_id": "5bbfa8896e20404f9558333b5ad6d557",
+    "model": {
+      "id": "allenai/OLMo-2-1124-7B-Instruct",
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "tokenizer_digest": "sha256:eae32c5126cca496a57bf86b3cbb4be23f12edadc76cbd7a59416947697810cb",
+      "tokenizer_implementation_digest": "sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31",
+      "template_digest": "sha256:f12865aaf152f6978fe525786d54ab0331a2cf0a6e085dfed8a74299fff2396d",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16"
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 1.2635757047683,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "allenai/OLMo-2-1124-7B-Instruct",
+    "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+    "tokenizer_digest": "sha256:eae32c5126cca496a57bf86b3cbb4be23f12edadc76cbd7a59416947697810cb",
+    "tokenizer_implementation_digest": "sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31",
+    "template_digest": "sha256:f12865aaf152f6978fe525786d54ab0331a2cf0a6e085dfed8a74299fff2396d",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      100257,
+      27,
+      91,
+      9125,
+      91,
+      397,
+      83445,
+      279,
+      17665,
+      828,
+      2403,
+      279,
+      3465,
+      13,
+      2956,
+      374,
+      6029,
+      11,
+      539,
+      11470,
+      13,
+      3494,
+      7041,
+      279,
+      11472,
+      4320,
+      2440,
+      627,
+      27,
+      91,
+      882,
+      91,
+      397,
+      6396,
+      512,
+      3461,
+      279,
+      6130,
+      596,
+      6156,
+      7537,
+      382,
+      1061,
+      320,
+      5483,
+      925,
+      997,
+      7189,
+      574,
+      11684,
+      11157,
+      323,
+      1053,
+      1093,
+      264,
+      21639,
+      2266,
+      48332,
+      512,
+      32,
+      25,
+      58976,
+      11,
+      10405,
+      11,
+      477,
+      73618,
+      198,
+      33,
+      25,
+      362,
+      11156,
+      14867,
+      304,
+      279,
+      2027,
+      198,
+      34,
+      25,
+      362,
+      2204,
+      8712,
+      198,
+      5715,
+      7041,
+      832,
+      4320,
+      2440,
+      627,
+      27,
+      91,
+      78191,
+      91,
+      397
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      -0.010340566746890545,
+      -4.947840690612793,
+      -5.947840690612793
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790527273.6080632
+}

@@ -28,6 +28,8 @@ from this repository.
 See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
 [calibration](docs/calibration.md), [public quality checks](docs/public-quality.md),
 [readout precision and bundle migration](docs/readout-precision.md),
+[TP4 model validation](docs/tp4-model-validation.md),
+[reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
 [performance experiments](docs/performance.md), and
 [the TypeScript SDK](packages/typescript/README.md).

@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "started_at": 1790527274.0521743,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-6d4f88e87575406a9cc7643d6e4f38ed@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-e36a295137ec43449630198a28168bc8@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=float32 differs from engine report bfloat16; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "allenai/OLMo-2-1124-7B-Instruct",
+    "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+    "tokenizer_digest": "sha256:eae32c5126cca496a57bf86b3cbb4be23f12edadc76cbd7a59416947697810cb",
+    "tokenizer_implementation_digest": "sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31",
+    "template_digest": "sha256:f12865aaf152f6978fe525786d54ab0331a2cf0a6e085dfed8a74299fff2396d",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "passed": true,
+  "finished_at": 1790527279.7629735
+}

@@ -1,0 +1,17 @@
+{
+  "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "pytest": {
+    "passed": 261,
+    "result": "261 passed in 5.85s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "108 files already formatted",
+  "git_diff_check": "passed",
+  "packaged_sources_unchanged_from": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "package_evidence_reused": "evidence/package-check-f6bda1a.json",
+  "wheel_builds_rerun": false,
+  "typescript_tests_rerun": false,
+  "typescript_unchanged_prior_passing_tests": 62,
+  "qualification": "New integration runner and failure/ownership tests; core, plugins, launcher and SDK source unchanged. Local checks are separate from DSW and hosted CI."
+}

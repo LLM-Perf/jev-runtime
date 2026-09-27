@@ -1,0 +1,30 @@
+{
+  "model_id": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/sglang-qwen8b-tp4-b8742bd/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "engine_logprobs": [
+    0.0,
+    -29.25,
+    -33.875
+  ],
+  "reference_logprobs": [
+    0.0,
+    -29.25,
+    -33.75
+  ],
+  "absolute_errors": [
+    0.0,
+    0.0,
+    0.125
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790527152.5514371,
+  "finished_at": 1790527160.8634453
+}

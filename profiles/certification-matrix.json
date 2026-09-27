@@ -4,8 +4,8 @@
   "model_denominator": 20,
   "combination_denominator": 40,
   "functional_passes": {
-    "sglang": 5,
-    "vllm": 5
+    "sglang": 7,
+    "vllm": 7
   },
   "required_functional_passes_per_engine": 18,
   "release_gate_passed": false,
@@ -46,22 +46,68 @@
       "revision": "b968826d9c46dd6066d109eabc6255188de91218",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/contract.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/precision-binding.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/reference-cpu.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/topology.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/postcheck.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/environment.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/cleanup.json",
+        "evidence/dsw/sglang-qwen8b-tp4-b8742bd/validation.json",
+        "evidence/dsw/tp4-validation-b8742bd.json"
+      ],
+      "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+      "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.125,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-qwen8b-tp4-b8742bd/reference-cpu.json"
+      },
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
     },
     {
       "model_id": "Qwen/Qwen3-8B",
       "revision": "b968826d9c46dd6066d109eabc6255188de91218",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/contract.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/precision-binding.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/reference-cpu.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/topology.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/postcheck.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/environment.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/cleanup.json",
+        "evidence/dsw/vllm-qwen8b-tp4-b8742bd/validation.json",
+        "evidence/dsw/tp4-validation-b8742bd.json"
+      ],
+      "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+      "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.25,
+        "single_position_passed": false,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-qwen8b-tp4-b8742bd/reference-cpu.json"
+      },
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
     },
     {
       "model_id": "Qwen/Qwen3-30B-A3B",
@@ -539,22 +585,68 @@
       "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/contract.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/precision-binding.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/reference-cpu.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/topology.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/postcheck.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/environment.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/cleanup.json",
+        "evidence/dsw/sglang-olmo7b-tp4-b8742bd/validation.json",
+        "evidence/dsw/tp4-validation-b8742bd.json"
+      ],
+      "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+      "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.06189775466918945,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-olmo7b-tp4-b8742bd/reference-cpu.json"
+      },
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
     },
     {
       "model_id": "allenai/OLMo-2-1124-7B-Instruct",
       "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/contract.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/precision-binding.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/reference-cpu.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/topology.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/postcheck.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/environment.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/cleanup.json",
+        "evidence/dsw/vllm-olmo7b-tp4-b8742bd/validation.json",
+        "evidence/dsw/tp4-validation-b8742bd.json"
+      ],
+      "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+      "harness_source_commit": "b8742bd0d96dc98de7bf9a7860de407508043c39",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.06204795837402344,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-olmo7b-tp4-b8742bd/reference-cpu.json"
+      },
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
     },
     {
       "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",

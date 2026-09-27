@@ -22,7 +22,7 @@ replacement for any requirement in `implementation-plan.md`.
   is distinct from new GPU execution: both clients accepted all 26 complete payloads
   in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
   that source; see `evidence/package-check-fe71bb3.json`.
-- Ten real GPU combinations (five models per engine) each passed 1,000 bundle
+- Fourteen real GPU combinations (seven models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, quotas and cancellation ownership.
   Shared same-host quotas are now implemented and checked at `4944efd` below;
@@ -296,16 +296,29 @@ replacement for any requirement in `implementation-plan.md`.
   calibration migration, deployment scope and raw evidence are documented in
   [readout precision](readout-precision.md). Remaining release gates are unchanged.
 
+
+- With harness `b8742bd` and unchanged runtime `f6bda1a`, Qwen3-8B and OLMo-2-7B
+  passed BF16 native TP4/API1 suites on both engines: 1,000 switches per run,
+  zero mixed versions, zero native/attached logprob difference and live precision
+  rejection checks. Coverage is now 14/40, or 7/20 per engine. Qwen3-8B/vLLM
+  fails the CPU single-position development tolerance (0.25 > 0.15); the other
+  three positions pass. All four owned groups exited, all selected GPU UUIDs
+  matched and free memory returned to the recorded baseline. A reusable runner
+  now preserves attempts, verifies live topology and attempts cleanup on failures.
+  Local tests passed 261 checks; 101 harness files and 41 evidence hashes were
+  verified. See [TP4 model validation](tp4-model-validation.md). Original release
+  gates and failed numerical evidence remain unchanged.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
-| SGLang real serving | Five checkpoints pass; Phi-3/Phi-4 add scoped native TP2 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| vLLM real serving | Five checkpoints pass; Phi-3/Phi-4 add scoped native TP2 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| SGLang real serving | Seven checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2 TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| vLLM real serving | Seven checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2 TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
 | Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
-| GPU hot-switch and drain | Ten combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
-| 20-model/40-combination matrix | 5/20 functional checks per engine | Remaining 30 combinations and numerical/quality/performance gates |
+| GPU hot-switch and drain | Fourteen combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
+| 20-model/40-combination matrix | 7/20 functional checks per engine | Remaining 26 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |

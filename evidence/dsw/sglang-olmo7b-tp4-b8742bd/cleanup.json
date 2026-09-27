@@ -1,0 +1,205 @@
+{
+  "process_record": {
+    "identity": {
+      "pid": 2641197,
+      "start_ticks": "428286694",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct",
+      "--served-model-name",
+      "allenai/OLMo-2-1124-7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18794",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--tp-size",
+      "4"
+    ],
+    "model": {
+      "model_id": "allenai/OLMo-2-1124-7B-Instruct",
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "path": "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct",
+      "license": "apache-2.0",
+      "gated": false,
+      "verification": {
+        "repo_id": "allenai/OLMo-2-1124-7B-Instruct",
+        "repo_type": "model",
+        "checked": 12,
+        "path": "/root/jev-runtime/models/OLMo-2-1124-7B-Instruct"
+      },
+      "files": {
+        "README.md": {
+          "bytes": 9345,
+          "sha256": "1c64f5f2cb6158d24a2fa1241687cd93854154bc6cce6c2b86f6dc3e69cc87de"
+        },
+        "config.json": {
+          "bytes": 679,
+          "sha256": "ff8cc8709a229515676797ab6f343a09391041c9a8fbbc78bfec5be4c2e3664e"
+        },
+        "generation_config.json": {
+          "bytes": 126,
+          "sha256": "73e7f06e4ea172c6edeb1a44cab4a603e76962a85ea7ef3245769ba46ca23a30"
+        },
+        "merges.txt": {
+          "bytes": 916646,
+          "sha256": "b6fe424e334903f7fb84d3a106d9730455f4744b9fe3c21ee136d97a00e72502"
+        },
+        "model-00001-of-00003.safetensors": {
+          "bytes": 4970591184,
+          "sha256": "05ae91e1171f1f1753b23df3a5a6740d89da377932b33a1661bb7485d6ec530e"
+        },
+        "model-00002-of-00003.safetensors": {
+          "bytes": 4981161496,
+          "sha256": "0d41b81fe0d7e4c1d673a77beded5ee77080e39d6a6940b523e82f61eaa1dcbd"
+        },
+        "model-00003-of-00003.safetensors": {
+          "bytes": 4645523448,
+          "sha256": "51d701cc400703094ae4b6434b067ee8810056170ce4703e93b2f5b2cb93a51d"
+        },
+        "model.safetensors.index.json": {
+          "bytes": 29594,
+          "sha256": "e3ade1329e38dc608cf6588a7a5d52df2d4d0eb0042d8cdc690a5e349c0963fd"
+        },
+        "special_tokens_map.json": {
+          "bytes": 581,
+          "sha256": "78afb564e81264029b25f9caf24bda2521d5bdaeff5cd3fdbc01d3da2e8ce2f2"
+        },
+        "tokenizer.json": {
+          "bytes": 7137177,
+          "sha256": "73fd5254624f39a88e3faac6a8e11300fc3c735ed37880d4f4f08db898eaecca"
+        },
+        "tokenizer_config.json": {
+          "bytes": 4884,
+          "sha256": "50c412c57d832057a3d5db42064c741f751e570f7c8788f037bfb0d2dd6e5f49"
+        },
+        "vocab.json": {
+          "bytes": 1611056,
+          "sha256": "9e14712c91b37c7aab74b1306baa46ac342d620637a4b44523cdc3aec7d24195"
+        }
+      },
+      "weight_shards": [
+        "model-00001-of-00003.safetensors",
+        "model-00002-of-00003.safetensors",
+        "model-00003-of-00003.safetensors"
+      ],
+      "indexed_weight_bytes": 14597234688,
+      "hashed_at": 1790526858.14397
+    },
+    "gpu_before": {
+      "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "gpus_before": [
+      {
+        "index": 3,
+        "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 4,
+        "uuid": "GPU-3da7ba65-db60-947b-5477-1743e56b1f86",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 5,
+        "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 6,
+        "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      }
+    ],
+    "tensor_parallel_size": 4,
+    "readout_dtype": "bfloat16",
+    "created": 1790527327.6136715,
+    "port": 18794,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "checked_at": 1790527418.665216,
+  "remaining_process_group_members": [],
+  "gpus_after": [
+    {
+      "index": 3,
+      "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-3da7ba65-db60-947b-5477-1743e56b1f86",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "gpu_uuids_match": true,
+  "passed": true
+}

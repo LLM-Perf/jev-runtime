@@ -1,0 +1,30 @@
+{
+  "model_id": "allenai/OLMo-2-1124-7B-Instruct",
+  "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/sglang-olmo7b-tp4-b8742bd/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "engine_logprobs": [
+    -0.009286305867135525,
+    -5.071786403656006,
+    -6.009286403656006
+  ],
+  "reference_logprobs": [
+    -0.00988847203552723,
+    -5.009888648986816,
+    -5.947388648986816
+  ],
+  "absolute_errors": [
+    0.0006021661683917046,
+    0.06189775466918945,
+    0.06189775466918945
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790527409.5016177,
+  "finished_at": 1790527417.1423366
+}
