@@ -1,0 +1,39 @@
+{
+  "source_commit": "97271f821692b44f7e914bfd6d849518fdfc92e2",
+  "python": "3.12.14",
+  "wheels": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "5dc261609144a678014d7fc9c5c6078fa30af9fcbf440a97472c547d55f4cd16",
+      "bytes": 48127
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "0cf2f5e7335aacef661bc5a91489d733a8a2cb731c0898846043651f4b6d81f2",
+      "bytes": 3285
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "f4232ca56c75021ea933bbdf9e4ecaa316c4274177f6b508e26791637e9c6d6e",
+      "bytes": 2327
+    }
+  ],
+  "local_python_contracts": {
+    "passed": 91
+  },
+  "ruff_check": true,
+  "ruff_format_check": true,
+  "typescript": {
+    "node": "24.18.0",
+    "build_passed": true,
+    "unit_tests_passed": 4,
+    "live_http_evidence": "evidence/dsw/vllm-typescript-97271f8.json"
+  },
+  "container_image_built": false,
+  "container_runtime_check": "docker, podman and buildah were not found on the inspected local/DSW PATHs",
+  "hosted_ci": {
+    "run": 36310576819,
+    "jobs_started": false,
+    "reason": "GitHub organization account payment/spending eligibility rejection"
+  }
+}

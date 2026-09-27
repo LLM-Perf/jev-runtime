@@ -1,0 +1,108 @@
+{
+  "source_commit": "d0c8a91aa070da401d3290899028f8029b7d4611",
+  "runtime_source_commit": "97271f821692b44f7e914bfd6d849518fdfc92e2",
+  "node_version": "v24.18.0",
+  "qualification": "real HTTP SDK contract check; not model accuracy or performance certification",
+  "checks": {
+    "four_typed_answers": {
+      "request_id": "dec-317d9f78a8ff491fb853b0d0170b41e2",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.8354835452961425,
+            "false": 0.16451645470385742
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9279132998098067,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "category": {
+          "type": "choice",
+          "status": "answered",
+          "value": "refund",
+          "probabilities": {
+            "refund": 0.7981867705385763,
+            "hello": 0.20181322946142374
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9763780827303641,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 0.5312093733737563,
+          "probabilities": {
+            "low": 0.46879062662624377,
+            "high": 0.5312093733737563
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9701895618427627,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0,
+            "high": 1
+          },
+          "error": null
+        },
+        "relevance": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "refund",
+            "hello"
+          ],
+          "probabilities": {
+            "refund": 0.7981867873410141,
+            "hello": 0.20181321265898594
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9048934633778005,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 352,
+        "engine_prompt_tokens": 352,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 128
+      },
+      "latency_ms": 33.49050972610712
+    },
+    "unauthorized_rejected": true,
+    "missing_request_not_acknowledged": true
+  },
+  "passed": true
+}
