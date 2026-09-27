@@ -19,6 +19,35 @@ import httpx
 from jev_runtime.schema import Bundle, DecisionResponse, Policy
 
 
+def pin_workers(stack, probe, ports: dict, headers: dict) -> tuple[dict, dict]:
+    clients, rosters = {}, {}
+    for slot, port in ports.items():
+        expected = set(probe.snapshot(port)["workers"])
+        rosters[slot] = expected
+        deadline = time.monotonic() + 30
+        while not expected <= clients.keys():
+            assert time.monotonic() < deadline, "Cannot pin an admin connection to every worker"
+            client = httpx.Client(
+                base_url=f"http://127.0.0.1:{port}",
+                headers=headers,
+                timeout=30,
+                trust_env=False,
+                limits=httpx.Limits(max_connections=1, max_keepalive_connections=1),
+            )
+            # Client.get opens the client itself. Register cleanup before I/O;
+            # entering its context afterwards would attempt to open it twice.
+            stack.callback(client.close)
+            response = client.get("/ready")
+            response.raise_for_status()
+            owner = response.json()["worker_id"]
+            assert owner in expected
+            if owner in clients:
+                client.close()
+            else:
+                clients[owner] = client
+    return clients, rosters
+
+
 def validate_progress(before: dict, after: dict, planned: int) -> None:
     for item in (before, after):
         assert item["scope"] == "local_worker" and item["request"] is not None
@@ -95,29 +124,9 @@ def run_case(
             slot, state["generation"], uuid.uuid4().hex, slot + "-test", releases[slot], canary
         )
 
+    save()
     with ExitStack() as stack, concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-        clients, rosters = {}, {}
-        for slot, port in ports.items():
-            expected = set(controller.probe.snapshot(port)["workers"])
-            rosters[slot] = expected
-            deadline = time.monotonic() + 30
-            while not expected <= clients.keys():
-                assert time.monotonic() < deadline, "Cannot pin an admin connection to every worker"
-                client = httpx.Client(
-                    base_url=f"http://127.0.0.1:{port}",
-                    headers=headers,
-                    timeout=30,
-                    trust_env=False,
-                    limits=httpx.Limits(max_connections=1, max_keepalive_connections=1),
-                )
-                response = client.get("/ready")
-                response.raise_for_status()
-                owner = response.json()["worker_id"]
-                assert owner in expected
-                if owner in clients:
-                    client.close()
-                else:
-                    clients[owner] = stack.enter_context(client)
+        clients, rosters = pin_workers(stack, controller.probe, ports, headers)
         first = clients[next(iter(rosters[source_slot]))]
 
         def management(client, path, payload=None):
