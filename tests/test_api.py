@@ -151,3 +151,21 @@ async def test_admin_preview_matches_dispatched_tokens_and_does_not_run_engine(r
         for exported, actual in zip(preview["sequences"], runtime.backend.calls, strict=True):
             assert tuple(exported["input_ids"]) == actual.input_ids
             assert tuple(exported["label_ids"]) == actual.label_ids
+
+
+async def test_server_profile_requires_admin_and_reports_identity_limit(runtime, bundle):
+    runtime.expected_model = bundle.model
+    app = create_app(instance=runtime, api_key="data", admin_key="admin")
+    app.state.jev_runtime = runtime
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        denied = await client.get("/admin/profile", headers={"Authorization": "Bearer data"})
+        assert denied.status_code == 401
+        response = await client.get("/admin/profile", headers={"Authorization": "Bearer admin"})
+        assert response.status_code == 200
+        result = response.json()
+        assert result["model"] == bundle.model.model_dump(mode="json")
+        assert not result["engine_identity_verified"]
+        assert not result["tokenizer_implementation_verified"]
+        assert not runtime.backend.calls

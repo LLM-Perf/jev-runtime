@@ -101,6 +101,7 @@ class Runtime:
                 "dtype",
                 "quantization",
                 "tokenizer_digest",
+                "tokenizer_implementation_digest",
                 "template_digest",
             ):
                 if getattr(bundle.model, field) != getattr(self.expected_model, field):

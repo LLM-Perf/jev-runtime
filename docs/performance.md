@@ -37,8 +37,9 @@ the actual serving worker's compiler. It exports input IDs, selected label IDs,
 question order, bundle digest, generation, input digest and the full tokenizer
 implementation digest when a fast tokenizer exposes it. It does not submit GPU
 work. This avoids substituting a similarly named local tokenizer in a baseline.
-The implementation fingerprint supplements the current vocabulary fingerprint;
-a migration that binds it into every bundle is still required.
+New fast-tokenizer bundles bind the implementation fingerprint as well as the
+vocabulary fingerprint. An old manifest retains its original digest but must be
+rebuilt as a new version before serving with the stricter runtime. See operations.
 
 `benchmarks/run_case.py` uses this endpoint to build an exact context, rejects a
 context that cannot fit, and records every branch length. Before measurement it

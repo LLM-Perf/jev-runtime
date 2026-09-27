@@ -84,6 +84,7 @@ def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
         id=settings.model_id,
         revision=settings.model_revision,
         tokenizer_digest=compiler.tokenizer_digest,
+        tokenizer_implementation_digest=compiler.tokenizer_implementation_digest,
         template_digest=compiler.template_digest,
         dtype=settings.dtype,
         quantization=settings.quantization,

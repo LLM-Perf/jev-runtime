@@ -33,6 +33,35 @@ async def test_vllm_plugin_closes_runtime_and_preserves_host_lifespan(monkeypatc
     assert app.state.jev_runtime is None
 
 
+async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp_path):
+    from jev_vllm import endpoint
+
+    runtime = AsyncMock()
+
+    async def build(settings, native_backend, compiler):
+        assert compiler.tokenizer is engine.renderer.tokenizer
+        assert compiler._cache_tokens == 0
+        return runtime
+
+    config = tmp_path / "config.json"
+    config.write_text(
+        '{"backend":"vllm","model_id":"fixture","model_revision":"'
+        + "a" * 40 + '","compiler_cache_tokens":0}'
+    )
+    engine = SimpleNamespace(
+        model_config=SimpleNamespace(model="fixture", max_model_len=2048),
+        renderer=SimpleNamespace(tokenizer=compiler.tokenizer),
+    )
+    monkeypatch.setenv("JEV_CONFIG", str(config))
+    monkeypatch.setattr(endpoint, "version", lambda name: "fixture")
+    monkeypatch.setattr(endpoint, "build_runtime", build)
+    monkeypatch.setattr(endpoint, "bootstrap", AsyncMock())
+    state = SimpleNamespace()
+    await JevEndpointPlugin().init_state(engine, state, SimpleNamespace(api_server_count=1))
+    assert state.jev_runtime is runtime
+    runtime.start.assert_awaited_once()
+
+
 def test_sglang_spawn_target_preserves_other_uvicorn_apps():
     assert _configure_uvicorn_workers("other.application:app", workers=2) is None
     assert _configure_uvicorn_workers("sglang.srt.entrypoints.http_server:app", workers=1) is None

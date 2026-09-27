@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from importlib.metadata import version
 
 from jev_runtime.backends.vllm import VLLMNative
+from jev_runtime.compiler import Compiler
 from jev_runtime.config import bootstrap, build_runtime, load_settings
 from jev_runtime.plugin_api import install_plugin_routes
 
@@ -50,7 +51,15 @@ class JevEndpointPlugin:
             settings = load_settings(path)
             if settings.backend != "vllm":
                 raise ValueError("JEV_CONFIG backend must match the host engine")
-            runtime = await build_runtime(settings, native_backend=backend)
+            # vLLM's renderer owns the tokenizer actually used for text input.
+            # A separately loaded AutoTokenizer can miss engine adjustments.
+            tokenizer = engine_client.renderer.tokenizer
+            if tokenizer is None:
+                raise ValueError("Jev typed compilation requires the host tokenizer")
+            compiler = Compiler(
+                tokenizer, settings.compiler_cache_tokens, settings.compiler_cache_entries
+            )
+            runtime = await build_runtime(settings, native_backend=backend, compiler=compiler)
             try:
                 await runtime.start()
                 await bootstrap(runtime, settings)

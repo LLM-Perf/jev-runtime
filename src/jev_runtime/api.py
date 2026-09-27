@@ -176,6 +176,19 @@ def install_routes(
     async def workers(request: Request):
         return {"workers": runtime(request).registry.worker_status()}
 
+    @management.get("/profile")
+    async def profile(request: Request):
+        instance = runtime(request)
+        return {
+            "worker_id": instance.registry.owner,
+            "model": instance.expected_model,
+            "tokenizer_implementation_verified": (
+                instance.compiler.tokenizer_implementation_digest is not None
+            ),
+            "engine_identity_verified": instance.capabilities.verified,
+            "capabilities": instance.capabilities,
+        }
+
     @management.post("/compile")
     async def compile_preview(body: DecisionRequest, request: Request):
         return runtime(request).compile_preview(body)

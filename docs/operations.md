@@ -55,6 +55,32 @@ win. Never blindly retry a stale activation. Existing requests retain their bund
 digest, calibration and policy through a route change. Installing new Python/CUDA
 code requires rolling a process; changing a manifest does not reload Python modules.
 
+New bundles include `tokenizer_implementation_digest` when the tokenizer exposes
+its backend. This binds normalization, pretokenization and BPE rules, in addition
+to the vocabulary and template. Both native plugins compile with the host's
+actual tokenizer. A local AutoTokenizer can differ after engine adjustments, so
+build from the administrative serving profile when targeting a native plugin:
+
+```sh
+jevctl bundle build-remote new-bundle.json \
+  --url http://127.0.0.1:30000/plugins/jev-runtime --name decisions --version 2
+```
+
+This creates a local manifest without uploading or activating it. It refuses to
+overwrite an existing file. `/admin/profile` uses the separate administrative key
+and distinguishes tokenizer fingerprint availability from engine-weight identity
+verification; the latter is still incomplete. The profile's checkpoint revision
+is configured, not proof that every loaded weight matches that revision.
+
+Legacy manifests without the backend fingerprint remain readable with unchanged
+digests. A fast-tokenizer runtime refuses to prepare/serve them. During an upgrade,
+retain the old process until its requests drain; bring up a separate registry and
+new bundle IDs/versions, prepare and switch routing, then retire the old deployment.
+Do not rewrite a persisted manifest or reuse an old calibration artifact: the
+stronger tokenizer identity changes the scoring contract. A tokenizer without an
+exportable backend still has only vocabulary/template checking and must not be
+treated as having complete implementation identity coverage.
+
 The registry is local SQLite in WAL mode. Multiple processes can share a local file;
 network filesystems and multi-node SQLite are unsupported. Back up the database with
 SQLite's online backup API, not by copying a live `.db` without its WAL.

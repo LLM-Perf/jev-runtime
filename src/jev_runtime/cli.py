@@ -27,6 +27,10 @@ def output(value):
 
 
 def admin_call(url: str, path: str, body: dict | None = None):
+    output(admin_request(url, path, body))
+
+
+def admin_request(url: str, path: str, body: dict | None = None):
     key = os.environ.get("JEV_ADMIN_KEY")
     if not key:
         raise typer.BadParameter("Set JEV_ADMIN_KEY; secrets are not accepted in CLI arguments")
@@ -35,7 +39,7 @@ def admin_call(url: str, path: str, body: dict | None = None):
     ) as client:
         result = client.get(path) if body is None else client.post(path, json=body)
         result.raise_for_status()
-        output(result.json())
+        return result.json()
 
 
 @app.command()
@@ -75,6 +79,9 @@ def inspect(config: Path):
                 {
                     "capabilities": runtime.capabilities.model_dump(mode="json"),
                     "tokenizer_digest": runtime.compiler.tokenizer_digest,
+                    "tokenizer_implementation_digest": (
+                        runtime.compiler.tokenizer_implementation_digest
+                    ),
                     "template_digest": runtime.compiler.template_digest,
                 }
             )
@@ -119,6 +126,24 @@ def bundle_build(config: Path, destination: Path, name: str = "default", version
     bundle = Bundle(id=name, version=version, model=model_identity(settings, compiler))
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(bundle.model_dump_json(indent=2) + "\n")
+    output({"path": str(destination), "reference": bundle.reference, "digest": bundle.digest})
+
+
+@bundle_app.command("build-remote")
+def bundle_build_remote(
+    destination: Path,
+    url: str = "http://127.0.0.1:8795",
+    name: str = "default",
+    version: int = 1,
+):
+    """Build against the running worker's tokenizer profile without activating it."""
+    profile = admin_request(url, "/admin/profile")
+    if not profile.get("model"):
+        raise typer.BadParameter("The serving runtime does not expose a configured model identity")
+    bundle = Bundle(id=name, version=version, model=profile["model"])
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("x") as file:
+        file.write(bundle.model_dump_json(indent=2) + "\n")
     output({"path": str(destination), "reference": bundle.reference, "digest": bundle.digest})
 
 

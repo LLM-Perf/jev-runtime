@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "source_commit": "fad1d84950cb562ba133e119df0ced62cedb9c79",
+  "provided_runtime_source_commit": null,
+  "started_at": 1790501121.2937865,
+  "qualification": "development HTTP measurements; not release performance certification",
+  "release_gate_passed": false,
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "scenario": {
+    "context_tokens": 256,
+    "candidates": 8,
+    "concurrency": 1,
+    "cache": "hot",
+    "scoring_mode": "joint-label"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674"
+  },
+  "duration_seconds": 10.0,
+  "repeats": 3,
+  "warmup_requests_per_method": 8,
+  "service_process_identity": {
+    "pid": 2587666,
+    "start_ticks": "425662795",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager"
+  ],
+  "measurements": [
+    {
+      "repeat": 1,
+      "method": "native-label",
+      "rows": "1-native-label.jsonl",
+      "summary": {
+        "dispatched_requests": 458,
+        "strict_success_requests": 458,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 458,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.017858605831861496,
+        "makespan_seconds": 10.017858605831861,
+        "strict_success_rps_over_full_cohort": 45.71835339474415,
+        "strict_success_rps_completed_in_window": 45.7,
+        "successful_questions_per_second_over_full_cohort": 45.71835339474415,
+        "latency_successful_requests": {
+          "samples": 458,
+          "p50_ms": 21.44718635827303,
+          "p95_ms": 24.999131029471755,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 458,
+          "p50_ms": 21.44718635827303,
+          "p95_ms": 24.999131029471755,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 458
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 458
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 0,
+          "request_denominator": 458,
+          "observed_prompt_tokens": 0,
+          "observed_cached_tokens": 0,
+          "observed_token_weighted_ratio": null,
+          "full_cohort_token_weighted_ratio": null
+        }
+      }
+    },
+    {
+      "repeat": 1,
+      "method": "native-plugin",
+      "rows": "1-native-plugin.jsonl",
+      "summary": {
+        "dispatched_requests": 427,
+        "strict_success_requests": 427,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 427,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.021885761991143227,
+        "makespan_seconds": 10.021885761991143,
+        "strict_success_rps_over_full_cohort": 42.606751876920605,
+        "strict_success_rps_completed_in_window": 42.6,
+        "successful_questions_per_second_over_full_cohort": 42.606751876920605,
+        "latency_successful_requests": {
+          "samples": 427,
+          "p50_ms": 22.928813472390175,
+          "p95_ms": 27.097023278474808,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 427,
+          "p50_ms": 22.928813472390175,
+          "p95_ms": 27.097023278474808,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 427
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 427
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 427,
+          "request_denominator": 427,
+          "observed_prompt_tokens": 109312,
+          "observed_cached_tokens": 102480,
+          "observed_token_weighted_ratio": 0.9375,
+          "full_cohort_token_weighted_ratio": 0.9375
+        }
+      }
+    },
+    {
+      "repeat": 2,
+      "method": "native-plugin",
+      "rows": "2-native-plugin.jsonl",
+      "summary": {
+        "dispatched_requests": 421,
+        "strict_success_requests": 421,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 421,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.022805645130574703,
+        "makespan_seconds": 10.022805645130575,
+        "strict_success_rps_over_full_cohort": 42.004206696808126,
+        "strict_success_rps_completed_in_window": 42.0,
+        "successful_questions_per_second_over_full_cohort": 42.004206696808126,
+        "latency_successful_requests": {
+          "samples": 421,
+          "p50_ms": 23.282400332391262,
+          "p95_ms": 27.222422882914543,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 421,
+          "p50_ms": 23.282400332391262,
+          "p95_ms": 27.222422882914543,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 421
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 421
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 421,
+          "request_denominator": 421,
+          "observed_prompt_tokens": 107776,
+          "observed_cached_tokens": 101040,
+          "observed_token_weighted_ratio": 0.9375,
+          "full_cohort_token_weighted_ratio": 0.9375
+        }
+      }
+    },
+    {
+      "repeat": 2,
+      "method": "native-label",
+      "rows": "2-native-label.jsonl",
+      "summary": {
+        "dispatched_requests": 472,
+        "strict_success_requests": 472,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 472,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.010194431990385056,
+        "makespan_seconds": 10.010194431990385,
+        "strict_success_rps_over_full_cohort": 47.15193128433066,
+        "strict_success_rps_completed_in_window": 47.1,
+        "successful_questions_per_second_over_full_cohort": 47.15193128433066,
+        "latency_successful_requests": {
+          "samples": 472,
+          "p50_ms": 20.71629138663411,
+          "p95_ms": 24.306193506345153,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 472,
+          "p50_ms": 20.71629138663411,
+          "p95_ms": 24.306193506345153,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 472
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 472
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 0,
+          "request_denominator": 472,
+          "observed_prompt_tokens": 0,
+          "observed_cached_tokens": 0,
+          "observed_token_weighted_ratio": null,
+          "full_cohort_token_weighted_ratio": null
+        }
+      }
+    },
+    {
+      "repeat": 3,
+      "method": "native-label",
+      "rows": "3-native-label.jsonl",
+      "summary": {
+        "dispatched_requests": 474,
+        "strict_success_requests": 474,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 474,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.01226090919226408,
+        "makespan_seconds": 10.012260909192264,
+        "strict_success_rps_over_full_cohort": 47.34195445953873,
+        "strict_success_rps_completed_in_window": 47.3,
+        "successful_questions_per_second_over_full_cohort": 47.34195445953873,
+        "latency_successful_requests": {
+          "samples": 474,
+          "p50_ms": 20.589083898812532,
+          "p95_ms": 23.8885089289397,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 474,
+          "p50_ms": 20.589083898812532,
+          "p95_ms": 23.8885089289397,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 474
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 474
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 0,
+          "request_denominator": 474,
+          "observed_prompt_tokens": 0,
+          "observed_cached_tokens": 0,
+          "observed_token_weighted_ratio": null,
+          "full_cohort_token_weighted_ratio": null
+        }
+      }
+    },
+    {
+      "repeat": 3,
+      "method": "native-plugin",
+      "rows": "3-native-plugin.jsonl",
+      "summary": {
+        "dispatched_requests": 422,
+        "strict_success_requests": 422,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 422,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.002190840430557728,
+        "makespan_seconds": 10.002190840430558,
+        "strict_success_rps_over_full_cohort": 42.1907566784473,
+        "strict_success_rps_completed_in_window": 42.1,
+        "successful_questions_per_second_over_full_cohort": 42.1907566784473,
+        "latency_successful_requests": {
+          "samples": 422,
+          "p50_ms": 23.056552279740572,
+          "p95_ms": 27.1233634557575,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 422,
+          "p50_ms": 23.056552279740572,
+          "p95_ms": 27.1233634557575,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "outcomes": {
+          "completed": 422
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 422
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 422,
+          "request_denominator": 422,
+          "observed_prompt_tokens": 108032,
+          "observed_cached_tokens": 101280,
+          "observed_token_weighted_ratio": 0.9375,
+          "full_cohort_token_weighted_ratio": 0.9375
+        }
+      }
+    }
+  ],
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false
+  },
+  "cache_definition": "repeated exact prompt after warmup",
+  "fixture_digest": "sha256:632a4e2ae554675f5e7c1c61f9d9ebccc350f2f8718aacf88afc9b589ce67b3c",
+  "sequence_lengths": [
+    256
+  ],
+  "bundle_digest": "sha256:909a1bd1c4099c1e5781d6346e5635bfa26418b6508b6079da1f40ba6dcc932a",
+  "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+  "parity_warmup_requests_per_method": 8,
+  "native_typed_probability_parity": {
+    "max_absolute_error": 0.0,
+    "tolerance": 0.0001,
+    "passed": true,
+    "native_cached_tokens_per_branch": [
+      null
+    ],
+    "typed_cached_prompt_tokens": 240
+  },
+  "measurement_complete": true,
+  "all_attempts_successful": true,
+  "temporary_alias_retired": true,
+  "finished_at": 1790501183.190137
+}

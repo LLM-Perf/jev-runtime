@@ -51,6 +51,18 @@ class Compiler:
     def verify_bundle(self, bundle: Bundle) -> None:
         if bundle.model.tokenizer_digest != self.tokenizer_digest:
             raise JevError("tokenizer_mismatch", "Bundle tokenizer fingerprint does not match")
+        if bundle.model.tokenizer_implementation_digest != self.tokenizer_implementation_digest:
+            if bundle.model.tokenizer_implementation_digest is None:
+                raise JevError(
+                    "tokenizer_identity_incomplete",
+                    "Rebuild a new bundle version with the serving tokenizer implementation digest",
+                    409,
+                )
+            raise JevError(
+                "tokenizer_implementation_mismatch",
+                "Bundle tokenizer normalization/pretokenization/BPE implementation differs",
+                409,
+            )
         if bundle.model.template_digest != self.template_digest:
             raise JevError("template_mismatch", "Bundle chat template fingerprint does not match")
 

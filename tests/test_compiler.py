@@ -2,7 +2,7 @@ import pytest
 
 from jev_runtime.compiler import Compiler
 from jev_runtime.errors import JevError
-from jev_runtime.schema import Option, Question
+from jev_runtime.schema import Bundle, Option, Question, content_digest
 
 
 @pytest.mark.parametrize("count", [32, 64])
@@ -69,3 +69,38 @@ def test_over_budget_stops_before_testing_label_continuations(compiler, monkeypa
     with pytest.raises(JevError) as error:
         compiler._encode("too long", ["A", "B"], 2)
     assert error.value.code == "context_budget" and calls == ["too long"]
+
+
+def test_backend_fingerprint_rejects_equal_vocabulary_with_different_rules(compiler, bundle):
+    from copy import deepcopy
+    from types import SimpleNamespace
+
+    tokenizer = deepcopy(compiler.tokenizer)
+    tokenizer.backend_tokenizer = SimpleNamespace(to_str=lambda: '{"normalizer":"NFC"}')
+    actual = Compiler(tokenizer)
+    bound = bundle.model_copy(
+        update={
+            "model": bundle.model.model_copy(
+                update={"tokenizer_implementation_digest": actual.tokenizer_implementation_digest}
+            )
+        }
+    )
+    actual.verify_bundle(bound)
+    assert compiler.tokenizer_digest == actual.tokenizer_digest
+    with pytest.raises(JevError) as missing:
+        actual.verify_bundle(bundle)
+    assert missing.value.code == "tokenizer_identity_incomplete"
+    tokenizer.backend_tokenizer = SimpleNamespace(to_str=lambda: '{"normalizer":"NFKC"}')
+    different = Compiler(tokenizer)
+    with pytest.raises(JevError) as mismatch:
+        different.verify_bundle(bound)
+    assert mismatch.value.code == "tokenizer_implementation_mismatch"
+    assert bundle.scoring_contract_digest != bound.scoring_contract_digest
+
+
+def test_old_manifest_digests_survive_optional_identity_extension(bundle):
+    legacy = bundle.model_dump(mode="json")
+    assert "tokenizer_implementation_digest" not in legacy["model"]
+    loaded = Bundle.model_validate(legacy)
+    assert loaded.digest == content_digest(legacy)
+    assert loaded.model_dump(mode="json") == legacy

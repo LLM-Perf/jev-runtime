@@ -4,7 +4,7 @@ import hashlib
 import json
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_validator
 
 
 def content_digest(value: BaseModel | dict | list | str) -> str:
@@ -76,11 +76,24 @@ class ModelIdentity(Contract):
     id: str = Field(min_length=1)
     revision: str = Field(pattern=r"^(?:[a-fA-F0-9]{40,64}|local-sha256:[a-fA-F0-9]{64})$")
     tokenizer_digest: str = Field(min_length=1)
+    tokenizer_implementation_digest: str | None = Field(
+        default=None, pattern=r"^sha256:[a-f0-9]{64}$"
+    )
     template_digest: str = Field(min_length=1)
     dtype: str = "bfloat16"
     quantization: str | None = None
     adapter_id: str | None = None
     adapter_revision: str | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_serialization(self, handler):
+        result = handler(self)
+        # Adding this optional field must not change the digest of a stored
+        # legacy manifest. Legacy manifests remain readable; serving enforces
+        # the stronger identity when the tokenizer exposes its implementation.
+        if self.tokenizer_implementation_digest is None:
+            result.pop("tokenizer_implementation_digest", None)
+        return result
 
     @model_validator(mode="after")
     def adapter_pair(self):
