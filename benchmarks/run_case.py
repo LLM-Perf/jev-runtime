@@ -124,6 +124,7 @@ async def run(args):
     report = {
         "schema_version": 1,
         "source_commit": args.source_commit,
+        "provided_runtime_source_commit": args.runtime_source_commit,
         "started_at": time.time(),
         "qualification": "development HTTP measurements; not release performance certification",
         "release_gate_passed": False,
@@ -351,10 +352,19 @@ async def run(args):
                     "cached_prompt_tokens": result.usage.cached_prompt_tokens,
                 }
 
-            reference_sequences, reference_results = [], []
+            # A hot-cache comparison must not compare the first uncached
+            # prefill against a cached continuation. Warm both paths before
+            # checking parity; this also warms kernels in the cold-cache lane.
+            for _ in range(args.warmup):
+                for call in (native_call, typed_call):
+                    result = await call("parity-warmup-" + uuid.uuid4().hex)
+                    assert result["outcome"] == "completed"
+            report["parity_warmup_requests_per_method"] = args.warmup
+            reference_sequences, reference_results, reference_cache = [], [], []
             for sequence in fixture["sequences"]:
                 rid = "parity-" + uuid.uuid4().hex
                 actual = await native_branch(sequence, rid)
+                reference_cache.append(actual.get("cached_tokens"))
                 reference_sequences.append(
                     ScoreInput(
                         **{
@@ -378,7 +388,8 @@ async def run(args):
             )
             response = await typed.post(prefix + "/v1/decisions", json=body)
             response.raise_for_status()
-            actual_answer = DecisionResponse.model_validate(response.json()).answers["category"]
+            actual_response = DecisionResponse.model_validate(response.json())
+            actual_answer = actual_response.answers["category"]
             parity = max(
                 abs(expected.probabilities[key] - actual_answer.probabilities[key])
                 for key in expected.probabilities
@@ -387,6 +398,8 @@ async def run(args):
                 "max_absolute_error": parity,
                 "tolerance": args.parity_tolerance,
                 "passed": parity <= args.parity_tolerance,
+                "native_cached_tokens_per_branch": reference_cache,
+                "typed_cached_prompt_tokens": actual_response.usage.cached_prompt_tokens,
             }
             assert parity <= args.parity_tolerance, report["native_typed_probability_parity"]
 
@@ -456,6 +469,7 @@ if __name__ == "__main__":
     parser.add_argument("--engine-run-dir", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--runtime-source-commit")
     parser.add_argument("--context-tokens", type=int, required=True)
     parser.add_argument("--candidates", type=int, choices=(2, 8, 32), required=True)
     parser.add_argument("--concurrency", type=int, choices=(1, 16), required=True)

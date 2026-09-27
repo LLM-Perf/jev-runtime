@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "source_commit": "5c4fcbe7d4d1bff4226c9b06d4c2b487b48e23fd",
+  "started_at": 1790500150.5682664,
+  "qualification": "development HTTP measurements; not release performance certification",
+  "release_gate_passed": false,
+  "engine": "sglang",
+  "mode": "native-plugin",
+  "scenario": {
+    "context_tokens": 256,
+    "candidates": 8,
+    "concurrency": 1,
+    "cache": "hot",
+    "scoring_mode": "joint-label"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674"
+  },
+  "duration_seconds": 5.0,
+  "repeats": 1,
+  "warmup_requests_per_method": 8,
+  "service_process_identity": {
+    "pid": 2585680,
+    "start_ticks": "425565603",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/sglang/bin/python",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18796",
+    "--dtype",
+    "bfloat16",
+    "--context-length",
+    "2048",
+    "--max-running-requests",
+    "4",
+    "--chunked-prefill-size",
+    "512",
+    "--max-total-tokens",
+    "2048",
+    "--mem-fraction-static",
+    "0.65",
+    "--disable-cuda-graph",
+    "--attention-backend",
+    "triton"
+  ],
+  "measurements": [],
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false
+  },
+  "cache_definition": "repeated exact prompt after warmup",
+  "fixture_digest": "sha256:a24caeca39a60cad15b49a592e494dbc31d5367b2886fc16cd3842111742118c",
+  "sequence_lengths": [
+    256
+  ],
+  "bundle_digest": "sha256:fd39c75294c549f8d6acc3343c36d3bc6b4394d7f8247a3d5ede39c842ccc6c2",
+  "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+  "native_typed_probability_parity": {
+    "max_absolute_error": 0.01568860385888332,
+    "tolerance": 0.0001,
+    "passed": false
+  },
+  "measurement_complete": false,
+  "failure": {
+    "type": "AssertionError",
+    "message": "{'max_absolute_error': 0.01568860385888332, 'tolerance': 0.0001, 'passed': False}"
+  },
+  "temporary_alias_retired": true,
+  "finished_at": 1790500150.9920025
+}
