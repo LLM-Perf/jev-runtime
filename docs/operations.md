@@ -102,8 +102,11 @@ jevctl recovery recover config.yaml prepare-REQUEST_ID
 
 The recovery CLI does not activate routes or clear unknown leases. It contacts the
 configured engine and applies the same owner, backend and abort checks as the API.
-Unit tests cover cross-instance recovery and fail-closed identity checks; real
-process-kill fault injection is still pending. Unattended recovery is not certified.
+Unit tests cover cross-instance recovery and fail-closed identity checks. A real
+SGLang gateway SIGKILL/restart test and offline CLI recovery passed; see
+`evidence/dsw/gateway-sglang-crash-7eee70e.json`. The engine survived throughout,
+but this does not establish multi-node recovery or a GPU unload barrier.
+Unattended recovery is not certified.
 
 ## Health, metrics and evidence
 

@@ -79,6 +79,12 @@ class Compiler:
                 [list(string.ascii_uppercase[:count]), list(string.ascii_lowercase[:count])]
             )
         sets.extend([[str(i) for i in range(count)], [f" {i}" for i in range(count)]])
+        # Digit-splitting tokenizers cannot encode labels 10..31 as one token.
+        # Keep existing label choices first, then try a 64-symbol alphabet.
+        # _encode still proves continuation stability and distinct token IDs.
+        alphabet = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!?"
+        if count <= len(alphabet):
+            sets.extend([list(alphabet[:count]), [f" {label}" for label in alphabet[:count]]])
         return sets
 
     def compile(

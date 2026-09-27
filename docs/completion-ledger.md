@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 56 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 58 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -27,7 +27,10 @@ replacement for any requirement in `implementation-plan.md`.
   is retained alongside the passing retest.
 - Engine branch IDs are journaled before dispatch. Administrative recovery can
   operate after a worker restart, with PID/start-tick/boot-ID checks and matching
-  engine identity. Unit tests pass; live crash fault injection remains pending.
+  engine identity. A real SGLang gateway SIGKILL/restart test passed: 128 branch
+  IDs persisted, the dead owner was verified, explicit recovery released its lease,
+  and serving resumed while the original engine remained alive. Offline CLI recovery
+  also passed. The initial launcher TIME_WAIT failure is retained with its fix.
 - Per-worker startup revalidates persisted active versions. Concurrent local
   bootstrap runs a canary on every worker; an unprepared worker rejects traffic
   for a newly active version. Coordinated multi-replica rollout remains incomplete.
@@ -45,7 +48,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
-| 24h soak and fault injection | Not run | Live job logs, complete coverage and cleanup evidence |
+| 24h soak and fault injection | Gateway crash recovery passed on SGLang; soak not run | Remaining faults and complete 24h evidence |
 | LoRA lifecycle | Incomplete | Load/unload adapters, engine identity, draining, cache isolation |
 | SDKs and deployment productization | Python and TypeScript SDKs, runbooks and package builds pass | vLLM standalone gateway, deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
