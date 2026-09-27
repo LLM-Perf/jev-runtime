@@ -512,8 +512,9 @@ async def run(args):
                 }
 
                 async def generated_call(request_id):
+                    id_field = "rid" if settings.backend == "sglang" else "request_id"
                     response = await native.post(
-                        "/v1/chat/completions", json={**generation_body, "request_id": request_id}
+                        "/v1/chat/completions", json={**generation_body, id_field: request_id}
                     )
                     values, _ = parse_generation(
                         settings.backend,
