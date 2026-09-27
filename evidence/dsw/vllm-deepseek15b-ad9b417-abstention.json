@@ -1,0 +1,102 @@
+{
+  "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "qualification": "diagnostic repeat after harness assumed every answer is selected",
+  "response": {
+    "request_id": "dec-ac22e945d1484487b148ace82f0c7c70",
+    "status": "completed",
+    "bundle": "default@1",
+    "bundle_digest": "sha256:1bff38430d22281b826ba330434d1edca06b08e459108089c63cd95a3c3d0b2b",
+    "generation": 1,
+    "engine": {
+      "name": "vllm",
+      "version": "0.30.0+cu129"
+    },
+    "answers": {
+      "intent": {
+        "type": "choice",
+        "status": "answered",
+        "value": "billing",
+        "probabilities": {
+          "billing": 0.42065161237517235,
+          "technical": 0.3077552939552807,
+          "other": 0.27159309366954687
+        },
+        "probability_semantics": "conditional_label_distribution",
+        "support": null,
+        "label_mass": 4.1330864321522317e-07,
+        "calibration_status": "uncalibrated",
+        "abstained": false,
+        "reason": null,
+        "levels": null,
+        "error": null
+      },
+      "refund": {
+        "type": "boolean",
+        "status": "answered",
+        "value": true,
+        "probabilities": {
+          "true": 0.5621765008857981,
+          "false": 0.4378234991142019
+        },
+        "probability_semantics": "conditional_label_distribution",
+        "support": null,
+        "label_mass": 6.781698150156741e-06,
+        "calibration_status": "uncalibrated",
+        "abstained": false,
+        "reason": null,
+        "levels": null,
+        "error": null
+      },
+      "urgency": {
+        "type": "score",
+        "status": "answered",
+        "value": 3.227555705526825,
+        "probabilities": {
+          "low": 0.5826629476507629,
+          "medium": 0.18916296359310913,
+          "high": 0.2281740887561279
+        },
+        "probability_semantics": "conditional_label_distribution",
+        "support": null,
+        "label_mass": 2.8965247837535475e-07,
+        "calibration_status": "uncalibrated",
+        "abstained": false,
+        "reason": null,
+        "levels": {
+          "low": 0.0,
+          "medium": 5.0,
+          "high": 10.0
+        },
+        "error": null
+      },
+      "routing": {
+        "type": "rank",
+        "status": "abstained",
+        "value": null,
+        "probabilities": {
+          "payments": 0.38365164605179847,
+          "engineering": 0.23269670789640307,
+          "sales": 0.38365164605179847
+        },
+        "probability_semantics": "conditional_label_distribution",
+        "support": null,
+        "label_mass": 3.280163492490046e-07,
+        "calibration_status": "uncalibrated",
+        "abstained": true,
+        "reason": "tie",
+        "levels": null,
+        "error": null
+      }
+    },
+    "usage": {
+      "questions": 4,
+      "successful_questions": 4,
+      "scoring_sequences": 4,
+      "logical_prompt_tokens": 301,
+      "engine_prompt_tokens": 301,
+      "engine_completion_tokens": 4,
+      "cached_prompt_tokens": 272
+    },
+    "latency_ms": 62.84093204885721
+  }
+}

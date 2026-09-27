@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "started_at": 1790507889.5164676,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "model": {
+    "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "tokenizer_digest": "sha256:b60300b296f78f2e76ee1eb8d338661b470881ceff0b6c01a3006b173c3451c1",
+    "tokenizer_implementation_digest": "sha256:a61ad4dd0ab01edc52b74dbf7dea65ff288c1df1d185daeb23f9a07bb4560316",
+    "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "7f7ee92b3ea74cef8705f7dd38f9346d"
+    },
+    "auth_separation": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/DeepSeek-R1-Distill-Qwen-1.5B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false
+  },
+  "passed": false,
+  "failure": {
+    "type": "TypeError",
+    "message": "'NoneType' object is not iterable"
+  },
+  "finished_at": 1790507889.6715655,
+  "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "runtime_source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "diagnosis": "The harness tried to iterate a legitimate null rank value under tie=abstain. The diagnostic repeat preserves the returned tied probabilities; this failed attempt remains recorded."
+}

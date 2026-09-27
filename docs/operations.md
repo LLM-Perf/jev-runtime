@@ -167,7 +167,9 @@ Enable the `jev_runtime.runtime` logger at INFO to emit `jev_scoring` records
 correlating the public request ID, authenticated tenant,
 bundle digest/generation and all internal engine IDs, without input text or keys.
 
-Use `tests/integration/live_contract.py` only against task-owned aliases/services:
+Use `tests/integration/live_contract.py` only against task-owned aliases/services.
+Pass `--source-commit` for the harness revision and `--runtime-source-commit` for
+the deployed server revision; use a new output path for every attempt:
 it creates temporary versions and runs real traffic. Its reports include strict
 successes, native/attach parity, switches and mixed-version failures. It does not
 measure a dedicated throughput baseline. `reference_logits.py` separately reports

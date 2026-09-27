@@ -20,16 +20,44 @@ import httpx
 
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.config import load_compiler, load_settings, model_identity
-from jev_runtime.schema import Bundle, DecisionRequest, DecisionResponse, TemplateSpec
+from jev_runtime.schema import Bundle, DecisionRequest, DecisionResponse, Policy, TemplateSpec
 
 
-async def certify(run_dir: Path, output: Path, switches: int) -> dict:
+def verify_four_types(response: DecisionResponse, *, require_selected: bool = False) -> None:
+    """A valid default-policy abstention is not an unsupported output type."""
+    assert response.status == "completed" and response.usage.successful_questions == 4
+    expected = {"intent": "choice", "refund": "boolean", "urgency": "score", "routing": "rank"}
+    assert {key: answer.type for key, answer in response.answers.items()} == expected
+    for answer in response.answers.values():
+        assert answer.status in {"answered", "abstained"}
+        assert answer.calibration_status == "uncalibrated"
+        if require_selected:
+            assert answer.status == "answered"
+        if answer.status == "abstained":
+            assert answer.abstained and answer.reason and answer.value is None
+        assert all(math.isfinite(p) and 0 <= p <= 1 for p in answer.probabilities.values())
+        assert abs(sum(answer.probabilities.values()) - 1) < 1e-6
+    if response.answers["refund"].status == "answered":
+        assert type(response.answers["refund"].value) is bool
+    if response.answers["urgency"].status == "answered":
+        assert 0 <= response.answers["urgency"].value <= 10
+    if response.answers["routing"].status == "answered":
+        assert set(response.answers["routing"].value) == {"payments", "engineering", "sales"}
+
+
+async def certify(
+    run_dir: Path, output: Path, switches: int, source_commit: str, runtime_source_commit: str
+) -> dict:
+    if await asyncio.to_thread(output.exists):
+        raise ValueError("Choose a new output path to retain previous attempts")
     settings = load_settings(run_dir / "config.json")
     keys = json.loads((run_dir / "keys.json").read_text())
     compiler = await asyncio.to_thread(load_compiler, settings)
     prefix = "/plugins/jev-runtime"
     report = {
         "schema_version": 1,
+        "source_commit": source_commit,
+        "runtime_source_commit": runtime_source_commit,
         "started_at": time.time(),
         "qualification": "colocated-functional-test; not a performance or quality benchmark",
         "model": model_identity(settings, compiler).model_dump(mode="json"),
@@ -114,17 +142,8 @@ async def certify(run_dir: Path, output: Path, switches: int) -> dict:
             checks["auth_separation"] = True
 
             response = DecisionResponse.model_validate(await call("/v1/decisions", payload))
-            assert response.status == "completed" and len(response.answers) == 4
-            for answer in response.answers.values():
-                assert answer.status in {"answered", "abstained"}
-                assert answer.calibration_status == "uncalibrated"
-                assert all(math.isfinite(p) and 0 <= p <= 1 for p in answer.probabilities.values())
-                assert abs(sum(answer.probabilities.values()) - 1) < 1e-6
-            assert isinstance(response.answers["refund"].value, bool)
-            assert 0 <= response.answers["urgency"].value <= 10
-            assert set(response.answers["routing"].value) == {"payments", "engineering", "sales"}
-            assert response.usage.successful_questions == 4
             checks["four_types"] = response.model_dump(mode="json")
+            verify_four_types(response)
 
             chat = await client.post(
                 "/v1/chat/completions",
@@ -147,7 +166,14 @@ async def certify(run_dir: Path, output: Path, switches: int) -> dict:
             assert error["error"]["code"] == "bundle_not_active"
             checks["invalid_bundle_explicit"] = True
 
-            bundle = Bundle(id=case_id, version=1, model=model_identity(settings, compiler))
+            # Exercise selected values independently of legitimate default-policy
+            # ties. This is an explicit test bundle, never a production fallback.
+            bundle = Bundle(
+                id=case_id,
+                version=1,
+                model=model_identity(settings, compiler),
+                policy=Policy(tie="first"),
+            )
             request = DecisionRequest.model_validate(payload)
             compiled = compiler.compile(request.input.text, request.questions[0], bundle, case_id)
             seq = compiled.sequences[0]
@@ -214,12 +240,28 @@ async def certify(run_dir: Path, output: Path, switches: int) -> dict:
                 "/admin/bundles/activate",
                 {
                     "alias": case_id,
-                    "reference": independent.reference,
+                    "reference": bundle.reference,
                     "expected_generation": 0,
                 },
                 management=True,
             )
-            indep_result = await call("/v1/decisions", {**payload, "model": case_id})
+            selected = DecisionResponse.model_validate(
+                await call("/v1/decisions", {**payload, "model": case_id})
+            )
+            checks["four_types_explicit_first_policy"] = selected.model_dump(mode="json")
+            verify_four_types(selected, require_selected=True)
+            activated = await call(
+                "/admin/bundles/activate",
+                {
+                    "alias": case_id,
+                    "reference": independent.reference,
+                    "expected_generation": activated["generation"],
+                },
+                management=True,
+            )
+            indep_result = DecisionResponse.model_validate(
+                await call("/v1/decisions", {**payload, "model": case_id})
+            ).model_dump(mode="json")
             assert indep_result["answers"]["intent"]["support"] is not None
             assert indep_result["usage"]["scoring_sequences"] == 10
             checks["independent_candidate"] = indep_result
@@ -313,5 +355,11 @@ if __name__ == "__main__":
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--switches", type=int, default=1000)
+    parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--runtime-source-commit", required=True)
     args = parser.parse_args()
-    asyncio.run(certify(args.run_dir, args.output, args.switches))
+    asyncio.run(
+        certify(
+            args.run_dir, args.output, args.switches, args.source_commit, args.runtime_source_commit
+        )
+    )

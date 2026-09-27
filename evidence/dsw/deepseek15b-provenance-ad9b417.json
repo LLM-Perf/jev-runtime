@@ -1,0 +1,65 @@
+{
+  "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "model": {
+    "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "path": "/root/jev-runtime/models/DeepSeek-R1-Distill-Qwen-1.5B"
+  },
+  "hub_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+  "files": [
+    {
+      "name": "LICENSE",
+      "bytes": 1064,
+      "sha256": "1c8f573e830ca9b3ebfeb7ace1823146e22b66f99ee223840e7637c9e745e1c7",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    },
+    {
+      "name": "README.md",
+      "bytes": 15994,
+      "sha256": "d26d26ddb518fee60c6c6bf7a708bd751b1619d93a4944f188143693d956c77f",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    },
+    {
+      "name": "config.json",
+      "bytes": 679,
+      "sha256": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 181,
+      "sha256": "72cbec1015da9ed03ad025483005cbf6481403abf947adfd54e504d1a66a2126",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 3554214621,
+      "sha256": "58858233513d76b8703e72eed6ce16807b523328188e13329257fb9594462945",
+      "hub_lfs_sha256": "58858233513d76b8703e72eed6ce16807b523328188e13329257fb9594462945",
+      "lfs_match": true
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 7031660,
+      "sha256": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 3071,
+      "sha256": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5",
+      "hub_lfs_sha256": null,
+      "lfs_match": null
+    }
+  ],
+  "revision_matches": true,
+  "weight_lfs_matches": true,
+  "checked_at": 1790507922.1101837,
+  "qualification": "downloaded files and immutable Hub revision; not in-memory engine-weight attestation",
+  "engine_loaded_weight_attestation": false
+}
