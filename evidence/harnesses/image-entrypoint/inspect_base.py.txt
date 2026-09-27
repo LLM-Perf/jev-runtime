@@ -1,0 +1,14 @@
+import hashlib,json,urllib.request,time
+from pathlib import Path
+root=Path('/root/jev-runtime');tag=json.loads((root/'image-python-base-tag.json').read_text());row=next(x for x in tag['images'] if x['os']=='linux' and x['architecture']=='amd64');digest=row['digest']
+with urllib.request.urlopen('https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/python:pull',timeout=25) as r:token=json.load(r)['token']
+def get(url,accept=None):
+ headers={'Authorization':'Bearer '+token}
+ if accept:headers['Accept']=accept
+ with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=25) as r:return r.read()
+payload=get('https://registry-1.docker.io/v2/library/python/manifests/'+digest,'application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json');assert 'sha256:'+hashlib.sha256(payload).hexdigest()==digest
+manifest=json.loads(payload);config_digest=manifest['config']['digest'];config_bytes=get('https://registry-1.docker.io/v2/library/python/blobs/'+config_digest);assert 'sha256:'+hashlib.sha256(config_bytes).hexdigest()==config_digest
+config=json.loads(config_bytes);assert config['architecture']=='amd64' and config['os']=='linux';assert 'PYTHON_VERSION=3.12.11' in config['config']['Env']
+report={'checked_at':time.time(),'tag_url':'https://hub.docker.com/v2/namespaces/library/repositories/python/tags/3.12.11-slim-bookworm','base_image':'docker.io/library/python@'+digest,'tag_sha256':hashlib.sha256((root/'image-python-base-tag.json').read_bytes()).hexdigest(),'manifest_digest':digest,'config_digest':config_digest,'manifest':manifest,'config':config,'layers_downloaded':False,'image_run':False}
+(root/'image-python-base-inspection.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({k:report[k] for k in ['base_image','manifest_digest','config_digest','layers_downloaded','image_run']}))

@@ -449,6 +449,15 @@ MiB free. Local 368 tests pass. This covers gateway rollback while native reques
 execute, not an engine-process upgrade or the full fault/performance/soak gates.
 See [native cancellation validation](native-rollout-cancellation.md).
 
+At `49fea1c`, offline gateway image-context preparation and guarded startup/probe
+helpers pass 392 local tests and a real two-engine DSW host-process check. Each
+engine passes 10/10 decisions with two gateway workers, authenticated readiness,
+missing-key rejection, exec identity preservation and SIGTERM cleanup with zero
+leases/tickets. The initial test-script failures are retained; all 153 historical
+owned records are terminal. The actual image is neither built nor run: selected
+base ABI, PID 1, non-root/mount/network behavior, engine images and container
+restart/rollout remain open. See [image input and entrypoint evidence](container-images.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |

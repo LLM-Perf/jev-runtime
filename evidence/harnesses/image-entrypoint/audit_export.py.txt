@@ -1,0 +1,61 @@
+"""Audit image inputs, host entrypoint evidence and terminal owned processes; export allowlist."""
+import hashlib,json,subprocess,sys,tarfile,time
+from pathlib import Path
+from huggingface_hub import HfApi
+ROOT=Path('/root/jev-runtime');SOURCE='49fea1ca833141d65f791caa9eeb2661d627cd67';NATIVE='b20d3f43d91c2e13ed2b044a77d35cc3037eb62b';WHEEL='6f0cda85f72619193be7a1d1cc89d75142899bf3';source=ROOT/'image-sources'/SOURCE;release=ROOT/'releases'/NATIVE
+sys.path[:0]=[str(source),str(release),str(release/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from deployment import image_context
+from deployment.release import inspect_install
+from tests.integration.run_native_validation import group_members
+from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+files={'campaign.json':ROOT/'image-entrypoint-49fea1c-r2.json','initial-attempt.json':ROOT/'image-entrypoint-49fea1c.json','base-inspection.json':ROOT/'image-python-base-inspection.json','base-tag.json':ROOT/'image-python-base-tag.json','base-manifest-raw.json':ROOT/'image-base-manifest-raw.json','base-config-raw.json':ROOT/'image-base-config-raw.json'}
+campaign=read(files['campaign.json']);assert campaign['completed'] and campaign['passed'] and len(campaign['attempts'])==2
+first=read(files['initial-attempt.json']);assert first['completed'] and not first['passed'] and campaign['first_report_sha256']==sha(files['initial-attempt.json'])
+context=ROOT/'gateway-image-context-49fea1c';manifest=image_context.verify(context,campaign['context']['manifest_sha256'])
+installed=inspect_install(ROOT/'envs/native-cancel-wheel-6f0cda8',context/'locked',campaign['descriptor']['gateway_manifest_sha256'])
+prior=ROOT/'native-cancel-audit-b20d3f4.json';records=[];seen=set()
+def add(name,i):
+ key=(i['boot_id'],i['pid'],i['start_ticks'])
+ if key not in seen:seen.add(key);records.append({'record':name,'identity':i})
+for r in read(prior)['records']:add(r['record'],r['identity'])
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ r=read(p)
+ if r.get('identity'):add(str(p),r['identity'])
+for a in first['attempts']+campaign['attempts']:
+ assert a['native_cleanup']['passed'] and not a['gateway_cleanup']['remaining_group'];add(a['gateway_run'],a['gateway_process']['identity'])
+for r in records:
+ i=r['identity'];r['matching_live_process']=process_identity(i['pid'])==i;r['live_group']=group_members(i['pid'])
+assert all(not r['matching_live_process'] and not r['live_group'] for r in records)
+gpu=get_gpu(7);assert gpu['uuid']=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(gpu['free_mib'])==11990
+profiles=[]
+for e in ['vllm','sglang']:
+ p=ROOT/'tokenizers'/f'SmolLM2-1.7B-Instruct-preserved-{e}-cdd0caf';verify_tokenizer_profile(p);profiles.append({'path':str(p),'manifest_sha256':sha(p/'jev-tokenizer-profile.json'),'payload_verified':True})
+model=ROOT/'models/SmolLM2-1.7B-Instruct';identity=read(model/'jev-source.json');info=HfApi().model_info(identity['model_id'],revision=identity['revision'],files_metadata=True,token=False);assert info.sha==identity['revision'];remote={s.rfilename:s for s in info.siblings};model_files=[]
+for p in sorted(list(model.glob('*.safetensors'))+[model/n for n in ['config.json','generation_config.json','tokenizer.json','tokenizer_config.json','special_tokens_map.json'] if (model/n).exists()]):
+ before=p.stat();h=sha(p);after=p.stat();r=remote[p.name];assert before.st_mtime_ns==after.st_mtime_ns and before.st_size==after.st_size==r.size
+ if r.lfs is not None:assert h==r.lfs.sha256
+ else:assert hashlib.sha1(b'blob '+str(after.st_size).encode()+b'\0'+p.read_bytes()).hexdigest()==r.blob_id
+ model_files.append({'name':p.name,'sha256':h,'size_bytes':after.st_size,'hub_digest_verified':True})
+source_files={str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+envs={}
+for e in ['vllm','sglang']:
+ code="import json,importlib,importlib.metadata as m;print(json.dumps({'versions':{n:m.version(n) for n in ['"+e+"','torch','transformers','tokenizers']},'imports':{n:importlib.import_module(n).__file__ for n in ['jev_runtime','jev_"+e+"']}}))"
+ envs[e]=json.loads(subprocess.check_output([str(ROOT/'envs'/e/'bin/python'),'-c',code],text=True));assert all('/releases/'+NATIVE+'/' in s for s in envs[e]['imports'].values())
+audit={'source_commit':SOURCE,'script_sha256':sha(Path(__file__)),'checked_at':time.time(),'prior_audit_sha256':sha(prior),'passed':True,'records':records,'owned_records_checked':len(records),'gpu7':gpu,'profiles':profiles,'model':identity,'model_files':model_files,'environments':envs,'source_files':source_files,'gateway_installation':installed}
+p=ROOT/'image-audit-49fea1c.json';assert not p.exists();p.write_text(json.dumps(audit,indent=2)+'\n');files['audit.json']=p
+for n in ['manifest.json','Dockerfile','image.json']:files['context/'+n]=context/n
+files['gateway-lock-manifest.json']=context/'locked/manifest.json'
+for label,attempts in [('initial',first['attempts']),('retest',campaign['attempts'])]:
+ for a in attempts:
+  for n in ['process.json','cleanup.json']:files[label+'-native-'+a['engine']+'/'+n]=Path(a['native_run'])/n
+manifest={'script_sha256':sha(Path(__file__)),'artifacts':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in files.items()}}
+p=ROOT/'image-export-49fea1c.json';assert not p.exists();p.write_text(json.dumps(manifest,indent=2)+'\n');files['export-manifest.json']=p
+archive=ROOT/'image-evidence-49fea1c.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for n,p in sorted(files.items()):tar.add(p,arcname=n,recursive=False)
+print(json.dumps({'archive':str(archive),'sha256':sha(archive),'size_bytes':archive.stat().st_size,'owned_records_checked':len(records),'model_files':len(model_files)}))

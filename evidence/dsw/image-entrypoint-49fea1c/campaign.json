@@ -1,0 +1,1317 @@
+{
+  "source_commit": "49fea1ca833141d65f791caa9eeb2661d627cd67",
+  "native_source": "b20d3f43d91c2e13ed2b044a77d35cc3037eb62b",
+  "wheel_source": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "script_sha256": "368580ea6c680f36feebb9452079f1ac4e7c872394c8123365ebc5f359cc6294",
+  "context": {
+    "path": "/root/jev-runtime/gateway-image-context-49fea1c",
+    "manifest_sha256": "519252e8ed7bf11856e24c35b7c425eb0f1f7ef343c46278409ffd0cd1d0c238",
+    "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+    "platform": "linux/amd64",
+    "image_built": false
+  },
+  "descriptor": {
+    "base_image": "docker.io/library/python@sha256:c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49",
+    "gateway_manifest_sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+    "helpers": {
+      "container_gateway.py": "1dc35b3e6be20998a21114b122ca99c9e9ea2cc5ae0da8a9b96b186c272bcdab",
+      "release.py": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7"
+    },
+    "kind": "jev-gateway-image-input-v1",
+    "platform": "linux/amd64",
+    "preparer_sha256": "c29dc31dd7e55d4be4d2e2b3dcb8a609fbfafe6effd5a9ff3865358cd7bc707f",
+    "qualification": "Build inputs only; no container build or runtime validation implied",
+    "runtime_user": "10001:10001",
+    "schema_version": 1,
+    "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+    "target": {
+      "implementation": "CPython",
+      "machine": "x86_64",
+      "platform": "linux",
+      "python": "3.12",
+      "soabi": "cpython-312-x86_64-linux-gnu"
+    },
+    "template_sha256": "d1f24e62cd32581734e3d308a8257fa681120d79f4d257f04af4939fa7b36cb6"
+  },
+  "started_at": 1790548058.7254593,
+  "attempts": [
+    {
+      "engine": "vllm",
+      "native_run": "/root/jev-runtime/runs/image-native-vllm-49fea1c-r2",
+      "gateway_run": "/root/jev-runtime/runs/image-entry-vllm-49fea1c-r2",
+      "launch_command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/b20d3f43d91c2e13ed2b044a77d35cc3037eb62b/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/image-native-vllm-49fea1c-r2",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--reserve-mib",
+        "3072"
+      ],
+      "started_at": 1790548058.8354023,
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 37.091007565148175
+      },
+      "gateway_process": {
+        "identity": {
+          "pid": 2711747,
+          "start_ticks": "430363542",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "command": [
+          "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+          "-I",
+          "/root/jev-runtime/gateway-image-context-49fea1c/container_gateway.py",
+          "serve",
+          "--descriptor",
+          "/root/jev-runtime/gateway-image-context-49fea1c/image.json"
+        ]
+      },
+      "qualified": {
+        "deployment": {
+          "protocol": 1,
+          "id": "image-entry-test",
+          "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+          "expected_workers": 2,
+          "registry": {
+            "host": "dsw-501084-677cf96c94-zdgmr",
+            "device": 152,
+            "inode": 8263080
+          }
+        },
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "auth_policy": "b85de8a7ba4b3b5a9810ff4f9e8b51af0813326d76c752078e21abedb9510f62",
+        "model": {
+          "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+          "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+          "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "quantization": null,
+          "adapter_id": null,
+          "adapter_revision": null
+        },
+        "capabilities": {
+          "engine": "vllm",
+          "version": "0.30.0+cu129",
+          "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "max_label_tokens": 128,
+          "max_context_tokens": 2048,
+          "selected_logprobs": true,
+          "raw_logprobs": true,
+          "cancellation": true,
+          "lora": false,
+          "prefix_cache": true,
+          "api_workers": 1,
+          "verified": false,
+          "model_dtype": "bfloat16",
+          "readout_dtype": "bfloat16"
+        },
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "bindings": [
+          [
+            "default@1",
+            "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+          ]
+        ],
+        "workers": [
+          "21ba8d5c50474857ac476da5b23ee08f",
+          "78f37cb66fe54d61afae44a96bbdb101"
+        ],
+        "all_workers": [
+          "21ba8d5c50474857ac476da5b23ee08f",
+          "78f37cb66fe54d61afae44a96bbdb101"
+        ]
+      },
+      "exec_replaced_same_process": true,
+      "observed_command": [
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "-I",
+        "-m",
+        "uvicorn",
+        "jev_runtime.api:create_app_from_env",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18821",
+        "--workers",
+        "2",
+        "--timeout-graceful-shutdown",
+        "30",
+        ""
+      ],
+      "healthcheck_passed": true,
+      "missing_key_probe_rejected": true,
+      "responses": [
+        {
+          "request_id": "dec-560f81d989a44223a0025108a3864f9f",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 32
+          },
+          "latency_ms": 43.768187053501606
+        },
+        {
+          "request_id": "dec-725d97c1a25e4e789173cb7850150535",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 34.673587419092655
+        },
+        {
+          "request_id": "dec-ff9677cee1da47f69bfcfd668384904b",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 27.407477609813213
+        },
+        {
+          "request_id": "dec-09b0d070a7584482a91d994705a6afe1",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 27.876604348421097
+        },
+        {
+          "request_id": "dec-776b6a9c6d6e4d5c8e6cd020e3399015",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 29.094315133988857
+        },
+        {
+          "request_id": "dec-9056e25970ff439eaa54cb48315d8268",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 22.16295711696148
+        },
+        {
+          "request_id": "dec-99deec74c96f462c96bb05e2ad9073e8",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 22.34194055199623
+        },
+        {
+          "request_id": "dec-789fa0bc692d477b882c9457fa862035",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 27.712570503354073
+        },
+        {
+          "request_id": "dec-f35be204a3a740c6bb07377eb189071a",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 28.684169054031372
+        },
+        {
+          "request_id": "dec-51e4dfeadefd4862b7699cc847978331",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867825403176,
+                "false": 0.2018132174596823
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9295429804556106,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 1,
+            "cached_prompt_tokens": 80
+          },
+          "latency_ms": 27.060888707637787
+        }
+      ],
+      "same_native_engine_identity": true,
+      "graceful_shutdown": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "final_registry_counts": {
+        "leases": 0,
+        "lease_work": 0,
+        "admission_tickets": 0
+      },
+      "passed": true,
+      "gateway_cleanup": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "native_cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2711023,
+            "start_ticks": "430359831",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--tokenizer",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790548058.9845507,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790548100.7332628,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790548101.8717258
+    },
+    {
+      "engine": "sglang",
+      "native_run": "/root/jev-runtime/runs/image-native-sglang-49fea1c-r2",
+      "gateway_run": "/root/jev-runtime/runs/image-entry-sglang-49fea1c-r2",
+      "launch_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/b20d3f43d91c2e13ed2b044a77d35cc3037eb62b/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/image-native-sglang-49fea1c-r2",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".5",
+        "--reserve-mib",
+        "3072"
+      ],
+      "started_at": 1790548101.9718156,
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 31.068020541220903
+      },
+      "gateway_process": {
+        "identity": {
+          "pid": 2712719,
+          "start_ticks": "430367256",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "command": [
+          "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+          "-I",
+          "/root/jev-runtime/gateway-image-context-49fea1c/container_gateway.py",
+          "serve",
+          "--descriptor",
+          "/root/jev-runtime/gateway-image-context-49fea1c/image.json"
+        ]
+      },
+      "qualified": {
+        "deployment": {
+          "protocol": 1,
+          "id": "image-entry-test",
+          "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+          "expected_workers": 2,
+          "registry": {
+            "host": "dsw-501084-677cf96c94-zdgmr",
+            "device": 152,
+            "inode": 8263125
+          }
+        },
+        "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "auth_policy": "e199b56c57c1370b41c1202a25c1a16b03c8ba368ea1065b67b8b1baf1d3d57e",
+        "model": {
+          "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+          "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+          "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "quantization": null,
+          "adapter_id": null,
+          "adapter_revision": null
+        },
+        "capabilities": {
+          "engine": "sglang",
+          "version": "0.5.19",
+          "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "max_label_tokens": 128,
+          "max_context_tokens": 2048,
+          "selected_logprobs": true,
+          "raw_logprobs": true,
+          "cancellation": true,
+          "lora": false,
+          "prefix_cache": true,
+          "api_workers": null,
+          "verified": false,
+          "model_dtype": "bfloat16",
+          "readout_dtype": "bfloat16"
+        },
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "bindings": [
+          [
+            "default@1",
+            "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+          ]
+        ],
+        "workers": [
+          "51da3ab78ce24bc78fb1358fba53f970",
+          "52a3acd9aec24e0cb51e92fa084de9e5"
+        ],
+        "all_workers": [
+          "51da3ab78ce24bc78fb1358fba53f970",
+          "52a3acd9aec24e0cb51e92fa084de9e5"
+        ]
+      },
+      "exec_replaced_same_process": true,
+      "observed_command": [
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "-I",
+        "-m",
+        "uvicorn",
+        "jev_runtime.api:create_app_from_env",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18821",
+        "--workers",
+        "2",
+        "--timeout-graceful-shutdown",
+        "30",
+        ""
+      ],
+      "healthcheck_passed": true,
+      "missing_key_probe_rejected": true,
+      "responses": [
+        {
+          "request_id": "dec-77f3fdf4a1ef447cbc161c217df22c0d",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867729389246,
+                "false": 0.2018132270610754
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9285073278080691,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 34
+          },
+          "latency_ms": 43.20644307881594
+        },
+        {
+          "request_id": "dec-f667d4f66cf747d1b8a75a333b9f8b2b",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 27.21855603158474
+        },
+        {
+          "request_id": "dec-5b1d30f72c4f4d719ca91f1f91a7c996",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 25.497309863567352
+        },
+        {
+          "request_id": "dec-dfc3cf79a2314856aef53f0982b61930",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 26.00266970694065
+        },
+        {
+          "request_id": "dec-3ea24ec447a6497c98544f847ddfc944",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 28.522266075015068
+        },
+        {
+          "request_id": "dec-08acd95c36384579981767c5cfb30e8d",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 25.28171055018902
+        },
+        {
+          "request_id": "dec-50871c2395cf43199d7fa49f1d3c9a99",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 25.145791471004486
+        },
+        {
+          "request_id": "dec-8e2c3e03354c4c7ba5cf52f26e2e9e1e",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 26.59055683761835
+        },
+        {
+          "request_id": "dec-e20f466ad167458cbf06eea870c66fc3",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 26.603532023727894
+        },
+        {
+          "request_id": "dec-8a3777711d914171b740b9339a37b8cf",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "q": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998560157665,
+                "false": 0.22270014398423357
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9298367337081725,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 86,
+            "engine_prompt_tokens": 86,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 85
+          },
+          "latency_ms": 26.004605926573277
+        }
+      ],
+      "same_native_engine_identity": true,
+      "graceful_shutdown": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "final_registry_counts": {
+        "leases": 0,
+        "lease_work": 0,
+        "admission_tickets": 0
+      },
+      "passed": true,
+      "gateway_cleanup": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "native_cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2712146,
+            "start_ticks": "430364148",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "sglang",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18794",
+            "--dtype",
+            "bfloat16",
+            "--context-length",
+            "2048",
+            "--max-running-requests",
+            "4",
+            "--chunked-prefill-size",
+            "512",
+            "--max-total-tokens",
+            "2048",
+            "--mem-fraction-static",
+            "0.5",
+            "--disable-cuda-graph",
+            "--attention-backend",
+            "triton",
+            "--tokenizer-path",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790548102.1501637,
+          "port": 18794,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "free_mib"
+        },
+        "checked_at": 1790548138.1123343,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790548144.4154253
+    }
+  ],
+  "qualification": "Linux host-process check of generated image entrypoint, not a built/running container, PID-1 behavior, non-root permissions or image serving certification",
+  "image_built": false,
+  "first_report_sha256": "bf3a2ac674f60366c65b914d77219aea1932677ed41759068a036132d0c8a157",
+  "completed": true,
+  "passed": true,
+  "finished_at": 1790548144.417324
+}

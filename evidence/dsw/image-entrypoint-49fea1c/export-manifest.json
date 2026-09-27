@@ -1,0 +1,81 @@
+{
+  "script_sha256": "80d1dbc99413cf842728b2cdb8632d0f48c3cf590b0f5653218717e81a4dc9df",
+  "artifacts": {
+    "campaign.json": {
+      "sha256": "0331daa1ad1c6411097bb91f4671693cfdb06dd8b3bd7665e5ac9512af99ac67",
+      "size_bytes": 44875
+    },
+    "initial-attempt.json": {
+      "sha256": "bf3a2ac674f60366c65b914d77219aea1932677ed41759068a036132d0c8a157",
+      "size_bytes": 17404
+    },
+    "base-inspection.json": {
+      "sha256": "135f22728801f66bdaf7cf14426b93f747f06be1925d250f5b2569bb9d033611",
+      "size_bytes": 8724
+    },
+    "base-tag.json": {
+      "sha256": "38ceb6a33665cadb5792f1a486377dd07bd8405dd50dde29369f9d59c05eac90",
+      "size_bytes": 6346
+    },
+    "base-manifest-raw.json": {
+      "sha256": "c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49",
+      "size_bytes": 1752
+    },
+    "base-config-raw.json": {
+      "sha256": "688a685f6a1fa9250d7c6cee916889cbca364e4b027520110e0fce80c64a13e0",
+      "size_bytes": 5596
+    },
+    "audit.json": {
+      "sha256": "a3faadbc0f758d0b152f8a0fa7d8d692f97d174412efc5c850a9465f2c82e21f",
+      "size_bytes": 55736
+    },
+    "context/manifest.json": {
+      "sha256": "519252e8ed7bf11856e24c35b7c425eb0f1f7ef343c46278409ffd0cd1d0c238",
+      "size_bytes": 10617
+    },
+    "context/Dockerfile": {
+      "sha256": "03e559b43cc930b69dc213f2ae97cb8b2a9346c35337a741536ed9fa5f74d0a4",
+      "size_bytes": 1631
+    },
+    "context/image.json": {
+      "sha256": "11368a0d174235e4c7ddd8c37f592bdeb17c8152c03da33df962dfafcab2ca12",
+      "size_bytes": 1041
+    },
+    "gateway-lock-manifest.json": {
+      "sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+      "size_bytes": 54603
+    },
+    "initial-native-vllm/process.json": {
+      "sha256": "c684aaa54b8d774fefeb6379a1165f0a700315fb70ab630a44858befcf497c83",
+      "size_bytes": 1793
+    },
+    "initial-native-vllm/cleanup.json": {
+      "sha256": "5332a59585087af815c40104a2a370985be2269d118743ae5587f0f613ccf5e9",
+      "size_bytes": 2322
+    },
+    "initial-native-sglang/process.json": {
+      "sha256": "5c0b08d77187fd4584a9d75f3b9e3099309e8b40efadc1164803c06063d971a4",
+      "size_bytes": 1905
+    },
+    "initial-native-sglang/cleanup.json": {
+      "sha256": "a2aa5818bb28a96d1c5a2de3c26f2ec66a8837fad6f19d2ec976ffb03c12144c",
+      "size_bytes": 2443
+    },
+    "retest-native-vllm/process.json": {
+      "sha256": "269d965d1980409941af1278564726d1af12e5c12062b53ae145ca309a135cc0",
+      "size_bytes": 1793
+    },
+    "retest-native-vllm/cleanup.json": {
+      "sha256": "793f8c35860644393246ebd0edcc1988de31c59de0cdbd72b90bdbf955553f0e",
+      "size_bytes": 2323
+    },
+    "retest-native-sglang/process.json": {
+      "sha256": "b1bc19f848c327269c7a38eafd2491699eb6de5443e8060e72fb08534cc420a6",
+      "size_bytes": 1906
+    },
+    "retest-native-sglang/cleanup.json": {
+      "sha256": "c29d146dd269ee1307973e76ab5f02e3785f6aba97ac9c810a68596c63fc7710",
+      "size_bytes": 2444
+    }
+  }
+}

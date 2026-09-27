@@ -1,0 +1,47 @@
+{
+  "verified": true,
+  "source_commit": "49fea1ca833141d65f791caa9eeb2661d627cd67",
+  "native_source": "b20d3f43d91c2e13ed2b044a77d35cc3037eb62b",
+  "wheel_source": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "image_built": false,
+  "container_executed": false,
+  "initial_failures_preserved": [
+    {
+      "engine": "vllm",
+      "failure": {
+        "type": "AttributeError",
+        "message": "'DecisionResponse' object has no attribute 'partial'"
+      }
+    },
+    {
+      "engine": "sglang",
+      "failure": {
+        "type": "AttributeError",
+        "message": "'DecisionResponse' object has no attribute 'partial'"
+      }
+    }
+  ],
+  "results": [
+    {
+      "engine": "vllm",
+      "strict_decisions": 10,
+      "workers": 2,
+      "healthcheck": true,
+      "missing_key_rejected": true,
+      "graceful_shutdown": true,
+      "zero_final_leases": true
+    },
+    {
+      "engine": "sglang",
+      "strict_decisions": 10,
+      "workers": 2,
+      "healthcheck": true,
+      "missing_key_rejected": true,
+      "graceful_shutdown": true,
+      "zero_final_leases": true
+    }
+  ],
+  "owned_records_terminal": 153,
+  "gpu7_free_mib": 11990,
+  "qualification": "Generated image inputs and Linux host-process startup/probe/serving/SIGTERM only; no container PID 1, UID 10001, mount, image ABI or cross-container rollout certification."
+}

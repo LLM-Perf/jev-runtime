@@ -1,0 +1,500 @@
+{
+  "source_commit": "49fea1ca833141d65f791caa9eeb2661d627cd67",
+  "native_source": "b20d3f43d91c2e13ed2b044a77d35cc3037eb62b",
+  "wheel_source": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "script_sha256": "86e81ab0e82be96ce33b3fd5c9d361c51218a57d121a315b3722c2e2aa569708",
+  "context": {
+    "path": "/root/jev-runtime/gateway-image-context-49fea1c",
+    "manifest_sha256": "519252e8ed7bf11856e24c35b7c425eb0f1f7ef343c46278409ffd0cd1d0c238",
+    "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+    "platform": "linux/amd64",
+    "image_built": false
+  },
+  "descriptor": {
+    "base_image": "docker.io/library/python@sha256:c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49",
+    "gateway_manifest_sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+    "helpers": {
+      "container_gateway.py": "1dc35b3e6be20998a21114b122ca99c9e9ea2cc5ae0da8a9b96b186c272bcdab",
+      "release.py": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7"
+    },
+    "kind": "jev-gateway-image-input-v1",
+    "platform": "linux/amd64",
+    "preparer_sha256": "c29dc31dd7e55d4be4d2e2b3dcb8a609fbfafe6effd5a9ff3865358cd7bc707f",
+    "qualification": "Build inputs only; no container build or runtime validation implied",
+    "runtime_user": "10001:10001",
+    "schema_version": 1,
+    "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+    "target": {
+      "implementation": "CPython",
+      "machine": "x86_64",
+      "platform": "linux",
+      "python": "3.12",
+      "soabi": "cpython-312-x86_64-linux-gnu"
+    },
+    "template_sha256": "d1f24e62cd32581734e3d308a8257fa681120d79f4d257f04af4939fa7b36cb6"
+  },
+  "started_at": 1790547918.9760828,
+  "attempts": [
+    {
+      "engine": "vllm",
+      "native_run": "/root/jev-runtime/runs/image-native-vllm-49fea1c",
+      "gateway_run": "/root/jev-runtime/runs/image-entry-vllm-49fea1c",
+      "launch_command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/b20d3f43d91c2e13ed2b044a77d35cc3037eb62b/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/image-native-vllm-49fea1c",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--reserve-mib",
+        "3072"
+      ],
+      "started_at": 1790547919.075587,
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 36.08536970894784
+      },
+      "gateway_process": {
+        "identity": {
+          "pid": 2709650,
+          "start_ticks": "430349465",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "command": [
+          "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+          "-I",
+          "/root/jev-runtime/gateway-image-context-49fea1c/container_gateway.py",
+          "serve",
+          "--descriptor",
+          "/root/jev-runtime/gateway-image-context-49fea1c/image.json"
+        ]
+      },
+      "qualified": {
+        "deployment": {
+          "protocol": 1,
+          "id": "image-entry-test",
+          "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+          "expected_workers": 2,
+          "registry": {
+            "host": "dsw-501084-677cf96c94-zdgmr",
+            "device": 152,
+            "inode": 8263064
+          }
+        },
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "auth_policy": "4d76f75a7529fcf2837af8caa43356899981051a224ac67e67b5751648e4246e",
+        "model": {
+          "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+          "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+          "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "quantization": null,
+          "adapter_id": null,
+          "adapter_revision": null
+        },
+        "capabilities": {
+          "engine": "vllm",
+          "version": "0.30.0+cu129",
+          "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "max_label_tokens": 128,
+          "max_context_tokens": 2048,
+          "selected_logprobs": true,
+          "raw_logprobs": true,
+          "cancellation": true,
+          "lora": false,
+          "prefix_cache": true,
+          "api_workers": 1,
+          "verified": false,
+          "model_dtype": "bfloat16",
+          "readout_dtype": "bfloat16"
+        },
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "bindings": [
+          [
+            "default@1",
+            "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+          ]
+        ],
+        "workers": [
+          "4e99d364b309427a8c46ee86ba828002",
+          "d2d1ae84352642dead9b94b14621c741"
+        ],
+        "all_workers": [
+          "4e99d364b309427a8c46ee86ba828002",
+          "d2d1ae84352642dead9b94b14621c741"
+        ]
+      },
+      "exec_replaced_same_process": true,
+      "observed_command": [
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "-I",
+        "-m",
+        "uvicorn",
+        "jev_runtime.api:create_app_from_env",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18821",
+        "--workers",
+        "2",
+        "--timeout-graceful-shutdown",
+        "30",
+        ""
+      ],
+      "healthcheck_passed": true,
+      "missing_key_probe_rejected": true,
+      "passed": false,
+      "failure": {
+        "type": "AttributeError",
+        "message": "'DecisionResponse' object has no attribute 'partial'"
+      },
+      "gateway_cleanup": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "native_cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2708925,
+            "start_ticks": "430345856",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--tokenizer",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-vllm-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790547919.2286873,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790547959.606304,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790547960.7692437
+    },
+    {
+      "engine": "sglang",
+      "native_run": "/root/jev-runtime/runs/image-native-sglang-49fea1c",
+      "gateway_run": "/root/jev-runtime/runs/image-entry-sglang-49fea1c",
+      "launch_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/b20d3f43d91c2e13ed2b044a77d35cc3037eb62b/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/image-native-sglang-49fea1c",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".5",
+        "--reserve-mib",
+        "3072"
+      ],
+      "started_at": 1790547960.920911,
+      "readiness": {
+        "ready": true,
+        "elapsed_seconds": 31.075348016805947
+      },
+      "gateway_process": {
+        "identity": {
+          "pid": 2710618,
+          "start_ticks": "430353153",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "command": [
+          "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+          "-I",
+          "/root/jev-runtime/gateway-image-context-49fea1c/container_gateway.py",
+          "serve",
+          "--descriptor",
+          "/root/jev-runtime/gateway-image-context-49fea1c/image.json"
+        ]
+      },
+      "qualified": {
+        "deployment": {
+          "protocol": 1,
+          "id": "image-entry-test",
+          "release": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+          "expected_workers": 2,
+          "registry": {
+            "host": "dsw-501084-677cf96c94-zdgmr",
+            "device": 152,
+            "inode": 8263091
+          }
+        },
+        "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "auth_policy": "1b158c7505ea24cb7daf5ae6cb29114b5e89633ae10e6cb421ed75ab6286dc3b",
+        "model": {
+          "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+          "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
+          "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "quantization": null,
+          "adapter_id": null,
+          "adapter_revision": null
+        },
+        "capabilities": {
+          "engine": "sglang",
+          "version": "0.5.19",
+          "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "max_label_tokens": 128,
+          "max_context_tokens": 2048,
+          "selected_logprobs": true,
+          "raw_logprobs": true,
+          "cancellation": true,
+          "lora": false,
+          "prefix_cache": true,
+          "api_workers": null,
+          "verified": false,
+          "model_dtype": "bfloat16",
+          "readout_dtype": "bfloat16"
+        },
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "bindings": [
+          [
+            "default@1",
+            "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674"
+          ]
+        ],
+        "workers": [
+          "0fd8a9136a324dcf891ee6b1b7026e22",
+          "c146eecb69944f46be0d237265421f9f"
+        ],
+        "all_workers": [
+          "0fd8a9136a324dcf891ee6b1b7026e22",
+          "c146eecb69944f46be0d237265421f9f"
+        ]
+      },
+      "exec_replaced_same_process": true,
+      "observed_command": [
+        "/root/jev-runtime/envs/native-cancel-wheel-6f0cda8/bin/python",
+        "-I",
+        "-m",
+        "uvicorn",
+        "jev_runtime.api:create_app_from_env",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18821",
+        "--workers",
+        "2",
+        "--timeout-graceful-shutdown",
+        "30",
+        ""
+      ],
+      "healthcheck_passed": true,
+      "missing_key_probe_rejected": true,
+      "passed": false,
+      "failure": {
+        "type": "AttributeError",
+        "message": "'DecisionResponse' object has no attribute 'partial'"
+      },
+      "gateway_cleanup": {
+        "returncode": 0,
+        "remaining_group": []
+      },
+      "native_cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2710047,
+            "start_ticks": "430350045",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "sglang",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18794",
+            "--dtype",
+            "bfloat16",
+            "--context-length",
+            "2048",
+            "--max-running-requests",
+            "4",
+            "--chunked-prefill-size",
+            "512",
+            "--max-total-tokens",
+            "2048",
+            "--mem-fraction-static",
+            "0.5",
+            "--disable-cuda-graph",
+            "--attention-backend",
+            "triton",
+            "--tokenizer-path",
+            "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/SmolLM2-1.7B-Instruct-preserved-sglang-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790547961.114725,
+          "port": 18794,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "free_mib"
+        },
+        "checked_at": 1790547996.5300581,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "finished_at": 1790548002.8624763
+    }
+  ],
+  "qualification": "Linux host-process check of generated image entrypoint, not a built/running container, PID-1 behavior, non-root permissions or image serving certification",
+  "image_built": false,
+  "completed": true,
+  "passed": false,
+  "finished_at": 1790548002.863271
+}

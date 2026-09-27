@@ -88,3 +88,50 @@ copy a live SQLite file to force a cross-container rollout. Compose/Kubernetes
 examples, ownership/recovery across container replacement, persisted-state upgrades,
 image rollback, engine images and actual two-engine container serving still need
 validation before deployment acceptance.
+
+## DSW host-entrypoint validation at 49fea1c
+
+The new context generator accepted the actual 44-distribution Linux gateway lock
+previously tested at `6f0cda8`. It snapshots the lock and installation helpers,
+verifies the copy and emits a context digest. The official Python
+`3.12.11-slim-bookworm` amd64 manifest was retrieved and SHA256-checked as
+`sha256:c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49`;
+its config bytes also match their digest. Layers were not downloaded or executed.
+This identifies the development input only, not a current security approval of
+that Python/OS version. Production bases need their own update and validation cycle.
+
+The generated `container_gateway.py` was executed as an ordinary Linux host
+process using the existing installed `6f0cda8` gateway wheel. Both SGLang 0.5.19
+and vLLM 0.30.0+cu129 native engines at `b20d3f4` passed:
+
+- Two gateway workers qualified against the actual native SmolLM2 BF16 TP1 engine.
+- The entrypoint exec replaced the original process without changing its PID,
+  boot ID or start ticks; the resulting command is Uvicorn.
+- The authenticated readiness probe succeeded and a missing-key probe was rejected.
+- Ten of ten typed requests per engine passed the response contract.
+- SIGTERM caused the supervisor and worker group to exit with code zero.
+- Durable leases, lease work and admission tickets were zero after exit.
+
+These are short colocated host-process checks. They do not exercise container PID
+1, UID 10001 permissions, mounted volumes, the selected base image's libraries or
+container-to-engine networking. They do not certify image serving or performance.
+
+Both first attempts failed in the test script after the first HTTP 200 response:
+it queried a nonexistent `DecisionResponse.partial` attribute. The corrected
+script checks `status == "completed"` and retains the failed reports and cleanup.
+No product code changed between those attempts. The final audit finds 153 distinct
+historical task-owned process records terminal, GPU7 at 11,990 MiB free, both
+preserved tokenizer profiles verified and six model files rehashed against the
+fixed Hub revision. Installed gateway core bytes match the original wheel.
+
+At source `49fea1c`, 392 local Python tests passed, including 24 new image context
+and entrypoint cases; Ruff passed. Core/plugin/TypeScript source was unchanged;
+previous wheel-build evidence remains bound to its original commit.
+
+```sh
+.venv/bin/python evidence/harnesses/verify_image_entrypoint_49fea1c.py
+```
+
+See [verified evidence](../evidence/dsw/image-entrypoint-49fea1c/verified-summary.json).
+Actual image construction, engine images, restart/recovery, rolling updates and
+Compose/Kubernetes deployment examples remain open acceptance work.

@@ -1,0 +1,23 @@
+{
+  "base_image": "docker.io/library/python@sha256:c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49",
+  "gateway_manifest_sha256": "e377de81cc9a68bdb3eb63afc643cffcfacfe53c70a899ede6e25834580cc0d8",
+  "helpers": {
+    "container_gateway.py": "1dc35b3e6be20998a21114b122ca99c9e9ea2cc5ae0da8a9b96b186c272bcdab",
+    "release.py": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7"
+  },
+  "kind": "jev-gateway-image-input-v1",
+  "platform": "linux/amd64",
+  "preparer_sha256": "c29dc31dd7e55d4be4d2e2b3dcb8a609fbfafe6effd5a9ff3865358cd7bc707f",
+  "qualification": "Build inputs only; no container build or runtime validation implied",
+  "runtime_user": "10001:10001",
+  "schema_version": 1,
+  "source_commit": "6f0cda85f72619193be7a1d1cc89d75142899bf3",
+  "target": {
+    "implementation": "CPython",
+    "machine": "x86_64",
+    "platform": "linux",
+    "python": "3.12",
+    "soabi": "cpython-312-x86_64-linux-gnu"
+  },
+  "template_sha256": "d1f24e62cd32581734e3d308a8257fa681120d79f4d257f04af4939fa7b36cb6"
+}

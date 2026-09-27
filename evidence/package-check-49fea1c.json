@@ -1,0 +1,12 @@
+{
+  "source_commit": "49fea1ca833141d65f791caa9eeb2661d627cd67",
+  "python_tests": {
+    "passed": 392,
+    "command": ".venv/bin/pytest -q",
+    "new_image_tests": 24
+  },
+  "ruff": "passed",
+  "image_built": false,
+  "typescript": "unchanged; not rerun",
+  "core_plugins": "unchanged from 6f0cda8; existing installed wheel reused; no new wheel build claimed"
+}
