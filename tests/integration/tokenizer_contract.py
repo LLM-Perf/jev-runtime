@@ -8,13 +8,16 @@ import time
 from importlib.metadata import version
 from pathlib import Path
 
-from jev_runtime.config import Settings, load_compiler, model_identity
+from jev_runtime.config import Settings, TokenizerOptions, load_compiler, model_identity
 from jev_runtime.schema import Bundle, Option, Policy, Question, TemplateSpec
 from jev_runtime.templates import TemplateFile
 
 
 def probe(
-    item: dict, tokenizer: str | None = None, chat_template: TemplateFile | None = None
+    item: dict,
+    tokenizer: str | None = None,
+    chat_template: TemplateFile | None = None,
+    tokenizer_options: TokenizerOptions | None = None,
 ) -> dict:
     result = {
         "model": item["id"],
@@ -23,6 +26,9 @@ def probe(
         "cases": [],
         "passed": False,
         "explicit_chat_template": chat_template.model_dump() if chat_template else None,
+        "tokenizer_options": (tokenizer_options or TokenizerOptions()).model_dump(
+            exclude_none=True
+        ),
     }
     try:
         settings = Settings(
@@ -31,6 +37,7 @@ def probe(
             model_revision=item["revision"],
             tokenizer=tokenizer,
             chat_template=chat_template,
+            tokenizer_options=tokenizer_options or TokenizerOptions(),
         )
         compiler = load_compiler(settings)
         result["model_identity"] = model_identity(settings, compiler).model_dump(mode="json")
@@ -102,6 +109,9 @@ def main(args):
     if args.output.exists():
         raise SystemExit("Output exists; retain previous attempts and choose a new artifact")
     template = None
+    options = TokenizerOptions(fix_mistral_regex=args.fix_mistral_regex)
+    if args.fix_mistral_regex is not None and len(selected) != 1:
+        raise SystemExit("An explicit tokenizer profile must select exactly one pinned model")
     if args.chat_template_path:
         if len(selected) != 1:
             raise SystemExit("An explicit template probe must select exactly one pinned model")
@@ -127,7 +137,7 @@ def main(args):
             manifest = json.loads((local_path / "jev-source.json").read_text())
             if (manifest["model_id"], manifest["revision"]) != (item["id"], item["revision"]):
                 raise SystemExit("Local checkpoint identity differs from frozen inventory")
-        result = probe(item, str(local_path) if local_path else None, template)
+        result = probe(item, str(local_path) if local_path else None, template, options)
         report["models"].append(result)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
         print(
@@ -159,6 +169,7 @@ if __name__ == "__main__":
     parser.add_argument("--chat-template-path", type=Path)
     parser.add_argument("--chat-template-sha256")
     parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
+    parser.add_argument("--fix-mistral-regex", action=argparse.BooleanOptionalAction, default=None)
     args = parser.parse_args()
     if bool(args.chat_template_path) != bool(args.chat_template_sha256):
         parser.error("chat-template-path and chat-template-sha256 must be supplied together")

@@ -41,6 +41,11 @@ class AdapterSettings(Contract):
     operation_timeout_seconds: int = Field(default=120, ge=1, le=300)
 
 
+class TokenizerOptions(Contract):
+    # Explicit model profile, never inferred from a repository name or warning.
+    fix_mistral_regex: bool | None = None
+
+
 class Settings(Contract):
     backend: Literal["sglang", "vllm"]
     engine_url: str = "http://127.0.0.1:30000"
@@ -48,6 +53,7 @@ class Settings(Contract):
     model_revision: str = Field(pattern=r"^(?:[a-fA-F0-9]{40,64}|local-sha256:[a-fA-F0-9]{64})$")
     tokenizer: str | None = None
     tokenizer_revision: str | None = None
+    tokenizer_options: TokenizerOptions = Field(default_factory=TokenizerOptions)
     chat_template: TemplateFile | None = None
     dtype: str = "bfloat16"
     readout_dtype: FloatingDType | None = None
@@ -90,6 +96,7 @@ def load_compiler(settings: Settings) -> Compiler:
     from transformers import AutoTokenizer
 
     kwargs = {"trust_remote_code": False}
+    kwargs.update(settings.tokenizer_options.model_dump(exclude_none=True))
     revision = settings.tokenizer_revision or settings.model_revision
     if not Path(settings.tokenizer or settings.model_id).is_dir():
         kwargs["revision"] = revision
@@ -122,7 +129,19 @@ def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
 async def build_runtime(
     settings: Settings, native_backend=None, compiler: Compiler | None = None
 ) -> Runtime:
+    provided_compiler = compiler is not None
     compiler = compiler or await asyncio.to_thread(load_compiler, settings)
+    if provided_compiler and settings.tokenizer_options.model_dump(exclude_none=True):
+        expected = await asyncio.to_thread(load_compiler, settings)
+        if (
+            compiler.tokenizer_digest != expected.tokenizer_digest
+            or compiler.tokenizer_implementation_digest != expected.tokenizer_implementation_digest
+        ):
+            raise JevError(
+                "tokenizer_implementation_mismatch",
+                "Host tokenizer differs from the explicitly configured tokenizer profile",
+                409,
+            )
     if settings.chat_template is not None:
         expected_template = await asyncio.to_thread(read_template, settings.chat_template)
         if compiler.template_digest != content_digest(expected_template):

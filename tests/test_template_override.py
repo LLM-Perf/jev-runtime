@@ -6,7 +6,13 @@ from tokenizers import Tokenizer, models, pre_tokenizers
 from transformers import PreTrainedTokenizerFast
 
 from jev_runtime.compiler import Compiler
-from jev_runtime.config import Settings, build_runtime, compiler_for_tokenizer, model_identity
+from jev_runtime.config import (
+    Settings,
+    build_runtime,
+    compiler_for_tokenizer,
+    load_compiler,
+    model_identity,
+)
 from jev_runtime.errors import JevError
 from jev_runtime.schema import Bundle, Option, Question
 from jev_runtime.templates import TemplateFile, read_template
@@ -101,4 +107,58 @@ async def test_runtime_rejects_compiler_that_ignored_configured_template(tmp_pat
     with pytest.raises(JevError) as error:
         await build_runtime(settings, native_backend=object(), compiler=compiler)
     assert error.value.code == "template_mismatch"
+    assert not (tmp_path / "registry.db").exists()
+
+
+def test_explicit_tokenizer_option_preserves_revision_and_remote_code_rejection(
+    tmp_path, monkeypatch
+):
+    from transformers import AutoTokenizer
+
+    captured = {}
+
+    def load(path, **kwargs):
+        captured.update(path=path, **kwargs)
+        return tokenizer()
+
+    monkeypatch.setattr(AutoTokenizer, "from_pretrained", load)
+    settings = Settings(
+        backend="vllm",
+        model_id="fixture/model",
+        model_revision="a" * 40,
+        chat_template=template_file(tmp_path),
+        tokenizer_options={"fix_mistral_regex": True},
+    )
+    load_compiler(settings)
+    assert captured == {
+        "path": "fixture/model",
+        "trust_remote_code": False,
+        "revision": "a" * 40,
+        "fix_mistral_regex": True,
+    }
+
+
+async def test_native_host_must_match_explicit_tokenizer_implementation(tmp_path, monkeypatch):
+    from tokenizers import normalizers
+
+    from jev_runtime import config
+
+    settings = Settings(
+        backend="vllm",
+        model_id="fixture",
+        model_revision="a" * 40,
+        registry_path=str(tmp_path / "registry.db"),
+        chat_template=template_file(tmp_path),
+        tokenizer_options={"fix_mistral_regex": True},
+    )
+    host = Compiler(tokenizer(), chat_template=TEMPLATE)
+    expected_tokenizer = tokenizer()
+    expected_tokenizer.backend_tokenizer.normalizer = normalizers.Lowercase()
+    expected = Compiler(expected_tokenizer, chat_template=TEMPLATE)
+    assert host.tokenizer_digest == expected.tokenizer_digest
+    assert host.tokenizer_implementation_digest != expected.tokenizer_implementation_digest
+    monkeypatch.setattr(config, "load_compiler", lambda settings: expected)
+    with pytest.raises(JevError) as error:
+        await build_runtime(settings, native_backend=object(), compiler=host)
+    assert error.value.code == "tokenizer_implementation_mismatch"
     assert not (tmp_path / "registry.db").exists()
