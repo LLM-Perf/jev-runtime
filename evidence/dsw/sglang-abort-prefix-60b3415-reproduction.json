@@ -1,0 +1,45 @@
+{
+  "source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
+  "qualification": "task-owned SGLang prefix-abort defect reproduction; not application quality or performance",
+  "request_ids": [
+    "jev-9b454a1be12645edbcfbdb42d5337872.a.1",
+    "jev-9b454a1be12645edbcfbdb42d5337872.a.1.0"
+  ],
+  "started_at": 1790510001.6918826,
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+    "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+    "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "abort_http_status": 200,
+  "responses": {
+    "0": {
+      "finish_reason": {
+        "type": "abort",
+        "message": "Aborted",
+        "status_code": null,
+        "err_type": null
+      },
+      "completion_tokens": 3,
+      "id": "jev-9b454a1be12645edbcfbdb42d5337872.a.1"
+    },
+    "1": {
+      "finish_reason": {
+        "type": "abort",
+        "message": "Aborted",
+        "status_code": null,
+        "err_type": null
+      },
+      "completion_tokens": 3,
+      "id": "jev-9b454a1be12645edbcfbdb42d5337872.a.1.0"
+    }
+  },
+  "collateral_abort_reproduced": true,
+  "finished_at": 1790510001.8887868
+}

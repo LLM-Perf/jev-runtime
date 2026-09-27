@@ -174,6 +174,9 @@ class Compiler:
         )
         independent = mode == "independent-candidate" and question.type != "boolean"
         candidates = list(zip(keys, descriptions, strict=True)) if independent else [(None, None)]
+        # SGLang aborts by prefix. Equal-length suffixes prevent a failed branch
+        # from matching candidate 10 after candidate 1, or a dotted sibling ID.
+        question_namespace = sha256(question.id.encode()).hexdigest()
         sequences = []
         for index, (candidate_id, description) in enumerate(candidates):
             binary = independent or question.type == "boolean"
@@ -208,7 +211,7 @@ class Compiler:
                     continue
                 sequences.append(
                     ScoreInput(
-                        request_id=f"{request_id}.{question.id}.{index}",
+                        request_id=f"{request_id}.{question_namespace}.{index:08x}",
                         question_id=question.id,
                         input_ids=input_ids,
                         label_ids=label_ids,
