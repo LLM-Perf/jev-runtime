@@ -152,3 +152,26 @@ def test_wrong_target_or_manifest_rejected_before_environment_creation(built, tm
     with pytest.raises(ValueError, match="hash mismatch"):
         install(locked, "0" * 64, output)
     assert not output.exists()
+
+
+def test_vendored_metadata_does_not_shadow_root_distribution(tmp_path):
+    from deployment.release import gateway_extras, wheel_info
+
+    wheel = tmp_path / "old_core.whl"
+    with zipfile.ZipFile(wheel, "w") as archive:
+        archive.writestr(
+            "jev_runtime_core-0.1.0a1.dist-info/METADATA",
+            "Metadata-Version: 2.4\nName: jev-runtime-core\nVersion: 0.1.0a1\n"
+            "Provides-Extra: tokenizers\n",
+        )
+        archive.writestr(
+            "jev_runtime/_vendor/other-1.0.dist-info/METADATA",
+            "Metadata-Version: 2.4\nName: other\nVersion: 1.0\n",
+        )
+    assert wheel_info(wheel)["name"] == "jev-runtime-core"
+    # Older core releases do not provide conversion; do not ask pip to silently ignore it.
+    assert gateway_extras(wheel) == ["tokenizers"]
+    with zipfile.ZipFile(wheel, "a") as archive:
+        archive.writestr("unexpected-1.dist-info/METADATA", "Name: unexpected\nVersion: 1\n")
+    with pytest.raises(ValueError, match="one metadata"):
+        wheel_info(wheel)

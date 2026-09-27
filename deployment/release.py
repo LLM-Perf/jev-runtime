@@ -63,7 +63,9 @@ def wheel_info(path: Path) -> dict:
         for name in entries:
             if name.startswith("/") or ".." in Path(name).parts or "\\" in name:
                 raise ValueError("Unsafe wheel entry")
-        candidates = [n for n in entries if n.endswith(".dist-info/METADATA")]
+        candidates = [
+            n for n in entries if len(Path(n).parts) == 2 and n.endswith(".dist-info/METADATA")
+        ]
         if len(candidates) != 1:
             raise ValueError("Wheel must have one metadata record")
         info = email.parser.BytesParser().parsebytes(wheel.read(candidates[0]))
@@ -73,6 +75,20 @@ def wheel_info(path: Path) -> dict:
         ):
             raise ValueError("Unsafe distribution identity")
         return {"name": name, "version": version, "requires": info.get_all("Requires-Dist", [])}
+
+
+def gateway_extras(path: Path) -> list[str]:
+    with zipfile.ZipFile(path) as wheel:
+        entry = next(
+            n
+            for n in wheel.namelist()
+            if len(Path(n).parts) == 2 and n.endswith(".dist-info/METADATA")
+        )
+        info = email.parser.BytesParser().parsebytes(wheel.read(entry))
+    supported = set(info.get_all("Provides-Extra", []))
+    if "tokenizers" not in supported:
+        raise ValueError("Core wheel does not define the gateway tokenizer extra")
+    return [name for name in ("tokenizers", "tokenizer-conversion") if name in supported]
 
 
 def inventory(directory: Path) -> dict:
@@ -219,7 +235,8 @@ def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = 
     wheels = output / "wheels"
     wheels.mkdir()
     core = bundle.absolute() / source["distributions"]["jev-runtime-core"]["wheel"]
-    pins = [str(core) + "[tokenizers,tokenizer-conversion]", "pip==" + metadata.version("pip")]
+    extras = gateway_extras(core)
+    pins = [str(core) + "[" + ",".join(extras) + "]", "pip==" + metadata.version("pip")]
     try:
         pins.append("setuptools==" + metadata.version("setuptools"))
     except metadata.PackageNotFoundError:
@@ -274,6 +291,7 @@ def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = 
         "source_commit": source["source_commit"],
         "source_manifest_sha256": digest,
         "source_core_sha256": sha(core),
+        "requested_core_extras": extras,
         "resolver_sha256": sha(Path(__file__)),
         "target": target(),
         "distributions": distributions,
@@ -377,8 +395,11 @@ def install(locked: Path, digest: str, destination: Path) -> dict:
     )
     run([python, "-I", "-m", "pip", "check"], destination / "jev-install.log")
     verified = inspect_install(destination, locked, digest)
+    imports = "import jev_runtime.api; import transformers"
+    if "tiktoken" in manifest["distributions"]:
+        imports += "; import tiktoken"
     run(
-        [python, "-I", "-c", "import jev_runtime.api; import transformers; import tiktoken"],
+        [python, "-I", "-c", imports],
         destination / "jev-install.log",
     )
     save(destination / "jev-install-complete.json", verified)
