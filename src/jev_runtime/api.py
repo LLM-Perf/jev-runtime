@@ -13,6 +13,7 @@ from pydantic import Field
 
 from jev_runtime.config import Settings, bootstrap, build_runtime, tenant_keys
 from jev_runtime.errors import JevError
+from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, DecisionRequest
 from jev_runtime.systemone import SystemOneRequest, from_decision
@@ -51,10 +52,7 @@ async def disconnect_guard(request: Request, coroutine):
         await asyncio.gather(work, return_exceptions=True)
         raise JevError("client_disconnected", "Client disconnected", 499)
     finally:
-        for task in (work, disconnected):
-            if not task.done():
-                task.cancel()
-        await asyncio.gather(work, disconnected, return_exceptions=True)
+        await cancel_and_drain((work, disconnected))
 
 
 def install_routes(
@@ -186,6 +184,14 @@ def install_routes(
     @management.post("/bundles/retire")
     async def retire(body: Reference, request: Request):
         return runtime(request).registry.retire(body.reference)
+
+    @management.get("/requests/recovery")
+    async def recovery_requests(request: Request):
+        return {"requests": runtime(request).pending_cancellations()}
+
+    @management.post("/requests/{request_id}/recover")
+    async def recover_request(request_id: str, request: Request):
+        return {"recovered": await runtime(request).recover_cancelled(request_id)}
 
     app.include_router(router)
     app.include_router(management)

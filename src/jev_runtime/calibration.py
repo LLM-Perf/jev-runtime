@@ -61,7 +61,13 @@ def _probabilities(row: LabeledScores, temperature: float, bias: float = 0) -> n
 def quality_metrics(
     rows: list[LabeledScores], temperature: float = 1, bias: float = 0, bins: int = 15
 ) -> dict:
-    if not rows or temperature <= 0 or bins < 1:
+    if (
+        not rows
+        or not math.isfinite(temperature)
+        or temperature <= 0
+        or not math.isfinite(bias)
+        or bins < 1
+    ):
         raise ValueError("Metrics require samples, positive temperature and bins")
     confidence, correctness, nll, brier = [], [], [], []
     per_class: dict[tuple[str, int], list[int]] = {}
@@ -174,7 +180,7 @@ def fit_temperature(
             right = low + ratio * (high - low)
             fr = objective(right)
     candidates = [math.log(0.01), math.log(100), 0, (low + high) / 2]
-    temperature = math.exp(min(candidates, key=objective))
+    temperature = min(100.0, max(0.01, math.exp(min(candidates, key=objective))))
     dataset_digest = content_digest(
         {
             "fit": [vars(row) for row in fit],

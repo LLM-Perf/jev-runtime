@@ -73,6 +73,10 @@ retains per-question errors; unknown or incomplete engine usage is `null`, not z
 Do not count a partial response as a successful whole request in a load test.
 
 Failed-abort leases require confirming the recorded engine requests have stopped.
+On the same live API process, inspect `/admin/requests/recovery`, then retry aborts
+through `/admin/requests/{request_id}/recover`. A failed retry preserves the lease.
+The engine abort APIs acknowledge request cancellation; this is not a certified GPU
+LoRA unload barrier. Adapter lifecycle certification still requires separate checks.
 Automatic orphan recovery across a worker crash remains unfinished. Never remove a
 lease merely because it is old. This limitation blocks an unattended production SLA.
 
@@ -82,6 +86,9 @@ lease merely because it is old. This limitation blocks an unattended production 
 executes a canary; readiness is not yet a periodic model liveness canary. The current
 metrics expose decision outcome counts and HTTP latency. Engine usage, canceled
 branches and registry state must also be retained in evaluation artifacts.
+Enable the `jev_runtime.runtime` logger at INFO to emit `jev_scoring` records
+correlating the public request ID, authenticated tenant,
+bundle digest/generation and all internal engine IDs, without input text or keys.
 
 Use `tests/integration/live_contract.py` only against task-owned aliases/services:
 it creates temporary versions and runs real traffic. Its reports include strict

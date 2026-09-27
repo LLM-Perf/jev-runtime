@@ -189,13 +189,13 @@ class Answer(Contract):
 
 
 class Usage(Contract):
-    questions: int
-    successful_questions: int
-    scoring_sequences: int
-    logical_prompt_tokens: int
-    engine_prompt_tokens: int | None
-    engine_completion_tokens: int | None
-    cached_prompt_tokens: int | None
+    questions: int = Field(ge=1)
+    successful_questions: int = Field(ge=0)
+    scoring_sequences: int = Field(ge=0)
+    logical_prompt_tokens: int = Field(ge=0)
+    engine_prompt_tokens: int | None = Field(ge=0)
+    engine_completion_tokens: int | None = Field(ge=0)
+    cached_prompt_tokens: int | None = Field(ge=0)
 
 
 class DecisionResponse(Contract):
@@ -207,4 +207,17 @@ class DecisionResponse(Contract):
     engine: dict[str, str]
     answers: dict[str, Answer]
     usage: Usage
-    latency_ms: float
+    latency_ms: float = Field(ge=0)
+
+    @model_validator(mode="after")
+    def verify_outcomes(self):
+        successful = sum(answer.status != "failed" for answer in self.answers.values())
+        count = len(self.answers)
+        if count != self.usage.questions or successful != self.usage.successful_questions:
+            raise ValueError("Answer count and usage success counts disagree")
+        expected = (
+            "completed" if successful == count else "failed" if successful == 0 else "partial"
+        )
+        if self.status != expected:
+            raise ValueError("Decision status does not match per-question outcomes")
+        return self

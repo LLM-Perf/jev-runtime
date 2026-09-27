@@ -80,3 +80,12 @@ def test_macro_f1_keeps_different_task_class_namespaces_separate():
         LabeledScores("b", "b", (-1, 0), 1, "task-b"),
     ]
     assert quality_metrics(samples)["macro_f1"] == pytest.approx(0.5)
+
+
+def test_temperature_upper_boundary_produces_valid_artifact(bundle):
+    fit = [LabeledScores("fit", "fit", (0, -10), 1)]
+    heldout = [LabeledScores("heldout", "heldout", (0, -10), 1)]
+    artifact, report = fit_temperature(fit, heldout, bundle.scoring_contract_digest)
+    assert artifact.temperature == pytest.approx(100)
+    assert artifact.temperature <= 100
+    assert math.isfinite(report["heldout_calibrated"]["nll"])

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import time
 import uuid
@@ -9,6 +10,7 @@ from jev_runtime.admission import Admission
 from jev_runtime.backends.base import Capabilities, EngineAdapter, ScoreInput, ScoreResult
 from jev_runtime.compiler import CompiledQuestion, Compiler
 from jev_runtime.errors import JevError
+from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.registry import Registry
 from jev_runtime.schema import (
     Answer,
@@ -54,10 +56,10 @@ class Runtime:
 
     async def close(self) -> None:
         tasks = list(self._active.values())
-        for task in tasks:
-            task.cancel()
-        await asyncio.gather(*tasks, return_exceptions=True)
-        await self.backend.close()
+        try:
+            await cancel_and_drain(tasks)
+        finally:
+            await self.backend.close()
 
     def _validate_bundle(self, bundle: Bundle) -> None:
         self.compiler.verify_bundle(bundle)
@@ -137,9 +139,24 @@ class Runtime:
         try:
             return await self.backend.score(seq)
         except BaseException:
-            try:
+
+            async def abort():
                 async with asyncio.timeout(5):
                     await self.backend.cancel(seq.request_id)
+
+            cleanup = asyncio.create_task(abort())
+            try:
+                # Parent gather/finally blocks and a second client cancellation
+                # can cancel this task again while abort performs network I/O.
+                # Own the bounded abort task and wait for its result; shielding
+                # without awaiting it to completion would leak detached cleanup.
+                while True:
+                    try:
+                        await asyncio.shield(cleanup)
+                        break
+                    except asyncio.CancelledError:
+                        if cleanup.cancelled():
+                            raise
             except BaseException:
                 unconfirmed.add(seq.request_id)
                 logger.exception("Engine cancellation could not be confirmed")
@@ -161,10 +178,7 @@ class Runtime:
             results = await asyncio.gather(*tasks)
             return assemble(compiled, results, bundle), results
         finally:
-            for task in tasks:
-                if not task.done():
-                    task.cancel()
-            await asyncio.gather(*tasks, return_exceptions=True)
+            await cancel_and_drain(tasks)
 
     async def decide(
         self, request: DecisionRequest, request_id: str | None = None, tenant: str = "default"
@@ -206,6 +220,19 @@ class Runtime:
                 ]
                 sequences = tuple(s for q in compiled for s in q.sequences)
                 total_tokens = self._validate_sequences(sequences, bundle)
+                logger.info(
+                    "jev_scoring %s",
+                    json.dumps(
+                        {
+                            "request_id": rid,
+                            "tenant": tenant,
+                            "bundle": bundle.reference,
+                            "bundle_digest": bundle.digest,
+                            "generation": snapshot.generation,
+                            "engine_request_ids": [seq.request_id for seq in sequences],
+                        }
+                    ),
+                )
                 async with self.admission.acquire(total_tokens, tenant):
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     tasks = [
@@ -217,10 +244,7 @@ class Runtime:
                             *tasks, return_exceptions=request.execution.allow_partial
                         )
                     finally:
-                        for task in tasks:
-                            if not task.done():
-                                task.cancel()
-                        await asyncio.gather(*tasks, return_exceptions=True)
+                        await cancel_and_drain(tasks)
                 answers, results = {}, []
                 failed = 0
                 for question, outcome in zip(questions, outcomes, strict=True):
@@ -294,13 +318,20 @@ class Runtime:
         self._unconfirmed_leases.pop(request_id, None)
         return True
 
+    def pending_cancellations(self) -> list[dict]:
+        return [
+            {"request_id": rid, "lease_id": lease, "engine_request_ids": sorted(branches)}
+            for rid, (lease, branches) in self._unconfirmed_leases.items()
+        ]
+
     async def cancel(self, request_id: str, tenant: str = "default") -> bool:
         if self._tenants.get(request_id) != tenant:
             return False
         task = self._active.get(request_id)
         if not task:
             return False
-        task.cancel()
+        if not task.cancelling():
+            task.cancel()
         await asyncio.gather(task, return_exceptions=True)
         if request_id in self._unconfirmed_leases:
             raise JevError("cancellation_unconfirmed", "Engine abort is not yet confirmed", 503)

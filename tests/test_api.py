@@ -1,9 +1,12 @@
 import asyncio
 
 import httpx
+import pytest
 from fastapi import FastAPI
+from pydantic import ValidationError
 
 from jev_runtime.api import create_app, install_routes
+from jev_runtime.schema import DecisionRequest, DecisionResponse
 
 
 async def test_decision_endpoint_and_separate_admin_auth(runtime, question):
@@ -111,3 +114,15 @@ async def test_authenticated_tenant_cannot_cancel_other_tenant(runtime, question
             response.status_code == 499 and response.json()["error"]["code"] == "request_cancelled"
         )
         assert not runtime.registry.list()["leases"]
+
+
+async def test_client_response_contract_rejects_false_success(runtime, question):
+    response = await runtime.decide(
+        DecisionRequest.model_validate(
+            {"model": "model", "input": {"text": "refund"}, "questions": [question.model_dump()]}
+        )
+    )
+    bad = response.model_dump()
+    bad["usage"]["successful_questions"] = 0
+    with pytest.raises(ValidationError, match="success counts"):
+        DecisionResponse.model_validate(bad)

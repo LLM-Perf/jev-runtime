@@ -75,10 +75,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function probabilities(value: unknown): boolean {
-  return isRecord(value) && Object.values(value).every(
+function probabilities(value: unknown, normalized = true): boolean {
+  return isRecord(value) && Object.keys(value).length > 0 && Object.values(value).every(
     (p) => typeof p === "number" && Number.isFinite(p) && p >= 0 && p <= 1,
-  );
+  ) && (!normalized || Math.abs(Object.values(value).reduce<number>((sum, p) => sum + (p as number), 0) - 1) < 1e-4);
 }
 
 /** Reject malformed successful responses instead of fabricating typed defaults. */
@@ -110,7 +110,7 @@ export function parseDecision(value: unknown): DecisionResponse {
     if (!probabilities(answer.probabilities)) {
       throw new JevAPIError(502, "invalid_response", "Answer probabilities are missing or invalid");
     }
-    if (answer.support !== null && !probabilities(answer.support)) {
+    if (answer.support !== null && !probabilities(answer.support, false)) {
       throw new JevAPIError(502, "invalid_response", "Independent support values are invalid");
     }
     if (answer.status === "answered") {

@@ -35,6 +35,7 @@ test("surfaces structured errors without automatic mutation retries", async () =
 test("rejects HTTP 200 with false success counts or missing probabilities", () => {
   assert.throws(() => parseDecision({...valid, usage: {...valid.usage, successful_questions: 0}}), JevAPIError);
   assert.throws(() => parseDecision({...valid, answers: {q: {...answer, probabilities: null}}}), JevAPIError);
+  assert.throws(() => parseDecision({...valid, answers: {q: {...answer, probabilities: {true: 0.2, false: 0.2}}}}), JevAPIError);
 });
 
 test("timeout aborts the HTTP fetch", async () => {

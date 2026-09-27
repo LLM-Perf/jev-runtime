@@ -183,3 +183,31 @@ async def test_caller_cancellation_does_not_claim_confirmed_on_failed_abort(runt
     assert len(runtime.registry.list()["leases"]) == 1
     runtime.backend.fail_cancel = False
     assert await runtime.recover_cancelled("uncertain-abort")
+
+
+async def test_repeated_cancellation_waits_for_owned_network_abort(runtime, question):
+    runtime.backend.gate.clear()
+    abort_started, abort_continue = asyncio.Event(), asyncio.Event()
+    completed = []
+
+    async def delayed_abort(request_id):
+        abort_started.set()
+        await abort_continue.wait()
+        completed.append(request_id)
+
+    runtime.backend.cancel = delayed_abort
+    body = request(question, request_id="repeated-cancel")
+    work = asyncio.create_task(runtime.decide(body))
+    await asyncio.wait_for(runtime.backend.started.wait(), 1)
+    work.cancel()
+    await asyncio.wait_for(abort_started.wait(), 1)
+    work.cancel()
+    with pytest.raises(TimeoutError):
+        await asyncio.wait_for(asyncio.shield(work), 0.01)
+    assert len(runtime.registry.list()["leases"]) == 1
+    abort_continue.set()
+    with pytest.raises(JevError) as error:
+        await asyncio.wait_for(work, 1)
+    assert error.value.code == "request_cancelled"
+    assert len(completed) == 1
+    assert not runtime.registry.list()["leases"]
