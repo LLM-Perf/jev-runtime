@@ -468,6 +468,15 @@ verify remotely. This preserves identical stopped same-host state; schema
 migration/downgrade, destroyed-source recovery and container replacement remain
 unimplemented. See [registry snapshots](registry-snapshots.md).
 
+At `877f319`, a 32-case multi-input Qwen3-0.6B numerical suite completes 192
+scoring responses and 384 GPU reference comparisons across both engines. Every
+reference profile fails part of the unchanged development check; same-engine
+cache/concurrency interventions also change some near-tie argmax labels. The
+initial SGLang environment-recording error and separate reference completion
+remain visible. All 171 retained owned identities are terminal; 420 local tests
+pass. Numerical certification remains failed, and no model/quality/performance
+release gate is newly passed. See [multi-input numerical diagnostics](numerical-suite.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |

@@ -1,0 +1,14 @@
+{
+  "source_commit": "877f319cf03932193db362a9475bd6a5aebc723d",
+  "python_tests": {
+    "passed": 420,
+    "duration_seconds": 25.09
+  },
+  "new_numerical_tests": 14,
+  "ruff_check": "passed",
+  "ruff_format_python_paths": "116 files already formatted",
+  "runtime_changes": false,
+  "wheel_rebuild": "not needed: only integration harness/tests/docs changed",
+  "typescript": "unchanged; not rerun",
+  "note": "Broad Ruff format check included an existing unformatted Markdown code block in docs/public-model-pair-validation.md; that unrelated file was not modified."
+}

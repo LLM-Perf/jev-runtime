@@ -1,0 +1,96 @@
+{
+  "source_commit": "877f319cf03932193db362a9475bd6a5aebc723d",
+  "cases_per_engine": 32,
+  "scoring_responses": 192,
+  "reference_forwards": 128,
+  "comparisons": 384,
+  "engines": {
+    "vllm": {
+      "references": {
+        "eager": {
+          "passed": 22,
+          "total": 96,
+          "max_logprob_error": 0.9981527328491211,
+          "max_probability_error": 0.1824982754894635,
+          "top_label_mismatches": 7,
+          "near_tie_cases": 6
+        },
+        "sdpa": {
+          "passed": 33,
+          "total": 96,
+          "max_logprob_error": 0.7442569732666016,
+          "max_probability_error": 0.09174077045229642,
+          "top_label_mismatches": 7,
+          "near_tie_cases": 6
+        }
+      },
+      "state_changes": {
+        "repeat_serial": {
+          "total": 32,
+          "max_logprob_error": 0.2492976188659668,
+          "max_probability_error": 0.04695140193132799,
+          "top_label_mismatches": 1,
+          "all_top_mismatches_near_tie": true
+        },
+        "concurrent_reversed": {
+          "total": 32,
+          "max_logprob_error": 0.6237058639526367,
+          "max_probability_error": 0.06135452141891928,
+          "top_label_mismatches": 4,
+          "all_top_mismatches_near_tie": true
+        }
+      },
+      "versions": {
+        "vllm": "0.30.0+cu129",
+        "torch": "2.13.0+cu129",
+        "transformers": "5.17.0",
+        "tokenizers": "0.23.2"
+      }
+    },
+    "sglang": {
+      "references": {
+        "eager": {
+          "passed": 25,
+          "total": 96,
+          "max_logprob_error": 0.7561988830566406,
+          "max_probability_error": 0.18207576939652864,
+          "top_label_mismatches": 7,
+          "near_tie_cases": 6
+        },
+        "sdpa": {
+          "passed": 30,
+          "total": 96,
+          "max_logprob_error": 0.707005500793457,
+          "max_probability_error": 0.08688200329906004,
+          "top_label_mismatches": 8,
+          "near_tie_cases": 6
+        }
+      },
+      "state_changes": {
+        "repeat_serial": {
+          "total": 32,
+          "max_logprob_error": 0.37437009811401367,
+          "max_probability_error": 0.06221986742158109,
+          "top_label_mismatches": 1,
+          "all_top_mismatches_near_tie": true
+        },
+        "concurrent_reversed": {
+          "total": 32,
+          "max_logprob_error": 0.48558902740478516,
+          "max_probability_error": 0.06853313888754198,
+          "top_label_mismatches": 2,
+          "all_top_mismatches_near_tie": true
+        }
+      },
+      "versions": {
+        "sglang": "0.5.19",
+        "torch": "2.13.0+cu129",
+        "transformers": "5.12.1",
+        "tokenizers": "0.22.2"
+      }
+    }
+  },
+  "full_release_gate_passed": false,
+  "owned_records_terminal": 171,
+  "cross_engine_input_label_ids_equal": true
+}

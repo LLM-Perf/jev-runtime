@@ -1,0 +1,6531 @@
+{
+  "schema_version": 1,
+  "corpus_digest": "sha256:2b20968509240b6887bfc820de9a3362a8cecd79c26d7ee15bbf2b409c279ad7",
+  "script_sha256": "82c14ce77d2d3ddec735fad3548b8530d64a7041128c31df83fc6fdf2efdd8a6",
+  "engine": "vllm",
+  "process_identity": {
+    "pid": 2716339,
+    "start_ticks": "430592787",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "started_at": 1790550430.0189555,
+  "cases": [
+    {
+      "id": "text0-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "I paid twice. Please refund the duplicate payment."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          7044,
+          7171,
+          10917,
+          13,
+          5209,
+          20965,
+          279,
+          22513,
+          8160,
+          2217,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text0-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "I paid twice. Please refund the duplicate payment."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          7044,
+          7171,
+          10917,
+          13,
+          5209,
+          20965,
+          279,
+          22513,
+          8160,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text0-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "I paid twice. Please refund the duplicate payment."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          7044,
+          7171,
+          10917,
+          13,
+          5209,
+          20965,
+          279,
+          22513,
+          8160,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text0-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "I paid twice. Please refund the duplicate payment."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          7044,
+          7171,
+          10917,
+          13,
+          5209,
+          20965,
+          279,
+          22513,
+          8160,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text1-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "The application crashes at startup. My payment was correct."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          10022,
+          3766,
+          36137,
+          518,
+          20567,
+          13,
+          3017,
+          8160,
+          572,
+          4396,
+          2217,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text1-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "The application crashes at startup. My payment was correct."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          10022,
+          3766,
+          36137,
+          518,
+          20567,
+          13,
+          3017,
+          8160,
+          572,
+          4396,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text1-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "The application crashes at startup. My payment was correct."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          10022,
+          3766,
+          36137,
+          518,
+          20567,
+          13,
+          3017,
+          8160,
+          572,
+          4396,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text1-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "The application crashes at startup. My payment was correct."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          10022,
+          3766,
+          36137,
+          518,
+          20567,
+          13,
+          3017,
+          8160,
+          572,
+          4396,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text2-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Thanks, everything works. I am only asking about next year's price."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          12658,
+          11,
+          4297,
+          4278,
+          13,
+          358,
+          1079,
+          1172,
+          10161,
+          911,
+          1790,
+          1042,
+          594,
+          3349,
+          2217,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text2-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Thanks, everything works. I am only asking about next year's price."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          12658,
+          11,
+          4297,
+          4278,
+          13,
+          358,
+          1079,
+          1172,
+          10161,
+          911,
+          1790,
+          1042,
+          594,
+          3349,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text2-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Thanks, everything works. I am only asking about next year's price."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          12658,
+          11,
+          4297,
+          4278,
+          13,
+          358,
+          1079,
+          1172,
+          10161,
+          911,
+          1790,
+          1042,
+          594,
+          3349,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text2-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Thanks, everything works. I am only asking about next year's price."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          12658,
+          11,
+          4297,
+          4278,
+          13,
+          358,
+          1079,
+          1172,
+          10161,
+          911,
+          1790,
+          1042,
+          594,
+          3349,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text3-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Refund or repair? Both would help; I have not decided."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          3945,
+          1241,
+          476,
+          12733,
+          30,
+          11733,
+          1035,
+          1492,
+          26,
+          358,
+          614,
+          537,
+          6635,
+          2217,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text3-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Refund or repair? Both would help; I have not decided."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          3945,
+          1241,
+          476,
+          12733,
+          30,
+          11733,
+          1035,
+          1492,
+          26,
+          358,
+          614,
+          537,
+          6635,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text3-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Refund or repair? Both would help; I have not decided."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          3945,
+          1241,
+          476,
+          12733,
+          30,
+          11733,
+          1035,
+          1492,
+          26,
+          358,
+          614,
+          537,
+          6635,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text3-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "Refund or repair? Both would help; I have not decided."
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          3945,
+          1241,
+          476,
+          12733,
+          30,
+          11733,
+          1035,
+          1492,
+          26,
+          358,
+          614,
+          537,
+          6635,
+          2217,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text4-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "我被重复扣款了，请退回多收的费用。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          35946,
+          99250,
+          105444,
+          100837,
+          68153,
+          34187,
+          37945,
+          117125,
+          42140,
+          50009,
+          9370,
+          103966,
+          1773,
+          1837,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text4-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "我被重复扣款了，请退回多收的费用。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          35946,
+          99250,
+          105444,
+          100837,
+          68153,
+          34187,
+          37945,
+          117125,
+          42140,
+          50009,
+          9370,
+          103966,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text4-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "我被重复扣款了，请退回多收的费用。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          35946,
+          99250,
+          105444,
+          100837,
+          68153,
+          34187,
+          37945,
+          117125,
+          42140,
+          50009,
+          9370,
+          103966,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text4-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "我被重复扣款了，请退回多收的费用。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          35946,
+          99250,
+          105444,
+          100837,
+          68153,
+          34187,
+          37945,
+          117125,
+          42140,
+          50009,
+          9370,
+          103966,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text5-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "应用无法打开，付款正常，不需要退款。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          99892,
+          101068,
+          104089,
+          3837,
+          106554,
+          100416,
+          3837,
+          104689,
+          113794,
+          1773,
+          1837,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text5-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "应用无法打开，付款正常，不需要退款。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          99892,
+          101068,
+          104089,
+          3837,
+          106554,
+          100416,
+          3837,
+          104689,
+          113794,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text5-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "应用无法打开，付款正常，不需要退款。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          99892,
+          101068,
+          104089,
+          3837,
+          106554,
+          100416,
+          3837,
+          104689,
+          113794,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text5-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "应用无法打开，付款正常，不需要退款。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          99892,
+          101068,
+          104089,
+          3837,
+          106554,
+          100416,
+          3837,
+          104689,
+          113794,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text6-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "谢谢，问题解决了。我想了解明年的价格。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          102570,
+          3837,
+          86119,
+          105826,
+          1773,
+          104100,
+          99794,
+          30858,
+          104300,
+          97480,
+          1773,
+          1837,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text6-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "谢谢，问题解决了。我想了解明年的价格。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          102570,
+          3837,
+          86119,
+          105826,
+          1773,
+          104100,
+          99794,
+          30858,
+          104300,
+          97480,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text6-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "谢谢，问题解决了。我想了解明年的价格。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          102570,
+          3837,
+          86119,
+          105826,
+          1773,
+          104100,
+          99794,
+          30858,
+          104300,
+          97480,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text6-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "谢谢，问题解决了。我想了解明年的价格。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          102570,
+          3837,
+          86119,
+          105826,
+          1773,
+          104100,
+          99794,
+          30858,
+          104300,
+          97480,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text7-boolean",
+      "kind": "boolean",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "退款和修复都可以，我还没有决定。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "boolean",
+            "instruction": "Is a refund explicitly requested?"
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3872,
+          264,
+          20965,
+          20975,
+          11223,
+          1939,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          113794,
+          33108,
+          104749,
+          104570,
+          3837,
+          35946,
+          104485,
+          103930,
+          1773,
+          1837,
+          47232,
+          510,
+          9454,
+          25,
+          576,
+          5114,
+          374,
+          830,
+          198,
+          2753,
+          25,
+          576,
+          5114,
+          374,
+          895,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          9454,
+          2753
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text7-choice4",
+      "kind": "choice4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "退款和修复都可以，我还没有决定。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          113794,
+          33108,
+          104749,
+          104570,
+          3837,
+          35946,
+          104485,
+          103930,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text7-choice8",
+      "kind": "choice8",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "退款和修复都可以，我还没有决定。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "Billing and refunds"
+              },
+              {
+                "id": "c1",
+                "description": "Technical repair"
+              },
+              {
+                "id": "c2",
+                "description": "Prices and sales"
+              },
+              {
+                "id": "c3",
+                "description": "Other"
+              },
+              {
+                "id": "c4",
+                "description": "Account access"
+              },
+              {
+                "id": "c5",
+                "description": "Delivery"
+              },
+              {
+                "id": "c6",
+                "description": "Cancellation"
+              },
+              {
+                "id": "c7",
+                "description": "Positive feedback"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          113794,
+          33108,
+          104749,
+          104570,
+          3837,
+          35946,
+          104485,
+          103930,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          72450,
+          323,
+          72518,
+          198,
+          33,
+          25,
+          26668,
+          12733,
+          198,
+          34,
+          25,
+          36033,
+          323,
+          6625,
+          198,
+          35,
+          25,
+          6944,
+          198,
+          36,
+          25,
+          8615,
+          2615,
+          198,
+          37,
+          25,
+          26211,
+          198,
+          38,
+          25,
+          356,
+          49222,
+          198,
+          39,
+          25,
+          43903,
+          11055,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    },
+    {
+      "id": "text7-ambiguous4",
+      "kind": "ambiguous4",
+      "request": {
+        "model": "decision-model",
+        "input": {
+          "text": "退款和修复都可以，我还没有决定。"
+        },
+        "questions": [
+          {
+            "id": "q",
+            "type": "choice",
+            "instruction": "Select the best matching category from the supplied evidence.",
+            "options": [
+              {
+                "id": "c0",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c1",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c2",
+                "description": "An equally applicable general support category"
+              },
+              {
+                "id": "c3",
+                "description": "An equally applicable general support category"
+              }
+            ]
+          }
+        ]
+      },
+      "sequence": {
+        "request_id": "numerical-fixture",
+        "question_id": "q",
+        "input_ids": [
+          151644,
+          8948,
+          198,
+          82345,
+          279,
+          17221,
+          821,
+          2348,
+          279,
+          3383,
+          13,
+          2885,
+          374,
+          5904,
+          11,
+          537,
+          11221,
+          13,
+          3411,
+          6896,
+          279,
+          11223,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          872,
+          198,
+          6262,
+          510,
+          3379,
+          279,
+          1850,
+          12579,
+          5582,
+          504,
+          279,
+          17221,
+          5904,
+          382,
+          1043,
+          320,
+          5370,
+          914,
+          982,
+          1,
+          113794,
+          33108,
+          104749,
+          104570,
+          3837,
+          35946,
+          104485,
+          103930,
+          1773,
+          1837,
+          47232,
+          510,
+          32,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          33,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          34,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          35,
+          25,
+          1527,
+          18308,
+          8415,
+          4586,
+          1824,
+          5582,
+          198,
+          5598,
+          6896,
+          825,
+          4226,
+          2383,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ],
+        "label_ids": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "candidate_id": null,
+        "adapter_id": null
+      }
+    }
+  ],
+  "observations": {
+    "reset_serial": [
+      {
+        "id": "text0-boolean",
+        "request_id": "num-7e3049938dd84426b0f74b92452a7fea",
+        "logprobs": [
+          -0.35589027404785156,
+          -1.2308902740478516
+        ],
+        "prompt_tokens": 84,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice4",
+        "request_id": "num-338663009647412195691d60ec8e70d8",
+        "logprobs": [
+          -1.4065237045288086,
+          -8.281523704528809,
+          -11.156523704528809,
+          -0.2815236747264862
+        ],
+        "prompt_tokens": 95,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice8",
+        "request_id": "num-5697bec05e8d4ab68ffeaab2276c8600",
+        "logprobs": [
+          -0.5578995943069458,
+          -8.182899475097656,
+          -11.307899475097656,
+          -2.5578994750976562,
+          -8.682899475097656,
+          -7.432899475097656,
+          -6.307899475097656,
+          -1.0578995943069458
+        ],
+        "prompt_tokens": 114,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-ambiguous4",
+        "request_id": "num-cb57a8996860418c97fb573afb5d0a54",
+        "logprobs": [
+          -2.0825719833374023,
+          -0.5825719237327576,
+          -2.9575719833374023,
+          -1.3325719833374023
+        ],
+        "prompt_tokens": 110,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-boolean",
+        "request_id": "num-0356c84ab6284a238eab8735aa8bbc65",
+        "logprobs": [
+          -0.3566415011882782,
+          -1.2316415309906006
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice4",
+        "request_id": "num-4325f6bf59ca4b4fbdc3ad6d9e19f720",
+        "logprobs": [
+          -5.256706237792969,
+          -6.631706237792969,
+          -9.756706237792969,
+          -0.006706231273710728
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice8",
+        "request_id": "num-db0c8a70769347798bf3e51606521080",
+        "logprobs": [
+          -4.771757125854492,
+          -6.896757125854492,
+          -9.896757125854492,
+          -0.021757015958428383,
+          -7.521757125854492,
+          -7.771757125854492,
+          -9.396757125854492,
+          -4.521757125854492
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-ambiguous4",
+        "request_id": "num-e5a2423d98ab428bba14c04bcdd66a2c",
+        "logprobs": [
+          -1.136301875114441,
+          -1.136301875114441,
+          -2.6363019943237305,
+          -1.261301875114441
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-boolean",
+        "request_id": "num-d4890f39d1bd4ff08bce1661d2969a28",
+        "logprobs": [
+          -0.1091126874089241,
+          -2.3591127395629883
+        ],
+        "prompt_tokens": 90,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice4",
+        "request_id": "num-30ffd46f6be04955aa99c1ba3b45b5f1",
+        "logprobs": [
+          -6.196662425994873,
+          -6.696662425994873,
+          -0.6966625452041626,
+          -0.6966625452041626
+        ],
+        "prompt_tokens": 101,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice8",
+        "request_id": "num-ece014386ef84aff965270efa38e7de7",
+        "logprobs": [
+          -6.1306304931640625,
+          -7.0056304931640625,
+          -7.8806304931640625,
+          -6.6306304931640625,
+          -8.130630493164062,
+          -7.8806304931640625,
+          -9.005630493164062,
+          -0.00563070410862565
+        ],
+        "prompt_tokens": 120,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-ambiguous4",
+        "request_id": "num-8e4a0dfd0cb748ca884bafdf636424da",
+        "logprobs": [
+          -1.3403394222259521,
+          -1.2153394222259521,
+          -2.840339422225952,
+          -0.9653394222259521
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-boolean",
+        "request_id": "num-27f327628411421fa46e9de3efd85180",
+        "logprobs": [
+          -0.19099941849708557,
+          -1.8159993886947632
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice4",
+        "request_id": "num-b236400f9094442ea2a804a3cb2e19ba",
+        "logprobs": [
+          -3.4097485542297363,
+          -7.284748554229736,
+          -9.409749031066895,
+          -0.03474859520792961
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice8",
+        "request_id": "num-622668f1e2d848749820b7653e61fb86",
+        "logprobs": [
+          -4.295228004455566,
+          -7.670228004455566,
+          -11.795228004455566,
+          -3.5452280044555664,
+          -9.170228004455566,
+          -7.420228004455566,
+          -7.670228004455566,
+          -0.045227937400341034
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-ambiguous4",
+        "request_id": "num-dcc2d88f49894652899cbb43e6a3e6ce",
+        "logprobs": [
+          -0.9120654463768005,
+          -0.9120654463768005,
+          -3.6620655059814453,
+          -1.7870655059814453
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-boolean",
+        "request_id": "num-e759a5e9fb294a378428525674159f4e",
+        "logprobs": [
+          -0.03107100911438465,
+          -3.5310709476470947
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice4",
+        "request_id": "num-a86ba0782f4440c68d3956f4deb06145",
+        "logprobs": [
+          -0.12712343037128448,
+          -9.377123832702637,
+          -12.252123832702637,
+          -2.1271233558654785
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice8",
+        "request_id": "num-3951964d19ab49fca7f0e46090226e8a",
+        "logprobs": [
+          -0.028934871777892113,
+          -9.653934478759766,
+          -12.528934478759766,
+          -6.028934955596924,
+          -9.778934478759766,
+          -9.528934478759766,
+          -11.403934478759766,
+          -3.653934955596924
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-ambiguous4",
+        "request_id": "num-d38b7276516c4543b35c1afa1652a6c4",
+        "logprobs": [
+          -2.354560613632202,
+          -1.2295606136322021,
+          -2.729560613632202,
+          -0.6045605540275574
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-boolean",
+        "request_id": "num-d55d7cc2bea04da98999b7b407ee8b62",
+        "logprobs": [
+          -0.1073862612247467,
+          -2.357386350631714
+        ],
+        "prompt_tokens": 86,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice4",
+        "request_id": "num-d2e76706eb74480696e341dc54942fc6",
+        "logprobs": [
+          -2.127457857131958,
+          -7.752457618713379,
+          -10.002457618713379,
+          -0.12745784223079681
+        ],
+        "prompt_tokens": 97,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice8",
+        "request_id": "num-a8d0ce9d1bac49918d29e59c0bd45408",
+        "logprobs": [
+          -1.0645403861999512,
+          -7.189540386199951,
+          -10.189539909362793,
+          -0.8145403265953064,
+          -6.939540386199951,
+          -6.814540386199951,
+          -8.689539909362793,
+          -1.5645403861999512
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-ambiguous4",
+        "request_id": "num-e4abd70023b544359362d29f31a911df",
+        "logprobs": [
+          -2.5257976055145264,
+          -1.7757976055145264,
+          -2.5257976055145264,
+          -0.40079760551452637
+        ],
+        "prompt_tokens": 112,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-boolean",
+        "request_id": "num-e43d4dfc797d4b689aea374844654042",
+        "logprobs": [
+          -0.06518355011940002,
+          -2.940183639526367
+        ],
+        "prompt_tokens": 87,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice4",
+        "request_id": "num-6056de3b28be4c7298f132a304203e8a",
+        "logprobs": [
+          -4.266899585723877,
+          -7.266899585723877,
+          -1.516899585723877,
+          -0.26689955592155457
+        ],
+        "prompt_tokens": 98,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice8",
+        "request_id": "num-e536baff9eac42039f327c597c4985a2",
+        "logprobs": [
+          -3.9076273441314697,
+          -7.032627105712891,
+          -7.407627105712891,
+          -4.782627105712891,
+          -7.282627105712891,
+          -6.907627105712891,
+          -7.782627105712891,
+          -0.03262723237276077
+        ],
+        "prompt_tokens": 117,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-ambiguous4",
+        "request_id": "num-84e205d8e0054c56afd48c12c06c5d6f",
+        "logprobs": [
+          -1.1465860605239868,
+          -1.5215860605239868,
+          -2.8965859413146973,
+          -0.8965860605239868
+        ],
+        "prompt_tokens": 113,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-boolean",
+        "request_id": "num-d0d2684bbf2c419d8e40db4471e3bac8",
+        "logprobs": [
+          -0.10281287133693695,
+          -2.3528127670288086
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice4",
+        "request_id": "num-59e6f823f5a44f3d9467e97b6d8aaa7a",
+        "logprobs": [
+          -1.1374800205230713,
+          -7.63748025894165,
+          -10.137479782104492,
+          -0.38748008012771606
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice8",
+        "request_id": "num-ed7cc431d6e54870a830c920caf3ec14",
+        "logprobs": [
+          -0.7404159307479858,
+          -7.240416049957275,
+          -10.490415573120117,
+          -3.1154160499572754,
+          -7.990416049957275,
+          -7.615416049957275,
+          -8.740415573120117,
+          -0.7404159307479858
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-ambiguous4",
+        "request_id": "num-73a18d5c54234b03b1d576557442c78b",
+        "logprobs": [
+          -0.7555631995201111,
+          -1.7555632591247559,
+          -3.380563259124756,
+          -1.1305632591247559
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      }
+    ],
+    "repeat_serial": [
+      {
+        "id": "text0-boolean",
+        "request_id": "num-4f1fe1cd10814429915ba744d618bfb4",
+        "logprobs": [
+          -0.35579714179039,
+          -1.2307971715927124
+        ],
+        "prompt_tokens": 84,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice4",
+        "request_id": "num-15fbffb974eb4aad88b889d9e8cc563c",
+        "logprobs": [
+          -1.5022642612457275,
+          -8.377264022827148,
+          -11.252264022827148,
+          -0.2522643208503723
+        ],
+        "prompt_tokens": 95,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice8",
+        "request_id": "num-1856f64e36b24d919e835261fe1fc8d3",
+        "logprobs": [
+          -0.557948112487793,
+          -8.057948112487793,
+          -11.307948112487793,
+          -2.557948112487793,
+          -8.682948112487793,
+          -7.432948112487793,
+          -6.307948112487793,
+          -1.057948112487793
+        ],
+        "prompt_tokens": 114,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-ambiguous4",
+        "request_id": "num-23a8863a0138454086e73b99869e3b56",
+        "logprobs": [
+          -2.0825719833374023,
+          -0.5825719237327576,
+          -2.9575719833374023,
+          -1.3325719833374023
+        ],
+        "prompt_tokens": 110,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-boolean",
+        "request_id": "num-60cff47e598b46e4b246142609141107",
+        "logprobs": [
+          -0.35678011178970337,
+          -1.2317800521850586
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice4",
+        "request_id": "num-6fb88fc9066441fbac9d94f787476906",
+        "logprobs": [
+          -5.008406162261963,
+          -6.508406162261963,
+          -9.508405685424805,
+          -0.0084060188382864
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice8",
+        "request_id": "num-ba358b2e99bc41f2a004c6293f88fc68",
+        "logprobs": [
+          -4.649779796600342,
+          -6.774779796600342,
+          -9.6497802734375,
+          -0.02477981150150299,
+          -7.274779796600342,
+          -7.524779796600342,
+          -9.1497802734375,
+          -4.399779796600342
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-ambiguous4",
+        "request_id": "num-3d8801188d444f0a8ed7baca0342909f",
+        "logprobs": [
+          -1.136301875114441,
+          -1.136301875114441,
+          -2.6363019943237305,
+          -1.261301875114441
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-boolean",
+        "request_id": "num-1343ef89c7bf4c588b576ddac223e1fc",
+        "logprobs": [
+          -0.12299630045890808,
+          -2.2479963302612305
+        ],
+        "prompt_tokens": 90,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice4",
+        "request_id": "num-b4870f2e999641ea940f065237334c37",
+        "logprobs": [
+          -6.196662425994873,
+          -6.696662425994873,
+          -0.6966625452041626,
+          -0.6966625452041626
+        ],
+        "prompt_tokens": 101,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice8",
+        "request_id": "num-04a8d9b4005542998d8850a0f5fb9041",
+        "logprobs": [
+          -6.254928112030029,
+          -7.254928112030029,
+          -8.004928588867188,
+          -6.754928112030029,
+          -8.129928588867188,
+          -8.004928588867188,
+          -9.004928588867188,
+          -0.004928227048367262
+        ],
+        "prompt_tokens": 120,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-ambiguous4",
+        "request_id": "num-392d4ad390ac40439d40983f11116137",
+        "logprobs": [
+          -1.2430669069290161,
+          -1.2430669069290161,
+          -2.9930667877197266,
+          -0.9930669069290161
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-boolean",
+        "request_id": "num-31255d3fa987499fbfe85edbf122b2a0",
+        "logprobs": [
+          -0.17067323625087738,
+          -1.9206732511520386
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice4",
+        "request_id": "num-2e5af73781e54ff4b9f0e1693f0527cf",
+        "logprobs": [
+          -3.4097485542297363,
+          -7.284748554229736,
+          -9.409749031066895,
+          -0.03474859520792961
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice8",
+        "request_id": "num-74e7c10e8d204f66903e5c96bc4325d5",
+        "logprobs": [
+          -4.4184770584106445,
+          -7.6684770584106445,
+          -11.918477058410645,
+          -3.5434770584106445,
+          -9.293477058410645,
+          -7.5434770584106445,
+          -7.7934770584106445,
+          -0.04347711801528931
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-ambiguous4",
+        "request_id": "num-b16a80e2f3b2421ea7fb5afaf23cef7f",
+        "logprobs": [
+          -0.9638972282409668,
+          -0.8388972282409668,
+          -3.713897228240967,
+          -1.8388972282409668
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-boolean",
+        "request_id": "num-be356c29a2d64842b39adfdd8365f01e",
+        "logprobs": [
+          -0.0350068174302578,
+          -3.4100067615509033
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice4",
+        "request_id": "num-6f168f8ce41644bd8161169aba416903",
+        "logprobs": [
+          -0.12712343037128448,
+          -9.377123832702637,
+          -12.252123832702637,
+          -2.1271233558654785
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice8",
+        "request_id": "num-98fe4fb821274e9da63f64d76367437a",
+        "logprobs": [
+          -0.036630481481552124,
+          -9.411630630493164,
+          -12.286630630493164,
+          -5.911630630493164,
+          -9.536630630493164,
+          -9.411630630493164,
+          -11.161630630493164,
+          -3.411630392074585
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-ambiguous4",
+        "request_id": "num-fdf6729ca2e24dfcabe082393b2c827d",
+        "logprobs": [
+          -2.279569149017334,
+          -1.404569149017334,
+          -2.779569149017334,
+          -0.529569149017334
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-boolean",
+        "request_id": "num-defa21a308c34e49a4c89471bedb188a",
+        "logprobs": [
+          -0.09643620252609253,
+          -2.4714362621307373
+        ],
+        "prompt_tokens": 86,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice4",
+        "request_id": "num-a21562d87122436397f8ea0a8ac9f888",
+        "logprobs": [
+          -2.127457857131958,
+          -7.752457618713379,
+          -10.002457618713379,
+          -0.12745784223079681
+        ],
+        "prompt_tokens": 97,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice8",
+        "request_id": "num-08c4a8f3679f4e7a89e25e56657d0cdd",
+        "logprobs": [
+          -0.9847195744514465,
+          -7.234719753265381,
+          -10.109719276428223,
+          -0.8597195744514465,
+          -6.859719753265381,
+          -6.734719753265381,
+          -8.734719276428223,
+          -1.6097195148468018
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-ambiguous4",
+        "request_id": "num-eaa7407ef12a401a994bb4185cffb026",
+        "logprobs": [
+          -2.5258610248565674,
+          -1.7758610248565674,
+          -2.5258610248565674,
+          -0.40086108446121216
+        ],
+        "prompt_tokens": 112,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-boolean",
+        "request_id": "num-26e1d627039242af83bd1d111f02b55a",
+        "logprobs": [
+          -0.06513507664203644,
+          -2.9401350021362305
+        ],
+        "prompt_tokens": 87,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice4",
+        "request_id": "num-49cd67fbd88741e29e4ee8b4cec9f405",
+        "logprobs": [
+          -4.266899585723877,
+          -7.266899585723877,
+          -1.516899585723877,
+          -0.26689955592155457
+        ],
+        "prompt_tokens": 98,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice8",
+        "request_id": "num-b72276f96e2c423d9e7378ce769f07a9",
+        "logprobs": [
+          -4.028846263885498,
+          -7.153846263885498,
+          -7.528846263885498,
+          -4.903846263885498,
+          -7.403846263885498,
+          -7.028846263885498,
+          -7.903846263885498,
+          -0.02884615771472454
+        ],
+        "prompt_tokens": 117,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-ambiguous4",
+        "request_id": "num-5a01cd58af594325b4331a02ff812c92",
+        "logprobs": [
+          -1.113847017288208,
+          -1.613847017288208,
+          -2.988847017288208,
+          -0.8638469576835632
+        ],
+        "prompt_tokens": 113,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-boolean",
+        "request_id": "num-5c9debf9dfb7461caf54e7e085526abe",
+        "logprobs": [
+          -0.10268615186214447,
+          -2.3526861667633057
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice4",
+        "request_id": "num-ede1ae8f76ec420e9363021f1c8d3c05",
+        "logprobs": [
+          -1.1374318599700928,
+          -7.762432098388672,
+          -10.137432098388672,
+          -0.3874318599700928
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice8",
+        "request_id": "num-4497fcb78e664623839bad5205adfff6",
+        "logprobs": [
+          -0.7464512586593628,
+          -7.121451377868652,
+          -10.496451377868652,
+          -2.9964513778686523,
+          -7.871451377868652,
+          -7.621451377868652,
+          -8.746451377868652,
+          -0.7464512586593628
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 112,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-ambiguous4",
+        "request_id": "num-b5d24d7351fe49ef9c83282b7eeda42c",
+        "logprobs": [
+          -0.7555631995201111,
+          -1.7555632591247559,
+          -3.380563259124756,
+          -1.1305632591247559
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 96,
+        "raw_logprobs": true
+      }
+    ],
+    "concurrent_reversed": [
+      {
+        "id": "text0-boolean",
+        "request_id": "num-3712599c7d6f4f078b354c66b5ebe674",
+        "logprobs": [
+          -0.39356905221939087,
+          -1.143568992614746
+        ],
+        "prompt_tokens": 84,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice4",
+        "request_id": "num-bf7fa98fa1dd446796e26409bef4cb69",
+        "logprobs": [
+          -1.6007637977600098,
+          -8.350764274597168,
+          -11.225764274597168,
+          -0.22576385736465454
+        ],
+        "prompt_tokens": 95,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-choice8",
+        "request_id": "num-161f7d93b52e4e668191b4bad43a8c91",
+        "logprobs": [
+          -0.5023601055145264,
+          -7.8773603439331055,
+          -10.877360343933105,
+          -2.2523601055145264,
+          -8.252360343933105,
+          -7.2523603439331055,
+          -6.0023603439331055,
+          -1.2523601055145264
+        ],
+        "prompt_tokens": 114,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text0-ambiguous4",
+        "request_id": "num-651ee64e6355443eb5d1abf6fd8035ca",
+        "logprobs": [
+          -2.1238322257995605,
+          -0.6238322257995605,
+          -2.8738322257995605,
+          -1.2488322257995605
+        ],
+        "prompt_tokens": 110,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-boolean",
+        "request_id": "num-bc6629931ce64c81a57d790f866b9abe",
+        "logprobs": [
+          -0.39533162117004395,
+          -1.145331621170044
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice4",
+        "request_id": "num-0bb61488710442999999901beb93338a",
+        "logprobs": [
+          -5.008575916290283,
+          -6.383575916290283,
+          -9.633575439453125,
+          -0.008575755171477795
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-choice8",
+        "request_id": "num-26a309608c9846f9bb3b5094259a8144",
+        "logprobs": [
+          -4.769258975982666,
+          -7.019258975982666,
+          -9.894259452819824,
+          -0.019259123131632805,
+          -7.519258975982666,
+          -7.644258975982666,
+          -9.644259452819824,
+          -4.769258975982666
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text1-ambiguous4",
+        "request_id": "num-5e7626c08a6e49a6bf364dc200cd9484",
+        "logprobs": [
+          -1.2334094047546387,
+          -1.1084094047546387,
+          -2.4834094047546387,
+          -1.2334094047546387
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-boolean",
+        "request_id": "num-b76f95463917461393b239bf481cb255",
+        "logprobs": [
+          -0.12269572168588638,
+          -2.2476956844329834
+        ],
+        "prompt_tokens": 90,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice4",
+        "request_id": "num-a115cfbd265f4610b385c71e01285fc3",
+        "logprobs": [
+          -5.886977195739746,
+          -6.636977195739746,
+          -0.7619771361351013,
+          -0.6369771361351013
+        ],
+        "prompt_tokens": 101,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-choice8",
+        "request_id": "num-c10d4476915a422f92ea17ea2cc8d5be",
+        "logprobs": [
+          -6.254336833953857,
+          -7.129336833953857,
+          -8.3793363571167,
+          -7.129336833953857,
+          -8.2543363571167,
+          -8.5043363571167,
+          -9.3793363571167,
+          -0.004336715210229158
+        ],
+        "prompt_tokens": 120,
+        "completion_tokens": 1,
+        "cached_tokens": 64,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text2-ambiguous4",
+        "request_id": "num-072306f3a88749ff9b4b0d9915f35a30",
+        "logprobs": [
+          -1.3165342807769775,
+          -1.0665342807769775,
+          -3.1915342807769775,
+          -1.0665342807769775
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-boolean",
+        "request_id": "num-88f7c8b19299410282f0d2c895fd63f5",
+        "logprobs": [
+          -0.17026358842849731,
+          -1.9202635288238525
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice4",
+        "request_id": "num-4d14b4f1ae324ee0940fac35de0f1f4e",
+        "logprobs": [
+          -3.5308268070220947,
+          -7.280826568603516,
+          -9.530826568603516,
+          -0.03082679770886898
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-choice8",
+        "request_id": "num-005403e96efa468f9cf82440243d7e4e",
+        "logprobs": [
+          -4.550429821014404,
+          -7.675429821014404,
+          -11.675429344177246,
+          -3.3004298210144043,
+          -9.050429344177246,
+          -7.300429821014404,
+          -7.800429821014404,
+          -0.050429776310920715
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 64,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text3-ambiguous4",
+        "request_id": "num-d099a4e0799641b2b279242a26447acc",
+        "logprobs": [
+          -0.819594144821167,
+          -0.944594144821167,
+          -3.694594144821167,
+          -1.944594144821167
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-boolean",
+        "request_id": "num-46f2e87d7e424e7f874d338688262ca0",
+        "logprobs": [
+          -0.0348835289478302,
+          -3.409883499145508
+        ],
+        "prompt_tokens": 89,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice4",
+        "request_id": "num-4a9c591d29b24e1b8dfe3e4c3fa40075",
+        "logprobs": [
+          -0.11301284283399582,
+          -9.36301326751709,
+          -12.23801326751709,
+          -2.2380127906799316
+        ],
+        "prompt_tokens": 100,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-choice8",
+        "request_id": "num-310e33e4a7c54c12b3927233cfa90ead",
+        "logprobs": [
+          -0.030081307515501976,
+          -9.405081748962402,
+          -12.280081748962402,
+          -5.655081272125244,
+          -9.530081748962402,
+          -9.405081748962402,
+          -11.155081748962402,
+          -3.655081272125244
+        ],
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "cached_tokens": 64,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text4-ambiguous4",
+        "request_id": "num-27e6c66feb6d40b88f6277b2fe38604e",
+        "logprobs": [
+          -2.6222872734069824,
+          -1.1222872734069824,
+          -2.7472872734069824,
+          -0.6222872734069824
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-boolean",
+        "request_id": "num-c60365381a8d4cb39c6741a206ddc6ec",
+        "logprobs": [
+          -0.11848320811986923,
+          -2.243483304977417
+        ],
+        "prompt_tokens": 86,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice4",
+        "request_id": "num-20fe3abe438b4ba3bf05a5f4ad85f51d",
+        "logprobs": [
+          -1.910800576210022,
+          -7.660800457000732,
+          -9.91080093383789,
+          -0.16080059111118317
+        ],
+        "prompt_tokens": 97,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-choice8",
+        "request_id": "num-dede40e155fe4195bcde993175b3cdff",
+        "logprobs": [
+          -1.1490098237991333,
+          -7.149009704589844,
+          -10.024009704589844,
+          -0.7740098237991333,
+          -6.649009704589844,
+          -6.399009704589844,
+          -8.524009704589844,
+          -1.5240098237991333
+        ],
+        "prompt_tokens": 116,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text5-ambiguous4",
+        "request_id": "num-33e8f86725c14492997b946a99d6525e",
+        "logprobs": [
+          -2.4439303874969482,
+          -1.6939303874969482,
+          -2.4439303874969482,
+          -0.443930447101593
+        ],
+        "prompt_tokens": 112,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-boolean",
+        "request_id": "num-873b0b0c3f4d4cd9bd0d8d2f45ff0f98",
+        "logprobs": [
+          -0.06956445425748825,
+          -2.8195643424987793
+        ],
+        "prompt_tokens": 87,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice4",
+        "request_id": "num-a91d41ad2f7e4c4a8c600b83bed935d4",
+        "logprobs": [
+          -4.340210914611816,
+          -7.465210914611816,
+          -1.7152109146118164,
+          -0.21521097421646118
+        ],
+        "prompt_tokens": 98,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-choice8",
+        "request_id": "num-eea6d75dc9e64818b93371d05b971f53",
+        "logprobs": [
+          -4.15278434753418,
+          -7.02778434753418,
+          -7.65278434753418,
+          -4.77778434753418,
+          -7.40278434753418,
+          -7.02778434753418,
+          -7.90278434753418,
+          -0.027784455567598343
+        ],
+        "prompt_tokens": 117,
+        "completion_tokens": 1,
+        "cached_tokens": 64,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text6-ambiguous4",
+        "request_id": "num-e2ad34d1813f44f89eeb50ee6faa04af",
+        "logprobs": [
+          -1.2957106828689575,
+          -1.5457106828689575,
+          -2.795710563659668,
+          -0.7957106828689575
+        ],
+        "prompt_tokens": 113,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-boolean",
+        "request_id": "num-a8d2c22a436b4154824337b68d7a9403",
+        "logprobs": [
+          -0.12963378429412842,
+          -2.129633903503418
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 32,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice4",
+        "request_id": "num-3dee978adb1d480da5312b404afc0143",
+        "logprobs": [
+          -1.2242257595062256,
+          -7.349225997924805,
+          -9.849225997924805,
+          -0.34922581911087036
+        ],
+        "prompt_tokens": 96,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-choice8",
+        "request_id": "num-9810684de0dc4699b01225a3d725ebd3",
+        "logprobs": [
+          -0.8211982250213623,
+          -7.196198463439941,
+          -10.446198463439941,
+          -2.8211982250213623,
+          -7.696198463439941,
+          -7.446198463439941,
+          -8.571198463439941,
+          -0.6961982250213623
+        ],
+        "prompt_tokens": 115,
+        "completion_tokens": 1,
+        "cached_tokens": 48,
+        "raw_logprobs": true
+      },
+      {
+        "id": "text7-ambiguous4",
+        "request_id": "num-af604e1d80e949b4b3c6545be1ecfc6c",
+        "logprobs": [
+          -0.7555631995201111,
+          -1.7555632591247559,
+          -3.380563259124756,
+          -1.1305632591247559
+        ],
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "raw_logprobs": true
+      }
+    ]
+  },
+  "cache_resets": [
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    },
+    {
+      "status": 200,
+      "body": "{\"success\":true}"
+    }
+  ],
+  "concurrency": 4,
+  "complete": true,
+  "profile": {
+    "worker_id": "8e63232fd8854baa9b0bdcdcb7b0237b",
+    "model": {
+      "id": "Qwen/Qwen3-0.6B",
+      "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+      "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+      "tokenizer_implementation_digest": "sha256:871466a28ca69fc737e5e467f409dc3297222733de577a261748b596c288d2d6",
+      "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "deployment": null,
+    "auth_policy": "2ae9db5de4c3424e2652d3fe91c11da830e885b810290d836af73b6d7ed43ea8",
+    "control_healthy": true,
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/Qwen3-0.6B",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16"
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "chat_template_source": "host",
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 300.0,
+        "timeout_seconds": 10.0,
+        "max_age_seconds": 900.0
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 0.8822898520156741,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "Qwen/Qwen3-0.6B",
+    "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+    "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+    "tokenizer_implementation_digest": "sha256:871466a28ca69fc737e5e467f409dc3297222733de577a261748b596c288d2d6",
+    "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "finished_at": 1790550432.7528024
+}

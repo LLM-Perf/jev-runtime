@@ -1,0 +1,77 @@
+import hashlib, json, os, socket, subprocess, sys, tarfile, time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime'); COMMIT='877f319cf03932193db362a9475bd6a5aebc723d'
+source=ROOT/'numerical-sources'/COMMIT
+source.mkdir(parents=True,exist_ok=False)
+archive=ROOT/'numerical-source-877f319.tar.gz'
+assert hashlib.sha256(archive.read_bytes()).hexdigest()=='833ac182d999edb4356310a3235600df8799d895bc33aba4e5f0ca2c31828f22'
+with tarfile.open(archive) as tar:tar.extractall(source,filter='data')
+sys.path[:0]=[str(source),str(source/'src'),str(source/'packages/vllm/src'),str(source/'packages/sglang/src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import wait_ready,cleanup,group_members,topology,postcheck
+report={'source_commit':COMMIT,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'started_at':time.time(),'attempts':[]}
+out=ROOT/'numerical-campaign-877f319.json';assert not out.exists()
+def read(p):return json.loads(p.read_text())
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+def invoke(command,env,log,timeout):
+ with log.open('x') as f:
+  p=subprocess.Popen(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
+  identity=process_identity(p.pid);entry={'command':command,'identity':identity,'started_at':time.time(),'log':str(log)}
+  attempt['children'].append(entry);save()
+  try:entry['returncode']=p.wait(timeout=timeout)
+  except subprocess.TimeoutExpired:
+   import signal
+   assert process_identity(p.pid)==identity;os.killpg(p.pid,signal.SIGTERM)
+   try:p.wait(timeout=20)
+   except subprocess.TimeoutExpired:
+    assert process_identity(p.pid)==identity;os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=10)
+   entry['returncode']=p.returncode;entry['timeout']=True
+   raise
+  finally:entry['finished_at']=time.time();entry['remaining_group']=group_members(p.pid);save()
+  assert not entry['remaining_group'];return entry['returncode']
+try:
+ for engine in ['vllm','sglang']:
+  assert int(get_gpu(7)['free_mib'])>=11900
+  for p in (ROOT/'runs').rglob('process.json'):
+   i=read(p)['identity'];assert process_identity(i['pid'])!=i,('previous owned engine remains',str(p))
+  run=ROOT/'runs'/f'numerical-{engine}-877f319';run.mkdir(exist_ok=False)
+  attempt={'engine':engine,'run_dir':str(run),'started_at':time.time(),'children':[]};report['attempts'].append(attempt);save();record=None
+  ep=ROOT/'envs'/engine/'bin/python'
+  env={k:v for k,v in os.environ.items() if not k.startswith(('PYTHON','PIP_'))}
+  env.update(PYTHONPATH=':'.join(map(str,[source,source/'src',source/'packages/vllm/src',source/'packages/sglang/src'])),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',VLLM_SERVER_DEV_MODE='1')
+  health=run/'health-settings.json';health.write_text(json.dumps({'interval_seconds':300,'timeout_seconds':10,'max_age_seconds':900}))
+  try:
+   audit="import pathlib,hashlib,json,jev_runtime,jev_"+engine+"; packages=[jev_runtime,jev_"+engine+"]; print(json.dumps({m.__name__:{'path':m.__file__,'files':{str(f.relative_to(pathlib.Path(m.__file__).parent)):hashlib.sha256(f.read_bytes()).hexdigest() for f in pathlib.Path(m.__file__).parent.rglob('*.py')}} for m in packages}))"
+   attempt['imports']=json.loads(subprocess.check_output([str(ep),'-c',audit],env=env,cwd=source,text=True));assert all(COMMIT in v['path'] for v in attempt['imports'].values())
+   port=18795 if engine=='vllm' else 18794
+   command=[str(ep),str(source/'deployment/dsw_service.py'),'launch','--run-dir',str(run),'--engine',engine,'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--tokenizer-path',str(ROOT/'tokenizers'/f'Qwen3-0.6B-preserved-{engine}-cdd0caf'),'--gpus','7','--port',str(port),'--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072','--health-config',str(health)]
+   attempt['launch_command']=command;save()
+   with (run/'launch.log').open('x') as f:subprocess.run(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=60)
+   record=read(run/'process.json');keys=read(run/'keys.json');attempt['ready']=wait_ready(record,keys['api'],300);attempt['topology']=topology(run,record);save()
+   command=[str(ep),'-m','tests.integration.numerical_suite','collect','--run-dir',str(run),'--output',str(run/'engine-scores.json')]
+   status=invoke(command,env,run/'collect.log',180);assert status==0,('collection failed',status)
+   collected=read(run/'engine-scores.json');assert collected['complete'];assert len(collected['cases'])==32
+   attempt['collected_cases']=len(collected['cases']);attempt['collection_seconds']=collected['finished_at']-collected['started_at'];assert attempt['collection_seconds']<280
+   attempt['postcheck']=postcheck(run,record,keys['admin'],COMMIT)
+  except BaseException as exc:
+   attempt['failure']={'type':type(exc).__name__,'message':str(exc)}
+  finally:
+   if record is None and (run/'process.json').exists():record=read(run/'process.json')
+   if record is not None:attempt['cleanup']=cleanup(run,record)
+   save()
+  if 'failure' not in attempt:
+   assert attempt['cleanup']['passed'];assert int(get_gpu(7)['free_mib'])>=11900
+   for attention in ['eager','sdpa']:
+    reference=run/f'reference-{attention}.json'
+    command=[str(ep),'-m','tests.integration.numerical_suite','reference','--engine-report',str(run/'engine-scores.json'),'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--attention',attention,'--output',str(reference)]
+    status=invoke(command,{**env,'CUDA_VISIBLE_DEVICES':'7'},run/f'reference-{attention}.log',180);assert status==0,('reference failed',engine,attention,status)
+    command=[str(ep),'-m','tests.integration.numerical_suite','compare','--engine-report',str(run/'engine-scores.json'),'--reference-report',str(reference),'--output',str(run/f'comparison-{attention}.json')]
+    status=invoke(command,env,run/f'comparison-{attention}.log',30);assert status in (0,1)
+    comparison=read(run/f'comparison-{attention}.json');assert status==int(not comparison['all_comparisons_passed'])
+    attempt[attention]={k:v for k,v in comparison.items() if k not in ('rows','state_differences')}
+    attempt['gpu_after_'+attention]=get_gpu(7);assert int(attempt['gpu_after_'+attention]['free_mib'])>=11900;save()
+   attempt['diagnostic_execution_complete']=True
+  attempt['finished_at']=time.time();save();print(json.dumps(attempt),flush=True)
+ report['complete']=True;report['diagnostic_execution_complete']=all(a.get('diagnostic_execution_complete') for a in report['attempts'])
+finally:report['finished_at']=time.time();save()
+raise SystemExit(0 if report.get('diagnostic_execution_complete') else 1)

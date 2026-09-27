@@ -1,0 +1,184 @@
+{
+  "source_commit": "877f319cf03932193db362a9475bd6a5aebc723d",
+  "script_sha256": "55c5618257ebe63dffa60ab747bf8ee3daa60c9f880da42c7b7b8ee1fa72863b",
+  "initial_campaign_sha256": "133518f93cfc972d16e40ca9536fe67d3376b21885d2c17a27f1c3189b9a89a9",
+  "started_at": 1790550585.4574594,
+  "children": [
+    {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "tests.integration.numerical_suite",
+        "reference",
+        "--engine-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/engine-scores.json",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen3-0.6B",
+        "--attention",
+        "eager",
+        "--output",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/reference-eager.json"
+      ],
+      "identity": {
+        "pid": 2717960,
+        "start_ticks": "430612513",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "log": "/root/jev-runtime/runs/numerical-sglang-877f319/reference-eager.log",
+      "started_at": 1790550585.7983425,
+      "returncode": 0,
+      "finished_at": 1790550595.939118,
+      "remaining_group": []
+    },
+    {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "tests.integration.numerical_suite",
+        "compare",
+        "--engine-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/engine-scores.json",
+        "--reference-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/reference-eager.json",
+        "--output",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-eager.json"
+      ],
+      "identity": {
+        "pid": 2718102,
+        "start_ticks": "430613530",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "log": "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-eager.log",
+      "started_at": 1790550595.9723687,
+      "returncode": 1,
+      "finished_at": 1790550596.2868114,
+      "remaining_group": []
+    },
+    {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "tests.integration.numerical_suite",
+        "reference",
+        "--engine-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/engine-scores.json",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen3-0.6B",
+        "--attention",
+        "sdpa",
+        "--output",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/reference-sdpa.json"
+      ],
+      "identity": {
+        "pid": 2718104,
+        "start_ticks": "430613574",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "log": "/root/jev-runtime/runs/numerical-sglang-877f319/reference-sdpa.log",
+      "started_at": 1790550596.4098027,
+      "returncode": 0,
+      "finished_at": 1790550608.0040486,
+      "remaining_group": []
+    },
+    {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "tests.integration.numerical_suite",
+        "compare",
+        "--engine-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/engine-scores.json",
+        "--reference-report",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/reference-sdpa.json",
+        "--output",
+        "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-sdpa.json"
+      ],
+      "identity": {
+        "pid": 2718247,
+        "start_ticks": "430614737",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "log": "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-sdpa.log",
+      "started_at": 1790550608.038485,
+      "returncode": 1,
+      "finished_at": 1790550608.3531349,
+      "remaining_group": []
+    }
+  ],
+  "environments": {
+    "vllm": {
+      "versions": {
+        "vllm": "0.30.0+cu129",
+        "torch": "2.13.0+cu129",
+        "transformers": "5.17.0",
+        "tokenizers": "0.23.2"
+      },
+      "paths": {
+        "jev_runtime": "/root/jev-runtime/numerical-sources/877f319cf03932193db362a9475bd6a5aebc723d/src/jev_runtime/__init__.py",
+        "jev_vllm": "/root/jev-runtime/numerical-sources/877f319cf03932193db362a9475bd6a5aebc723d/packages/vllm/src/jev_vllm/__init__.py"
+      }
+    },
+    "sglang": {
+      "versions": {
+        "sglang": "0.5.19",
+        "torch": "2.13.0+cu129",
+        "transformers": "5.12.1",
+        "tokenizers": "0.22.2"
+      },
+      "paths": {
+        "jev_runtime": "/root/jev-runtime/numerical-sources/877f319cf03932193db362a9475bd6a5aebc723d/src/jev_runtime/__init__.py",
+        "jev_sglang": "/root/jev-runtime/numerical-sources/877f319cf03932193db362a9475bd6a5aebc723d/packages/sglang/src/jev_sglang/__init__.py"
+      }
+    }
+  },
+  "live_postcheck_profiles": {
+    "vllm": {
+      "profile_sha256": "0117bf5e5ff7ee24c1c2b87f1e172ebdbad475950fda645c114562db89e0b56f",
+      "zero_admission": true,
+      "all_bundles_healthy": true,
+      "final_registry_blockers": {}
+    },
+    "sglang": {
+      "profile_sha256": "621a4a4a88b5bbc54d629ec825a38f235bcfade81e4ed5e4c446b74606085bd2",
+      "zero_admission": true,
+      "all_bundles_healthy": true,
+      "final_registry_blockers": {}
+    }
+  },
+  "complete": true,
+  "eager": {
+    "scope": "Synthetic multi-input development diagnostics; not release certification",
+    "atol": 0.15,
+    "case_count": 32,
+    "comparisons": 96,
+    "passed_comparisons": 25,
+    "near_tie_cases": 6,
+    "max_absolute_logprob_error": 0.7561988830566406,
+    "max_absolute_conditional_probability_error": 0.18207576939652864,
+    "top_label_mismatches": 7,
+    "all_comparisons_passed": false,
+    "full_release_gate_passed": false
+  },
+  "sdpa": {
+    "scope": "Synthetic multi-input development diagnostics; not release certification",
+    "atol": 0.15,
+    "case_count": 32,
+    "comparisons": 96,
+    "passed_comparisons": 30,
+    "near_tie_cases": 6,
+    "max_absolute_logprob_error": 0.707005500793457,
+    "max_absolute_conditional_probability_error": 0.08688200329906004,
+    "top_label_mismatches": 8,
+    "all_comparisons_passed": false,
+    "full_release_gate_passed": false
+  },
+  "gpu7": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "finished_at": 1790550608.4841619
+}

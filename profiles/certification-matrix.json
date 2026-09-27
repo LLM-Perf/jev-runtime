@@ -35,6 +35,14 @@
         "compiler_cases_attempted": 16,
         "profile_manifest_sha256": "af1e4680e4cc6a9bba23843ac332eaeb01175c6c645d3e2421c3ba2072abff06",
         "identity_post_processor_inserted": false
+      },
+      "development_multi_input_numerical": {
+        "source_commit": "877f319cf03932193db362a9475bd6a5aebc723d",
+        "status": "failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/head TP1/API1; reset/repeat/reversed-client-concurrency4; GPU BF16 eager and SDPA references; no full numerical/quality/performance certification",
+        "evidence": "evidence/dsw/numerical-suite-877f319/verified-summary.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -63,6 +71,14 @@
         "compiler_cases_attempted": 16,
         "profile_manifest_sha256": "aeddd3faccdf086d6f3e88ef63a63c6009e5d0e4adbc5e74e60b0a8a9b5ebc1b",
         "identity_post_processor_inserted": false
+      },
+      "development_multi_input_numerical": {
+        "source_commit": "877f319cf03932193db362a9475bd6a5aebc723d",
+        "status": "failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/head TP1/API1; reset/repeat/reversed-client-concurrency4; GPU BF16 eager and SDPA references; no full numerical/quality/performance certification",
+        "evidence": "evidence/dsw/numerical-suite-877f319/verified-summary.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {

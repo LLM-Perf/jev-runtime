@@ -1,0 +1,45 @@
+import hashlib,json,os,subprocess,sys,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');COMMIT='877f319cf03932193db362a9475bd6a5aebc723d';source=ROOT/'numerical-sources'/COMMIT
+sys.path[:0]=[str(source),str(source/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import group_members
+from jev_runtime.registry_backup import connect,blockers
+from contextlib import closing
+def read(p):return json.loads(p.read_text())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+prior=ROOT/'numerical-campaign-877f319.json';campaign=read(prior);assert campaign['complete'] and not campaign['diagnostic_execution_complete']
+assert len(campaign['attempts'])==2
+out=ROOT/'numerical-finish-877f319.json';assert not out.exists()
+report={'source_commit':COMMIT,'script_sha256':sha(Path(__file__)),'initial_campaign_sha256':sha(prior),'started_at':time.time(),'children':[],'environments':{},'live_postcheck_profiles':{},'complete':False}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+save()
+env={k:v for k,v in os.environ.items() if not k.startswith(('PYTHON','PIP_'))}
+env.update(PYTHONPATH=':'.join(map(str,[source,source/'src',source/'packages/vllm/src',source/'packages/sglang/src'])),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',CUDA_VISIBLE_DEVICES='7')
+try:
+ for a in campaign['attempts']:
+  engine=a['engine'];run=Path(a['run_dir']);assert a['cleanup']['passed'];i=a['cleanup']['process_record']['identity'];assert process_identity(i['pid'])!=i and not group_members(i['pid'])
+  profile=read(run/'profile.json');assert all(profile['admission'][k]==0 for k in ['requests','expanded_tokens','expanded_branches','queued_requests']);assert all(v['ready'] and v['prepared'] for v in profile['health']['bundles'].values())
+  with closing(connect(run/'registry.db')) as db:assert not blockers(db)
+  report['live_postcheck_profiles'][engine]={'profile_sha256':sha(run/'profile.json'),'zero_admission':True,'all_bundles_healthy':True,'final_registry_blockers':{}}
+  ep=ROOT/'envs'/engine/'bin/python'
+  code="import importlib.metadata as m,importlib,json; print(json.dumps({'versions':{n:m.version(n) for n in ['"+engine+"','torch','transformers','tokenizers']},'paths':{n:importlib.import_module(n).__file__ for n in ['jev_runtime','jev_"+engine+"']}}))"
+  report['environments'][engine]=json.loads(subprocess.check_output([str(ep),'-c',code],env=env,cwd=source,text=True));assert all(COMMIT in p for p in report['environments'][engine]['paths'].values());save()
+ a=campaign['attempts'][1];assert a['engine']=='sglang' and a['failure']['type']=='PackageNotFoundError';run=Path(a['run_dir']);ep=ROOT/'envs/sglang/bin/python'
+ for attention in ['eager','sdpa']:
+  assert int(get_gpu(7)['free_mib'])>=11900
+  reference=run/f'reference-{attention}.json'
+  commands=[([str(ep),'-m','tests.integration.numerical_suite','reference','--engine-report',str(run/'engine-scores.json'),'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--attention',attention,'--output',str(reference)],run/f'reference-{attention}.log',0),([str(ep),'-m','tests.integration.numerical_suite','compare','--engine-report',str(run/'engine-scores.json'),'--reference-report',str(reference),'--output',str(run/f'comparison-{attention}.json')],run/f'comparison-{attention}.log',None)]
+  for command,log,expected in commands:
+   with log.open('x') as f:
+    p=subprocess.Popen(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,start_new_session=True);entry={'command':command,'identity':process_identity(p.pid),'log':str(log),'started_at':time.time()};report['children'].append(entry);save()
+    try:entry['returncode']=p.wait(timeout=180)
+    except subprocess.TimeoutExpired:
+     import signal
+     assert process_identity(p.pid)==entry['identity'];os.killpg(p.pid,signal.SIGTERM);p.wait(timeout=20);entry['returncode']=p.returncode;raise
+    finally:entry['finished_at']=time.time();entry['remaining_group']=group_members(p.pid);save()
+    assert not entry['remaining_group'];assert entry['returncode']==expected if expected is not None else entry['returncode'] in (0,1)
+  result=read(run/f'comparison-{attention}.json');report[attention]={k:v for k,v in result.items() if k not in ['rows','state_differences']};save()
+ report['gpu7']=get_gpu(7);assert int(report['gpu7']['free_mib'])==11990;report['complete']=True
+finally:report['finished_at']=time.time();save()
+print(json.dumps({k:v for k,v in report.items() if k in ('complete','eager','sdpa','gpu7')},indent=2))

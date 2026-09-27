@@ -322,7 +322,10 @@
         "docs/numerical-reference-diagnostics.md",
         "evidence/dsw/reference-diagnostics-5730449.json",
         "docs/glm-r1-model-validation.md",
-        "evidence/dsw/glm-r1-validation-c48f18d.json"
+        "evidence/dsw/glm-r1-validation-c48f18d.json",
+        "tests/integration/numerical_suite.py",
+        "docs/numerical-suite.md",
+        "evidence/dsw/numerical-suite-877f319/verified-summary.json"
       ],
       "progress_notes": [
         "Reference tooling exists; frozen BF16 tolerance failures remain unresolved.",
@@ -332,7 +335,8 @@
         "Qwen3-8B/OLMo-2 BF16 TP4 CPU single-position checks at runtime f6bda1a: Qwen/vLLM fails 0.25 > 0.15; Qwen/SGLang passes 0.125 and both OLMo positions pass ~0.062. Full numerical budgets remain open; identical per-model input/label IDs permit a limited cross-engine diagnostic, not accuracy certification.",
         "Mistral7B BF16 TP4 one-position CPU checks pass at unchanged 0.15 development tolerance (SGLang 0.148433685, vLLM 0.093746185) with top-label agreement. This is not a completed per-profile numerical budget; prior Qwen/Phi failures remain.",
         "At 5730449, a bounded CUDA reference helper passes 24 resident/offload full-logit equalities in both engine Python environments. Eighteen new matched reference profiles on two saved Qwen/R1 inputs produce nine passes and nine failures at unchanged atol=0.15. Attention/device affects the comparison; GPU SDPA does not resolve SGLang Qwen FP32-head error (0.289116). Original CPU eager failures remain, and full held-out dtype/TP budgets, near ties and cache/batch-state validation remain incomplete.",
-        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete."
+        "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete.",
+        "At 877f319, a frozen 32-case synthetic English/Chinese corpus completes reset-serial, repeat-serial and reversed concurrent scoring on Qwen3-0.6B with both engines: 192 responses, 128 independent GPU reference forwards and 384 comparisons. At unchanged atol=0.15 plus argmax agreement, vLLM passes 22/96 eager and 33/96 SDPA; SGLang passes 25/96 and 30/96. Within-engine repeat/concurrency argmax changes are 1/4 cases for vLLM and 1/2 for SGLang, all near ties. The SGLang orchestration metadata-environment failure is retained; a separate completion uses the original saved scoring data. All 171 recorded owned groups are terminal, seven model files and both tokenizer profiles verify, and 420 local tests pass. This diagnoses numerical instability; numerical status remains failed and no release/quality/performance gate or model denominator changes."
       ],
       "acceptance_complete": false
     },
@@ -499,7 +503,10 @@
         "evidence/dsw/release-packaging-4e49524/verified-summary.json",
         "docs/preserve-fast-tokenizers.md",
         "docs/preserve-fast-validation.md",
-        "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json"
+        "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json",
+        "tests/integration/numerical_suite.py",
+        "docs/numerical-suite.md",
+        "evidence/dsw/numerical-suite-877f319/verified-summary.json"
       ],
       "progress_notes": [
         "10/40 engine/checkpoint functional combinations have development GPU evidence (5/20 per engine).",
@@ -513,7 +520,8 @@
         "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change.",
         "At c48f18d, an explicit verified GLM4 tiktoken-to-fast profile extends both native engines to pinned GLM-4-9B; R1-Distill-Qwen-7B also passes both engines at runtime 3377c95/harness d1ef50e. Functional coverage reaches 24/40 (12/20 per engine), each new row with 1,000 switches and checkpoint-faithful saved input IDs. R1 vLLM single-position CPU reference passes (0.124721), R1 SGLang fails (0.187206), and official GLM CPU references fail (0.875/0.625). Original loader/prototype failures are retained. All four groups exited; 30 input files rehashed; 307 local tests and three wheel builds passed. Release gates remain incomplete.",
         "Installed-wheel rollout requalifies Smol functional serving on both engines with its explicit checkpoint-preserving tokenizer. Coverage stays 24/40 (12/20 each). Historical numerical/development results retain their original profiles; the new profile has numerical/quality/performance/LoRA not run. Default AutoTokenizer mismatch is preserved.",
-        "At cdd0caf, the product preserve-fast CLI binds serialized tokenizer pipelines, exact identity postprocessing, templates and file hashes; interrupted publication is rejected. Eleven eligible checkpoints pass in each engine environment (22,110 independent encodings, 348/352 compiler cases; Phi-3 joint K=64 remains unsupported). GLM4 format rejection and eight absent checkpoints per environment remain visible. CLI-generated Smol profiles pass native 1,000-switch suites on both engines (479/537 strict traffic requests) and one CPU reference position each (0.000211239/0.086620569 at unchanged atol=0.15). Initial strict-representation and missing-build-backend failures are retained. All 110 owned records are terminal and selected GPU memory returned to baseline; 332 local tests and three source-matched wheels pass. Coverage remains 24/40 with separate quality/performance/soak gates outstanding."
+        "At cdd0caf, the product preserve-fast CLI binds serialized tokenizer pipelines, exact identity postprocessing, templates and file hashes; interrupted publication is rejected. Eleven eligible checkpoints pass in each engine environment (22,110 independent encodings, 348/352 compiler cases; Phi-3 joint K=64 remains unsupported). GLM4 format rejection and eight absent checkpoints per environment remain visible. CLI-generated Smol profiles pass native 1,000-switch suites on both engines (479/537 strict traffic requests) and one CPU reference position each (0.000211239/0.086620569 at unchanged atol=0.15). Initial strict-representation and missing-build-backend failures are retained. All 110 owned records are terminal and selected GPU memory returned to baseline; 332 local tests and three source-matched wheels pass. Coverage remains 24/40 with separate quality/performance/soak gates outstanding.",
+        "At 877f319, a frozen 32-case synthetic English/Chinese corpus completes reset-serial, repeat-serial and reversed concurrent scoring on Qwen3-0.6B with both engines: 192 responses, 128 independent GPU reference forwards and 384 comparisons. At unchanged atol=0.15 plus argmax agreement, vLLM passes 22/96 eager and 33/96 SDPA; SGLang passes 25/96 and 30/96. Within-engine repeat/concurrency argmax changes are 1/4 cases for vLLM and 1/2 for SGLang, all near ties. The SGLang orchestration metadata-environment failure is retained; a separate completion uses the original saved scoring data. All 171 recorded owned groups are terminal, seven model files and both tokenizer profiles verify, and 420 local tests pass. This diagnoses numerical instability; numerical status remains failed and no release/quality/performance gate or model denominator changes."
       ],
       "acceptance_complete": false
     },
