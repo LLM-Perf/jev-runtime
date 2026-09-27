@@ -1,0 +1,85 @@
+{
+  "checked_at": 1790495616.562378,
+  "processes": [
+    {
+      "run": "vllm-qwen06b",
+      "recorded_identity": {
+        "pid": 2571074,
+        "start_ticks": "424790495",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "sglang-qwen06b",
+      "recorded_identity": {
+        "pid": 2573300,
+        "start_ticks": "424893299",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "sglang-qwen06b-attempt2",
+      "recorded_identity": {
+        "pid": 2573755,
+        "start_ticks": "424911710",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "vllm-smollm17b",
+      "recorded_identity": {
+        "pid": 2574855,
+        "start_ticks": "424935034",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "sglang-smollm17b",
+      "recorded_identity": {
+        "pid": 2576079,
+        "start_ticks": "424960158",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "gateway-sglang-smollm17b",
+      "recorded_identity": {
+        "pid": 2577030,
+        "start_ticks": "425037968",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    },
+    {
+      "run": "gateway-sglang-smollm17b-v2",
+      "recorded_identity": {
+        "pid": 2577346,
+        "start_ticks": "425096756",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "actual_identity": null,
+      "exited": true
+    }
+  ],
+  "all_recorded_processes_exited": true,
+  "gpu_after": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "failed_run_registry_retained_for_diagnostics": true
+}

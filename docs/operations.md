@@ -73,12 +73,18 @@ retains per-question errors; unknown or incomplete engine usage is `null`, not z
 Do not count a partial response as a successful whole request in a load test.
 
 Failed-abort leases require confirming the recorded engine requests have stopped.
-On the same live API process, inspect `/admin/requests/recovery`, then retry aborts
-through `/admin/requests/{request_id}/recover`. A failed retry preserves the lease.
+Inspect `/admin/requests/recovery`, then retry aborts through
+`/admin/requests/{request_id}/recover`. Every engine ID is journaled transactionally
+before dispatch. Recovery survives a new API process using the same local registry.
+An explicitly `abort_pending` request is eligible; an interrupted in-flight request
+requires proof that its original Linux PID/start-tick/boot-ID owner has exited.
+Unverifiable owners and legacy leases without a dispatch journal fail closed.
+A changed engine target or failed abort retry preserves the lease.
 The engine abort APIs acknowledge request cancellation; this is not a certified GPU
 LoRA unload barrier. Adapter lifecycle certification still requires separate checks.
-Automatic orphan recovery across a worker crash remains unfinished. Never remove a
-lease merely because it is old. This limitation blocks an unattended production SLA.
+Recovery is an explicit administrative operation, not a time-based lease expiry.
+Unit tests cover cross-instance recovery and fail-closed identity checks; real
+process-kill fault injection is still pending. Unattended recovery is not certified.
 
 ## Health, metrics and evidence
 

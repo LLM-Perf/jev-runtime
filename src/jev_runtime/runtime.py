@@ -45,7 +45,6 @@ class Runtime:
         self._management_lock = asyncio.Lock()
         self._active: dict[str, asyncio.Task] = {}
         self._tenants: dict[str, str] = {}
-        self._unconfirmed_leases: dict[str, tuple[str, set[str]]] = {}
 
     async def start(self) -> None:
         self.capabilities = await self.backend.probe()
@@ -100,6 +99,9 @@ class Runtime:
                     for question in questions:
                         compiled = self.compiler.compile("ready", question, bundle, request_id)
                         self._validate_sequences(compiled.sequences, bundle)
+                        self.registry.record_branches(
+                            lease_id, [seq.request_id for seq in compiled.sequences]
+                        )
                         results = [
                             await self._score(seq, unconfirmed) for seq in compiled.sequences
                         ]
@@ -110,7 +112,7 @@ class Runtime:
                 raise
             finally:
                 if unconfirmed:
-                    self._unconfirmed_leases[request_id] = (lease_id, unconfirmed)
+                    self.registry.mark_abort_pending(lease_id, unconfirmed)
                 else:
                     self.registry.release(lease_id)
                 self._active.pop(request_id, None)
@@ -220,6 +222,9 @@ class Runtime:
                 ]
                 sequences = tuple(s for q in compiled for s in q.sequences)
                 total_tokens = self._validate_sequences(sequences, bundle)
+                self.registry.record_branches(
+                    snapshot.lease_id, [seq.request_id for seq in sequences]
+                )
                 logger.info(
                     "jev_scoring %s",
                     json.dumps(
@@ -299,30 +304,24 @@ class Runtime:
         finally:
             if snapshot is not None:
                 if unconfirmed:
-                    self._unconfirmed_leases[rid] = (snapshot.lease_id, unconfirmed)
+                    self.registry.mark_abort_pending(snapshot.lease_id, unconfirmed)
                 else:
                     self.registry.release(snapshot.lease_id)
             self._active.pop(rid, None)
             self._tenants.pop(rid, None)
 
     async def recover_cancelled(self, request_id: str) -> bool:
-        pending = self._unconfirmed_leases.get(request_id)
-        if pending is None:
+        snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)
+        if snapshot is None:
             return False
-        lease_id, branches = pending
-        for branch in list(branches):
+        for branch in snapshot["engine_request_ids"]:
             async with asyncio.timeout(10):
                 await self.backend.cancel(branch)
-            branches.remove(branch)
-        self.registry.release(lease_id)
-        self._unconfirmed_leases.pop(request_id, None)
+        self.registry.release_recovered(snapshot)
         return True
 
     def pending_cancellations(self) -> list[dict]:
-        return [
-            {"request_id": rid, "lease_id": lease, "engine_request_ids": sorted(branches)}
-            for rid, (lease, branches) in self._unconfirmed_leases.items()
-        ]
+        return self.registry.recovery_candidates()
 
     async def cancel(self, request_id: str, tenant: str = "default") -> bool:
         if self._tenants.get(request_id) != tenant:
@@ -333,6 +332,6 @@ class Runtime:
         if not task.cancelling():
             task.cancel()
         await asyncio.gather(task, return_exceptions=True)
-        if request_id in self._unconfirmed_leases:
+        if any(row["request_id"] == request_id for row in self.registry.recovery_candidates()):
             raise JevError("cancellation_unconfirmed", "Engine abort is not yet confirmed", 503)
         return True

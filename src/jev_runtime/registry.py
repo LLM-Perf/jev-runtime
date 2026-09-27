@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import socket
 import sqlite3
 import time
 import uuid
@@ -51,11 +53,64 @@ class Registry:
                 );
                 CREATE INDEX IF NOT EXISTS leases_by_ref ON leases(ref);
                 CREATE UNIQUE INDEX IF NOT EXISTS unique_active_request ON leases(request_id);
+                CREATE TABLE IF NOT EXISTS owners (
+                    owner TEXT PRIMARY KEY, identity TEXT NOT NULL, created REAL NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS lease_work (
+                    lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
+                    branches TEXT NOT NULL, phase TEXT NOT NULL
+                );
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
                     action TEXT NOT NULL, details TEXT NOT NULL
                 );
             """)
+            db.execute(
+                "INSERT INTO owners VALUES(?,?,?)",
+                (self.owner, json.dumps(self._process_identity()), time.time()),
+            )
+
+    @staticmethod
+    def _process_identity() -> dict:
+        identity = {
+            "host": socket.gethostname(),
+            "pid": os.getpid(),
+            "boot_id": None,
+            "start_ticks": None,
+        }
+        try:
+            identity["boot_id"] = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+            identity["start_ticks"] = (
+                Path(f"/proc/{os.getpid()}/stat").read_text().rsplit(")", 1)[1].split()[19]
+            )
+        except (OSError, IndexError):
+            pass
+        return identity
+
+    @staticmethod
+    def _owner_status(identity: dict) -> str:
+        """Fail closed without a matching host and verifiable Linux process identity."""
+        if (
+            identity.get("host") != socket.gethostname()
+            or not identity.get("boot_id")
+            or not identity.get("start_ticks")
+        ):
+            return "unknown"
+        try:
+            boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+            if boot != identity["boot_id"]:
+                return "dead"
+            try:
+                fields = (
+                    Path(f"/proc/{int(identity['pid'])}/stat").read_text().rsplit(")", 1)[1].split()
+                )
+            except FileNotFoundError:
+                return "dead"
+            if fields[0] == "Z" or fields[19] != identity["start_ticks"]:
+                return "dead"
+            return "alive"
+        except (OSError, ValueError, KeyError, IndexError):
+            return "unknown"
 
     @contextmanager
     def _connection(self) -> Iterator[sqlite3.Connection]:
@@ -121,6 +176,12 @@ class Registry:
             row = self._get(db, reference)
             if row["state"] not in ("VALIDATED", "FAILED", "RETIRED"):
                 raise JevError("invalid_state", f"Cannot prepare a {row['state']} bundle", 409)
+            if db.execute("SELECT 1 FROM leases WHERE ref=?", (reference,)).fetchone():
+                raise JevError(
+                    "bundle_in_use",
+                    "Outstanding inference must be recovered before preparation",
+                    409,
+                )
             db.execute(
                 "UPDATE bundles SET state='PREPARING',backend=?,error=NULL WHERE ref=?",
                 (
@@ -216,6 +277,7 @@ class Registry:
                     time.time(),
                 ),
             )
+            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
             return Snapshot(Bundle.model_validate_json(row["manifest"]), route["generation"], lease)
 
     def release(self, lease_id: str) -> None:
@@ -233,7 +295,104 @@ class Registry:
                 "INSERT INTO leases VALUES(?,?,?,?,?)",
                 (lease, reference, self.owner, request_id, time.time()),
             )
+            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
             return lease
+
+    def record_branches(self, lease_id: str, branches: list[str]) -> None:
+        """Persist engine IDs before dispatch, including canaries and queued work."""
+        with self._transaction() as db:
+            row = db.execute(
+                "SELECT w.* FROM lease_work w JOIN leases l ON l.id=w.lease_id "
+                "WHERE l.id=? AND l.owner=?",
+                (lease_id, self.owner),
+            ).fetchone()
+            if not row or row["phase"] != "inflight":
+                raise JevError("lease_not_owned", "Cannot dispatch against an unowned lease", 409)
+            combined = sorted(set(json.loads(row["branches"])) | set(branches))
+            db.execute(
+                "UPDATE lease_work SET branches=? WHERE lease_id=?",
+                (json.dumps(combined), lease_id),
+            )
+
+    def mark_abort_pending(self, lease_id: str, branches: set[str]) -> None:
+        with self._transaction() as db:
+            if not db.execute(
+                "SELECT 1 FROM leases WHERE id=? AND owner=?", (lease_id, self.owner)
+            ).fetchone():
+                raise JevError("lease_not_owned", "Cannot mark an unowned lease", 409)
+            db.execute(
+                "UPDATE lease_work SET branches=?,phase='abort_pending' WHERE lease_id=?",
+                (json.dumps(sorted(branches)), lease_id),
+            )
+            self._event(db, "abort_pending", lease_id=lease_id, engine_request_ids=sorted(branches))
+
+    def recovery_candidates(self) -> list[dict]:
+        with self._connection() as db:
+            rows = db.execute(
+                "SELECT l.*,w.branches,w.phase,o.identity,b.backend FROM leases l "
+                "LEFT JOIN lease_work w ON w.lease_id=l.id "
+                "LEFT JOIN owners o ON o.owner=l.owner "
+                "JOIN bundles b ON b.ref=l.ref"
+            ).fetchall()
+        result = []
+        for row in rows:
+            owner_status = (
+                self._owner_status(json.loads(row["identity"])) if row["identity"] else "unknown"
+            )
+            result.append(
+                {
+                    "lease_id": row["id"],
+                    "request_id": row["request_id"],
+                    "owner": row["owner"],
+                    "owner_status": owner_status,
+                    "phase": row["phase"],
+                    "backend": row["backend"],
+                    "reference": row["ref"],
+                    "engine_request_ids": json.loads(row["branches"] or "[]"),
+                    "recoverable": row["phase"] == "abort_pending"
+                    or (row["phase"] == "inflight" and owner_status == "dead"),
+                }
+            )
+        return result
+
+    def recovery_snapshot(self, request_id: str, backend: str) -> dict | None:
+        row = next((r for r in self.recovery_candidates() if r["request_id"] == request_id), None)
+        if row is None:
+            return None
+        if row["backend"] != backend:
+            raise JevError(
+                "recovery_backend_mismatch", "Recovery requires the original engine target", 409
+            )
+        if not row["recoverable"]:
+            raise JevError(
+                "recovery_not_confirmed",
+                "Owner is alive, unverifiable, or lacks a dispatch journal",
+                409,
+            )
+        return row
+
+    def release_recovered(self, snapshot: dict) -> None:
+        with self._transaction() as db:
+            row = db.execute(
+                "SELECT l.*,w.phase,w.branches FROM leases l JOIN lease_work w ON w.lease_id=l.id "
+                "WHERE l.id=?",
+                (snapshot["lease_id"],),
+            ).fetchone()
+            if row is None:
+                return
+            if (
+                row["owner"] != snapshot["owner"]
+                or row["phase"] != snapshot["phase"]
+                or json.loads(row["branches"]) != snapshot["engine_request_ids"]
+            ):
+                raise JevError("recovery_conflict", "Lease changed during recovery", 409)
+            db.execute("DELETE FROM leases WHERE id=?", (row["id"],))
+            db.execute(
+                "UPDATE bundles SET state='FAILED',error='preparation owner exited' "
+                "WHERE ref=? AND state='PREPARING'",
+                (row["ref"],),
+            )
+            self._event(db, "recovered", lease_id=row["id"], request_id=row["request_id"])
 
     def retire(self, reference: str) -> dict:
         with self._transaction() as db:

@@ -53,3 +53,18 @@ status is in `profiles/certification-matrix.json`; functional coverage is 2/20 p
 engine, numerical reference failures are retained, and the release gate is false.
 
 The test runner reads credentials locally; they are never written into evidence.
+
+`gateway-sglang-smollm17b-cancel-failure.json` preserves a real standalone gateway
+failure at `790448e`: repeated parent cancellation interrupted abort HTTP requests,
+returned `cancellation_unconfirmed` and correctly retained a conservative lease.
+`gateway-sglang-smollm17b-v2.json` retests the same scenario at `453ebf2` after
+bounded cleanup ownership was fixed. It passed Python SDK inference, explicit
+cancellation of a 16-question request (HTTP 499 and no remaining gateway lease),
+subsequent inference, gateway alias disable/native-chat coexistence and rollback.
+These checks do not certify automatic orphan recovery across process crashes or
+GPU adapter unload barriers. The initial failure remains part of the evidence.
+
+`cleanup-20260927.json` confirms all seven recorded task processes exited after
+testing. GPU 7 returned to 11,990 MiB free, matching the inspected pre-test state.
+Failed-run registries remain on DSW for diagnostics; their historical conservative
+leases were not silently deleted to make a report appear clean.

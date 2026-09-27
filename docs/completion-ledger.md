@@ -15,12 +15,19 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 44 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 50 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, request/token quotas and cancellation
   ownership. Quotas are per API process; multi-replica quotas remain unfinished.
+- A real standalone SGLang gateway passed Python SDK serving, 16-question request
+  cancellation (499, no retained gateway lease), disable/native-chat coexistence
+  and rollback at `453ebf2`. Its initial repeated-cancellation failure at `790448e`
+  is retained alongside the passing retest.
+- Engine branch IDs are journaled before dispatch. Administrative recovery can
+  operate after a worker restart, with PID/start-tick/boot-ID checks and matching
+  engine identity. Unit tests pass; live crash fault injection remains pending.
 
 ## Required evidence still outstanding
 
@@ -37,7 +44,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Not run | Live job logs, complete coverage and cleanup evidence |
 | LoRA lifecycle | Incomplete | Load/unload adapters, engine identity, draining, cache isolation |
-| SDKs and deployment productization | Incomplete | Installable SDKs, complete CLI, runbooks, image manifests |
+| SDKs and deployment productization | Python and TypeScript SDKs, runbooks and package builds pass | vLLM standalone gateway, deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
 | Multi-replica rollout | Incomplete | Per-replica READY state, shared activation, consistent request versions |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
