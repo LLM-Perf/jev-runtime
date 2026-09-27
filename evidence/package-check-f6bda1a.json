@@ -1,0 +1,30 @@
+{
+  "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "pytest": {
+    "passed": 257,
+    "result": "257 passed in 5.95s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "103 files already formatted at runtime source; 104 after independent live harness commit 5aa59d6",
+  "git_diff_check": "passed",
+  "wheel_builds": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "6c66631ecb1c4d25a1045ed28af8cff4778897b8b8cbbf14f1defd92957ba8fc",
+      "python_files_verified": 27
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "e228601eada2cb8d7ba875c6c825ed7fe72edf7f24871ce6b8a1870af267a12e",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "76d4649e9d456345e35dbc9940b09a3074bd4ff6b4c2306604da865d58118eea",
+      "python_files_verified": 4
+    }
+  ],
+  "typescript_tests_rerun": false,
+  "typescript_unchanged_prior_passing_tests": 62,
+  "qualification": "Local CPU/package checks; GPU reports and hosted CI are separate. Initial full test run failed on an old unbound shared-admission fixture; updated fixture uses configured model identity, without weakening the precision guard."
+}

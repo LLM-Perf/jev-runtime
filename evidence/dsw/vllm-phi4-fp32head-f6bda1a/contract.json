@@ -1,0 +1,569 @@
+{
+  "schema_version": 1,
+  "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "started_at": 1790525219.7076101,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "microsoft/Phi-4-mini-instruct",
+    "revision": "cfbefacb99257ffa30c83adab238a50856ac3083"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "ccdf7c41574b4dab864cd66dbe2562d5"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-35ebc2f88c29464093fbcd65820903e1",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:5b2569e26b529a2f93e855c774b11cb9e4eb89856430718ab4b4e21eca9ba741",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999875368725146,
+            "technical": 9.858607725250128e-06,
+            "other": 2.6045197602486142e-06
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999019671038043,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999616417546571,
+            "false": 3.8358245342921144e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999552745552388,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 7.837399657335327,
+          "probabilities": {
+            "low": 4.468241775982091e-05,
+            "medium": 0.432430703697415,
+            "high": 0.5675246138848251
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999735941157105,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9998500291048419,
+            "engineering": 9.25428327915434e-05,
+            "sales": 5.742806236648549e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9991630519526293,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 300,
+        "engine_prompt_tokens": 300,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 64
+      },
+      "latency_ms": 116.3718644529581
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 6,
+        "total_tokens": 14,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-84469414f3b84007b392455696e95dcb",
+      "status": "completed",
+      "bundle": "cert-c4268c014780@1",
+      "bundle_digest": "sha256:bb05812e2b420f12be6c460176b0da12e7c0a3927f4d01d48d3e94bcd1284f65",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.999988254522701,
+            "technical": 9.308777051787115e-06,
+            "other": 2.4367002471895127e-06
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999027989171411,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999547183643508,
+            "false": 4.528163564934861e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999549271170391,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 7.796736535174189,
+          "probabilities": {
+            "low": 4.407519152364444e-05,
+            "medium": 0.44056454258211497,
+            "high": 0.5593913822263614
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999723332411269,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9998503492806112,
+            "engineering": 9.343213561457107e-05,
+            "sales": 5.621858377427758e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9991522607699178,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 300,
+        "engine_prompt_tokens": 300,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 272
+      },
+      "latency_ms": 86.3957554101944
+    },
+    "independent_candidate": {
+      "request_id": "dec-d863e4553e9d4867a9b948992d0290cf",
+      "status": "completed",
+      "bundle": "cert-c4268c014780@2",
+      "bundle_digest": "sha256:ad4859bb0092c984d35529c48cfc65cf8360bb4b4591ad96bc52fbd302e53377",
+      "generation": 2,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "other",
+          "probabilities": {
+            "billing": 0.43001531825919437,
+            "technical": 0.13235158483722337,
+            "other": 0.4376330969035822
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.967454972942062,
+            "technical": 0.2977665992129972,
+            "other": 0.9845935666603505
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999616417546571,
+            "false": 3.8358245342921144e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999552745552388,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.358321242127517,
+          "probabilities": {
+            "low": 0.2852694337167244,
+            "medium": 0.3577968841410475,
+            "high": 0.356933682142228
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.7917889994823167,
+            "medium": 0.9930949601605404,
+            "high": 0.9906990713403063
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.6053059370080347,
+            "engineering": 0.23626440342785354,
+            "sales": 0.15842965956411165
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.21323826613581384,
+            "engineering": 0.08323164974325896,
+            "sales": 0.05581188593147731
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 767,
+        "engine_prompt_tokens": 767,
+        "engine_completion_tokens": 10,
+        "cached_prompt_tokens": 496
+      },
+      "latency_ms": 177.1580297499895
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 318,
+      "versions_seen": [
+        "cert-c4268c014780@1",
+        "cert-c4268c014780@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/Phi-4-mini-instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "float32"
+  },
+  "serving_profile": {
+    "worker_id": "ccdf7c41574b4dab864cd66dbe2562d5",
+    "model": {
+      "id": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "tokenizer_digest": "sha256:e9d00b022ab7e4c5591463bbc5c1d82476ccaede002db53aec628551c7e88370",
+      "tokenizer_implementation_digest": "sha256:f93a0106dd2d5e79d3430af4d8624453af4d04fae75301704018a208da6b9cbe",
+      "template_digest": "sha256:7329549bd965083583b7be7c26d182fc1208060ec88767cf43cc6ec61478b8ef",
+      "dtype": "bfloat16",
+      "readout_dtype": "float32",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/Phi-4-mini-instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "float32"
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 1.211059489287436,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "microsoft/Phi-4-mini-instruct",
+    "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+    "tokenizer_digest": "sha256:e9d00b022ab7e4c5591463bbc5c1d82476ccaede002db53aec628551c7e88370",
+    "tokenizer_implementation_digest": "sha256:f93a0106dd2d5e79d3430af4d8624453af4d04fae75301704018a208da6b9cbe",
+    "template_digest": "sha256:7329549bd965083583b7be7c26d182fc1208060ec88767cf43cc6ec61478b8ef",
+    "dtype": "bfloat16",
+    "readout_dtype": "float32",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      200022,
+      112737,
+      290,
+      26695,
+      1238,
+      4372,
+      290,
+      5296,
+      13,
+      4833,
+      382,
+      11716,
+      11,
+      625,
+      15543,
+      13,
+      6318,
+      9707,
+      290,
+      17222,
+      6052,
+      4208,
+      13,
+      200020,
+      200021,
+      5927,
+      734,
+      4342,
+      290,
+      122862,
+      9107,
+      9841,
+      364,
+      1186,
+      350,
+      8259,
+      1621,
+      1883,
+      23796,
+      673,
+      19577,
+      18370,
+      326,
+      1481,
+      1299,
+      261,
+      18376,
+      6635,
+      54295,
+      734,
+      32,
+      25,
+      81555,
+      11,
+      14843,
+      11,
+      503,
+      89728,
+      198,
+      33,
+      25,
+      355,
+      11814,
+      20795,
+      306,
+      290,
+      1888,
+      198,
+      34,
+      25,
+      355,
+      2647,
+      10901,
+      198,
+      8191,
+      9707,
+      1001,
+      6052,
+      4208,
+      13,
+      200020,
+      200019
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      -0.00010895135346800089,
+      -11.584650039672852,
+      -12.924962997436523
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790525229.3086216
+}

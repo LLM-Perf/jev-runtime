@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-09-27",
+  "generated_on": "2026-09-28",
   "scope": "development snapshots; not a final release certificate",
   "model_denominator": 20,
   "combination_denominator": 40,
@@ -367,7 +367,22 @@
         "single_position_passed": true,
         "full_gate_passed": false
       },
-      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions."
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
+      "development_readout_precision": {
+        "status": "passed_targeted_functional_binding_and_single_position_reference",
+        "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+        "harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+        "readout_dtype": "float32",
+        "tensor_parallel_size": 2,
+        "evidence": "evidence/dsw/sglang-phi4-fp32head-f6bda1a/precision-binding.json",
+        "functional_evidence": "evidence/dsw/sglang-phi4-fp32head-f6bda1a/contract.json",
+        "reference_evidence": "evidence/dsw/sglang-phi4-fp32head-f6bda1a/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/sglang-phi4-fp32head-f6bda1a/cleanup.json",
+        "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
+        "reference_max_absolute_logprob_error": 0.04965496063232422,
+        "release_gate_passed": false,
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      }
     },
     {
       "model_id": "microsoft/Phi-4-mini-instruct",
@@ -395,7 +410,22 @@
         "single_position_passed": false,
         "full_gate_passed": false
       },
-      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions."
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
+      "development_readout_precision": {
+        "status": "passed_targeted_functional_binding_and_single_position_reference",
+        "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+        "harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+        "readout_dtype": "float32",
+        "tensor_parallel_size": 2,
+        "evidence": "evidence/dsw/vllm-phi4-fp32head-f6bda1a/precision-binding.json",
+        "functional_evidence": "evidence/dsw/vllm-phi4-fp32head-f6bda1a/contract.json",
+        "reference_evidence": "evidence/dsw/vllm-phi4-fp32head-f6bda1a/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/vllm-phi4-fp32head-f6bda1a/cleanup.json",
+        "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
+        "reference_max_absolute_logprob_error": 0.08994007110595703,
+        "release_gate_passed": false,
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      }
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
@@ -532,7 +562,7 @@
       "engine": "sglang",
       "gated": false,
       "functional": "passed",
-      "numerical": "not_run",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
@@ -576,6 +606,13 @@
           "evidence": "evidence/dsw/sglang-health-40b78c2/contract.json",
           "cleanup_evidence": "evidence/dsw/sglang-health-40b78c2/cleanup.json",
           "scope": "BF16 TP1 API1 eager, four types/native parity and 1000 switches after health changes; not other profiles or numerical/quality/performance certification"
+        },
+        {
+          "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+          "status": "passed",
+          "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/contract.json",
+          "cleanup_evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager, new precision binding, four types/native parity and 1000 switches; not LoRA/multiworker/quality/performance recertification"
         }
       ],
       "development_generation_comparison": {
@@ -647,6 +684,29 @@
         "business_quality_evaluated": false,
         "status": "observed_probability_difference_requires_separate_evaluation",
         "release_gate_passed": false
+      },
+      "development_readout_precision": {
+        "status": "passed_targeted_functional_binding_and_single_position_reference",
+        "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+        "harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+        "readout_dtype": "bfloat16",
+        "tensor_parallel_size": 1,
+        "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/precision-binding.json",
+        "functional_evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/contract.json",
+        "reference_evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/cleanup.json",
+        "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
+        "reference_max_absolute_logprob_error": 0.00016123056411743164,
+        "release_gate_passed": false,
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      },
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.00016123056411743164,
+        "single_position_passed": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-smol-bf16head-f6bda1a/reference-cpu.json"
       }
     },
     {
@@ -655,7 +715,7 @@
       "engine": "vllm",
       "gated": false,
       "functional": "passed",
-      "numerical": "not_run",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
@@ -699,6 +759,13 @@
           "evidence": "evidence/dsw/vllm-health-40b78c2/contract.json",
           "cleanup_evidence": "evidence/dsw/vllm-health-40b78c2/cleanup.json",
           "scope": "BF16 TP1 API1 eager, four types/native parity and 1000 switches after health changes; not other profiles or numerical/quality/performance certification"
+        },
+        {
+          "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+          "status": "passed",
+          "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/contract.json",
+          "cleanup_evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager, new precision binding, four types/native parity and 1000 switches; not LoRA/multiworker/quality/performance recertification"
         }
       ],
       "development_generation_comparison": {
@@ -756,6 +823,29 @@
         "validation_evidence": "evidence/dsw/health-validation-40b78c2.json",
         "release_gate_passed": false,
         "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification"
+      },
+      "development_readout_precision": {
+        "status": "passed_targeted_functional_binding_and_single_position_reference",
+        "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+        "harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+        "readout_dtype": "bfloat16",
+        "tensor_parallel_size": 1,
+        "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/precision-binding.json",
+        "functional_evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/contract.json",
+        "reference_evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/cleanup.json",
+        "validation_evidence": "evidence/dsw/precision-validation-f6bda1a.json",
+        "reference_max_absolute_logprob_error": 0.103232741355896,
+        "release_gate_passed": false,
+        "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      },
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.103232741355896,
+        "single_position_passed": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-smol-bf16head-f6bda1a/reference-cpu.json"
       }
     }
   ],

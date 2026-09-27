@@ -1,0 +1,200 @@
+{
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "binding_harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+  "release_gate_passed": false,
+  "distinct_functional_combinations": 10,
+  "combination_denominator": 40,
+  "qualification": "Colocated native base-model functional and precision-binding checks; independent CPU checks cover one saved position per run. No full numerical, quality, performance, managed-LoRA or soak certification.",
+  "profiles": [
+    {
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "model_id": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "readout_dtype": "float32",
+      "tensor_parallel_size": 2,
+      "api_workers": 1,
+      "run": "evidence/dsw/sglang-phi4-fp32head-f6bda1a",
+      "functional_passed": true,
+      "precision_binding_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 182,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.04965496063232422,
+      "reference_cpu_atol": 0.15,
+      "top_label_equal": true,
+      "full_numerical_gate_passed": false,
+      "all_owned_group_members_exited": true,
+      "zero_final_leases_admission": true,
+      "gpus_after": [
+        {
+          "index": "5",
+          "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        }
+      ]
+    },
+    {
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "readout_dtype": "bfloat16",
+      "tensor_parallel_size": 1,
+      "api_workers": 1,
+      "run": "evidence/dsw/sglang-smol-bf16head-f6bda1a",
+      "functional_passed": true,
+      "precision_binding_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 493,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.00016123056411743164,
+      "reference_cpu_atol": 0.15,
+      "top_label_equal": true,
+      "full_numerical_gate_passed": false,
+      "all_owned_group_members_exited": true,
+      "zero_final_leases_admission": true,
+      "gpus_after": [
+        {
+          "index": "7",
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "free_mib": "11990",
+          "used_mib": "69006"
+        }
+      ]
+    },
+    {
+      "engine": "vllm",
+      "engine_version": "0.30.0+cu129",
+      "model_id": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "readout_dtype": "float32",
+      "tensor_parallel_size": 2,
+      "api_workers": 1,
+      "run": "evidence/dsw/vllm-phi4-fp32head-f6bda1a",
+      "functional_passed": true,
+      "precision_binding_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 318,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.08994007110595703,
+      "reference_cpu_atol": 0.15,
+      "top_label_equal": true,
+      "full_numerical_gate_passed": false,
+      "all_owned_group_members_exited": true,
+      "zero_final_leases_admission": true,
+      "gpus_after": [
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "7",
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "free_mib": "11990",
+          "used_mib": "69006"
+        }
+      ]
+    },
+    {
+      "engine": "vllm",
+      "engine_version": "0.30.0+cu129",
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "readout_dtype": "bfloat16",
+      "tensor_parallel_size": 1,
+      "api_workers": 1,
+      "run": "evidence/dsw/vllm-smol-bf16head-f6bda1a",
+      "functional_passed": true,
+      "precision_binding_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 441,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.103232741355896,
+      "reference_cpu_atol": 0.15,
+      "top_label_equal": true,
+      "full_numerical_gate_passed": false,
+      "all_owned_group_members_exited": true,
+      "zero_final_leases_admission": true,
+      "gpus_after": [
+        {
+          "index": "7",
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "free_mib": "11990",
+          "used_mib": "69006"
+        }
+      ]
+    }
+  ],
+  "legacy_digest_checks": [
+    {
+      "evidence": "evidence/dsw/sglang-phi4-tp2-737d814/contract.json",
+      "recorded_digest": "sha256:d6671173abd09518cfe07c75ed4f2da85296b2d74056413bdce03dd636930b70",
+      "preserved": true
+    },
+    {
+      "evidence": "evidence/dsw/vllm-phi4-tp2-737d814/contract.json",
+      "recorded_digest": "sha256:d6671173abd09518cfe07c75ed4f2da85296b2d74056413bdce03dd636930b70",
+      "preserved": true
+    }
+  ],
+  "evidence_sha256": {
+    "evidence/dsw/precision-install-f6bda1a.json": "ccee881810880c9719866f1aacff6acea160f9954488cb46b296580ebdb1229d",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/cleanup.json": "0307038628b8eb7b5ffcd8fed3345afcf0c495d99f436a9229e3d614bdebf8dd",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/contract.json": "0680c1cc7693d696d5710419142e99b6c9993cbbe0bdef956cf7cf05e148305f",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/environment.json": "acc01fe0cfd691edc3e67c5d0c9d24324192da4d5fcb6ab7ce4fc4752fd7051c",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/postcheck.json": "3ef0e411bc74ffe2971f5737d3319b95f6b94b64ac6f72b188412a9ef243992c",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/precision-binding.json": "52df4913c81a0d2684a3210f8127c44b59017c9d49a58c3a3cb7a6a6581f44df",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/process.json": "14000cc9f8f24be781408345978f90cceb5159658796a00a72fd5ea83bc8de35",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/profile.json": "54b16460e6ad4f831c6bf1207891df6a891a75b06a3877e45d035c145a4a7286",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/reference-cpu.json": "b80f9b5eaff7a4d9a27a5c33ae55652999bfd4d5a2217f534ddfdd61205346a8",
+    "evidence/dsw/sglang-phi4-fp32head-f6bda1a/topology.json": "c00ade6fcb8bd052db862e5431c927644cbcb3c331a46c4f634a99b0f22664a0",
+    "evidence/dsw/sglang-phi4-tp2-737d814/contract.json": "b1960463d508f93ecd0b52bc9de4117bc401aef04ef64bc711df8758ca91a0ab",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/cleanup.json": "2d5887afa2a6d8d2ca371ff9a264188010a59a5ddbd50681aef48963e97dadc3",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/contract.json": "860ffeb740ba0053a0bd8067ab8a48418d40de35b4720f7bb0f93724a21c6556",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/environment.json": "acc01fe0cfd691edc3e67c5d0c9d24324192da4d5fcb6ab7ce4fc4752fd7051c",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/postcheck.json": "5be256943784a9366ced6c579accc62452cf468dfae56c1a9256892d03d62500",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/precision-binding.json": "e45cf7dad28cf4c66643a167f394faf4721a23951f352b9bc0e5381d7c604297",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/process.json": "12d53840a06640ea199067a6a413956d81ab9c1cfb9c27c2604e0ba5ccce17b4",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/profile.json": "761c5a2c717164bf42ec2c67a79517e05ac996f1eb6f2de7f09e22191e768d89",
+    "evidence/dsw/sglang-smol-bf16head-f6bda1a/reference-cpu.json": "495e4fc2e50ba1b5b90fe7d53d8b99487dc1aaacc7de5aa9eaf1ab0f2f7b18ee",
+    "evidence/dsw/source-identity-5aa59d6-harness.json": "f008337dd83304f4a954ada4cb8dd23d742bdad1d9e9fe418a9dbdb8ba31b8fa",
+    "evidence/dsw/source-identity-f6bda1a.json": "2fb476f4c0f8e8eaa56fdfa2aaa032b46270ec9e5b545892e15a51c6d7639c26",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/cleanup.json": "0582ab1072cece939c770b5ae836da9ed1525f881a461269141feb1fe72a154f",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/contract.json": "c4d04024e90d9199f4bae768b9a6dfe12377146bbef3b6d0f22a2898615de23d",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/environment.json": "e6983d5fca7d9b91830578e03eb6648d392a09446edf1b6c01a5adcad08fdc65",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/postcheck.json": "806a99680796987c90a28eb6c857e4d0eb2cab646affd69f3a70392904f9b536",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/precision-binding.json": "24991ba3d23367f86e98bb2fbddd9d88904d4d0c558b9d70b418fa5f5ec05db4",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/process.json": "c8029fabd15565b15d0c3b3774d6500641177cdb0e234cf30af2e0042f1459a5",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/profile.json": "5637d7d902ac878adaaf07c5683c29070b61ab55fa50b3fdc378e9ff16e0874c",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/reference-cpu.json": "261e00b0f5b81698b3d4833a799eedaa35a40ff4a0e19cf5ccf3824410a888dc",
+    "evidence/dsw/vllm-phi4-fp32head-f6bda1a/topology.json": "dc7ed421f54c77bd93bbc7bcbcea8b7770cb09eb4f302ed7b392e1ff8355825a",
+    "evidence/dsw/vllm-phi4-tp2-737d814/contract.json": "9890c59830b05f05065aae3abe61d1cdcfc0f0b2d225ab50719fb30580f12563",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/cleanup.json": "b96c340c02b7403a082e78d29b61330b251d2f85722595a50204ac8df276e654",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/contract.json": "946014a3f7eef7ab0c5edf2f5fce089dbc103f3349f59f74c9806bf0bfeed604",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/environment.json": "e6983d5fca7d9b91830578e03eb6648d392a09446edf1b6c01a5adcad08fdc65",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/postcheck.json": "942d1037149683d57bf0aec794e8c19b8f65c8253696eaf0491c69ead6386ea8",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/precision-binding.json": "58565df7d31626a1c53f2242d50943c26fb1132d71cb4385f544109afae05adf",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/process.json": "7acbf44ad3e3100648f6c50adce66537ee250faa6da2f2ccf88b9514ff904278",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/profile.json": "7183e08a0c4eb375ba74c0324af5b30e81b7c6ae2e7d6c325ea962a615c5e9dc",
+    "evidence/dsw/vllm-smol-bf16head-f6bda1a/reference-cpu.json": "63f7df2a0fc0db2367f1cd2ca00ea10490824bb67c217f49e9ddf1ebf8875133",
+    "evidence/package-check-f6bda1a.json": "ee4d1fe02f807845a25040a8f5cb8bf6d20b2e59f62cf10cd4501cc290f18c3a"
+  }
+}

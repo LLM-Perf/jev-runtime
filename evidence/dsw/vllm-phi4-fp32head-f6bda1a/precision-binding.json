@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "5aa59d6650074edcc9c5fe3244d4ec510fd6b4db",
+  "runtime_source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "started_at": 1790525298.9009573,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-0bcde650f0db46098f2974272aa41a79@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-61487068eada458b80309400ef3ae170@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=bfloat16 differs from engine report float32; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "microsoft/Phi-4-mini-instruct",
+    "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+    "tokenizer_digest": "sha256:e9d00b022ab7e4c5591463bbc5c1d82476ccaede002db53aec628551c7e88370",
+    "tokenizer_implementation_digest": "sha256:f93a0106dd2d5e79d3430af4d8624453af4d04fae75301704018a208da6b9cbe",
+    "template_digest": "sha256:7329549bd965083583b7be7c26d182fc1208060ec88767cf43cc6ec61478b8ef",
+    "dtype": "bfloat16",
+    "readout_dtype": "float32",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/Phi-4-mini-instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "float32"
+  },
+  "passed": true,
+  "finished_at": 1790525305.8141556
+}

@@ -1,0 +1,30 @@
+{
+  "model_id": "microsoft/Phi-4-mini-instruct",
+  "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "float32",
+  "observed_readout_dtype": "float32",
+  "contract_report": "/root/jev-runtime/runs/sglang-phi4-fp32head-f6bda1a/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "engine_logprobs": [
+    -0.00010299152199877426,
+    -11.544364929199219,
+    -12.917167663574219
+  ],
+  "reference_logprobs": [
+    -0.00010382589971413836,
+    -11.494709968566895,
+    -12.869091987609863
+  ],
+  "absolute_errors": [
+    8.343777153640985e-07,
+    0.04965496063232422,
+    0.04807567596435547
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790525478.9031975,
+  "finished_at": 1790525485.646201
+}

@@ -1,0 +1,30 @@
+{
+  "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "revision": "31b70e2e869a7173562077fd711b654946d38674",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/vllm-smol-bf16head-f6bda1a/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "engine_logprobs": [
+    -0.4047601819038391,
+    -1.7797601222991943,
+    -1.9047601222991943
+  ],
+  "reference_logprobs": [
+    -0.38299283385276794,
+    -1.8829928636550903,
+    -1.8829928636550903
+  ],
+  "absolute_errors": [
+    0.021767348051071167,
+    0.103232741355896,
+    0.021767258644104004
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790525782.8831372,
+  "finished_at": 1790525786.8380756
+}

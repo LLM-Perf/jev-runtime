@@ -1,10 +1,14 @@
 # Fixed-task calibration
 
-Calibration is tied to a model revision, tokenizer, template, candidate order and
+Calibration is tied to a model revision, backbone/readout precision, tokenizer, template, candidate order and
 question definitions. Keep the bundle `candidate_policy` set to `fixed` and
 `template.mode` set to `joint-label` for this collector. Supported targets are
 choice IDs, JSON booleans, and discrete score-level IDs. Rank requires a separate
 relevance evaluation and is rejected by this collector.
+
+Changing `model.readout_dtype` changes the scoring contract. Rebuild the bundle
+and refit calibration; an old artifact cannot be transferred by editing its
+digest. See [precision configuration and legacy migration](readout-precision.md).
 
 Prepare two JSONL datasets with disjoint `sample_id` **and** `group_id`. Use a
 conversation/customer/document identifier as the group when examples can leak

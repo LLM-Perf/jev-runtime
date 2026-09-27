@@ -1,0 +1,136 @@
+{
+  "identity": {
+    "pid": 2631445,
+    "start_ticks": "428069766",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/Phi-4-mini-instruct",
+    "--served-model-name",
+    "microsoft/Phi-4-mini-instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager",
+    "--tensor-parallel-size",
+    "2",
+    "--hf-overrides",
+    "{\"head_dtype\": \"float32\"}"
+  ],
+  "model": {
+    "model_id": "microsoft/Phi-4-mini-instruct",
+    "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+    "path": "/root/jev-runtime/models/Phi-4-mini-instruct",
+    "verified_files": {
+      "LICENSE": {
+        "bytes": 1084,
+        "sha256": "fa8235e5b48faca34e3ca98cf4f694ef08bd216d28b58071a1f85b1d50cb814d"
+      },
+      "README.md": {
+        "bytes": 29246,
+        "sha256": "c4f34916182a3ee87d95d00c92847cfa687ab21dc338a577275f0c34cf0e1dfd"
+      },
+      "added_tokens.json": {
+        "bytes": 249,
+        "sha256": "d4f2aceb0f20b71dd1f4bcc7e052e4412946bf281840b8f83d39f259571af486"
+      },
+      "config.json": {
+        "bytes": 2504,
+        "sha256": "ac65d86061d3d0d704ee2511fd0eb8713ef19eb6eedba17c3080a4165d5b933b"
+      },
+      "generation_config.json": {
+        "bytes": 168,
+        "sha256": "3e3f48753753f92d2b958679151861d4fd7bf26e4dfc41fd47056116c4914dcd"
+      },
+      "merges.txt": {
+        "bytes": 2418348,
+        "sha256": "856ce61180bb689282eed6b3a6838bb1f438399be23aefe9d20eb379791fb4ad"
+      },
+      "model-00001-of-00002.safetensors": {
+        "bytes": 4903637712,
+        "sha256": "bc703090b63eda16f639fa4de7ac54635c23105ab1da2f6ec4d3403151d38ee6"
+      },
+      "model-00002-of-00002.safetensors": {
+        "bytes": 2768428504,
+        "sha256": "7ff79b9d2d31076bac2663393451f6530f4fc8ca49b09002116c92c373dba983"
+      },
+      "model.safetensors.index.json": {
+        "bytes": 16273,
+        "sha256": "613a98d5e5716ca96fa75931abedc9c5a5d95f488ce4d62df71e639fe3ac6c59"
+      },
+      "special_tokens_map.json": {
+        "bytes": 587,
+        "sha256": "aff38493227d813e29fcf8406e8e90062f1f031aa47d589325e9c31d89ac7cc3"
+      },
+      "tokenizer.json": {
+        "bytes": 15524095,
+        "sha256": "382cc235b56c725945e149cc25f191da667c836655efd0857b004320e90e91ea"
+      },
+      "tokenizer_config.json": {
+        "bytes": 2932,
+        "sha256": "9c9b6bc0c94d95f69f826c41069a3e8b387ac3ced89601d201886e99240ac9db"
+      },
+      "vocab.json": {
+        "bytes": 3910310,
+        "sha256": "6cb65a857824fa6615bb1782d95d882617a8bbce1da0317118586b36f39e98bd"
+      }
+    },
+    "verification": "hf cache verify exact revision; selected safe weights/tokenizer/config files only",
+    "weight_shards": [
+      "model-00001-of-00002.safetensors",
+      "model-00002-of-00002.safetensors"
+    ],
+    "indexed_tensors": 194
+  },
+  "gpu_before": {
+    "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "10792",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "gpus_before": [
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "tensor_parallel_size": 2,
+  "readout_dtype": "float32",
+  "created": 1790525158.328907,
+  "port": 18795,
+  "qualification": "colocated-functional-test",
+  "memory_budget_denominator": "total_mib"
+}

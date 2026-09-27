@@ -1,0 +1,38 @@
+{
+  "source_commit": "f6bda1a13e30b1d58cb4303455cce92c1601a683",
+  "engine": "vllm",
+  "process": {
+    "pid": 2631445,
+    "start_ticks": "428069766",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "selected_gpus": [
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "cuda_visible_devices": "6,7",
+  "tensor_parallel_size": 2,
+  "parent_cuda_visible_devices": "6,7",
+  "owned_worker_rank_pids": {
+    "0": 2631912,
+    "1": 2631978
+  },
+  "server_info_status": 404,
+  "proof": "Two live rank-labelled workers in the recorded process group and verified parent CUDA mapping; launcher TP argument is 2. Worker /proc environment does not expose CUDA_VISIBLE_DEVICES and NVML PIDs use another namespace; no direct per-worker NVML PID mapping is claimed"
+}

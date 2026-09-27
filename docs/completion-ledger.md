@@ -283,6 +283,19 @@ replacement for any requirement in `implementation-plan.md`.
   and Ruff (102 files). Package sources are unchanged from `40b78c2`; its wheel
   evidence is explicitly reused. See [Phi TP2 evidence](phi-tp2-validation.md).
 
+
+- At `f6bda1a`, new bundles/calibration contracts bind readout dtype separately
+  from backbone dtype. Startup checks the engine report; legacy/wrong bundles
+  fail preparation without rewriting stored digests. Both engines passed Phi-4
+  FP32-readout TP2 and SmolLM2 default-BF16 TP1 native suites, 1,000 switches each,
+  and live precision rejection checks with harness `5aa59d6`. The four targeted
+  CPU reference positions pass the development 0.15 tolerance; this does not
+  replace a full per-profile numerical budget or repair earlier BF16 failures.
+  All groups exited and selected GPUs returned to baseline. Local tests passed
+  257 checks and all three wheel builds. The base denominator stays 10/40;
+  calibration migration, deployment scope and raw evidence are documented in
+  [readout precision](readout-precision.md). Remaining release gates are unchanged.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

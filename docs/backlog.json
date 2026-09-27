@@ -124,11 +124,13 @@
       "original_status": "planned",
       "actual_deliverables": [
         "src/jev_runtime/backends",
-        "evidence/dsw"
+        "evidence/dsw",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Two checkpoint functional paths per engine have GPU evidence.",
-        "Loaded weight/revision attestation is still incomplete; capabilities.verified remains false."
+        "Loaded weight/revision attestation is still incomplete; capabilities.verified remains false.",
+        "At f6bda1a, startup compares configured backbone/readout dtype with the engine report and rejects missing/mismatched precision. Live mismatched attached-runtime checks pass on both engines; this is configuration verification, not in-memory weight/kernel attestation."
       ],
       "acceptance_complete": false
     },
@@ -188,11 +190,13 @@
         "tests/test_sdk.py",
         "tests/fixtures/decision-responses.json",
         "packages/typescript/test/contract.test.mjs",
-        "tests/integration/replay_saved_responses.py"
+        "tests/integration/replay_saved_responses.py",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Four result types, calibration status, abstention and partial failures are implemented.",
-        "Python and TypeScript validate answer semantics using the same 10 valid and 47 malformed payload cases; cancellation error contracts are checked in both clients."
+        "Python and TypeScript validate answer semantics using the same 10 valid and 47 malformed payload cases; cancellation error contracts are checked in both clients.",
+        "ModelIdentity now binds readout_dtype in bundle and scoring-contract digests. Absent legacy fields retain historical digests; configured serving rejects unbound or different precision before canary dispatch."
       ],
       "acceptance_complete": false
     },
@@ -287,12 +291,14 @@
       "actual_deliverables": [
         "tests/integration/reference_logits.py",
         "profiles/certification-matrix.json",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Reference tooling exists; frozen BF16 tolerance failures remain unresolved.",
         "Top-label agreement is not a numerical-gate pass.",
-        "At 737d814, four CPU BF16 selected-position checks were retained: both Phi-3 engines and vLLM Phi-4 exceed atol=0.15; SGLang Phi-4 passes one position only. No tolerance was relaxed or full numerical gate accepted."
+        "At 737d814, four CPU BF16 selected-position checks were retained: both Phi-3 engines and vLLM Phi-4 exceed atol=0.15; SGLang Phi-4 passes one position only. No tolerance was relaxed or full numerical gate accepted.",
+        "At f6bda1a, Phi-4 BF16-backbone/FP32-readout TP2 and default BF16 SmolLM2 TP1 pass one saved CPU reference position per engine at the existing development atol=0.15. FP32 max errors are 0.049655 SGLang / 0.089940 vLLM. Original BF16 failures remain; full profile-specific numerical budgets and multi-example/tie/cache-state certification remain incomplete."
       ],
       "acceptance_complete": false
     },
@@ -412,11 +418,13 @@
         "src/jev_runtime/calibration.py",
         "src/jev_runtime/evaluation.py",
         "benchmarks/public_quality.py",
-        "docs/public-quality.md"
+        "docs/public-quality.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Both engines completed 768 public requests and live calibrated switching.",
-        "Public tasks do not substitute for business acceptance."
+        "Public tasks do not substitute for business acceptance.",
+        "Calibration digest now includes output-layer precision; local regression rejects attaching a BF16-readout calibrator to an FP32 contract. Existing calibration must be refitted for rebuilt manifests; business calibration/quality gates remain."
       ],
       "acceptance_complete": false
     },
@@ -444,14 +452,16 @@
       "original_status": "planned",
       "actual_deliverables": [
         "profiles/certification-matrix.json",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "10/40 engine/checkpoint functional combinations have development GPU evidence (5/20 per engine).",
         "Remaining 30 combinations and separate numerical/quality/performance gates remain.",
         "Six gated model repositories require authorized access.",
         "DeepSeek-R1-Distill-Qwen-1.5B passed both native engines at runtime ad9b417, with 1,000 switches per engine; initial harness abstention and local-tokenizer mismatch failures remain recorded.",
-        "Phi-3 mini and Phi-4 mini passed both native engines in BF16 TP2/API1 at 737d814; first pre-ready vLLM harness failure and SGLang memory-balance startup failure are retained. See docs/phi-tp2-validation.md."
+        "Phi-3 mini and Phi-4 mini passed both native engines in BF16 TP2/API1 at 737d814; first pre-ready vLLM harness failure and SGLang memory-balance startup failure are retained. See docs/phi-tp2-validation.md.",
+        "Precision profiles are tracked separately from base combinations. Four f6bda1a functional/binding checks do not change 10/40 model-engine coverage. Legacy Phi-4 BF16 failure/partial columns are preserved; SmolLM2 now has partial targeted numerical evidence."
       ],
       "acceptance_complete": false
     },
@@ -708,13 +718,15 @@
         "tests/test_telemetry.py",
         "src/jev_runtime/health.py",
         "tests/test_health.py",
-        "docs/serving-health.md"
+        "docs/serving-health.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
         "Bounded phase/branch-operation histograms, error categories, known-token observation denominators, admission occupancy and opt-in request-bound timing headers are implemented. Multi-worker metric aggregation and operational handoff remain.",
         "Registry-wide admission gauges and the admin profile expose shared occupancy and limits. These gauges must not be summed across workers; request counters and histograms remain process-local.",
-        "At 40b78c2, periodic engine canaries, per-bundle stale/error circuits, all-active readiness and admin health state are implemented. Queued requests recheck before GPU dispatch; unconfirmed probes retain a journaled lease and suppress repeat probing until explicit recovery. DSW gateway pause/resume passes on both engines; compatible-replica routing/failover and multi-worker metrics aggregation remain."
+        "At 40b78c2, periodic engine canaries, per-bundle stale/error circuits, all-active readiness and admin health state are implemented. Queued requests recheck before GPU dispatch; unconfirmed probes retain a journaled lease and suppress repeat probing until explicit recovery. DSW gateway pause/resume passes on both engines; compatible-replica routing/failover and multi-worker metrics aggregation remain.",
+        "docs/readout-precision.md documents explicit engine flags, reporting limits, opt-in FP32 and migration using a fresh registry/endpoint. Active unbound manifests require new versions; no silent digest or calibration rewrite."
       ],
       "acceptance_complete": false
     },
@@ -746,14 +758,16 @@
         "tests/integration/sglang_logprob_rows.py",
         "tests/integration/live_sglang_mixed.py",
         "docs/lora-crash-recovery.md",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
         "Controlled mixed long/short/chat loads and broader parallel configurations remain.",
         "At 533549a, SGLang 0.5.19 host-list logprob normalization is handled through version-scoped official hooks. Actual upstream CPU producer/consumer reproduction passes, as does a 512-token native SSE stream with 12/12 typed requests completed inside its lifetime. This is targeted coexistence evidence, not a controlled mixed-load or TP report; initial failed GPU attempt is retained.",
         "At runtime 40b78c2, both engines passed native four-type/parity checks and another 1,000 switches after health changes. Both gateways passed real engine pause/resume. SGLang first failed a comparison with a partially cached baseline; direct native cache-state replay and revised warm-state comparison are separately retained. This does not certify numerical invariance, controlled performance, LoRA or multi-worker profiles at this source.",
-        "At 737d814, both Phi checkpoints passed native TP2/API1 scoring, native chat/parity and 1,000 switches per engine. Live topology, zero final admission/leases and every selected GPU cleanup were verified. This does not certify LoRA TP2, multi-worker TP2, mixed-load performance or TP crash recovery."
+        "At 737d814, both Phi checkpoints passed native TP2/API1 scoring, native chat/parity and 1,000 switches per engine. Live topology, zero final admission/leases and every selected GPU cleanup were verified. This does not certify LoRA TP2, multi-worker TP2, mixed-load performance or TP crash recovery.",
+        "At f6bda1a, both engines pass Phi-4 FP32-readout TP2 and SmolLM2 default-BF16 TP1 native suites and 1000 switches each. Harness 5aa59d6 verifies legacy/wrong bundle and mismatched attached-runtime rejection. All four owned groups exited and selected GPUs returned to baseline; managed-LoRA/multi-worker/performance profiles were not recertified."
       ],
       "acceptance_complete": false
     },
@@ -789,7 +803,8 @@
         "evidence/dsw/lora-crash-validation-533549a.json",
         "tests/integration/live_health.py",
         "evidence/dsw/health-validation-40b78c2.json",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/readout-precision.md"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
@@ -797,7 +812,8 @@
         "Both engines passed gateway and native API/GPU process-group crash/restart with durable shared quotas; all owned groups exited and GPU7 returned to 11,990 MiB free. These quota-only cases do not certify hardware errors, managed LoRA, database I/O failures, multi-node recovery or the 24-hour soak.",
         "Separate managed-LoRA crash/restart checks passed at 5176a82 (vLLM) and 533549a (SGLang): 128 branches / 133,376 reserved tokens retained, quarantined adapters, paused routes, explicit recovery, fresh canaries/generations, zero reload/switch probability error, lifecycle recheck and complete process-group cleanup. The preserved pre-fix SGLang attempt failed before planned SIGKILL. Other fault phases and controlled 24-hour soak remain.",
         "Targeted SIGSTOP/SIGCONT checks at 40b78c2 verify per-worker readiness withdrawal, 10/10 gateway rejections and resumed serving on both engines. All four owned groups exited; GPU7 returned to 11,990 MiB free. Both native engines passed 1,000 further switches with vLLM 453 / SGLang 510 successful traffic requests and zero mixed versions. Replica failover and the 24-hour soak remain unrun.",
-        "The distinct functional set now has ten combinations, each with 1,000 route switches. Four new Phi TP2 runs at 737d814 had 244/448 (Phi-3 SGLang/vLLM) and 184/317 (Phi-4 SGLang/vLLM) strict successful traffic requests with zero mixed versions. All five owned groups, including a failed SGLang launch, exited; all selected GPUs returned to baseline. Controlled 24-hour soak remains unrun."
+        "The distinct functional set now has ten combinations, each with 1,000 route switches. Four new Phi TP2 runs at 737d814 had 244/448 (Phi-3 SGLang/vLLM) and 184/317 (Phi-4 SGLang/vLLM) strict successful traffic requests with zero mixed versions. All five owned groups, including a failed SGLang launch, exited; all selected GPUs returned to baseline. Controlled 24-hour soak remains unrun.",
+        "Four further 1000-switch runs passed at f6bda1a (Phi-4 SGLang/vLLM 182/318 strict traffic successes; SmolLM2 493/441), with zero mixed versions and zero final leases/admission. The controlled 24-hour soak remains unrun."
       ],
       "acceptance_complete": false
     },
@@ -897,7 +913,7 @@
       "acceptance_complete": false
     }
   ],
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
   "release_accepted": false,
   "status_semantics": "Implementation status is separate from acceptance. Development GPU evidence does not satisfy the full release gates. Original estimates and dependencies remain unchanged.",
   "observed_engine_versions": {

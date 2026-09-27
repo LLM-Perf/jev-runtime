@@ -8,6 +8,11 @@ Periodic engine canaries now withdraw readiness and block new typed dispatch whe
 scoring fails or its evidence expires. See [health configuration and recovery](serving-health.md)
 for per-worker scope, probe leases, explicit recovery and outstanding replica failover.
 
+Newly built bundles bind the output-layer dtype separately from the backbone.
+The runtime checks it against the engine report before serving. Older manifests
+remain readable but need a new version and matching calibration before use;
+see [readout configuration and migration](readout-precision.md).
+
 ## Current tested scope
 
 DSW functional checks cover Qwen3-0.6B, SmolLM2-1.7B and
