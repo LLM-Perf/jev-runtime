@@ -210,7 +210,7 @@ def launch(args):
                     "--max-loaded-loras",
                     "4",
                     "--max-loras-per-batch",
-                    "2",
+                    "4",
                     "--lora-target-modules",
                     "q_proj",
                     "k_proj",

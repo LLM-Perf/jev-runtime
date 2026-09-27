@@ -140,6 +140,23 @@ class SGLangNative:
             and architectures
         )
 
+    def _check_adapter_capacity(self) -> None:
+        limit = getattr(self.manager.server_args, "max_loaded_loras", None)
+        if limit is not None and self.manager.lora_registry.num_registered_loras >= limit:
+            raise JevError(
+                "adapter_capacity", "Unload an adapter before exceeding engine capacity", 409
+            )
+        pinned = sum(
+            bool(item.pinned) for item in self.manager.lora_registry.get_all_adapters().values()
+        )
+        if pinned >= self.manager.server_args.max_loras_per_batch - 1:
+            raise JevError(
+                "adapter_capacity",
+                "SGLang reserves one LoRA pool slot for base/unpinned requests; "
+                "increase max_loras_per_batch",
+                409,
+            )
+
     async def load_adapter(self, binding: AdapterBinding) -> None:
         from sglang.srt.managers.io_struct import LoadLoRAAdapterReqInput
 
@@ -147,19 +164,19 @@ class SGLangNative:
             raise JevError("adapter_profile", "Unsupported SGLang managed LoRA profile", 409)
         if binding.engine_name in self.manager.lora_registry.get_all_adapters():
             raise JevError("adapter_collision", "Engine adapter name is already resident", 409)
-        limit = getattr(self.manager.server_args, "max_loaded_loras", None)
-        if limit is not None and self.manager.lora_registry.num_registered_loras >= limit:
-            raise JevError(
-                "adapter_capacity", "Unload an adapter before exceeding engine capacity", 409
-            )
+        self._check_adapter_capacity()
         self._adapter_attempts.add(binding.engine_name)
         result = await self.manager.load_lora_adapter(
             LoadLoRAAdapterReqInput(
                 lora_name=binding.engine_name, lora_path=binding.artifact.path, pinned=True
             )
         )
-        if not result.success or result.error_message != "jev_gpu_barrier_v1":
-            raise JevError("adapter_load", "SGLang load and GPU barrier were not confirmed", 503)
+        if not result.success:
+            raise JevError(
+                "adapter_load", "SGLang rejected loading: " + str(result.error_message)[:1000], 503
+            )
+        if result.error_message != "jev_gpu_barrier_v1":
+            raise JevError("adapter_barrier", "SGLang GPU load barrier was not confirmed", 503)
         self._adapter_bindings[binding.artifact.reference] = binding
 
     async def unload_adapter(self, binding: AdapterBinding) -> None:
@@ -183,10 +200,14 @@ class SGLangNative:
         result = await self.manager.unload_lora_adapter(
             UnloadLoRAAdapterReqInput(lora_name=binding.engine_name)
         )
-        if not result.success or result.error_message != "jev_gpu_barrier_v1":
+        if not result.success:
             raise JevError(
-                "adapter_unload", "SGLang drain, removal and GPU barrier were not confirmed", 503
+                "adapter_unload",
+                "SGLang rejected removal: " + str(result.error_message)[:1000],
+                503,
             )
+        if result.error_message != "jev_gpu_barrier_v1":
+            raise JevError("adapter_barrier", "SGLang GPU unload barrier was not confirmed", 503)
         self._adapter_bindings.pop(binding.artifact.reference, None)
         self._adapter_attempts.discard(binding.engine_name)
 

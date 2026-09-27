@@ -27,6 +27,10 @@ requires before publishing a successful update. Keep native engine administratio
 restricted to the service operator; do not mutate Jev's opaque adapter names/IDs
 through a second LoRA control plane.
 
+SGLang reserves one memory-pool slot for base/unpinned traffic: two pinned adapters
+need `--max-loras-per-batch` of at least 3, regardless of `--max-loaded-loras`.
+The DSW functional launcher uses 4. Capacity is checked before native dispatch.
+
 Registration accepts `adapter_config.json` and `adapter_model.safetensors` from an
 allowed local directory. It copies, validates, hashes and fsyncs them into owned
 content-addressed storage. No Python code, remote download, pickle, embedding or

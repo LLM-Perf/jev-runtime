@@ -1,0 +1,153 @@
+{
+  "source_commit": "500b197",
+  "started_at": 1790505425.377169,
+  "qualification": "colocated BF16 TP1 single-frontend untrained-LoRA functional evidence",
+  "process": {
+    "identity": {
+      "pid": 2594154,
+      "start_ticks": "426090282",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--enable-lora",
+      "--max-lora-rank",
+      "64",
+      "--max-loaded-loras",
+      "4",
+      "--max-loras-per-batch",
+      "2",
+      "--lora-target-modules",
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790505363.4929247,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "fixture": {
+    "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+    "base_model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "seed": 20260927,
+    "artifacts": {
+      "positive": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+      },
+      "negative": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+      }
+    }
+  },
+  "probability_tolerance": 0.0001,
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "cdc1cc981cab4fd19251edcff616ff9f"
+    }
+  },
+  "attempts": [
+    {
+      "path": "ready",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/profile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 503,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 503,
+      "expected": 200
+    }
+  ],
+  "passed": false,
+  "failure": {
+    "type": "AssertionError",
+    "message": "('admin/adapters/load', 503, '{\"error\":{\"code\":\"adapter_load\",\"message\":\"SGLang load and GPU barrier were not confirmed\"}}')"
+  },
+  "cleanup_error": "('admin/adapters/unload', 503, '{\"error\":{\"code\":\"adapter_restart_required\",\"message\":\"An uncertain SGLang load/unload requires a full engine restart\"}}')",
+  "finished_at": 1790505425.525383
+}

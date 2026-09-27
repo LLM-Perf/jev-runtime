@@ -81,7 +81,13 @@ replacement for any requirement in `implementation-plan.md`.
   64-bit adapter ID reached vLLM's int32 GPU request array. Its report and verified
   process-group cleanup are retained. IDs now have an int32 bound and transactional
   collision checks; plugin cleanup now drains before host state/engine teardown.
-  The corrected GPU run remains pending.
+  The corrected vLLM run at `500b197` passed 24 alternating switches, an old
+  128-question request across publication, blocked premature unload, cancellation
+  and six reload/rollback cycles. Output differences were zero against each warm
+  baseline. A stricter rerun will also require per-adapter cache-hit observations.
+  SGLang's first run hit its reserved base-model pool-slot constraint on the second
+  pinned adapter; its report/cleanup are preserved. The launcher now reserves four
+  slots and the adapter checks pinned capacity before dispatch. Its rerun is pending.
 
 ## Required evidence still outstanding
 

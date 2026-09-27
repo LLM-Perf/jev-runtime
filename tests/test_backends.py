@@ -4,7 +4,7 @@ import httpx
 import pytest
 
 from jev_runtime.backends.base import ScoreInput
-from jev_runtime.backends.sglang import SGLangHTTP, parse_sglang
+from jev_runtime.backends.sglang import SGLangHTTP, SGLangNative, parse_sglang
 from jev_runtime.backends.vllm import VLLMHTTP, VLLMNative
 from jev_runtime.errors import JevError
 
@@ -114,3 +114,19 @@ async def test_vllm_reports_configured_scoring_limits(mode, limit, expected_raw,
     assert capabilities.raw_logprobs is expected_raw
     assert capabilities.max_label_tokens == expected_limit
     assert capabilities.prefix_cache is False and capabilities.api_workers == 2
+
+
+def test_sglang_capacity_reserves_base_model_slot_before_dispatch():
+    args = SimpleNamespace(max_loaded_loras=4, max_loras_per_batch=2)
+    manager = SimpleNamespace(
+        server_args=args,
+        lora_registry=SimpleNamespace(
+            num_registered_loras=1, get_all_adapters=lambda: {"first": SimpleNamespace(pinned=True)}
+        ),
+    )
+    backend = SGLangNative(manager, "0.5.19")
+    with pytest.raises(JevError) as error:
+        backend._check_adapter_capacity()
+    assert error.value.code == "adapter_capacity"
+    args.max_loras_per_batch = 3
+    backend._check_adapter_capacity()

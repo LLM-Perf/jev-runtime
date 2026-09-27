@@ -1,0 +1,12 @@
+{
+  "source_commit": "500b197",
+  "process_identity": {
+    "pid": 2594154,
+    "start_ticks": "426090282",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "non_zombie_group_members": [],
+  "gpu_free_mib": 11990,
+  "timestamp": 1790505597.3784485,
+  "source_diagnosis": "SGLang LoRAManager.validate_new_adapter requires num_pinned_loras < max_loras_per_batch - 1; launcher had max_loras_per_batch=2 for two pinned adapters."
+}
