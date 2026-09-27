@@ -56,6 +56,19 @@
         "native_parity_pairs_passed": 32,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_fp32_readout_numerical": {
+        "source_commit": "55a1d2626b6c8da2af0ee0ad84c8bbe197b86309",
+        "status": "reference_check_failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/FP32 head TP1/API1 eager; ordinary and batch-invariant modes; reset/repeat/reversed-client-concurrency4; GPU eager and SDPA references; no full release certification",
+        "evidence": "evidence/dsw/fp32-readout-55a1d26/verified-summary.json",
+        "enabled_mode_exact_repeat_vectors": 32,
+        "enabled_mode_exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "ordinary_eager_non_near_tie_argmax_mismatches": 1,
+        "native_parity_pairs_passed": 64,
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -103,6 +116,19 @@
         "exact_concurrent_vectors": 32,
         "case_count": 32,
         "native_parity_pairs_passed": 32,
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
+      },
+      "development_fp32_readout_numerical": {
+        "source_commit": "55a1d2626b6c8da2af0ee0ad84c8bbe197b86309",
+        "status": "reference_check_failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/FP32 head TP1/API1 eager; ordinary and batch-invariant modes; reset/repeat/reversed-client-concurrency4; GPU eager and SDPA references; no full release certification",
+        "evidence": "evidence/dsw/fp32-readout-55a1d26/verified-summary.json",
+        "enabled_mode_exact_repeat_vectors": 32,
+        "enabled_mode_exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "ordinary_eager_non_near_tie_argmax_mismatches": 1,
+        "native_parity_pairs_passed": 64,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
       }

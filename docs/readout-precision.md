@@ -101,6 +101,9 @@ count of distinct model/engine combinations.
 For memory-bounded CUDA references and the later Qwen/R1 attention/device
 diagnosis, see [numerical reference execution profiles](numerical-reference-diagnostics.md).
 The original CPU eager default and its failure records are retained.
+The subsequent [multi-input FP32 readout campaign](fp32-readout-validation.md)
+tests both ordinary and batch-invariant execution on Qwen3-0.6B. All four profiles
+retain independent-reference failures; FP32 readout is not a general numerical fix.
 
 
 ## DSW validation, 2026-09-28 (Asia/Shanghai)

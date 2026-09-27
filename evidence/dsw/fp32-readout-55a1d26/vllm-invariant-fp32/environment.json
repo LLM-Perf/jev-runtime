@@ -1,0 +1,14 @@
+{
+  "runtime_source_commit": "55a1d2626b6c8da2af0ee0ad84c8bbe197b86309",
+  "python": "3.12.11 (main, Nov  6 2025, 02:27:35) [GCC 13.3.0]",
+  "import_paths": {
+    "jev_runtime": "/root/jev-runtime/fp32-head-sources/55a1d2626b6c8da2af0ee0ad84c8bbe197b86309/src/jev_runtime/__init__.py",
+    "jev_runtime.health": "/root/jev-runtime/fp32-head-sources/55a1d2626b6c8da2af0ee0ad84c8bbe197b86309/src/jev_runtime/health.py",
+    "jev_vllm": "/root/jev-runtime/fp32-head-sources/55a1d2626b6c8da2af0ee0ad84c8bbe197b86309/packages/vllm/src/jev_vllm/__init__.py"
+  },
+  "versions": {
+    "vllm": "0.30.0+cu129",
+    "torch": "2.13.0+cu129",
+    "transformers": "5.17.0"
+  }
+}

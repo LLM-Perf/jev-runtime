@@ -1,0 +1,71 @@
+import hashlib,json,os,subprocess,sys,tarfile,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');COMMIT='55a1d2626b6c8da2af0ee0ad84c8bbe197b86309';source=ROOT/'fp32-head-sources'/COMMIT
+source.mkdir(parents=True,exist_ok=False);archive=ROOT/'fp32-head-source-55a1d26.tar.gz';assert hashlib.sha256(archive.read_bytes()).hexdigest()=='30cebb12d00b55f45224ccda976c5d4d39a498441549ce9377e6ed35d1057dfa'
+with tarfile.open(archive) as tar:tar.extractall(source,filter='data')
+sys.path[:0]=[str(source),str(source/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import wait_ready,cleanup,group_members,topology
+out=ROOT/'fp32-head-campaign-55a1d26.json';assert not out.exists()
+report={'source_commit':COMMIT,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'started_at':time.time(),'attempts':[]}
+def read(p):return json.loads(p.read_text())
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+def invoke(command,env,log,timeout=180):
+ with log.open('x') as f:
+  p=subprocess.Popen(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
+  item={'command':command,'identity':process_identity(p.pid),'log':str(log),'started_at':time.time()};attempt['children'].append(item);save()
+  try:item['returncode']=p.wait(timeout=timeout)
+  except subprocess.TimeoutExpired:
+   import signal
+   assert process_identity(p.pid)==item['identity'];os.killpg(p.pid,signal.SIGTERM)
+   try:p.wait(timeout=20)
+   except subprocess.TimeoutExpired:
+    assert process_identity(p.pid)==item['identity'];os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=10)
+   item['returncode']=p.returncode;item['timeout']=True;raise
+  finally:item['finished_at']=time.time();item['remaining_group']=group_members(p.pid);save()
+  assert not item['remaining_group'];return item['returncode']
+try:
+ for engine,enabled in [('vllm',False),('vllm',True),('sglang',False),('sglang',True)]:
+  assert int(get_gpu(7)['free_mib'])>=11900
+  for p in (ROOT/'runs').rglob('process.json'):
+   i=read(p)['identity'];assert process_identity(i['pid'])!=i,('previous owned engine remains',str(p))
+  name=engine+('-invariant' if enabled else '-ordinary')+'-fp32';run=ROOT/'runs'/f'{name}-55a1d26';run.mkdir(exist_ok=False)
+  attempt={'engine':engine,'batch_invariant':enabled,'name':name,'run_dir':str(run),'started_at':time.time(),'children':[]};report['attempts'].append(attempt);save();record=None
+  ep=ROOT/'envs'/engine/'bin/python';env={k:v for k,v in os.environ.items() if not k.startswith(('PYTHON','PIP_'))}
+  env.update(PYTHONPATH=':'.join(map(str,[source,source/'src',source/'packages/vllm/src',source/'packages/sglang/src'])),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',VLLM_SERVER_DEV_MODE='1')
+  health=run/'health-settings.json';health.write_text(json.dumps({'interval_seconds':300,'timeout_seconds':10,'max_age_seconds':900}))
+  try:
+   code="import pathlib,hashlib,json,jev_runtime,jev_"+engine+"; packages=[jev_runtime,jev_"+engine+"]; print(json.dumps({m.__name__:{'path':m.__file__,'files':{str(f.relative_to(pathlib.Path(m.__file__).parent)):hashlib.sha256(f.read_bytes()).hexdigest() for f in pathlib.Path(m.__file__).parent.rglob('*.py')}} for m in packages}))"
+   attempt['imports']=json.loads(subprocess.check_output([str(ep),'-c',code],env=env,cwd=source,text=True));assert all(COMMIT in v['path'] for v in attempt['imports'].values())
+   port=18795 if engine=='vllm' else 18794
+   command=[str(ep),str(source/'deployment/dsw_service.py'),'launch','--run-dir',str(run),'--engine',engine,'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--tokenizer-path',str(ROOT/'tokenizers'/f'Qwen3-0.6B-preserved-{engine}-cdd0caf'),'--gpus','7','--port',str(port),'--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072','--health-config',str(health),'--readout-dtype','float32']
+   if enabled:command.append('--batch-invariant')
+   attempt['launch_command']=command;save()
+   with (run/'launch.log').open('x') as f:subprocess.run(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=60)
+   record=read(run/'process.json');assert record['batch_invariant']==enabled and record['readout_dtype']=='float32';keys=read(run/'keys.json');attempt['ready']=wait_ready(record,keys['api'],420);attempt['topology']=topology(run,record);save()
+   status=invoke([str(ep),'-m','tests.integration.numerical_suite','collect','--run-dir',str(run),'--output',str(run/'engine-scores.json')],env,run/'collect.log');assert status==0,('collection failed',status)
+   collected=read(run/'engine-scores.json');assert collected['complete'] and collected['profile']['capabilities']['batch_invariant'] is enabled
+   assert collected['model']['readout_dtype']=='float32' and collected['profile']['capabilities']['readout_dtype']=='float32'
+   attempt['collection_seconds']=collected['finished_at']-collected['started_at'];assert attempt['collection_seconds']<280
+   status=invoke([str(ep),'-m','tests.integration.live_execution_mode','--run-dir',str(run),'--engine-report',str(run/'engine-scores.json'),'--output',str(run/'mode-check.json')],env,run/'mode-check.log');assert status==0,('mode checks failed',status)
+   attempt['mode_check_complete']=True;attempt['native_parity_passed']=read(run/'mode-check.json')['parity_passed']
+   status=invoke([str(ep),'-m','tests.integration.live_precision_binding','--run-dir',str(run),'--output',str(run/'precision-check.json'),'--source-commit',COMMIT,'--runtime-source-commit',COMMIT],env,run/'precision-check.log');assert status==0,('precision checks failed',status)
+   attempt['precision_binding_passed']=read(run/'precision-check.json')['passed'];assert attempt['precision_binding_passed']
+   code="import json; from pathlib import Path; from tests.integration.run_native_validation import postcheck; p=Path("+repr(str(run))+"); result=postcheck(p,json.loads((p/'process.json').read_text()),json.loads((p/'keys.json').read_text())['admin'],"+repr(COMMIT)+"); (p/'postcheck.json').write_text(json.dumps(result,indent=2)+'\\n')"
+   status=invoke([str(ep),'-c',code],env,run/'postcheck.log',60);assert status==0,('postcheck failed',status);attempt['postcheck']=read(run/'postcheck.json')
+  except BaseException as exc:attempt['failure']={'type':type(exc).__name__,'message':str(exc)}
+  finally:
+   if record is None and (run/'process.json').exists():record=read(run/'process.json')
+   if record is not None:attempt['cleanup']=cleanup(run,record)
+   save()
+  if 'failure' not in attempt:
+   assert attempt['cleanup']['passed'];assert int(get_gpu(7)['free_mib'])>=11900
+   for attention in ['eager','sdpa']:
+    ref=run/f'reference-{attention}.json';status=invoke([str(ep),'-m','tests.integration.numerical_suite','reference','--engine-report',str(run/'engine-scores.json'),'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--attention',attention,'--output',str(ref)],{**env,'CUDA_VISIBLE_DEVICES':'7'},run/f'reference-{attention}.log');assert status==0,('reference failed',name,attention,status)
+    status=invoke([str(ep),'-m','tests.integration.numerical_suite','compare','--engine-report',str(run/'engine-scores.json'),'--reference-report',str(ref),'--output',str(run/f'comparison-{attention}.json')],env,run/f'comparison-{attention}.log',30);assert status in (0,1)
+    c=read(run/f'comparison-{attention}.json');assert status==int(not c['all_comparisons_passed']);attempt[attention]={k:v for k,v in c.items() if k not in ['rows','state_differences']};save()
+   attempt['execution_complete']=True
+  attempt['finished_at']=time.time();attempt['gpu_after']=get_gpu(7);assert int(attempt['gpu_after']['free_mib'])>=11900;save();print(json.dumps({k:v for k,v in attempt.items() if k in ['name','failure','eager','sdpa','execution_complete','native_parity_passed','precision_binding_passed']}),flush=True)
+ report['complete']=True;report['execution_complete']=all(a.get('execution_complete') for a in report['attempts'])
+finally:report['finished_at']=time.time();save()
+raise SystemExit(0 if report.get('execution_complete') else 1)

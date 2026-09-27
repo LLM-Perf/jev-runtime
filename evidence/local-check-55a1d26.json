@@ -1,0 +1,16 @@
+{
+  "source_commit": "55a1d2626b6c8da2af0ee0ad84c8bbe197b86309",
+  "local_tests": {
+    "passed": 432,
+    "duration_seconds": 25.14
+  },
+  "targeted_numerical_tests": 16,
+  "ruff_check": "passed",
+  "format_check": "passed for 118 product/test/deployment Python files",
+  "typescript": "unchanged, not rerun",
+  "product_code_changes": false,
+  "wheel_build": "not rerun; only harness/tests/docs changed; source-based DSW campaign",
+  "source_archive_sha256": "30cebb12d00b55f45224ccda976c5d4d39a498441549ce9377e6ed35d1057dfa",
+  "offline_evidence_verifier": "passed; 78 artifact hashes, source identities, state metrics, 768 reference comparisons",
+  "quantile_crosscheck": "24 summary statistics match NumPy linear quantiles at absolute tolerance 1e-12"
+}

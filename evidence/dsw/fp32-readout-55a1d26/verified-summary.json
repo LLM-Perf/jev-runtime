@@ -1,0 +1,316 @@
+{
+  "source_commit": "55a1d2626b6c8da2af0ee0ad84c8bbe197b86309",
+  "profiles": {
+    "vllm-ordinary-fp32": {
+      "batch_invariant": false,
+      "backbone_dtype": "bfloat16",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 8,
+          "max_logprob_change": 0.2028331756591797,
+          "max_probability_change": 0.03308530068157134,
+          "argmax_changes": 1
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 1,
+          "max_logprob_change": 0.4230232238769531,
+          "max_probability_change": 0.05226918411252973,
+          "argmax_changes": 4
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 18,
+          "total": 96,
+          "max_logprob_error": 0.8986444473266602,
+          "max_probability_error": 0.1823627715975682,
+          "argmax_mismatches": 7,
+          "near_tie_argmax_mismatches": 6,
+          "non_near_tie_argmax_mismatches": 1,
+          "logprob_error_p50": 0.2507399320602417,
+          "logprob_error_p95": 0.6985924243927002,
+          "probability_error_p95": 0.10712072852117116
+        },
+        "sdpa": {
+          "passed": 32,
+          "total": 96,
+          "max_logprob_error": 0.6865158081054688,
+          "max_probability_error": 0.08579753112167665,
+          "argmax_mismatches": 7,
+          "near_tie_argmax_mismatches": 7,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.1897159218788147,
+          "logprob_error_p95": 0.5345122814178467,
+          "probability_error_p95": 0.060703472856902224
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "vllm-invariant-fp32": {
+      "batch_invariant": true,
+      "backbone_dtype": "bfloat16",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 18,
+          "total": 96,
+          "max_logprob_error": 1.0218534469604492,
+          "max_probability_error": 0.14070316637688451,
+          "argmax_mismatches": 9,
+          "near_tie_argmax_mismatches": 9,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.24793511629104614,
+          "logprob_error_p95": 0.8069579601287842,
+          "probability_error_p95": 0.11003915738055015
+        },
+        "sdpa": {
+          "passed": 27,
+          "total": 96,
+          "max_logprob_error": 0.5547690391540527,
+          "max_probability_error": 0.059031197015047554,
+          "argmax_mismatches": 6,
+          "near_tie_argmax_mismatches": 6,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.21253067255020142,
+          "logprob_error_p95": 0.5096902847290039,
+          "probability_error_p95": 0.05689114666634676
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "sglang-ordinary-fp32": {
+      "batch_invariant": false,
+      "backbone_dtype": "bfloat16",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 0,
+          "max_logprob_change": 0.2409510612487793,
+          "max_probability_change": 0.02680040227037417,
+          "argmax_changes": 2
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 4,
+          "max_logprob_change": 0.3841671943664551,
+          "max_probability_change": 0.058881235773125984,
+          "argmax_changes": 2
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 20,
+          "total": 96,
+          "max_logprob_error": 0.8148999214172363,
+          "max_probability_error": 0.16837892370028945,
+          "argmax_mismatches": 8,
+          "near_tie_argmax_mismatches": 7,
+          "non_near_tie_argmax_mismatches": 1,
+          "logprob_error_p50": 0.2708956003189087,
+          "logprob_error_p95": 0.7043356895446777,
+          "probability_error_p95": 0.09492130290453193
+        },
+        "sdpa": {
+          "passed": 28,
+          "total": 96,
+          "max_logprob_error": 0.5742626190185547,
+          "max_probability_error": 0.08269528044646923,
+          "argmax_mismatches": 9,
+          "near_tie_argmax_mismatches": 9,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.2052120566368103,
+          "logprob_error_p95": 0.433172345161438,
+          "probability_error_p95": 0.07444002331016802
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          83,
+          84,
+          85,
+          86,
+          88,
+          89,
+          94,
+          95,
+          96,
+          97,
+          99,
+          100,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          118,
+          119
+        ],
+        "concurrent_reversed": [
+          0,
+          43,
+          44,
+          47,
+          48
+        ]
+      }
+    },
+    "sglang-invariant-fp32": {
+      "batch_invariant": true,
+      "backbone_dtype": "bfloat16",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 21,
+          "total": 96,
+          "max_logprob_error": 1.086738109588623,
+          "max_probability_error": 0.12239173383383262,
+          "argmax_mismatches": 6,
+          "near_tie_argmax_mismatches": 6,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.28501081466674805,
+          "logprob_error_p95": 0.6925668716430664,
+          "probability_error_p95": 0.09826095258933765
+        },
+        "sdpa": {
+          "passed": 27,
+          "total": 96,
+          "max_logprob_error": 0.5002455711364746,
+          "max_probability_error": 0.10370425418054618,
+          "argmax_mismatches": 3,
+          "near_tie_argmax_mismatches": 3,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.2192865014076233,
+          "logprob_error_p95": 0.49888038635253906,
+          "probability_error_p95": 0.07838241019184305
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          83,
+          84,
+          85,
+          86,
+          88,
+          89,
+          94,
+          95,
+          96,
+          97,
+          99,
+          100,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          118,
+          119
+        ],
+        "concurrent_reversed": [
+          0,
+          43,
+          44,
+          47,
+          48
+        ]
+      }
+    }
+  },
+  "full_release_gate_passed": false,
+  "scoring_responses": 384,
+  "native_parity_pairs": 128,
+  "reference_forwards": 256,
+  "reference_comparisons": 768,
+  "owned_records_terminal": 241,
+  "input_ids_equal_across_profiles": true,
+  "input_ids_equal_to_previous_bf16_head_campaign": true,
+  "reference_vectors_equal_between_modes": true
+}

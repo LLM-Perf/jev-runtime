@@ -47,6 +47,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [CPU/GPU numerical reference diagnosis](docs/numerical-reference-diagnostics.md),
 [multi-input numerical and cache/concurrency diagnostics](docs/numerical-suite.md),
 [explicit batch-invariance mode and DSW A/B results](docs/batch-invariant-mode.md),
+[multi-input FP32 readout validation](docs/fp32-readout-validation.md),
 [reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
 [performance experiments](docs/performance.md),

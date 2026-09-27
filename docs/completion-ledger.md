@@ -490,6 +490,17 @@ and identical product code. All 205 retained owned records are terminal. Local
 new wheels. Coverage remains 24/40 and all broader release gates remain open. See
 [batch-invariance validation](batch-invariant-mode.md).
 
+At harness `55a1d26`, the same four-profile experiment uses FP32 output projection
+with BF16 backbone, retaining shared embedding parameters in the independent
+reference. All 384 scoring responses, 128 plugin/native pairs and 768 reference
+comparisons complete. Both enabled engines retain exact state stability; all
+native pairs match and precision/mode mismatch guards pass. Every independent
+reference profile still fails part of the development check, including one
+non-near-tie eager-reference argmax mismatch in each ordinary profile. All 241
+retained owned records are terminal; 432 local tests pass. Product code is
+unchanged, coverage stays 24/40 and no release gate is newly accepted. See
+[FP32 readout validation](fp32-readout-validation.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |

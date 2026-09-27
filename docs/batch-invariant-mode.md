@@ -141,6 +141,10 @@ numerical/quality validation, declared precision/TP/attention coverage and measu
 performance cost. Managed LoRA remains excluded. This result establishes one
 useful execution option, not general batch invariance across supported models.
 
+The [FP32-head follow-up](fp32-readout-validation.md) preserves the observed
+enabled-mode stability while retaining reference discrepancies. It is a separate
+precision profile; none of the BF16-head evidence above is replaced.
+
 - [Recomputed results](../evidence/dsw/batch-invariant-f9167c9/verified-summary.json)
 - [Initial campaign and retained reset failure](../evidence/dsw/batch-invariant-f9167c9/campaign.json)
 - [SGLang bounded-idle retest](../evidence/dsw/batch-invariant-f9167c9/retest-campaign.json)
