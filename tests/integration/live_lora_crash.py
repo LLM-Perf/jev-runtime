@@ -34,6 +34,7 @@ async def run(args):
     settings = load_settings(root / "config.json")
     record = json.loads((root / "process.json").read_text())
     assert record["mode"] == "native-plugin" and settings.workers == 1
+    assert record.get("tensor_parallel_size", 1) == 1, "Managed LoRA crash harness covers TP1 only"
     assert settings.adapters.enabled
     assert settings.adapters.allowed_roots == (str(args.fixtures.resolve()),)
     assert settings.admission.max_requests >= 2
@@ -515,7 +516,7 @@ async def run(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Managed native TP1 LoRA crash/restart checks")
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--fixtures", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)

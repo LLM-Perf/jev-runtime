@@ -3,7 +3,7 @@
 
 Run with the intended engine environment's Python. Process identity includes the
 boot ID and Linux start ticks, so a reused PID can never be stopped by this tool.
-This is a single-GPU functional-test launcher, not a performance certification.
+Explicit GPU lists enable tensor parallel functional checks, not performance certification.
 """
 
 from __future__ import annotations
@@ -53,7 +53,31 @@ def get_gpu(index: int) -> dict:
     )
 
 
+def device_indices(gpu: int, gpus: str | None) -> list[int]:
+    try:
+        selected = [gpu] if gpus is None else [int(value.strip()) for value in gpus.split(",")]
+    except ValueError as exc:
+        raise ValueError("gpus must be comma-separated integer device indices") from exc
+    if not selected or len(set(selected)) != len(selected) or min(selected) < 0:
+        raise ValueError("GPU indices must be distinct and nonnegative")
+    return selected
+
+
+def check_gpu_budgets(indices: list[int], engine: str, fraction: float, reserve: int) -> list[dict]:
+    snapshots = [{"index": index, **get_gpu(index)} for index in indices]
+    denominator = "total_mib" if engine == "vllm" else "free_mib"
+    for gpu in snapshots:
+        if float(gpu[denominator]) * fraction + reserve > float(gpu["free_mib"]):
+            raise SystemExit(
+                f"Insufficient free memory on GPU {gpu['index']} for its budget and reserve"
+            )
+    if len({gpu["uuid"] for gpu in snapshots}) != len(snapshots):
+        raise SystemExit("Selected indices do not identify distinct GPUs")
+    return snapshots
+
+
 def launch(args):
+    indices = device_indices(args.gpu, args.gpus)
     root = args.run_dir.resolve()
     root.mkdir(parents=True, exist_ok=True)
     record = root / "process.json"
@@ -66,15 +90,17 @@ def launch(args):
         # connections can leave TIME_WAIT after SIGKILL without a live listener.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind(("127.0.0.1", args.port))
-    gpu = None if args.gateway else get_gpu(args.gpu)
+    gpus = (
+        []
+        if args.gateway
+        else check_gpu_budgets(indices, args.engine, args.memory_fraction, args.reserve_mib)
+    )
+    gpu = {key: value for key, value in gpus[0].items() if key != "index"} if gpus else None
     # vLLM 0.30 uses total device memory. SGLang 0.5.19's configurator uses
     # pre-load available memory, which matters on shared devices.
     denominator = None
     if gpu is not None:
         denominator = "total_mib" if args.engine == "vllm" else "free_mib"
-        budget = float(gpu[denominator]) * args.memory_fraction
-        if budget + args.reserve_mib > float(gpu["free_mib"]):
-            raise SystemExit("Insufficient free GPU memory for the explicit budget and reserve")
     model = args.model_path.resolve()
     source = json.loads((model / "jev-source.json").read_text())
     config = {
@@ -133,7 +159,7 @@ def launch(args):
     env = dict(os.environ)
     env.update(
         {
-            "CUDA_VISIBLE_DEVICES": str(args.gpu),
+            "CUDA_VISIBLE_DEVICES": ",".join(str(index) for index in indices),
             "JEV_API_KEY": credentials["api"],
             "JEV_ADMIN_KEY": credentials["admin"],
             "JEV_CONFIG": str(root / "config.json"),
@@ -183,6 +209,8 @@ def launch(args):
         ]
         if args.api_workers > 1:
             command.extend(["--api-server-count", str(args.api_workers)])
+        if len(indices) > 1:
+            command.extend(["--tensor-parallel-size", str(len(indices))])
         if args.adapters_root:
             command.extend(
                 [
@@ -229,6 +257,8 @@ def launch(args):
         ]
         if args.api_workers > 1:
             command.extend(["--tokenizer-worker-num", str(args.api_workers)])
+        if len(indices) > 1:
+            command.extend(["--tp-size", str(len(indices))])
         if args.adapters_root:
             command.extend(
                 [
@@ -261,6 +291,8 @@ def launch(args):
         "command": command,
         "model": source,
         "gpu_before": gpu,
+        "gpus_before": gpus,
+        "tensor_parallel_size": len(indices) if gpus else None,
         "created": time.time(),
         "port": args.port,
         "qualification": "colocated-functional-test",
@@ -304,6 +336,9 @@ def main():
     parser.add_argument("--engine", choices=["sglang", "vllm"])
     parser.add_argument("--model-path", type=Path)
     parser.add_argument("--gpu", type=int, default=7)
+    parser.add_argument(
+        "--gpus", help="Explicit CUDA device indices; count sets native tensor parallelism"
+    )
     parser.add_argument("--port", type=int, default=18795)
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
@@ -317,6 +352,14 @@ def main():
     parser.add_argument("--tenant", action="append", default=[])
     args = parser.parse_args()
     if args.action == "launch":
+        try:
+            indices = device_indices(args.gpu, args.gpus)
+        except ValueError as exc:
+            parser.error(str(exc))
+        if args.reserve_mib < 0:
+            parser.error("reserve-mib must be nonnegative")
+        if args.gateway and args.gpus is not None:
+            parser.error("gateways do not allocate GPUs; configure the native engine separately")
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
             parser.error("launch requires engine, model path and a valid memory fraction")
         if args.gateway and not args.engine_url:
@@ -325,8 +368,8 @@ def main():
             parser.error("engine-run-dir only supplies credentials for a gateway")
         if not 1 <= args.api_workers <= 128:
             parser.error("api-workers must be between 1 and 128")
-        if args.adapters_root and (args.gateway or args.api_workers != 1):
-            parser.error("managed adapters require the native single-worker profile")
+        if args.adapters_root and (args.gateway or args.api_workers != 1 or len(indices) != 1):
+            parser.error("managed adapters require the native TP1 single-worker profile")
         if len(set(args.tenant)) != len(args.tenant) or any(
             not name or name == "default" for name in args.tenant
         ):

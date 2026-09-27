@@ -1,0 +1,99 @@
+import pytest
+
+from deployment import dsw_service
+
+
+def test_explicit_gpu_mapping_preserves_order_and_rejects_aliases():
+    assert dsw_service.device_indices(7, None) == [7]
+    assert dsw_service.device_indices(7, "6, 7") == [6, 7]
+    for invalid in ("", "7,", "6,6", "-1,7", "GPU-unknown"):
+        with pytest.raises(ValueError):
+            dsw_service.device_indices(7, invalid)
+
+
+@pytest.mark.parametrize("engine,fraction", [("vllm", 0.1), ("sglang", 0.85)])
+def test_insufficient_nonprimary_gpu_blocks_launch(engine, fraction, monkeypatch):
+    def gpu(index):
+        return {
+            "uuid": f"gpu-{index}",
+            "total_mib": "80000",
+            "free_mib": "12000" if index == 6 else "5000",
+        }
+
+    monkeypatch.setattr(dsw_service, "get_gpu", gpu)
+    with pytest.raises(SystemExit, match="GPU 7"):
+        dsw_service.check_gpu_budgets([6, 7], engine, fraction, 1000)
+
+
+def test_budget_uses_each_device_memory_denominator_and_records_mapping(monkeypatch):
+    def gpu(index):
+        return {"uuid": f"gpu-{index}", "total_mib": "80000", "free_mib": "12000"}
+
+    monkeypatch.setattr(dsw_service, "get_gpu", gpu)
+    result = dsw_service.check_gpu_budgets([6, 7], "sglang", 0.65, 3072)
+    assert [x["index"] for x in result] == [6, 7]
+    with pytest.raises(SystemExit):
+        dsw_service.check_gpu_budgets([6, 7], "vllm", 0.65, 3072)
+    monkeypatch.setattr(dsw_service, "get_gpu", lambda index: gpu(6))
+    with pytest.raises(SystemExit, match="distinct GPUs"):
+        dsw_service.check_gpu_budgets([6, 7], "sglang", 0.65, 3072)
+
+
+@pytest.mark.parametrize(
+    "engine,flag", [("vllm", "--tensor-parallel-size"), ("sglang", "--tp-size")]
+)
+def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
+    engine, flag, monkeypatch, tmp_path
+):
+    import json
+    from types import SimpleNamespace
+
+    model = tmp_path / "model"
+    model.mkdir()
+    (model / "jev-source.json").write_text(
+        json.dumps({"model_id": "fixture", "revision": "a" * 40})
+    )
+    args = SimpleNamespace(
+        run_dir=tmp_path / "run",
+        model_path=model,
+        gpu=7,
+        gpus="6,7",
+        engine=engine,
+        gateway=False,
+        port=0,
+        memory_fraction=0.07,
+        reserve_mib=3072,
+        engine_url=None,
+        api_workers=1,
+        admission_config=None,
+        health_config=None,
+        tenant=[],
+        adapters_root=None,
+        engine_run_dir=None,
+    )
+    monkeypatch.setattr(
+        dsw_service,
+        "get_gpu",
+        lambda index: {
+            "uuid": f"gpu-{index}",
+            "total_mib": "80000",
+            "free_mib": "12000",
+        },
+    )
+    captured = {}
+
+    def start(command, **kwargs):
+        captured.update(command=command, **kwargs)
+        return SimpleNamespace(pid=123)
+
+    monkeypatch.setattr(dsw_service.subprocess, "Popen", start)
+    monkeypatch.setattr(dsw_service, "process_identity", lambda pid: {"pid": pid})
+    dsw_service.launch(args)
+    command = captured["command"]
+    assert command[command.index(flag) + 1] == "2"
+    assert captured["env"]["CUDA_VISIBLE_DEVICES"] == "6,7"
+    assert captured["start_new_session"]
+    record = json.loads((args.run_dir / "process.json").read_text())
+    assert record["tensor_parallel_size"] == 2
+    assert [gpu["index"] for gpu in record["gpus_before"]] == [6, 7]
+    assert record["gpu_before"]["uuid"] == "gpu-6"
