@@ -62,6 +62,9 @@ def launch(args):
         if process_identity(previous["identity"]["pid"]) == previous["identity"]:
             raise SystemExit("The recorded engine is still alive; refusing a duplicate launch")
     with socket.socket() as sock:
+        # Match uvicorn's bind semantics. A previous gateway's accepted
+        # connections can leave TIME_WAIT after SIGKILL without a live listener.
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind(("127.0.0.1", args.port))
     gpu = None if args.gateway else get_gpu(args.gpu)
     # vLLM 0.30 uses total device memory. SGLang 0.5.19's configurator uses
