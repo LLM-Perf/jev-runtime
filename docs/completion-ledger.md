@@ -477,6 +477,19 @@ remain visible. All 171 retained owned identities are terminal; 420 local tests
 pass. Numerical certification remains failed, and no model/quality/performance
 release gate is newly passed. See [multi-input numerical diagnostics](numerical-suite.md).
 
+At runtime `f9167c9`, execution mode is bound to model/bundle/calibration identity
+and checked against the native engine report. A four-profile Qwen3-0.6B DSW A/B
+collects 384 scoring responses, 128 plugin/native pairs and 768 independent GPU
+reference comparisons. Both enabled profiles preserve all 32 vectors exactly
+under repetition and reversed concurrent submissions; ordinary profiles change.
+All native pairs match, but every independent-reference profile still fails part
+of the unchanged numerical check. The first SGLang enabled run fails its immediate
+cache reset; retained retest `5e6b2c7` completes with the native bounded idle barrier
+and identical product code. All 205 retained owned records are terminal. Local
+430 tests and three source-matched wheels pass; DSW executes source, not these
+new wheels. Coverage remains 24/40 and all broader release gates remain open. See
+[batch-invariance validation](batch-invariant-mode.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |

@@ -139,11 +139,13 @@ Only harness/tests/docs changed, so no new runtime wheel installation is claimed
 
 These findings keep Qwen's numerical status failed and the overall functional
 denominator at **24/40**. No quality, performance or release gate is newly passed.
-The next numerical work must test declared deterministic/batch-invariant engine
-configurations and precision choices against this retained corpus, corroborate
-the multi-case scores through native endpoints, then freeze a reference/budget
-and validate independent held-out inputs. Near-tie abstention needs explicit
-quality and coverage evaluation; increasing this tolerance is not a resolution.
+The subsequent [batch-invariance A/B](batch-invariant-mode.md) tests declared
+deterministic engine modes against this corpus and corroborates all saved inputs
+through native endpoints. It resolves the observed state variation in the tested
+enabled profiles, while independent-reference failures remain. Numerical work
+still needs precision choices, a frozen reference/budget and independent held-out
+inputs. Near-tie abstention needs explicit quality and coverage evaluation;
+increasing this tolerance is not a resolution.
 
 - [Recomputed results](../evidence/dsw/numerical-suite-877f319/verified-summary.json)
 - [Initial campaign, including failure](../evidence/dsw/numerical-suite-877f319/campaign.json)

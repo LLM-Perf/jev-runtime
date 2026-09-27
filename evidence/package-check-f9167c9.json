@@ -1,0 +1,97 @@
+{
+  "source_commit": "f9167c9cb3447e14ab7f10abee3226240e14e1be",
+  "local_tests": {
+    "passed": 430,
+    "duration_seconds": 23.11
+  },
+  "targeted_mode_precision_launcher_lifecycle_tests": 47,
+  "ruff_check": "passed",
+  "format_check": "passed for changed Python paths",
+  "typescript": "unchanged, not rerun",
+  "manifest_sha256": "d67b491605d1340aedbfc6e860780e4983781e634d0a6ded4663d55ac43d00a6",
+  "wheel_manifest": {
+    "build_tools": {
+      "build": "1.6.1",
+      "hatchling": "1.32.4"
+    },
+    "builder_sha256": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7",
+    "builder_target": {
+      "implementation": "CPython",
+      "machine": "arm64",
+      "platform": "darwin",
+      "python": "3.12",
+      "soabi": "cpython-312-darwin"
+    },
+    "distributions": {
+      "jev-runtime-core": {
+        "name": "jev-runtime-core",
+        "requires": [
+          "fastapi<1,>=0.115",
+          "httpx<1,>=0.28",
+          "jinja2<4,>=3.1",
+          "numpy<3,>=1.26",
+          "prometheus-client<1,>=0.21",
+          "pydantic<3,>=2.10",
+          "pyyaml<7,>=6",
+          "safetensors<1,>=0.5",
+          "typer<1,>=0.15",
+          "uvicorn<1,>=0.32",
+          "build>=1.2; extra == 'dev'",
+          "hatchling>=1.26; extra == 'dev'",
+          "pytest-asyncio<2,>=0.25; extra == 'dev'",
+          "pytest<10,>=8; extra == 'dev'",
+          "ruff<1,>=0.9; extra == 'dev'",
+          "pyarrow<26,>=18; extra == 'quality-data'",
+          "torch>=2.6; extra == 'reference'",
+          "transformers<6,>=4.51; extra == 'reference'",
+          "tiktoken<1,>=0.9; extra == 'tokenizer-conversion'",
+          "transformers<6,>=4.51; extra == 'tokenizer-conversion'",
+          "transformers<6,>=4.51; extra == 'tokenizers'"
+        ],
+        "verified_python_files": 31,
+        "version": "0.1.0a1",
+        "wheel": "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl"
+      },
+      "jev-sglang": {
+        "name": "jev-sglang",
+        "requires": [
+          "jev-runtime-core==0.1.0a1"
+        ],
+        "verified_python_files": 4,
+        "version": "0.1.0a1",
+        "wheel": "wheels/jev_sglang-0.1.0a1-py3-none-any.whl"
+      },
+      "jev-vllm": {
+        "name": "jev-vllm",
+        "requires": [
+          "jev-runtime-core==0.1.0a1"
+        ],
+        "verified_python_files": 4,
+        "version": "0.1.0a1",
+        "wheel": "wheels/jev_vllm-0.1.0a1-py3-none-any.whl"
+      }
+    },
+    "files": {
+      "build.log": {
+        "sha256": "dc3cfbf3d420e4b2443719dfff0af5057aa574a05b3688b9eee2dbbf015539f4",
+        "size_bytes": 355
+      },
+      "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl": {
+        "sha256": "47e9d2275d35a295935dc8b7a2df1e3719512279f71ef63bc828d3ce60b58a8c",
+        "size_bytes": 95388
+      },
+      "wheels/jev_sglang-0.1.0a1-py3-none-any.whl": {
+        "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+        "size_bytes": 3979
+      },
+      "wheels/jev_vllm-0.1.0a1-py3-none-any.whl": {
+        "sha256": "b1f081ce513a63015c1974e3e66763c6518a50f0c0625cd143d2e76b0861a6f9",
+        "size_bytes": 3705
+      }
+    },
+    "kind": "jev-wheels-v1",
+    "schema_version": 1,
+    "source_commit": "f9167c9cb3447e14ab7f10abee3226240e14e1be"
+  },
+  "scope": "CPU tests and source-matched wheels; separate source-based DSW campaign does not install these wheels"
+}

@@ -43,6 +43,19 @@
         "evidence": "evidence/dsw/numerical-suite-877f319/verified-summary.json",
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_batch_invariance": {
+        "source_commit": "f9167c9cb3447e14ab7f10abee3226240e14e1be",
+        "retest_harness_commit": "5e6b2c705c58d125bc723539edb31728f668f5c0",
+        "status": "state_stability_observed_reference_check_failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/head TP1/API1 eager; reset/repeat/reversed-client-concurrency4; enabled engine mode; no performance/quality/full numerical certification",
+        "evidence": "evidence/dsw/batch-invariant-f9167c9/verified-summary.json",
+        "exact_repeat_vectors": 32,
+        "exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "native_parity_pairs_passed": 32,
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -77,6 +90,19 @@
         "status": "failed",
         "scope": "32 synthetic joint-label inputs; BF16 backbone/head TP1/API1; reset/repeat/reversed-client-concurrency4; GPU BF16 eager and SDPA references; no full numerical/quality/performance certification",
         "evidence": "evidence/dsw/numerical-suite-877f319/verified-summary.json",
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
+      },
+      "development_batch_invariance": {
+        "source_commit": "f9167c9cb3447e14ab7f10abee3226240e14e1be",
+        "retest_harness_commit": null,
+        "status": "state_stability_observed_reference_check_failed",
+        "scope": "32 synthetic joint-label inputs; BF16 backbone/head TP1/API1 eager; reset/repeat/reversed-client-concurrency4; enabled engine mode; no performance/quality/full numerical certification",
+        "evidence": "evidence/dsw/batch-invariant-f9167c9/verified-summary.json",
+        "exact_repeat_vectors": 32,
+        "exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "native_parity_pairs_passed": 32,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
       }

@@ -1,0 +1,422 @@
+{
+  "source_commit": "5e6b2c705c58d125bc723539edb31728f668f5c0",
+  "script_sha256": "f3c14f25892dee61f7afc313e6808b81e13647e94be21220afea48363a1f4236",
+  "started_at": 1790552078.9573755,
+  "attempts": [
+    {
+      "engine": "sglang",
+      "batch_invariant": true,
+      "name": "sglang-invariant",
+      "run_dir": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7",
+      "started_at": 1790552079.07408,
+      "children": [
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.numerical_suite",
+            "collect",
+            "--run-dir",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json"
+          ],
+          "identity": {
+            "pid": 2722753,
+            "start_ticks": "430765515",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/collect.log",
+          "started_at": 1790552115.8183944,
+          "returncode": 0,
+          "finished_at": 1790552132.0810843,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.live_execution_mode",
+            "--run-dir",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7",
+            "--engine-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/mode-check.json"
+          ],
+          "identity": {
+            "pid": 2722815,
+            "start_ticks": "430767145",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/mode-check.log",
+          "started_at": 1790552132.1187787,
+          "returncode": 0,
+          "finished_at": 1790552143.6660511,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-c",
+            "import json; from pathlib import Path; from tests.integration.run_native_validation import postcheck; p=Path('/root/jev-runtime/runs/sglang-invariant-5e6b2c7'); result=postcheck(p,json.loads((p/'process.json').read_text()),json.loads((p/'keys.json').read_text())['admin'],'5e6b2c705c58d125bc723539edb31728f668f5c0'); (p/'postcheck.json').write_text(json.dumps(result,indent=2)+'\\n')"
+          ],
+          "identity": {
+            "pid": 2722884,
+            "start_ticks": "430768303",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/postcheck.log",
+          "started_at": 1790552143.7016156,
+          "returncode": 0,
+          "finished_at": 1790552144.1165717,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.numerical_suite",
+            "reference",
+            "--engine-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json",
+            "--model-path",
+            "/root/jev-runtime/models/Qwen3-0.6B",
+            "--attention",
+            "eager",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-eager.json"
+          ],
+          "identity": {
+            "pid": 2722888,
+            "start_ticks": "430768990",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-eager.log",
+          "started_at": 1790552150.5708172,
+          "returncode": 0,
+          "finished_at": 1790552161.0155168,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.numerical_suite",
+            "compare",
+            "--engine-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json",
+            "--reference-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-eager.json",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-eager.json"
+          ],
+          "identity": {
+            "pid": 2723029,
+            "start_ticks": "430770037",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-eager.log",
+          "started_at": 1790552161.042671,
+          "returncode": 1,
+          "finished_at": 1790552161.3743825,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.numerical_suite",
+            "reference",
+            "--engine-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json",
+            "--model-path",
+            "/root/jev-runtime/models/Qwen3-0.6B",
+            "--attention",
+            "sdpa",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-sdpa.json"
+          ],
+          "identity": {
+            "pid": 2723030,
+            "start_ticks": "430770073",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-sdpa.log",
+          "started_at": 1790552161.4024901,
+          "returncode": 0,
+          "finished_at": 1790552173.604122,
+          "remaining_group": []
+        },
+        {
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "tests.integration.numerical_suite",
+            "compare",
+            "--engine-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/engine-scores.json",
+            "--reference-report",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-sdpa.json",
+            "--output",
+            "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-sdpa.json"
+          ],
+          "identity": {
+            "pid": 2723172,
+            "start_ticks": "430771296",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "log": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-sdpa.log",
+          "started_at": 1790552173.6318724,
+          "returncode": 1,
+          "finished_at": 1790552173.946539,
+          "remaining_group": []
+        }
+      ],
+      "imports": {
+        "jev_runtime": {
+          "path": "/root/jev-runtime/invariant-sources/5e6b2c705c58d125bc723539edb31728f668f5c0/src/jev_runtime/__init__.py",
+          "files": {
+            "health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+            "calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+            "scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+            "lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+            "rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+            "admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+            "config.py": "eaae762549562a920351c314fe08f83cef30b609f658c11a41f4be7d56fa1167",
+            "registry_backup.py": "e42668ba3c653a4a2276007f8c118207818a0a25452b821a882861f89d2c6059",
+            "cli.py": "48f4da96189e89f2bc37602235b2e8433f0544e0d4c7692fc1999ad579ca74d5",
+            "schema.py": "2c72507f010d21269042ab25241ca9efbb7652c82f58af7a3fdb2366c3200de7",
+            "tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594",
+            "shared_admission.py": "2493e5ea557a2fe3ab91fe26a3b7fed4dd948dd0c045d675d98a007d75a32169",
+            "systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+            "api.py": "c4bba7d3a1574f733564b1d2b247b94853c879f74d9e1e2ac94fca3b91f60243",
+            "runtime.py": "7944ab639c4e6b671d0faf69d803be63b42e0e799fda45a31b13c02e32db82c2",
+            "sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+            "templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+            "adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+            "performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+            "telemetry.py": "f947398844cd9d8b4b51c48a9ba6059fba2b972226d415c2d1c5d135b85ec5f5",
+            "evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+            "compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+            "errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+            "registry.py": "bc2d101dd210579932976e73877d07379faaf9f50fe3f2c29acf252d9c3e446c",
+            "generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+            "__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+            "plugin_api.py": "5e15bb56fadc56617ef3c798c3f63309e9a5c2f82e9f58a1f971e2980bf68fe1",
+            "backends/sglang.py": "4fe03b9f80cd5b58594be5bd5e9a821cce177b93da7bf91407b2ed4ee1a32ab0",
+            "backends/vllm.py": "b3d9b4ec51317bf34854e6be8a79a3f15b0c85eddec23330bfa8a8e774bbc58a",
+            "backends/base.py": "399160e3c36b01affb06bc42ba0a141d4f600b57bb903905dd8ae41965c96168",
+            "backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b"
+          }
+        },
+        "jev_sglang": {
+          "path": "/root/jev-runtime/invariant-sources/5e6b2c705c58d125bc723539edb31728f668f5c0/packages/sglang/src/jev_sglang/__init__.py",
+          "files": {
+            "plugin.py": "0adff17dc0e6a18e3a7332569b1c38833db23bbcac8c6078652363b73f546d22",
+            "worker.py": "08ea777d967b2b2a7a2620ab300fabec712526b1e6dc3251b52975aa203d8e9a",
+            "launcher.py": "f432512cc3653492a96647b32b8bccbd233e038290c76ddddac68cfe2107fcb7",
+            "__init__.py": "df0f14b124341fe1dab4f58249cdf23d59fbc1ace74fea4a0b6e6dd81bb938eb"
+          }
+        }
+      },
+      "launch_command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/invariant-sources/5e6b2c705c58d125bc723539edb31728f668f5c0/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-invariant-5e6b2c7",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen3-0.6B",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/Qwen3-0.6B-preserved-sglang-cdd0caf",
+        "--gpus",
+        "7",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".5",
+        "--reserve-mib",
+        "3072",
+        "--health-config",
+        "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/health-settings.json",
+        "--batch-invariant"
+      ],
+      "ready": {
+        "ready": true,
+        "elapsed_seconds": 36.12747080717236
+      },
+      "topology": {
+        "tensor_parallel_size": 1,
+        "parent_cuda_visible_devices": "7",
+        "selected_gpus": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "server_parallel_config": {
+          "tp_size": 1,
+          "pp_size": 1,
+          "dp_size": 1,
+          "dtype": "bfloat16",
+          "model_path": "/root/jev-runtime/models/Qwen3-0.6B",
+          "context_length": 2048
+        },
+        "proof": "Live server parallel configuration and parent CUDA mapping"
+      },
+      "collection_seconds": 15.897453546524048,
+      "mode_check_complete": true,
+      "native_parity_passed": true,
+      "postcheck": {
+        "zero_leases": true,
+        "zero_admission": true,
+        "all_active_bundles_healthy": true,
+        "active_routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ]
+      },
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2722180,
+            "start_ticks": "430761877",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "sglang",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/sglang/bin/python",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/root/jev-runtime/models/Qwen3-0.6B",
+            "--served-model-name",
+            "Qwen/Qwen3-0.6B",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18794",
+            "--dtype",
+            "bfloat16",
+            "--context-length",
+            "2048",
+            "--max-running-requests",
+            "4",
+            "--chunked-prefill-size",
+            "512",
+            "--max-total-tokens",
+            "2048",
+            "--mem-fraction-static",
+            "0.5",
+            "--disable-cuda-graph",
+            "--attention-backend",
+            "triton",
+            "--enable-deterministic-inference",
+            "--tokenizer-path",
+            "/root/jev-runtime/tokenizers/Qwen3-0.6B-preserved-sglang-cdd0caf"
+          ],
+          "model": {
+            "model_id": "Qwen/Qwen3-0.6B",
+            "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+            "path": "/root/jev-runtime/models/Qwen3-0.6B"
+          },
+          "tokenizer_path": "/root/jev-runtime/tokenizers/Qwen3-0.6B-preserved-sglang-cdd0caf",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "readout_dtype": "bfloat16",
+          "batch_invariant": true,
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790552079.4378803,
+          "port": 18794,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "free_mib"
+        },
+        "checked_at": 1790552144.1431699,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "eager": {
+        "scope": "Synthetic multi-input development diagnostics; not release certification",
+        "atol": 0.15,
+        "case_count": 32,
+        "comparisons": 96,
+        "passed_comparisons": 27,
+        "near_tie_cases": 6,
+        "max_absolute_logprob_error": 0.9879083633422852,
+        "max_absolute_conditional_probability_error": 0.11312831822716574,
+        "top_label_mismatches": 6,
+        "all_comparisons_passed": false,
+        "full_release_gate_passed": false
+      },
+      "sdpa": {
+        "scope": "Synthetic multi-input development diagnostics; not release certification",
+        "atol": 0.15,
+        "case_count": 32,
+        "comparisons": 96,
+        "passed_comparisons": 21,
+        "near_tie_cases": 6,
+        "max_absolute_logprob_error": 0.5020051002502441,
+        "max_absolute_conditional_probability_error": 0.09128006849607773,
+        "top_label_mismatches": 3,
+        "all_comparisons_passed": false,
+        "full_release_gate_passed": false
+      },
+      "execution_complete": true,
+      "finished_at": 1790552173.973759,
+      "gpu_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      }
+    }
+  ],
+  "complete": true,
+  "execution_complete": true,
+  "finished_at": 1790552174.136629
+}

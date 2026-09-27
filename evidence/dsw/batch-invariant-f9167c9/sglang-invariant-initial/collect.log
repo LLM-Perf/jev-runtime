@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/root/jev-runtime/invariant-sources/f9167c9cb3447e14ab7f10abee3226240e14e1be/tests/integration/numerical_suite.py", line 435, in <module>
+    main()
+  File "/root/jev-runtime/invariant-sources/f9167c9cb3447e14ab7f10abee3226240e14e1be/tests/integration/numerical_suite.py", line 419, in main
+    asyncio.run(collect(args.run_dir, args.output))
+  File "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/invariant-sources/f9167c9cb3447e14ab7f10abee3226240e14e1be/tests/integration/numerical_suite.py", line 268, in collect
+    await reset()
+  File "/root/jev-runtime/invariant-sources/f9167c9cb3447e14ab7f10abee3226240e14e1be/tests/integration/numerical_suite.py", line 242, in reset
+    response.raise_for_status()
+  File "/root/jev-runtime/envs/sglang/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '400 Bad Request' for url 'http://127.0.0.1:18794/flush_cache'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400

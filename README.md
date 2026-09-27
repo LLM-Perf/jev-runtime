@@ -22,8 +22,9 @@ python3.12 -m venv .venv
 
 Engine adapters are separate distributions under `packages/` so the core does not
 install two competing GPU dependency stacks. Run each engine in its own environment.
-Model weights, credentials, private workload text, and raw service logs are excluded
-from this repository.
+Model weights, credentials, private workload text, and unfiltered service logs are
+excluded. Selected isolated-test logs checked for campaign credentials are retained
+with their evidence manifests.
 
 See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
 [immutable packages and offline installation](docs/release-packaging.md),
@@ -45,6 +46,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [GLM4/R1 Qwen GPU validation](docs/glm-r1-model-validation.md),
 [CPU/GPU numerical reference diagnosis](docs/numerical-reference-diagnostics.md),
 [multi-input numerical and cache/concurrency diagnostics](docs/numerical-suite.md),
+[explicit batch-invariance mode and DSW A/B results](docs/batch-invariant-mode.md),
 [reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
 [performance experiments](docs/performance.md),

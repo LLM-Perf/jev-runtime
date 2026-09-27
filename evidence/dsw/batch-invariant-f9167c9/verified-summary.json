@@ -1,0 +1,268 @@
+{
+  "source_commit": "f9167c9cb3447e14ab7f10abee3226240e14e1be",
+  "retest_harness_commit": "5e6b2c705c58d125bc723539edb31728f668f5c0",
+  "profiles": {
+    "vllm-ordinary": {
+      "batch_invariant": false,
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 8,
+          "max_logprob_change": 0.2492976188659668,
+          "max_probability_change": 0.04695140193132799,
+          "argmax_changes": 1
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 1,
+          "max_logprob_change": 0.6237058639526367,
+          "max_probability_change": 0.06135452141891928,
+          "argmax_changes": 4
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 22,
+          "total": 96,
+          "max_logprob_error": 0.9981527328491211,
+          "max_probability_error": 0.1824982754894635,
+          "argmax_mismatches": 7
+        },
+        "sdpa": {
+          "passed": 33,
+          "total": 96,
+          "max_logprob_error": 0.7442569732666016,
+          "max_probability_error": 0.09174077045229642,
+          "argmax_mismatches": 7
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "vllm-invariant": {
+      "batch_invariant": true,
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 15,
+          "total": 96,
+          "max_logprob_error": 0.9983835220336914,
+          "max_probability_error": 0.12121638177155458,
+          "argmax_mismatches": 9
+        },
+        "sdpa": {
+          "passed": 33,
+          "total": 96,
+          "max_logprob_error": 0.744938850402832,
+          "max_probability_error": 0.07571077932918832,
+          "argmax_mismatches": 6
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "sglang-ordinary": {
+      "batch_invariant": false,
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 0,
+          "max_logprob_change": 0.37437009811401367,
+          "max_probability_change": 0.06221986742158109,
+          "argmax_changes": 1
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 4,
+          "max_logprob_change": 0.48558902740478516,
+          "max_probability_change": 0.06853313888754198,
+          "argmax_changes": 2
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 25,
+          "total": 96,
+          "max_logprob_error": 0.7561988830566406,
+          "max_probability_error": 0.18207576939652864,
+          "argmax_mismatches": 7
+        },
+        "sdpa": {
+          "passed": 31,
+          "total": 96,
+          "max_logprob_error": 0.707005500793457,
+          "max_probability_error": 0.08688200329906004,
+          "argmax_mismatches": 8
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          83,
+          84,
+          85,
+          86,
+          88,
+          89,
+          94,
+          95,
+          96,
+          97,
+          99,
+          100,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          118,
+          119
+        ],
+        "concurrent_reversed": [
+          0,
+          43,
+          44,
+          47,
+          48
+        ]
+      }
+    },
+    "sglang-invariant": {
+      "batch_invariant": true,
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 27,
+          "total": 96,
+          "max_logprob_error": 0.9879083633422852,
+          "max_probability_error": 0.11312831822716574,
+          "argmax_mismatches": 6
+        },
+        "sdpa": {
+          "passed": 21,
+          "total": 96,
+          "max_logprob_error": 0.5020051002502441,
+          "max_probability_error": 0.09128006849607773,
+          "argmax_mismatches": 3
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          83,
+          84,
+          85,
+          86,
+          88,
+          89,
+          94,
+          95,
+          96,
+          97,
+          99,
+          100,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          118,
+          119
+        ],
+        "concurrent_reversed": [
+          0,
+          43,
+          44,
+          47,
+          48
+        ]
+      }
+    }
+  },
+  "full_release_gate_passed": false,
+  "scoring_responses": 384,
+  "native_parity_pairs": 128,
+  "reference_forwards": 256,
+  "reference_comparisons": 768,
+  "owned_records_terminal": 205,
+  "input_ids_equal_across_profiles": true,
+  "reference_vectors_equal_between_modes": true
+}
