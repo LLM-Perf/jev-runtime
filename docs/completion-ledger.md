@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 88 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 91 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -65,7 +65,14 @@ replacement for any requirement in `implementation-plan.md`.
 - Explicit cancellation now addresses the original local API worker through a
   durable command, bound to tenant/backend/lease ID. Peer-worker success, failed
   abort retention, ownership and reused-ID races have local tests. Real two-worker
-  GPU-serving validation is pending; this is not multi-node routing.
+  GPU-serving validation passed through an independent two-worker SGLang gateway
+  at `364b6e0`: worker B cancelled worker A's journaled 128-branch request, no lease
+  remained, and serving resumed. Native plugin configurations still need this check;
+  this is not multi-node routing.
+- Public AG News/SST-2 fixture preparation and HTTP quality/calibration runners
+  are implemented with immutable source revisions and full attempted denominators.
+  The existing raw-score collector now also journals work and preserves uncertain
+  aborts. Public GPU evaluation remains pending and does not replace business data.
 
 ## Required evidence still outstanding
 

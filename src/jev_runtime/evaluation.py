@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import uuid
 from dataclasses import asdict
 from pathlib import Path
 
@@ -41,38 +42,58 @@ async def collect_scores(
     try:
         await runtime.start()
         runtime._validate_bundle(bundle)
+        runtime.registry.upload(bundle)
+        await runtime.prepare(bundle.reference)
         questions = {q.id: q for q in bundle.questions}
         for sample in samples:
             if set(sample.labels) != set(questions):
                 raise ValueError("Each sample needs labels for every fixed question")
-            for qid, question in questions.items():
-                compiled = runtime.compiler.compile(
-                    sample.input.text, question, bundle, "eval-" + content_digest(sample)[7:39]
+            # Collection has the same durable ownership and cancellation
+            # requirements as online scoring. Public sample IDs never become
+            # engine IDs (SGLang aborts by prefix), including repeated runs.
+            rid = "eval-" + uuid.uuid4().hex
+            _, lease = runtime.registry.pin_revalidation(
+                bundle.reference, rid, runtime.backend_identity
+            )
+            unconfirmed = set()
+            try:
+                compiled = [
+                    runtime.compiler.compile(sample.input.text, question, bundle, rid)
+                    for question in questions.values()
+                ]
+                sequences = tuple(sequence for item in compiled for sequence in item.sequences)
+                total_tokens = runtime._validate_sequences(sequences, bundle)
+                targets = []
+                for item in compiled:
+                    target = sample.labels[item.question.id]
+                    if item.question.type == "boolean":
+                        if not isinstance(target, bool):
+                            raise ValueError("Boolean evaluation requires JSON boolean targets")
+                        target = "true" if target else "false"
+                    if target not in item.keys:
+                        raise ValueError("Target must be one of the fixed business answer IDs")
+                    targets.append(item.keys.index(target))
+                runtime.registry.record_branches(
+                    lease, [sequence.request_id for sequence in sequences]
                 )
-                target = sample.labels[qid]
-                if question.type == "boolean":
-                    if not isinstance(target, bool):
-                        raise ValueError("Boolean evaluation requires JSON boolean targets")
-                    target = "true" if target else "false"
-                if target not in compiled.keys:
-                    raise ValueError("Target must be one of the fixed business answer IDs")
-                runtime._validate_sequences(compiled.sequences, bundle)
-                seq = compiled.sequences[0]
-                try:
-                    async with asyncio.timeout(120):
-                        result = await runtime.backend.score(seq)
-                except BaseException:
-                    await runtime.backend.cancel(seq.request_id)
-                    raise
-                row = LabeledScores(
-                    content_digest([sample.sample_id, qid]),
-                    sample.group_id,
-                    result.logprobs,
-                    compiled.keys.index(target),
-                    qid,
-                )
-                row.validate()
-                rows.append(asdict(row))
+                async with asyncio.timeout(120), runtime.admission.acquire(total_tokens):
+                    semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
+                    for item, target in zip(compiled, targets, strict=True):
+                        _, scored = await runtime._question(item, bundle, semaphore, unconfirmed)
+                        row = LabeledScores(
+                            content_digest([sample.sample_id, item.question.id]),
+                            sample.group_id,
+                            scored[0].logprobs,
+                            target,
+                            item.question.id,
+                        )
+                        row.validate()
+                        rows.append(asdict(row))
+            finally:
+                if unconfirmed:
+                    runtime.registry.mark_abort_pending(lease, unconfirmed)
+                else:
+                    runtime.registry.release(lease)
     finally:
         await runtime.close()
     return {

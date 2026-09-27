@@ -1,0 +1,30 @@
+{
+  "source_commit": "364b6e01f7dd4480c11e62435764b1e533c37b8e",
+  "qualification": "colocated local multi-worker functional test, not performance evidence",
+  "started_at": 1790501957.052686,
+  "process_identity": {
+    "pid": 2589805,
+    "start_ticks": "425749607",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "checks": {
+    "distinct_workers": [
+      "641bb7914459470095073134466e9f69",
+      "f150d02196cd4a4d9c457f54c7851612"
+    ],
+    "request_owner_and_journal": {
+      "owner": "641bb7914459470095073134466e9f69",
+      "request_id": "cancel-proof-32297f0e345e4db4a6e5ca519c157fab",
+      "branches": 128,
+      "lease_id": "a7a3354607c348f8bdf7f36b863c89c2"
+    },
+    "peer_cancelled_owner_request": {
+      "cancelling_worker": "f150d02196cd4a4d9c457f54c7851612",
+      "http_status": 499
+    },
+    "serving_after_cancellation": true,
+    "retired_after_drain": true
+  },
+  "passed": true,
+  "finished_at": 1790501963.921025
+}
