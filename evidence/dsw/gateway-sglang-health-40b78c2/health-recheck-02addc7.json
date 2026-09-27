@@ -1,0 +1,633 @@
+{
+  "source_commit": "02addc78015b3342451e681f2248b442a3276cc0",
+  "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "qualification": "Colocated single-worker gateway/native-engine pause and recovery; warm-to-warm recovery comparison; not cache-state numerical invariance, failover, performance or soak certification",
+  "engine": "sglang",
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "engine_process": {
+    "identity": {
+      "pid": 2623721,
+      "start_ticks": "427714287",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18794",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790521603.5355155,
+    "port": 18794,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "gateway_process": {
+    "identity": {
+      "pid": 2624296,
+      "start_ticks": "427719358",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "gateway",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/jevctl",
+      "serve",
+      "/root/jev-runtime/runs/gateway-sglang-health-40b78c2/config.json"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": null,
+    "created": 1790521654.2487588,
+    "port": 18804,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": null
+  },
+  "health_settings": {
+    "interval_seconds": 1.0,
+    "timeout_seconds": 1.0,
+    "max_age_seconds": 10.0
+  },
+  "checks": {
+    "gateway_ready_before": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "508244b1536248a8800fa6c3096d63c6"
+    },
+    "native_ready_before": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "293535a40ef346c2a4658e03e546c55c"
+    },
+    "first_baseline_response": {
+      "request_id": "dec-db94c73cb1b344ecb24db1b94b0570a8",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.7772998663336157,
+            "false": 0.22270013366638422
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9126524977221914,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 90,
+        "engine_prompt_tokens": 90,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 89
+      },
+      "latency_ms": 28.23227271437645
+    },
+    "baseline": {
+      "request_id": "dec-d595ed7baf7945998e2f4200a593618f",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.7772998663336157,
+            "false": 0.22270013366638422
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9126524977221914,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 90,
+        "engine_prompt_tokens": 90,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 89
+      },
+      "latency_ms": 24.894457310438156
+    },
+    "first_to_warm_probability_difference": 0.0,
+    "routes_before": [
+      {
+        "alias": "decision-model",
+        "ref": "default@1",
+        "generation": 1
+      }
+    ],
+    "profile_before": {
+      "worker_id": "508244b1536248a8800fa6c3096d63c6",
+      "model": {
+        "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+        "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+        "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "tokenizer_implementation_verified": true,
+      "engine_identity_verified": false,
+      "capabilities": {
+        "engine": "sglang",
+        "version": "0.5.19",
+        "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "max_label_tokens": 128,
+        "max_context_tokens": 2048,
+        "selected_logprobs": true,
+        "raw_logprobs": true,
+        "cancellation": true,
+        "lora": false,
+        "prefix_cache": true,
+        "api_workers": null,
+        "verified": false
+      },
+      "compiler": {
+        "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+        "copied_from_host_pool": false,
+        "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+        "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+        "backend_class": "tokenizers.Tokenizer",
+        "cache_token_limit": 262144,
+        "cache_entry_limit": 256,
+        "continuation_encoder": "backend-ids-only",
+        "backend_ids_only_eligible": true,
+        "batch_size_limit": 32,
+        "contract": "full prompt plus each label; exact prefix and one-token checks"
+      },
+      "admission": {
+        "scope": "shared_registry_engine",
+        "limits": {
+          "max_requests": 64,
+          "max_tokens": 1048576,
+          "max_queue": 256,
+          "max_tenant_requests": 16,
+          "max_tenant_tokens": 262144,
+          "max_tenant_queue": 64,
+          "max_branches": 1024,
+          "max_tenant_branches": 256
+        },
+        "requests": 0,
+        "expanded_tokens": 0,
+        "expanded_branches": 0,
+        "queued_requests": 0
+      },
+      "health": {
+        "scope": "local_api_worker",
+        "settings": {
+          "interval_seconds": 1.0,
+          "timeout_seconds": 1.0,
+          "max_age_seconds": 10.0
+        },
+        "monitor_running": true,
+        "bundles": {
+          "default@1": {
+            "ready": true,
+            "last_success_age_seconds": 1.0069298734888434,
+            "error": null,
+            "prepared": true
+          }
+        }
+      }
+    },
+    "pause": {
+      "signal": "SIGSTOP",
+      "at": 1790521954.9359233,
+      "group_members": [
+        2623721,
+        2623853,
+        2623854,
+        2623985
+      ]
+    },
+    "paused_group_states": {
+      "2623721": "T",
+      "2623853": "T",
+      "2623854": "T",
+      "2623985": "T"
+    },
+    "readiness_withdrawn_after_seconds": 2.0069620609283447,
+    "profile_paused": {
+      "worker_id": "508244b1536248a8800fa6c3096d63c6",
+      "model": {
+        "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+        "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+        "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "tokenizer_implementation_verified": true,
+      "engine_identity_verified": false,
+      "capabilities": {
+        "engine": "sglang",
+        "version": "0.5.19",
+        "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "max_label_tokens": 128,
+        "max_context_tokens": 2048,
+        "selected_logprobs": true,
+        "raw_logprobs": true,
+        "cancellation": true,
+        "lora": false,
+        "prefix_cache": true,
+        "api_workers": null,
+        "verified": false
+      },
+      "compiler": {
+        "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+        "copied_from_host_pool": false,
+        "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+        "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+        "backend_class": "tokenizers.Tokenizer",
+        "cache_token_limit": 262144,
+        "cache_entry_limit": 256,
+        "continuation_encoder": "backend-ids-only",
+        "backend_ids_only_eligible": true,
+        "batch_size_limit": 32,
+        "contract": "full prompt plus each label; exact prefix and one-token checks"
+      },
+      "admission": {
+        "scope": "shared_registry_engine",
+        "limits": {
+          "max_requests": 64,
+          "max_tokens": 1048576,
+          "max_queue": 256,
+          "max_tenant_requests": 16,
+          "max_tenant_tokens": 262144,
+          "max_tenant_queue": 64,
+          "max_branches": 1024,
+          "max_tenant_branches": 256
+        },
+        "requests": 0,
+        "expanded_tokens": 0,
+        "expanded_branches": 0,
+        "queued_requests": 0
+      },
+      "health": {
+        "scope": "local_api_worker",
+        "settings": {
+          "interval_seconds": 1.0,
+          "timeout_seconds": 1.0,
+          "max_age_seconds": 10.0
+        },
+        "monitor_running": true,
+        "bundles": {
+          "default@1": {
+            "ready": false,
+            "last_success_age_seconds": 2.0149588137865067,
+            "error": "TimeoutError",
+            "prepared": true
+          }
+        }
+      }
+    },
+    "rejected_while_paused": [
+      {
+        "status": 503,
+        "elapsed_ms": 3.9195120334625244
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 4.415950737893581
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 17.511997371912003
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 3.7247417494654655
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 3.2545048743486404
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 3.6569004878401756
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 12.652735225856304
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 2.7733733877539635
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 2.7946680784225464
+      },
+      {
+        "status": 503,
+        "elapsed_ms": 3.803245723247528
+      }
+    ],
+    "no_dispatched_leases_or_route_changes_while_paused": true,
+    "resume": {
+      "signal": "SIGCONT",
+      "at": 1790521957.0094278
+    },
+    "ready_after": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "508244b1536248a8800fa6c3096d63c6"
+    },
+    "same_processes_recovered": true,
+    "recovered_outputs": [
+      {
+        "response": {
+          "request_id": "dec-9fef5e91580e4593a4d634bd390c9132",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "refund": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998663336157,
+                "false": 0.22270013366638422
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9126524977221914,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 90,
+            "engine_prompt_tokens": 90,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 89
+          },
+          "latency_ms": 42.06886235624552
+        },
+        "max_probability_error": 0.0
+      },
+      {
+        "response": {
+          "request_id": "dec-d65df9b438394abb9631c38bbb6bf03d",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "refund": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998663336157,
+                "false": 0.22270013366638422
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9126524977221914,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 90,
+            "engine_prompt_tokens": 90,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 89
+          },
+          "latency_ms": 25.693053379654884
+        },
+        "max_probability_error": 0.0
+      }
+    ],
+    "final_profile": {
+      "worker_id": "508244b1536248a8800fa6c3096d63c6",
+      "model": {
+        "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+        "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+        "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "tokenizer_implementation_verified": true,
+      "engine_identity_verified": false,
+      "capabilities": {
+        "engine": "sglang",
+        "version": "0.5.19",
+        "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "max_label_tokens": 128,
+        "max_context_tokens": 2048,
+        "selected_logprobs": true,
+        "raw_logprobs": true,
+        "cancellation": true,
+        "lora": false,
+        "prefix_cache": true,
+        "api_workers": null,
+        "verified": false
+      },
+      "compiler": {
+        "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+        "copied_from_host_pool": false,
+        "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+        "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+        "backend_class": "tokenizers.Tokenizer",
+        "cache_token_limit": 262144,
+        "cache_entry_limit": 256,
+        "continuation_encoder": "backend-ids-only",
+        "backend_ids_only_eligible": true,
+        "batch_size_limit": 32,
+        "contract": "full prompt plus each label; exact prefix and one-token checks"
+      },
+      "admission": {
+        "scope": "shared_registry_engine",
+        "limits": {
+          "max_requests": 64,
+          "max_tokens": 1048576,
+          "max_queue": 256,
+          "max_tenant_requests": 16,
+          "max_tenant_tokens": 262144,
+          "max_tenant_queue": 64,
+          "max_branches": 1024,
+          "max_tenant_branches": 256
+        },
+        "requests": 0,
+        "expanded_tokens": 0,
+        "expanded_branches": 0,
+        "queued_requests": 0
+      },
+      "health": {
+        "scope": "local_api_worker",
+        "settings": {
+          "interval_seconds": 1.0,
+          "timeout_seconds": 1.0,
+          "max_age_seconds": 10.0
+        },
+        "monitor_running": true,
+        "bundles": {
+          "default@1": {
+            "ready": true,
+            "last_success_age_seconds": 0.1533285565674305,
+            "error": null,
+            "prepared": true
+          }
+        }
+      }
+    },
+    "zero_final_leases_and_admission": true,
+    "config_and_credentials_unchanged": true,
+    "native_chat_after_recovery": {
+      "id": "baf986f9fe294ce693900d1803cf4353",
+      "object": "chat.completion",
+      "created": 1790521958,
+      "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hello! I'm SmolLM,",
+            "reasoning_content": null,
+            "tool_calls": null
+          },
+          "logprobs": null,
+          "finish_reason": "length",
+          "matched_stop": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 32,
+        "total_tokens": 40,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "reasoning_tokens": 0
+      },
+      "metadata": {
+        "weight_version": "default",
+        "weight_versions": [
+          {
+            "version": "default",
+            "start": 0,
+            "end": 8
+          }
+        ]
+      }
+    }
+  },
+  "passed": true,
+  "finished_at": 1790521958.3602316
+}

@@ -1,0 +1,90 @@
+{
+  "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "release_gate_passed": false,
+  "qualification": "Single-worker BF16 TP1 SmolLM2 colocated gateway/native-engine SIGSTOP/SIGCONT and native functional rechecks; no replica failover, controlled performance, full numerical/model/LoRA/multiworker recertification or 24h soak",
+  "engines": {
+    "vllm": {
+      "harness_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+      "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+      "health_evidence": "evidence/dsw/gateway-vllm-health-40b78c2/health.json",
+      "contract_evidence": "evidence/dsw/vllm-health-40b78c2/contract.json",
+      "ready_withdrawal_seconds": 1.7083415985107422,
+      "rejected_requests": 10,
+      "max_rejection_response_ms": 3.6669615656137466,
+      "recovered_probability_errors": [
+        0.0,
+        0.0
+      ],
+      "switches": 1000,
+      "strict_success_requests_during_switches": 453,
+      "mixed_bundle_responses": 0,
+      "full_task_owned_groups_exited": true,
+      "gpu_free_mib_after_cleanup": 11990,
+      "zero_final_leases_and_admission": true
+    },
+    "sglang": {
+      "harness_source_commit": "02addc78015b3342451e681f2248b442a3276cc0",
+      "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+      "health_evidence": "evidence/dsw/gateway-sglang-health-40b78c2/health-recheck-02addc7.json",
+      "contract_evidence": "evidence/dsw/sglang-health-40b78c2/contract.json",
+      "ready_withdrawal_seconds": 2.0069620609283447,
+      "rejected_requests": 10,
+      "max_rejection_response_ms": 17.511997371912003,
+      "recovered_probability_errors": [
+        0.0,
+        0.0
+      ],
+      "switches": 1000,
+      "strict_success_requests_during_switches": 510,
+      "mixed_bundle_responses": 0,
+      "full_task_owned_groups_exited": true,
+      "gpu_free_mib_after_cleanup": 11990,
+      "zero_final_leases_and_admission": true
+    }
+  },
+  "sglang_native_cache_observation": {
+    "evidence": "evidence/dsw/gateway-sglang-health-40b78c2/native-cache-diagnostics.json",
+    "pairs": 3,
+    "cached_prompt_tokens": [
+      0,
+      89
+    ],
+    "max_probability_difference": 0.022384879465987495,
+    "no_process_pause_or_restart_during_replay": true,
+    "business_quality_evaluated": false
+  },
+  "preserved_failure": "evidence/dsw/gateway-sglang-health-40b78c2/health.json",
+  "initial_failure_qualification": "Initial partially cached baseline compared with post-resume output; original failing response not retained. Later native cache-state replay and warm-to-warm retry are separate evidence.",
+  "evidence_sha256": {
+    "evidence/dsw/gateway-sglang-health-40b78c2/cleanup.json": "14c81289c33b7b12f66d6b66d68b6e6e0535c5fc6c8b9052141518d2e1f6bde0",
+    "evidence/dsw/gateway-sglang-health-40b78c2/environment.json": "eec78fe7fb489cf3eac6626f7b119607a6d3a50236b6af94f4c96171d2eeb889",
+    "evidence/dsw/gateway-sglang-health-40b78c2/health-recheck-02addc7.json": "9e94a9441eae2c5b310dfac12922590d8f8199c69aee0e71bf012518603bdfeb",
+    "evidence/dsw/gateway-sglang-health-40b78c2/health.json": "e48b13d7935f5c1a40cf03e2ee60839efc3bfc30ddd1bdcf56f5e283216aae3c",
+    "evidence/dsw/gateway-sglang-health-40b78c2/native-cache-diagnostics.json": "074459b63e20a9a0b878617077f06e0466263cccd811dcccf34ce49158129dc9",
+    "evidence/dsw/gateway-sglang-health-40b78c2/postcheck.json": "0660dc0b6c29ddc4f153c8135a91fa80a2bf62f5bd625a93ff0659d902f93f81",
+    "evidence/dsw/gateway-sglang-health-40b78c2/process.json": "0a435626c667a3ff3f9eaf8805a803131d4710f0118115129854c2c7475b68e8",
+    "evidence/dsw/gateway-sglang-health-40b78c2/profile.json": "c66fe9a707d0343768d7b5896888b189cc034f82653ff4032bc887975535e510",
+    "evidence/dsw/gateway-sglang-health-40b78c2/repeat-diagnostics.json": "1b7ca1404f3a52c47a0d83a621ccfc66bff0b25d8e666631df775e1477c82a69",
+    "evidence/dsw/gateway-vllm-health-40b78c2/cleanup.json": "03803c03cf472391a15daf6612cd33b35647958e57b8dbe9ac3b6512e59ab484",
+    "evidence/dsw/gateway-vllm-health-40b78c2/environment.json": "1726b00ea54554bc4e914d2eed8a52a09b98a95a60c6f44d49df0260e6652aa7",
+    "evidence/dsw/gateway-vllm-health-40b78c2/health.json": "649d2f917ca612c4af8be1197c601896950897bf75fad88b314f1d9f0f930ffb",
+    "evidence/dsw/gateway-vllm-health-40b78c2/postcheck.json": "2c1ca7b838c195ffd0c671acf71b26b9e7075e645d42adc8e4896aa8dbeead7e",
+    "evidence/dsw/gateway-vllm-health-40b78c2/process.json": "7295b93a9797677d70137cfc1b0b2979e48363423b2c928e8095b95dd1caad31",
+    "evidence/dsw/gateway-vllm-health-40b78c2/profile.json": "ac2fb2bff70142de193af67ef289f7e53da5deb4a9c9289cf196a36fe9b417e9",
+    "evidence/dsw/sglang-health-40b78c2/cleanup.json": "c3cf28d8edba21639b87f0b6a3d001e72305104a08051b004afa109c8dafb239",
+    "evidence/dsw/sglang-health-40b78c2/contract.json": "f89a346d5a624d41ea27e7592d1b21491fd9a9271a9e48087fb48bb3e89d7a78",
+    "evidence/dsw/sglang-health-40b78c2/environment.json": "eec78fe7fb489cf3eac6626f7b119607a6d3a50236b6af94f4c96171d2eeb889",
+    "evidence/dsw/sglang-health-40b78c2/postcheck.json": "65390dbf759cf86fb83286ecf76142426985b7f3500578c8bbfb81cf99d0d705",
+    "evidence/dsw/sglang-health-40b78c2/process.json": "e774ff79431b6753dc82a125bd435316b1bd580c5d4988312e9bea0cddde62a4",
+    "evidence/dsw/sglang-health-40b78c2/profile.json": "0314cee3f6ff77e9b223c3d05dc7d69ea2535863a660bfd20aac4c0ee5c82686",
+    "evidence/dsw/source-identity-02addc7.json": "5e68e00a5b5dda6da47d97b1e0f5cfb64cfb2b9da8e75fc874e1b5d220a82009",
+    "evidence/dsw/source-identity-40b78c2.json": "160eb366ce6157e823f39fb0bddf0842eb40b0d989f3577848463d806ef39002",
+    "evidence/dsw/vllm-health-40b78c2/cleanup.json": "38ae4d6534ff62b066ee18195c8b7554ce84d9b27b5dea4b30274d51ef10f259",
+    "evidence/dsw/vllm-health-40b78c2/contract.json": "d6b76448d0bf63de29098b7815f5d7d4944dff585c59b9fce8afd2b7a33cf79e",
+    "evidence/dsw/vllm-health-40b78c2/environment.json": "1726b00ea54554bc4e914d2eed8a52a09b98a95a60c6f44d49df0260e6652aa7",
+    "evidence/dsw/vllm-health-40b78c2/postcheck.json": "ffec2856024959aac8d4b5fd47abe161761fe6a176a01b3a1c68977f58b63396",
+    "evidence/dsw/vllm-health-40b78c2/process.json": "f7fa53e15107d63a69a7a9effea5de9549483983111642dd90525800a8a4e12d",
+    "evidence/dsw/vllm-health-40b78c2/profile.json": "e2fc4811620bf14a39a179be70554c3acaa576c375bf405f1b516cef347a12c2",
+    "evidence/package-check-40b78c2.json": "f2ca35882fb338285e1ace9192a1a95fec58cb24deeec6b7f5e671a784fdf523"
+  }
+}

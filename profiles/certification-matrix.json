@@ -499,6 +499,13 @@
           "evidence": "evidence/dsw/sglang-functional-c11d2b3/contract.json",
           "cleanup_evidence": "evidence/dsw/sglang-functional-c11d2b3/cleanup.json",
           "scope": "BF16 TP1 API1; four types, native parity, 1000 switches after telemetry/tokenizer changes; not quality/performance certification"
+        },
+        {
+          "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+          "status": "passed",
+          "evidence": "evidence/dsw/sglang-health-40b78c2/contract.json",
+          "cleanup_evidence": "evidence/dsw/sglang-health-40b78c2/cleanup.json",
+          "scope": "BF16 TP1 API1 eager, four types/native parity and 1000 switches after health changes; not other profiles or numerical/quality/performance certification"
         }
       ],
       "development_generation_comparison": {
@@ -547,6 +554,29 @@
         "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
         "release_gate_passed": false,
         "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
+      },
+      "development_serving_health": {
+        "status": "passed_scoped_gateway_engine_pause_resume",
+        "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+        "harness_source_commit": "02addc78015b3342451e681f2248b442a3276cc0",
+        "evidence": "evidence/dsw/gateway-sglang-health-40b78c2/health-recheck-02addc7.json",
+        "validation_evidence": "evidence/dsw/health-validation-40b78c2.json",
+        "release_gate_passed": false,
+        "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification",
+        "preserved_failure": "evidence/dsw/gateway-sglang-health-40b78c2/health.json"
+      },
+      "development_cache_state_numerics": {
+        "evidence": "evidence/dsw/gateway-sglang-health-40b78c2/native-cache-diagnostics.json",
+        "pairs": 3,
+        "cached_prompt_tokens": [
+          0,
+          89
+        ],
+        "max_probability_difference": 0.022384879465987495,
+        "no_process_pause_or_restart_during_replay": true,
+        "business_quality_evaluated": false,
+        "status": "observed_probability_difference_requires_separate_evaluation",
+        "release_gate_passed": false
       }
     },
     {
@@ -592,6 +622,13 @@
           "evidence": "evidence/dsw/vllm-functional-c11d2b3/contract.json",
           "cleanup_evidence": "evidence/dsw/vllm-functional-c11d2b3/cleanup.json",
           "scope": "BF16 TP1 API1; four types, native parity, 1000 switches after telemetry/tokenizer changes; not quality/performance certification"
+        },
+        {
+          "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+          "status": "passed",
+          "evidence": "evidence/dsw/vllm-health-40b78c2/contract.json",
+          "cleanup_evidence": "evidence/dsw/vllm-health-40b78c2/cleanup.json",
+          "scope": "BF16 TP1 API1 eager, four types/native parity and 1000 switches after health changes; not other profiles or numerical/quality/performance certification"
         }
       ],
       "development_generation_comparison": {
@@ -640,6 +677,15 @@
         "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
         "release_gate_passed": false,
         "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
+      },
+      "development_serving_health": {
+        "status": "passed_scoped_gateway_engine_pause_resume",
+        "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+        "harness_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+        "evidence": "evidence/dsw/gateway-vllm-health-40b78c2/health.json",
+        "validation_evidence": "evidence/dsw/health-validation-40b78c2.json",
+        "release_gate_passed": false,
+        "scope": "Same-host API1 gateway, SIGSTOP/SIGCONT on recorded native engine group; readiness/circuit/recovery only, no replica failover or performance certification"
       }
     }
   ],

@@ -1,0 +1,15 @@
+{
+  "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "checked_at": 1790522004.2880676,
+  "mode": "gateway",
+  "zero_leases": true,
+  "zero_admission": true,
+  "all_active_bundles_healthy": true,
+  "active_routes": [
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    }
+  ]
+}

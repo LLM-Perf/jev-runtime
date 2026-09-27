@@ -1,0 +1,32 @@
+{
+  "runtime_source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "process_record": {
+    "identity": {
+      "pid": 2623488,
+      "start_ticks": "427701688",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "vllm",
+    "mode": "gateway",
+    "command": [
+      "/root/jev-runtime/envs/vllm/bin/jevctl",
+      "serve",
+      "/root/jev-runtime/runs/gateway-vllm-health-40b78c2/config.json"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": null,
+    "created": 1790521477.5530205,
+    "port": 18805,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": null
+  },
+  "remaining_process_group_members": [],
+  "process_group_exited": true,
+  "gpu_after": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e, 5804, 75192",
+  "cleanup_checked_at": 1790521601.6515596,
+  "qualification": "Recorded task-owned process group exited; unrelated services untouched"
+}

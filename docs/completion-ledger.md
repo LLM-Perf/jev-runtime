@@ -247,6 +247,28 @@ replacement for any requirement in `implementation-plan.md`.
   worker-only faults, other profiles, controlled performance and the 24h soak
   remain unverified. The functional denominator stays 6/40.
 
+- Periodic per-worker engine canaries and typed-bundle circuits are implemented at
+  `40b78c2`. Readiness requires fresh scoring evidence for every active bundle.
+  New work checks health before compilation and after admission; failed or stale
+  canaries reject dispatch. Unconfirmed probes retain their durable lease and do
+  not repeat until explicit recovery. Real DSW gateways on both engines withdrew
+  readiness after their recorded engine groups were paused, rejected 10/10 new
+  requests, and recovered on fresh canaries after resume. vLLM passed the original
+  comparison. SGLang's first comparison failed against a partially cached baseline;
+  a separate native replay without process interruption reproduced a 0.02238
+  cold/warm probability difference across three pairs. The revised harness at
+  `02addc7` retains failure responses and compares matching warm states with the
+  same `1e-4` threshold; SGLang passed with zero error. Runtime source stayed
+  unchanged. Both native engines subsequently passed four-type/native-parity
+  checks and 1,000 switches (vLLM 453 / SGLang 510 successful traffic requests,
+  zero mixed versions). All four groups exited and GPU memory returned to baseline.
+  Local validation passed 237 Python tests, lint/format and all three wheels.
+  See [serving health](serving-health.md) and
+  `evidence/dsw/health-validation-40b78c2.json`. Replica selection/failover, cache-state
+  numerical/quality impact, metrics aggregation and the full release gates remain.
+  The functional denominator remains 6/40; LoRA/multi-worker profiles were not
+  recertified by these targeted health checks.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
@@ -264,6 +286,7 @@ replacement for any requirement in `implementation-plan.md`.
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
+| Engine health and fault routing | Periodic real canaries, stale/failure circuits and gateway pause/resume checks pass on both engines | Certified compatible-replica selection/failover and expanded load/fault profiles |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
 

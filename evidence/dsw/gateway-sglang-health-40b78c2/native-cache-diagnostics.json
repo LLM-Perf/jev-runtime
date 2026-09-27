@@ -1,0 +1,473 @@
+{
+  "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "qualification": "Exact exported prompt replayed directly against native SGLang, successful cache flush before each pair, no engine pause or restart; background canaries remain enabled; not broad numerical certification",
+  "input_digest": "sha256:9312192c21c92d45086a054ca587e867f319e2c4f2731133e2942f0b0c4437c5",
+  "bundle_digest": "sha256:6c4e017fb83a09ad3d6b51f8794ae6a207f85d9e6ce155f5a0695b37e1878d0e",
+  "input_ids": [
+    1,
+    9690,
+    198,
+    24324,
+    9578,
+    260,
+    12919,
+    940,
+    1523,
+    260,
+    3856,
+    30,
+    4712,
+    314,
+    2364,
+    28,
+    441,
+    6388,
+    30,
+    13632,
+    3869,
+    260,
+    13682,
+    2988,
+    4368,
+    30,
+    2,
+    198,
+    1,
+    4093,
+    198,
+    22188,
+    42,
+    198,
+    4182,
+    253,
+    37393,
+    13682,
+    47,
+    198,
+    198,
+    5127,
+    365,
+    27936,
+    4928,
+    727,
+    198,
+    18,
+    57,
+    436,
+    9295,
+    6757,
+    284,
+    736,
+    702,
+    253,
+    37393,
+    1270,
+    198,
+    198,
+    2089,
+    22245,
+    42,
+    198,
+    10539,
+    42,
+    378,
+    4814,
+    314,
+    2629,
+    198,
+    5230,
+    42,
+    378,
+    4814,
+    314,
+    7065,
+    198,
+    14362,
+    3869,
+    582,
+    2988,
+    4368,
+    30,
+    2,
+    198,
+    1,
+    520,
+    9531,
+    198
+  ],
+  "label_ids": [
+    10539,
+    5230
+  ],
+  "cases": [
+    {
+      "flush_status": 200,
+      "responses": [
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-df9b110365b442d9b3033b427baebcaa",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.37290358543395996,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.49790358543396,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 0,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": null,
+              "dp_rank": null,
+              "e2e_latency": 0.0289689926430583,
+              "response_sent_to_client_ts": 1790521796.8110726
+            }
+          },
+          "logprobs": [
+            -0.37290358543395996,
+            -1.49790358543396
+          ],
+          "probabilities": [
+            0.7549149868676283,
+            0.24508501313237172
+          ],
+          "cached_tokens": 0
+        },
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-64d14bb677ac471fb005e8b83b463a80",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.34332916140556335,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.5933291912078857,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 89,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": {
+                "device": 89,
+                "host": 0
+              },
+              "dp_rank": null,
+              "e2e_latency": 0.018512913957238197,
+              "response_sent_to_client_ts": 1790521796.8326201
+            }
+          },
+          "logprobs": [
+            -0.34332916140556335,
+            -1.5933291912078857
+          ],
+          "probabilities": [
+            0.7772998663336157,
+            0.22270013366638422
+          ],
+          "cached_tokens": 89
+        }
+      ],
+      "probability_difference": 0.022384879465987495
+    },
+    {
+      "flush_status": 200,
+      "responses": [
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-b128bb8e9e9c4a94aeb4b01100f9bfbc",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.37290358543395996,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.49790358543396,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 0,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": null,
+              "dp_rank": null,
+              "e2e_latency": 0.02024099323898554,
+              "response_sent_to_client_ts": 1790521796.8590176
+            }
+          },
+          "logprobs": [
+            -0.37290358543395996,
+            -1.49790358543396
+          ],
+          "probabilities": [
+            0.7549149868676283,
+            0.24508501313237172
+          ],
+          "cached_tokens": 0
+        },
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-ed6e2284dc99426f8f03f2d321a9f6e1",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.34332916140556335,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.5933291912078857,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 89,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": {
+                "device": 89,
+                "host": 0
+              },
+              "dp_rank": null,
+              "e2e_latency": 0.018408142030239105,
+              "response_sent_to_client_ts": 1790521796.8803298
+            }
+          },
+          "logprobs": [
+            -0.34332916140556335,
+            -1.5933291912078857
+          ],
+          "probabilities": [
+            0.7772998663336157,
+            0.22270013366638422
+          ],
+          "cached_tokens": 89
+        }
+      ],
+      "probability_difference": 0.022384879465987495
+    },
+    {
+      "flush_status": 200,
+      "responses": [
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-da20beb7cc9e4eb7ac67e8df158f29c3",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.37290358543395996,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.49790358543396,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 0,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": null,
+              "dp_rank": null,
+              "e2e_latency": 0.02067193016409874,
+              "response_sent_to_client_ts": 1790521796.9072874
+            }
+          },
+          "logprobs": [
+            -0.37290358543395996,
+            -1.49790358543396
+          ],
+          "probabilities": [
+            0.7549149868676283,
+            0.24508501313237172
+          ],
+          "cached_tokens": 0
+        },
+        {
+          "raw": {
+            "text": "",
+            "output_ids": [],
+            "meta_info": {
+              "id": "health-cache-11a2e843aab847e8810a8b32a7cae2b2",
+              "finish_reason": {
+                "type": "length",
+                "length": 0
+              },
+              "prompt_tokens": 90,
+              "weight_version": "default",
+              "num_retractions": 0,
+              "input_token_logprobs": [],
+              "output_token_logprobs": [],
+              "output_token_logprobs_length": 0,
+              "input_token_ids_logprobs": [],
+              "output_token_ids_logprobs": [
+                [
+                  [
+                    -0.34332916140556335,
+                    10539,
+                    null
+                  ],
+                  [
+                    -1.5933291912078857,
+                    5230,
+                    null
+                  ]
+                ]
+              ],
+              "reasoning_tokens": 0,
+              "completion_tokens": 0,
+              "cached_tokens": 89,
+              "weight_versions": [
+                {
+                  "version": "default",
+                  "start": 0,
+                  "end": 0
+                }
+              ],
+              "cached_tokens_details": {
+                "device": 89,
+                "host": 0
+              },
+              "dp_rank": null,
+              "e2e_latency": 0.018614293076097965,
+              "response_sent_to_client_ts": 1790521796.9283497
+            }
+          },
+          "logprobs": [
+            -0.34332916140556335,
+            -1.5933291912078857
+          ],
+          "probabilities": [
+            0.7772998663336157,
+            0.22270013366638422
+          ],
+          "cached_tokens": 89
+        }
+      ],
+      "probability_difference": 0.022384879465987495
+    }
+  ]
+}

@@ -4,6 +4,10 @@ Use separate Python environments for SGLang and vLLM. A gateway may attach to an
 already-running engine without owning its process. Native plugins share the host
 engine's lifetime. Do not use a plugin update to restart an unrelated service.
 
+Periodic engine canaries now withdraw readiness and block new typed dispatch when
+scoring fails or its evidence expires. See [health configuration and recovery](serving-health.md)
+for per-worker scope, probe leases, explicit recovery and outstanding replica failover.
+
 ## Current tested scope
 
 DSW functional checks cover Qwen3-0.6B, SmolLM2-1.7B and

@@ -1,0 +1,28 @@
+{
+  "source_commit": "40b78c273911d05c3c0563afb50ea692a803c6a1",
+  "pytest": {
+    "passed": 237,
+    "result": "237 passed in 8.84s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "99 files already formatted",
+  "wheel_builds": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "23acd1ef4a0216357d7deeb2e0608da655430acc7ce802adcacf52a9a9befd54",
+      "python_files_verified": 27
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "e228601eada2cb8d7ba875c6c825ed7fe72edf7f24871ce6b8a1870af267a12e",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "76d4649e9d456345e35dbc9940b09a3074bd4ff6b4c2306604da865d58118eea",
+      "python_files_verified": 4
+    }
+  ],
+  "typescript": "unchanged; prior 62 passing tests retained, not rerun",
+  "scope": "local CPU contracts and wheel packaging; not hosted CI, GPU or release certification"
+}

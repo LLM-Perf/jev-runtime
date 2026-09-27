@@ -697,12 +697,16 @@
         "src/jev_runtime/api.py",
         "docs/operations.md",
         "src/jev_runtime/telemetry.py",
-        "tests/test_telemetry.py"
+        "tests/test_telemetry.py",
+        "src/jev_runtime/health.py",
+        "tests/test_health.py",
+        "docs/serving-health.md"
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
         "Bounded phase/branch-operation histograms, error categories, known-token observation denominators, admission occupancy and opt-in request-bound timing headers are implemented. Multi-worker metric aggregation and operational handoff remain.",
-        "Registry-wide admission gauges and the admin profile expose shared occupancy and limits. These gauges must not be summed across workers; request counters and histograms remain process-local."
+        "Registry-wide admission gauges and the admin profile expose shared occupancy and limits. These gauges must not be summed across workers; request counters and histograms remain process-local.",
+        "At 40b78c2, periodic engine canaries, per-bundle stale/error circuits, all-active readiness and admin health state are implemented. Queued requests recheck before GPU dispatch; unconfirmed probes retain a journaled lease and suppress repeat probing until explicit recovery. DSW gateway pause/resume passes on both engines; compatible-replica routing/failover and multi-worker metrics aggregation remain."
       ],
       "acceptance_complete": false
     },
@@ -738,7 +742,8 @@
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
         "Controlled mixed long/short/chat loads and TP configurations remain.",
-        "At 533549a, SGLang 0.5.19 host-list logprob normalization is handled through version-scoped official hooks. Actual upstream CPU producer/consumer reproduction passes, as does a 512-token native SSE stream with 12/12 typed requests completed inside its lifetime. This is targeted coexistence evidence, not a controlled mixed-load or TP report; initial failed GPU attempt is retained."
+        "At 533549a, SGLang 0.5.19 host-list logprob normalization is handled through version-scoped official hooks. Actual upstream CPU producer/consumer reproduction passes, as does a 512-token native SSE stream with 12/12 typed requests completed inside its lifetime. This is targeted coexistence evidence, not a controlled mixed-load or TP report; initial failed GPU attempt is retained.",
+        "At runtime 40b78c2, both engines passed native four-type/parity checks and another 1,000 switches after health changes. Both gateways passed real engine pause/resume. SGLang first failed a comparison with a partially cached baseline; direct native cache-state replay and revised warm-state comparison are separately retained. This does not certify numerical invariance, controlled performance, LoRA or multi-worker profiles at this source."
       ],
       "acceptance_complete": false
     },
@@ -771,13 +776,16 @@
         "evidence/dsw/quota-crash-validation-0df49a1.json",
         "tests/integration/live_lora_crash.py",
         "docs/lora-crash-recovery.md",
-        "evidence/dsw/lora-crash-validation-533549a.json"
+        "evidence/dsw/lora-crash-validation-533549a.json",
+        "tests/integration/live_health.py",
+        "evidence/dsw/health-validation-40b78c2.json"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
         "The controlled 24-hour soak is not run.",
         "Both engines passed gateway and native API/GPU process-group crash/restart with durable shared quotas; all owned groups exited and GPU7 returned to 11,990 MiB free. These quota-only cases do not certify hardware errors, managed LoRA, database I/O failures, multi-node recovery or the 24-hour soak.",
-        "Separate managed-LoRA crash/restart checks passed at 5176a82 (vLLM) and 533549a (SGLang): 128 branches / 133,376 reserved tokens retained, quarantined adapters, paused routes, explicit recovery, fresh canaries/generations, zero reload/switch probability error, lifecycle recheck and complete process-group cleanup. The preserved pre-fix SGLang attempt failed before planned SIGKILL. Other fault phases and controlled 24-hour soak remain."
+        "Separate managed-LoRA crash/restart checks passed at 5176a82 (vLLM) and 533549a (SGLang): 128 branches / 133,376 reserved tokens retained, quarantined adapters, paused routes, explicit recovery, fresh canaries/generations, zero reload/switch probability error, lifecycle recheck and complete process-group cleanup. The preserved pre-fix SGLang attempt failed before planned SIGKILL. Other fault phases and controlled 24-hour soak remain.",
+        "Targeted SIGSTOP/SIGCONT checks at 40b78c2 verify per-worker readiness withdrawal, 10/10 gateway rejections and resumed serving on both engines. All four owned groups exited; GPU7 returned to 11,990 MiB free. Both native engines passed 1,000 further switches with vLLM 453 / SGLang 510 successful traffic requests and zero mixed versions. Replica failover and the 24-hour soak remain unrun."
       ],
       "acceptance_complete": false
     },
