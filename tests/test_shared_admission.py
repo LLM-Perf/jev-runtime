@@ -1,8 +1,10 @@
 import asyncio
+import json
 import multiprocessing
+import sqlite3
 import time
 import uuid
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
 
 import httpx
 import pytest
@@ -123,8 +125,9 @@ async def test_shared_queue_limit_and_cancel_are_global(tmp_path, bundle):
 async def test_ticket_keeps_capacity_until_explicit_abort_recovery(tmp_path, bundle):
     a, b, first, second = setup_pair(tmp_path, bundle, max_requests=1)
     snap = a.acquire("model", "uncertain", None, "fixture:0")
-    a.record_branches(snap.lease_id, ["branch"])
-    async with first.acquire(9, branches=3, lease_id=snap.lease_id):
+    async with first.acquire(
+        9, branches=3, lease_id=snap.lease_id, branch_ids=["branch", "done-1", "done-2"]
+    ):
         pass
     # Merely leaving an execution context cannot prove GPU drain.
     a.mark_abort_pending(snap.lease_id, {"branch"})
@@ -151,6 +154,104 @@ async def test_ticket_keeps_capacity_until_explicit_abort_recovery(tmp_path, bun
     assert second.snapshot()["requests"] == 0
     reopened.close()
     b.close()
+
+
+@pytest.mark.parametrize("fail_before_commit", [False, True])
+async def test_branch_journal_and_admission_commit_atomically(
+    tmp_path, bundle, monkeypatch, fail_before_commit
+):
+    a, b, first, second = setup_pair(tmp_path, bundle)
+    lease = a.acquire("model", "atomic", None, "fixture:0").lease_id
+
+    def observed():
+        with b._connection() as db:
+            branches = db.execute(
+                "SELECT branches FROM lease_work WHERE lease_id=?", (lease,)
+            ).fetchone()[0]
+            ticket = db.execute(
+                "SELECT state FROM admission_tickets WHERE lease_id=?", (lease,)
+            ).fetchone()
+        return json.loads(branches), ticket[0] if ticket else None
+
+    original = first._try_admit
+
+    def admit(db, lease_id):
+        result = original(db, lease_id)
+        # A second connection cannot see either uncommitted change.
+        assert observed() == ([], None)
+        if fail_before_commit:
+            raise RuntimeError("injected failure after journal and admission writes")
+        return result
+
+    monkeypatch.setattr(first, "_try_admit", admit)
+    try:
+        if fail_before_commit:
+            with pytest.raises(RuntimeError, match="injected failure"):
+                async with first.acquire(9, branches=2, lease_id=lease, branch_ids=["b", "a"]):
+                    pytest.fail("rollback must prevent dispatch")
+            assert observed() == ([], None)
+        else:
+            async with first.acquire(9, branches=2, lease_id=lease, branch_ids=["b", "a"]):
+                assert observed() == (["a", "b"], "ADMITTED")
+            assert observed() == (["a", "b"], "ADMITTED")
+    finally:
+        a.release(lease)
+        a.close()
+        b.close()
+
+
+@pytest.mark.parametrize("ids", [["a"], ["a", "a"], ["a", ""], ["a", None]])
+async def test_atomic_admission_rejects_mismatched_branch_ids(tmp_path, bundle, ids):
+    a, b, first, second = setup_pair(tmp_path, bundle)
+    lease = a.acquire("model", "invalid", None, "fixture:0").lease_id
+    try:
+        with pytest.raises(JevError) as exc:
+            async with first.acquire(9, branches=2, lease_id=lease, branch_ids=ids):
+                pytest.fail("invalid recovery IDs must prevent dispatch")
+        assert exc.value.code == "admission_branch_mismatch"
+        assert second.snapshot()["requests"] == 0
+        with b._connection() as db:
+            assert db.execute("SELECT COUNT(*) FROM admission_tickets").fetchone()[0] == 0
+            assert db.execute("SELECT branches FROM lease_work").fetchone()[0] == "[]"
+    finally:
+        a.release(lease)
+        a.close()
+        b.close()
+
+
+async def test_runtime_dispatch_requires_durable_journal_and_ticket_in_three_commits(
+    runtime, question, monkeypatch
+):
+    commits = []
+    transaction = runtime.registry._transaction
+    score = runtime.backend.score
+
+    @contextmanager
+    def counted_transaction():
+        with transaction() as db:
+            yield db
+        commits.append(True)
+
+    async def checked_score(request):
+        # Observe committed state independently of the runtime's connection.
+        with sqlite3.connect(runtime.registry.path) as db:
+            rows = db.execute(
+                "SELECT w.branches,t.state,t.branches FROM lease_work w "
+                "JOIN admission_tickets t ON t.lease_id=w.lease_id"
+            ).fetchall()
+        assert len(rows) == 1
+        assert request.request_id in json.loads(rows[0][0])
+        assert rows[0][1:] == ("ADMITTED", 1)
+        assert len(commits) == 2
+        return await score(request)
+
+    monkeypatch.setattr(runtime.registry, "_transaction", counted_transaction)
+    monkeypatch.setattr(runtime.backend, "score", checked_score)
+    body = DecisionRequest(model="model", input=TextInput(text="refund"), questions=(question,))
+    assert (await runtime.decide(body)).status == "completed"
+    assert len(commits) == 3
+    assert not runtime.registry.list()["leases"]
+    assert runtime.admission.snapshot()["requests"] == 0
 
 
 def test_limits_cannot_diverge_or_change_with_retained_work(tmp_path, bundle):

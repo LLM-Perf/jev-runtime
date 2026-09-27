@@ -632,18 +632,22 @@ class Registry:
     def record_branches(self, lease_id: str, branches: list[str]) -> None:
         """Persist engine IDs before dispatch, including canaries and queued work."""
         with self._transaction() as db:
-            row = db.execute(
-                "SELECT w.* FROM lease_work w JOIN leases l ON l.id=w.lease_id "
-                "WHERE l.id=? AND l.owner=?",
-                (lease_id, self.owner),
-            ).fetchone()
-            if not row or row["phase"] != "inflight":
-                raise JevError("lease_not_owned", "Cannot dispatch against an unowned lease", 409)
-            combined = sorted(set(json.loads(row["branches"])) | set(branches))
-            db.execute(
-                "UPDATE lease_work SET branches=? WHERE lease_id=?",
-                (json.dumps(combined), lease_id),
-            )
+            self._record_branches(db, lease_id, branches)
+
+    def _record_branches(self, db, lease_id: str, branches: list[str]) -> None:
+        """Join the caller's transaction; the caller commits before dispatch."""
+        row = db.execute(
+            "SELECT w.* FROM lease_work w JOIN leases l ON l.id=w.lease_id "
+            "WHERE l.id=? AND l.owner=?",
+            (lease_id, self.owner),
+        ).fetchone()
+        if not row or row["phase"] != "inflight":
+            raise JevError("lease_not_owned", "Cannot dispatch against an unowned lease", 409)
+        combined = sorted(set(json.loads(row["branches"])) | set(branches))
+        db.execute(
+            "UPDATE lease_work SET branches=? WHERE lease_id=?",
+            (json.dumps(combined), lease_id),
+        )
 
     def pin_revalidation(self, reference: str, request_id: str, backend: str) -> tuple[Bundle, str]:
         """Probe an existing version without changing another worker's active route."""

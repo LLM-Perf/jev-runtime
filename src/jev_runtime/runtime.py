@@ -576,9 +576,13 @@ class Runtime:
                 )
                 questions = tuple(item.question for item in compiled)
                 trace.switch("journal")
-                self.registry.record_branches(
-                    snapshot.lease_id, [seq.request_id for seq in sequences]
-                )
+                branch_ids = [seq.request_id for seq in sequences]
+                admission_args = dict(branches=len(sequences), lease_id=snapshot.lease_id)
+                if isinstance(self.admission, SharedAdmission):
+                    # The durable admission transaction also journals recovery IDs.
+                    admission_args["branch_ids"] = branch_ids
+                else:
+                    self.registry.record_branches(snapshot.lease_id, branch_ids)
                 logger.info(
                     "jev_scoring %s",
                     json.dumps(
@@ -588,14 +592,12 @@ class Runtime:
                             "bundle": bundle.reference,
                             "bundle_digest": bundle.digest,
                             "generation": snapshot.generation,
-                            "engine_request_ids": [seq.request_id for seq in sequences],
+                            "engine_request_ids": branch_ids,
                         }
                     ),
                 )
                 trace.switch("queue")
-                async with self.admission.acquire(
-                    total_tokens, tenant, branches=len(sequences), lease_id=snapshot.lease_id
-                ):
+                async with self.admission.acquire(total_tokens, tenant, **admission_args):
                     # Compilation and durable admission contain synchronous work.
                     # asyncio's timeout callback may not run until we next yield.
                     if time.monotonic() - started >= request.execution.timeout_ms / 1000:

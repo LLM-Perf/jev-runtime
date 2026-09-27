@@ -66,7 +66,9 @@ class SharedAdmission:
                 "admission_unavailable", "Admission worker or policy is not serving", 503
             )
 
-    def _enqueue(self, lease_id: str, tenant: str, tokens: int, branches: int) -> bool:
+    def _enqueue(
+        self, lease_id: str, tenant: str, tokens: int, branches: int, branch_ids: list[str] | None
+    ) -> bool:
         with self.registry._transaction() as db:
             self._check_worker(db)
             lease = db.execute(
@@ -117,6 +119,10 @@ class SharedAdmission:
                 "VALUES(?,?,?,?,?,'QUEUED')",
                 (lease_id, self.backend, tenant, tokens, branches),
             )
+            if branch_ids is not None:
+                # Recovery IDs and the reservation become durable together. Neither
+                # an admitted caller nor a queued waiter can dispatch before commit.
+                self.registry._record_branches(db, lease_id, branch_ids)
             return self._try_admit(db, lease_id)
 
     def _try_admit(self, db, lease_id: str) -> bool:
@@ -181,6 +187,7 @@ class SharedAdmission:
         *,
         branches: int = 1,
         lease_id: str | None = None,
+        branch_ids: list[str] | None = None,
     ):
         if lease_id is None:
             raise JevError(
@@ -198,9 +205,17 @@ class SharedAdmission:
             raise JevError(
                 "engine_branch_budget", "Request exceeds shared admission branch budget", 413
             )
+        if branch_ids is not None and (
+            len(branch_ids) != branches
+            or any(not isinstance(branch, str) or not branch for branch in branch_ids)
+            or len(set(branch_ids)) != branches
+        ):
+            raise JevError(
+                "admission_branch_mismatch", "Expected one distinct engine ID per branch", 409
+            )
         queued = False
         try:
-            admitted = self._enqueue(lease_id, tenant, tokens, branches)
+            admitted = self._enqueue(lease_id, tenant, tokens, branches, branch_ids)
             queued = not admitted
             while not admitted:
                 await asyncio.sleep(0.02)

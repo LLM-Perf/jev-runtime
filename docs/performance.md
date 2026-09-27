@@ -174,8 +174,8 @@ seven serial phases partition the runtime's `total`, including durable cleanup:
 |---|---|
 | pin | Resolve route and acquire the persisted bundle lease |
 | compile | Validate bundle/request and render/tokenize/validate scoring sequences |
-| journal | Persist branch IDs before dispatch and emit the correlation log |
-| queue | Reserve admission capacity and wait when needed; includes the shared reservation transaction |
+| journal | Emit the correlation log; the in-memory admission fallback also persists branch IDs here |
+| queue | Atomically persist branch IDs and shared admission capacity, then wait when needed |
 | execute | Schedule branches, await engine results, assemble answers and drain child tasks |
 | finalize | Aggregate question outcomes/usage and construct the response contract |
 | release | Persist lease completion or uncertain-abort state and clear local ownership |
@@ -186,6 +186,23 @@ and overhead comparison boundary. `execute` is engine queue/compute/adapter wall
 time plus local scheduling/assembly, not a GPU kernel timer. Separate Prometheus
 branch-operation samples cover semaphore waits, engine calls, answer assembly and
 abort; samples can overlap and cannot be summed into wall time.
+
+The shared admission path combines its recovery journal and reservation in one
+`synchronous=FULL` transaction. A normal, immediately admitted request now commits
+three transactions: pin the bundle lease, journal/reserve, and release the lease.
+Previously journal and reservation committed separately, for four transactions.
+Waiting requests still use admission polling transactions. Canary preparation and
+the in-memory admission fallback retain their independent journaling path.
+
+The combined commit preserves the dispatch boundary: another connection sees
+neither write before commit and both writes afterward. A failure in either write
+rolls back both. An admitted ticket still survives context exit and uncertain
+aborts, until confirmed completion/recovery releases its lease. WAL and FULL
+durability are unchanged. Compilation stays outside the write transaction.
+
+Historical reports before this change assign journal persistence to `journal`;
+new shared-admission reports include it in `queue`. Compare `journal + queue`
+or total/end-to-end latency across these versions, not either phase alone.
 
 The header is opt-in (`X-Jev-Timing: 1`) and adds no response JSON fields. Handled
 runtime errors include timings for phases actually reached. Authentication/schema
