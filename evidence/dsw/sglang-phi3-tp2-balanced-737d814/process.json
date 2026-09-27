@@ -1,0 +1,133 @@
+{
+  "identity": {
+    "pid": 2627555,
+    "start_ticks": "427919104",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "engine": "sglang",
+  "mode": "native-plugin",
+  "command": [
+    "/root/jev-runtime/envs/sglang/bin/python",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/root/jev-runtime/models/Phi-3-mini-4k-instruct",
+    "--served-model-name",
+    "microsoft/Phi-3-mini-4k-instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18794",
+    "--dtype",
+    "bfloat16",
+    "--context-length",
+    "2048",
+    "--max-running-requests",
+    "4",
+    "--chunked-prefill-size",
+    "512",
+    "--max-total-tokens",
+    "2048",
+    "--mem-fraction-static",
+    "0.65",
+    "--disable-cuda-graph",
+    "--attention-backend",
+    "triton",
+    "--tp-size",
+    "2"
+  ],
+  "model": {
+    "model_id": "microsoft/Phi-3-mini-4k-instruct",
+    "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+    "path": "/root/jev-runtime/models/Phi-3-mini-4k-instruct",
+    "verified_files": {
+      "LICENSE": {
+        "bytes": 1105,
+        "sha256": "c49419617a6070bcb197cfe272f7007fdec3e790dbb529cb995473bd69c0bd51"
+      },
+      "README.md": {
+        "bytes": 21733,
+        "sha256": "d83bfa15fe58ff840e2ee0159d6b19880928f4d77ffdb197a76cae2ebd11b9eb"
+      },
+      "added_tokens.json": {
+        "bytes": 306,
+        "sha256": "f8e5a880c6c563a126d9efacb654e105fc4b66f21e5a540f04436e9487a955fb"
+      },
+      "config.json": {
+        "bytes": 967,
+        "sha256": "072d4df63228ef806a6b2b2f02a93f1d048ebd31584d0f61d1180aef36e5bcea"
+      },
+      "generation_config.json": {
+        "bytes": 181,
+        "sha256": "ee0576b7155f833142827349c1d48c483f5f9eb5a227d9e9a150b3ab63ec06e5"
+      },
+      "model-00001-of-00002.safetensors": {
+        "bytes": 4972489328,
+        "sha256": "b7492726c01287bf6e13c3d74c65ade3d436d50da1cf5bb6925bc962419d6610"
+      },
+      "model-00002-of-00002.safetensors": {
+        "bytes": 2669692552,
+        "sha256": "3f311787aa136e858556caa8543015161edcad85ba81b6a36072443d7fa73c87"
+      },
+      "model.safetensors.index.json": {
+        "bytes": 16533,
+        "sha256": "519fa1eba3aa4645654d91322a55ed872b705e25e7a1114702e426a2fbac2c4b"
+      },
+      "special_tokens_map.json": {
+        "bytes": 599,
+        "sha256": "810adc6e6c6ef2f56c285ef930d243358a3a9f05e36a01c5a10bafc6fac4609b"
+      },
+      "tokenizer.json": {
+        "bytes": 1937869,
+        "sha256": "072ab882d6c7192a42f78790945d16c064691321a73251a4b18f6a380f0fbe39"
+      },
+      "tokenizer.model": {
+        "bytes": 499723,
+        "sha256": "9e556afd44213b6bd1be2b850ebbbd98f5481437a8021afaf58ee7fb1818d347"
+      },
+      "tokenizer_config.json": {
+        "bytes": 3441,
+        "sha256": "32f66c2bab499baaa8341819ad9a13342f957501ce1e989bcb90853a01336cc0"
+      }
+    },
+    "verification": "hf cache verify exact revision; selected safe weights/tokenizer/config files only",
+    "weight_shards": [
+      "model-00001-of-00002.safetensors",
+      "model-00002-of-00002.safetensors"
+    ],
+    "indexed_tensors": 195
+  },
+  "gpu_before": {
+    "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "10792",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "gpus_before": [
+    {
+      "index": 5,
+      "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "tensor_parallel_size": 2,
+  "created": 1790523651.711709,
+  "port": 18794,
+  "qualification": "colocated-functional-test",
+  "memory_budget_denominator": "free_mib"
+}

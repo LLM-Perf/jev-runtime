@@ -1,0 +1,12 @@
+{
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "python": "3.12.11 (main, Nov  6 2025, 02:27:35) [GCC 13.3.0]",
+  "runtime_path": "/root/jev-runtime/releases/737d8146562cb0dd906e7f826a3eea8b4d38875f/src/jev_runtime/__init__.py",
+  "health_path": "/root/jev-runtime/releases/737d8146562cb0dd906e7f826a3eea8b4d38875f/src/jev_runtime/health.py",
+  "plugin_path": "/root/jev-runtime/releases/737d8146562cb0dd906e7f826a3eea8b4d38875f/packages/vllm/src/jev_vllm/__init__.py",
+  "versions": {
+    "vllm": "0.30.0+cu129",
+    "torch": "2.13.0+cu129",
+    "transformers": "5.17.0"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "engine": "sglang",
+  "process": {
+    "pid": 2628615,
+    "start_ticks": "427932375",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "selected_gpus": [
+    {
+      "index": 5,
+      "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "cuda_visible_devices": "5,6",
+  "tensor_parallel_size": 2,
+  "server_parallel_config": {
+    "tp_size": 2,
+    "pp_size": 1,
+    "dp_size": 1,
+    "dtype": "bfloat16",
+    "model_path": "/root/jev-runtime/models/Phi-4-mini-instruct",
+    "context_length": 2048
+  },
+  "proof": "Live server configuration reports tensor parallel size 2, matched to the exact task-owned launch and GPU mapping"
+}

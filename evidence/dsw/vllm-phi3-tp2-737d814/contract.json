@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "runtime_source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "started_at": 1790522941.5715275,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "microsoft/Phi-3-mini-4k-instruct",
+    "revision": "f39ac1d28e925b323eae81227eaba4464caced4e"
+  },
+  "checks": {},
+  "passed": false,
+  "failure": {
+    "type": "ConnectError",
+    "message": "All connection attempts failed"
+  },
+  "finished_at": 1790522941.680879
+}

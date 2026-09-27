@@ -4,8 +4,8 @@
   "model_denominator": 20,
   "combination_denominator": 40,
   "functional_passes": {
-    "sglang": 3,
-    "vllm": 3
+    "sglang": 5,
+    "vllm": 5
   },
   "required_functional_passes_per_engine": 18,
   "release_gate_passed": false,
@@ -288,44 +288,114 @@
       "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-phi3-tp2-balanced-737d814/contract.json",
+        "evidence/dsw/sglang-phi3-tp2-balanced-737d814/reference-cpu.json",
+        "evidence/dsw/sglang-phi3-tp2-balanced-737d814/topology.json",
+        "evidence/dsw/sglang-phi3-tp2-balanced-737d814/postcheck.json",
+        "evidence/dsw/sglang-phi3-tp2-balanced-737d814/cleanup.json",
+        "evidence/dsw/phi-tp2-validation-737d814.json"
+      ],
+      "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+      "scope": "BF16 TP2 API1 eager, four types, native chat/parity, 1000 bundle switches and drain; colocated functional development check",
+      "numerical_detail": {
+        "scope": "One saved answer position; CPU BF16 eager forward with FP32 log_softmax",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.25020885467529297,
+        "single_position_passed": false,
+        "full_gate_passed": false
+      },
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
+      "preserved_failure": "evidence/dsw/sglang-phi3-tp2-737d814/startup-failure.json"
     },
     {
       "model_id": "microsoft/Phi-3-mini-4k-instruct",
       "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-phi3-tp2-737d814/contract-ready.json",
+        "evidence/dsw/vllm-phi3-tp2-737d814/reference-cpu.json",
+        "evidence/dsw/vllm-phi3-tp2-737d814/topology.json",
+        "evidence/dsw/vllm-phi3-tp2-737d814/postcheck.json",
+        "evidence/dsw/vllm-phi3-tp2-737d814/cleanup.json",
+        "evidence/dsw/phi-tp2-validation-737d814.json"
+      ],
+      "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+      "scope": "BF16 TP2 API1 eager, four types, native chat/parity, 1000 bundle switches and drain; colocated functional development check",
+      "numerical_detail": {
+        "scope": "One saved answer position; CPU BF16 eager forward with FP32 log_softmax",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.24781322479248047,
+        "single_position_passed": false,
+        "full_gate_passed": false
+      },
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
+      "preserved_failure": "evidence/dsw/vllm-phi3-tp2-737d814/contract.json"
     },
     {
       "model_id": "microsoft/Phi-4-mini-instruct",
       "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-phi4-tp2-737d814/contract.json",
+        "evidence/dsw/sglang-phi4-tp2-737d814/reference-cpu.json",
+        "evidence/dsw/sglang-phi4-tp2-737d814/topology.json",
+        "evidence/dsw/sglang-phi4-tp2-737d814/postcheck.json",
+        "evidence/dsw/sglang-phi4-tp2-737d814/cleanup.json",
+        "evidence/dsw/phi-tp2-validation-737d814.json"
+      ],
+      "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+      "scope": "BF16 TP2 API1 eager, four types, native chat/parity, 1000 bundle switches and drain; colocated functional development check",
+      "numerical_detail": {
+        "scope": "One saved answer position; CPU BF16 eager forward with FP32 log_softmax",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 3.3375181374140084e-06,
+        "single_position_passed": true,
+        "full_gate_passed": false
+      },
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions."
     },
     {
       "model_id": "microsoft/Phi-4-mini-instruct",
       "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-phi4-tp2-737d814/contract.json",
+        "evidence/dsw/vllm-phi4-tp2-737d814/reference-cpu.json",
+        "evidence/dsw/vllm-phi4-tp2-737d814/topology.json",
+        "evidence/dsw/vllm-phi4-tp2-737d814/postcheck.json",
+        "evidence/dsw/vllm-phi4-tp2-737d814/cleanup.json",
+        "evidence/dsw/phi-tp2-validation-737d814.json"
+      ],
+      "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+      "scope": "BF16 TP2 API1 eager, four types, native chat/parity, 1000 bundle switches and drain; colocated functional development check",
+      "numerical_detail": {
+        "scope": "One saved answer position; CPU BF16 eager forward with FP32 log_softmax",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.2500038146972656,
+        "single_position_passed": false,
+        "full_gate_passed": false
+      },
+      "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions."
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
@@ -692,6 +762,7 @@
   "qualification_definitions": {
     "quality": "approved business-task release gate; public engineering runs are tracked separately",
     "performance": "controlled release matrix; colocated short measurements are tracked separately",
-    "development_lora": "Separate LoRA lifecycle, cache-hit isolation and cancellation checks; does not change the base-model functional denominator or release quality/performance columns."
+    "development_lora": "Separate LoRA lifecycle, cache-hit isolation and cancellation checks; does not change the base-model functional denominator or release quality/performance columns.",
+    "numerical": "Independent-reference evidence. failed includes a retained fixture exceeding its frozen tolerance; partial means targeted passing evidence with the full numerical gate incomplete. Native/attach parity is separate."
   }
 }

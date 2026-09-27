@@ -1,0 +1,20 @@
+{
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "checked_at": 1790523885.9761512,
+  "mode": "native-plugin",
+  "zero_leases": true,
+  "zero_admission": true,
+  "all_active_bundles_healthy": true,
+  "active_routes": [
+    {
+      "alias": "cert-3e55a755eae6",
+      "ref": null,
+      "generation": 1003
+    },
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    }
+  ]
+}

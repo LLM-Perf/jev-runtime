@@ -1,0 +1,198 @@
+{
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "release_gate_passed": false,
+  "qualification": "Colocated BF16 TP2 API1 eager native base-model functional checks; each CPU comparison covers one saved answer position. No LoRA, multi-worker, fault recovery, controlled performance, task quality or soak certification.",
+  "combinations": [
+    {
+      "model_id": "microsoft/Phi-3-mini-4k-instruct",
+      "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "run": "evidence/dsw/sglang-phi3-tp2-balanced-737d814",
+      "contract": "contract.json",
+      "functional_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 244,
+      "mixed_bundle_responses": 0,
+      "native_attach_max_logprob_error": 0.0,
+      "reference_cpu_max_logprob_error": 0.25020885467529297,
+      "reference_cpu_atol": 0.15,
+      "reference_cpu_single_position_passed": false,
+      "reference_cpu_top_label_equal": true,
+      "zero_final_leases_and_admission": true,
+      "full_task_owned_group_exited": true,
+      "gpus_after": [
+        {
+          "index": "5",
+          "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        }
+      ],
+      "model_memory_attestation": false
+    },
+    {
+      "model_id": "microsoft/Phi-3-mini-4k-instruct",
+      "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+      "engine": "vllm",
+      "engine_version": "0.30.0+cu129",
+      "run": "evidence/dsw/vllm-phi3-tp2-737d814",
+      "contract": "contract-ready.json",
+      "functional_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 448,
+      "mixed_bundle_responses": 0,
+      "native_attach_max_logprob_error": 0.0,
+      "reference_cpu_max_logprob_error": 0.24781322479248047,
+      "reference_cpu_atol": 0.15,
+      "reference_cpu_single_position_passed": false,
+      "reference_cpu_top_label_equal": true,
+      "zero_final_leases_and_admission": true,
+      "full_task_owned_group_exited": true,
+      "gpus_after": [
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "7",
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "free_mib": "11990",
+          "used_mib": "69006"
+        }
+      ],
+      "model_memory_attestation": false
+    },
+    {
+      "model_id": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "run": "evidence/dsw/sglang-phi4-tp2-737d814",
+      "contract": "contract.json",
+      "functional_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 184,
+      "mixed_bundle_responses": 0,
+      "native_attach_max_logprob_error": 0.0,
+      "reference_cpu_max_logprob_error": 3.3375181374140084e-06,
+      "reference_cpu_atol": 0.15,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_top_label_equal": true,
+      "zero_final_leases_and_admission": true,
+      "full_task_owned_group_exited": true,
+      "gpus_after": [
+        {
+          "index": "5",
+          "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        }
+      ],
+      "model_memory_attestation": false
+    },
+    {
+      "model_id": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "engine": "vllm",
+      "engine_version": "0.30.0+cu129",
+      "run": "evidence/dsw/vllm-phi4-tp2-737d814",
+      "contract": "contract.json",
+      "functional_passed": true,
+      "switches": 1000,
+      "strict_success_requests_during_switches": 317,
+      "mixed_bundle_responses": 0,
+      "native_attach_max_logprob_error": 0.0,
+      "reference_cpu_max_logprob_error": 0.2500038146972656,
+      "reference_cpu_atol": 0.15,
+      "reference_cpu_single_position_passed": false,
+      "reference_cpu_top_label_equal": true,
+      "zero_final_leases_and_admission": true,
+      "full_task_owned_group_exited": true,
+      "gpus_after": [
+        {
+          "index": "6",
+          "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+          "free_mib": "10792",
+          "used_mib": "70204"
+        },
+        {
+          "index": "7",
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "free_mib": "11990",
+          "used_mib": "69006"
+        }
+      ],
+      "model_memory_attestation": false
+    }
+  ],
+  "verified_source_files": 56,
+  "preserved_failures": [
+    {
+      "path": "evidence/dsw/sglang-phi3-tp2-737d814/startup-failure.json",
+      "kind": "Native SGLang TP memory imbalance; guard preserved, equal-spare-memory GPU pair used for successful retest"
+    },
+    {
+      "path": "evidence/dsw/vllm-phi3-tp2-737d814/contract.json",
+      "kind": "Harness connected before ready; successful retry on the same engine process"
+    }
+  ],
+  "evidence_sha256": {
+    "evidence/dsw/phi-model-sources-737d814/Phi-3-mini-4k-instruct-f39ac1d-verify.json": "d8bce175b4265ddbcf79e037eb8aabce38b5c45a2142af1d3ca90db49668bf94",
+    "evidence/dsw/phi-model-sources-737d814/Phi-3-mini-4k-instruct-source.json": "fac90bfa4463774e47018063211891b77e2396c5dbfbfdb3639e166708528601",
+    "evidence/dsw/phi-model-sources-737d814/Phi-4-mini-instruct-cfbefac-verify.json": "23b0e8669baf345374c247498bda4b803852a0e0367d59f7c2f106f0b35ea240",
+    "evidence/dsw/phi-model-sources-737d814/Phi-4-mini-instruct-source.json": "6d655bbee4c25fb91c9d5c22f187202872b7aa3f3af8b3709bc0fbf059f280f5",
+    "evidence/dsw/sglang-phi3-tp2-737d814/cleanup.json": "ef8dc724155faed9eec50550aedece02346c30df20defcaf48114fbf326118e0",
+    "evidence/dsw/sglang-phi3-tp2-737d814/process.json": "09d61d1da5f6264d149921347786a35d71375aec2913c1d725935b1596dc0031",
+    "evidence/dsw/sglang-phi3-tp2-737d814/startup-failure.json": "572bb41bfcc93a685f42d45626b53ac8ee3765e56917b65f522f308bbb4af34b",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/cleanup.json": "a58caa13b0bbda2492bc3b1a337e1ee8738ea52b612b8f277b6513482fbd0247",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/contract.json": "006b849a16a76a4f6e1bc39a52160ba7715da19c6ad62194c5b4fb69d39ce994",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/environment.json": "7fc32515f84c18a51296ef0440ee864641e1fa21971a38c45fbf4989eb18cda5",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/postcheck.json": "5bf9248ba0087d000750165cc375b8d0cc8e7796539b2161eb395f363104a5b9",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/process.json": "98a39b52d96bab3d7199698a38bea4e3fe0f2df39d88470caf8d191db5519dc3",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/profile.json": "a2d4096bbb639ec0c776df2c7dee30854ab7db2a32c5f754826ab77655564258",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/reference-cpu.json": "8d5f0705a2930531d69fda661338d61f02b88be80219f6bbc3d204289604194a",
+    "evidence/dsw/sglang-phi3-tp2-balanced-737d814/topology.json": "49f262f44d2522e4f41d7dce591ed9183179e1ae5e8894ba36c94a15ac80decb",
+    "evidence/dsw/sglang-phi4-tp2-737d814/cleanup.json": "2854b13af43b2788d574d6de87e54d66f85ad42e9e401c22f62e77574d0d318c",
+    "evidence/dsw/sglang-phi4-tp2-737d814/contract.json": "b1960463d508f93ecd0b52bc9de4117bc401aef04ef64bc711df8758ca91a0ab",
+    "evidence/dsw/sglang-phi4-tp2-737d814/environment.json": "7fc32515f84c18a51296ef0440ee864641e1fa21971a38c45fbf4989eb18cda5",
+    "evidence/dsw/sglang-phi4-tp2-737d814/postcheck.json": "c78ed80cce0cf6f587b6449bb17aef2682c21a043f1629ddf828a2d1ccf5afeb",
+    "evidence/dsw/sglang-phi4-tp2-737d814/process.json": "1dc488f2f512a390f6227410edac827755f7a17b030ca6b3d3c2937933eefb95",
+    "evidence/dsw/sglang-phi4-tp2-737d814/profile.json": "801421131c71bf7d0558df484a601aea450fdacdbb4815f4e489445d4d9198a9",
+    "evidence/dsw/sglang-phi4-tp2-737d814/reference-cpu.json": "c89c90a917ea50dae65f9e9bb9d80b389d18dde52b5bf139e22fbbd4155a3a18",
+    "evidence/dsw/sglang-phi4-tp2-737d814/topology.json": "f4a1d7f87d53bfe32ef773415dae466c6f8f2e56948c8aadf55e7df310c7b0f5",
+    "evidence/dsw/source-identity-737d814.json": "698316c0dd3e36e4577fd516200747f39ff3179a4f2a10fb29545cf471376165",
+    "evidence/dsw/vllm-phi3-tp2-737d814/cleanup.json": "ecc111dc1f3278960dcfb45e06fafa8f902d70770e190554800884988ba2233a",
+    "evidence/dsw/vllm-phi3-tp2-737d814/contract-ready.json": "bbbf4bc7593f9db1266e35f48abe28b5dc9dd9406c0a3dfd65058745ec73b52f",
+    "evidence/dsw/vllm-phi3-tp2-737d814/contract.json": "7154e39be763589f060d8cb25654fecdcdc60445340484a5ab9899e547e656bb",
+    "evidence/dsw/vllm-phi3-tp2-737d814/environment.json": "83ecd3c2b93bb1af60169bbf45edac8f91dfcf2591afc2da4008edb021b96221",
+    "evidence/dsw/vllm-phi3-tp2-737d814/postcheck.json": "31540b1b9528a3ad535e7295b8fd06571917a6769a2d26468e77208154a17e57",
+    "evidence/dsw/vllm-phi3-tp2-737d814/process.json": "8c3272e4229b92606cdfd446560df45c5ffe226b6c51e39d2ddd978585bafd28",
+    "evidence/dsw/vllm-phi3-tp2-737d814/profile.json": "7a865dfe66fbb0bf5f99679c5ec9dc658afbe5c6acb3356506172f29c0183fb4",
+    "evidence/dsw/vllm-phi3-tp2-737d814/reference-cpu.json": "e436fd084eae831d607942bad4db01fb9d9bc9bb940025efa8890012fdf4b089",
+    "evidence/dsw/vllm-phi3-tp2-737d814/topology.json": "2095a7a06b5f290936b0793117a6b45b92a62a08c4e9dfdff626ea8ac1306aa2",
+    "evidence/dsw/vllm-phi4-tp2-737d814/cleanup.json": "7f6be51708a405ed5f2604f71a37ad30c485ffd6a1c35bf1252e39fb16ce10c6",
+    "evidence/dsw/vllm-phi4-tp2-737d814/contract.json": "9890c59830b05f05065aae3abe61d1cdcfc0f0b2d225ab50719fb30580f12563",
+    "evidence/dsw/vllm-phi4-tp2-737d814/environment.json": "83ecd3c2b93bb1af60169bbf45edac8f91dfcf2591afc2da4008edb021b96221",
+    "evidence/dsw/vllm-phi4-tp2-737d814/postcheck.json": "0cd450b419c4e17e68b854236f749adf02f42a25e7659c1bbf351b5173ecca44",
+    "evidence/dsw/vllm-phi4-tp2-737d814/process.json": "fa8034f7546474fc313e03bbd424412900dff7b76f9caa03d9298b53d11b3a4e",
+    "evidence/dsw/vllm-phi4-tp2-737d814/profile.json": "3b26acdf324d0351d9f46f74dd0365c252295ad5f5c36c0105e4c50533019e9a",
+    "evidence/dsw/vllm-phi4-tp2-737d814/reference-cpu.json": "457c403e18183e6d903645e1bd53521d8473c82de222489e464dff890feb5a27",
+    "evidence/dsw/vllm-phi4-tp2-737d814/topology.json": "2ccd7c7fc9cbc1f23ac88716ce0bf2f3f8cf7a32ec06bae1c2a573acec9cc4aa",
+    "evidence/local-check-737d814.json": "47f627e2a7953d8b37b3504207d2679a500f87bbafcbc0f12eeee6a85b542148"
+  }
+}

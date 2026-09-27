@@ -12,7 +12,9 @@ for per-worker scope, probe leases, explicit recovery and outstanding replica fa
 
 DSW functional checks cover Qwen3-0.6B, SmolLM2-1.7B and
 DeepSeek-R1-Distill-Qwen-1.5B on SGLang 0.5.19 and vLLM 0.30.0 with CUDA 12.9,
-BF16, TP=1 and eager execution. Check the evidence files for
+BF16, TP=1 and eager execution. Phi-3 mini and Phi-4 mini additionally passed
+scoped BF16 TP2/API1 native checks on both engines at `737d814`; see
+[the TP2 report and numerical limits](phi-tp2-validation.md). Check the evidence files for
 the exact source commit: these are development snapshots, not a certification of
 every later commit. Config switches have been tested. Managed LoRA swaps also
 passed a scoped, frozen SmolLM2 BF16 TP1/API1 profile on both native engines at
@@ -229,8 +231,10 @@ Unattended recovery is not certified.
 
 ## Health, metrics and evidence
 
-`/ready` requires initialized capabilities and a locally prepared active alias. Startup/prepare
-executes a canary; readiness is not yet a periodic model liveness canary. The current
+`/ready` requires initialized capabilities, prepared active bundles and fresh per-worker
+model canaries. Startup/prepare and periodic probes update this evidence; stale or
+failed evidence withdraws readiness and blocks new typed dispatch. See
+[health configuration](serving-health.md) for scope and recovery. The current
 metrics expose decision outcome counts and HTTP latency. Engine usage, canceled
 branches and registry state must also be retained in evaluation artifacts.
 Enable the `jev_runtime.runtime` logger at INFO to emit `jev_scoring` records
@@ -251,6 +255,10 @@ cross-implementation numerical differences and preserves failures.
 The DSW launcher captures PID, Linux start ticks and boot ID before signaling any
 test process. A PID mismatch refuses a stop. Confirm both process exit and released
 GPU memory before launching a replacement. Existing services are not stopped.
+Use `--gpus 5,6` only after a fresh inventory to request ordered TP2 devices;
+each device is budget-checked and recorded by UUID. The engine may impose
+additional memory-balance/workspace constraints. Wait for native plugin readiness
+before running the contract harness. See [TP2 reproduction](phi-tp2-validation.md).
 
 
 ## Runtime metrics

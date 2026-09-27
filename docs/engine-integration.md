@@ -76,9 +76,11 @@ the new worker target passed at `c5f8867`, including two tokenizer workers,
 to that engine also passed its publication and switching checks. Multi-tokenizer HTTP/2
 through Granian is explicitly rejected until its worker integration is validated.
 
-Real startup, scoring and native chat coexistence passed on both engines with two
-small text models. Beyond the specific vLLM two-worker check above, this does not
-certify all multi-process configurations, architectures, LoRA or tensor parallelism.
+Real startup, scoring and native chat coexistence have checkpoint-specific evidence
+on both engines. Phi-3 mini and Phi-4 mini also passed native BF16 TP2/API1
+checks at `737d814`; see [the TP2 report](phi-tp2-validation.md) for model revisions,
+failed attempts and numerical limits. These checks do not certify other parallel
+configurations, TP2 managed LoRA, controlled performance or full model accuracy.
 
 ## Bundle updates
 

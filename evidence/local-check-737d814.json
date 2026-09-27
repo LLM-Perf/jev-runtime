@@ -1,0 +1,16 @@
+{
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "pytest": {
+    "passed": 243,
+    "result": "243 passed in 5.40s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "102 files already formatted",
+  "git_diff_check": "passed",
+  "wheel_builds_rerun": false,
+  "wheel_evidence_reused_from": "evidence/package-check-40b78c2.json",
+  "wheel_reuse_basis": "git diff 40b78c273911d05c3c0563afb50ea692a803c6a1 737d8146562cb0dd906e7f826a3eea8b4d38875f -- pyproject.toml src packages was empty; changes concern deployment and integration harnesses",
+  "typescript_tests_rerun": false,
+  "typescript_unchanged_prior_passing_tests": 62,
+  "qualification": "Local checks only; hosted CI and GPU runs have separate evidence"
+}

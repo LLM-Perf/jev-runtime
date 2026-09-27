@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "runtime_source_commit": "737d8146562cb0dd906e7f826a3eea8b4d38875f",
+  "started_at": 1790523070.2905903,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "microsoft/Phi-3-mini-4k-instruct",
+    "revision": "f39ac1d28e925b323eae81227eaba4464caced4e"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "e0f3747477254065aa09c14469a59324"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-694374cd3a6f4e5daf429ed6f97fe710",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:b1fbf481dba4506adfb942a4e594aa41c770862793585ea70d191c572f69ea3e",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9975904987224546,
+            "technical": 0.001499816553750841,
+            "other": 0.0009096847237944259
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9938389279833908,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9399133489844308,
+            "false": 0.06008665101556925
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9883260474113731,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "abstained",
+          "value": null,
+          "probabilities": {
+            "low": 0.014874112078410105,
+            "medium": 0.4925629439607949,
+            "high": 0.4925629439607949
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9960156787333717,
+          "calibration_status": "uncalibrated",
+          "abstained": true,
+          "reason": "tie",
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "sales",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.9354785522988656,
+            "engineering": 0.02824900600042471,
+            "sales": 0.03627244170070984
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9847104158576035,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 366,
+        "engine_prompt_tokens": 366,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 64
+      },
+      "latency_ms": 108.2069929689169
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 6,
+        "total_tokens": 14,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-312fc8fee21946b59954025eeaa9464d",
+      "status": "completed",
+      "bundle": "cert-847aafff73d9@1",
+      "bundle_digest": "sha256:33de965ef0a54ce69931dcc3fd0a6259f6a2af8a8683aa3a19ad6d3492757e9d",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.997590498008336,
+            "technical": 0.0014998169982606245,
+            "other": 0.0009096849934032382
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9938732286763287,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.939913346038965,
+            "false": 0.060086653961035054
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9892918683612365,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 7.6804964284510255,
+          "probabilities": {
+            "low": 0.016692873808309378,
+            "medium": 0.43051496669317607,
+            "high": 0.5527921594985146
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9960115341147414,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "sales",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.9354785491509279,
+            "engineering": 0.028249007378665727,
+            "sales": 0.03627244347040635
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9843470058861102,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 366,
+        "engine_prompt_tokens": 366,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 336
+      },
+      "latency_ms": 95.60828749090433
+    },
+    "independent_candidate": {
+      "request_id": "dec-3b27502c4c7e4c16b37e3e9d3d584fa4",
+      "status": "completed",
+      "bundle": "cert-847aafff73d9@2",
+      "bundle_digest": "sha256:6e5f3ee3e718e807d9506db23f2e7f96030198ab0e51fed1fd9a078d0f09f1bf",
+      "generation": 2,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.5638652450423797,
+            "technical": 0.10685185878238526,
+            "other": 0.329282896175235
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.9626731121204184,
+            "technical": 0.18242552158390105,
+            "other": 0.5621765008857981
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9399133489844308,
+            "false": 0.06008665101556925
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9883260474113731,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.182815535796021,
+          "probabilities": {
+            "low": 0.3089579285605305,
+            "medium": 0.3455210357197347,
+            "high": 0.3455210357197347
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.7310585727705126,
+            "medium": 0.817574471748733,
+            "high": 0.817574471748733
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "sales",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.539941539540551,
+            "engineering": 0.17784395594897964,
+            "sales": 0.28221450451046937
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.18242553269617778,
+            "engineering": 0.06008665017400762,
+            "sales": 0.09534945461636171
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 933,
+        "engine_prompt_tokens": 933,
+        "engine_completion_tokens": 10,
+        "cached_prompt_tokens": 608
+      },
+      "latency_ms": 126.75085384398699
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 448,
+      "versions_seen": [
+        "cert-847aafff73d9@1",
+        "cert-847aafff73d9@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/Phi-3-mini-4k-instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false
+  },
+  "serving_profile": {
+    "worker_id": "e0f3747477254065aa09c14469a59324",
+    "model": {
+      "id": "microsoft/Phi-3-mini-4k-instruct",
+      "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+      "tokenizer_digest": "sha256:f34640b4f2336b6c623388ca4d3967bc620c750fc9b62b16da11f0ab99d0534e",
+      "tokenizer_implementation_digest": "sha256:b084d1f204c40c4abbb4451eaee694c5d367b2f99c3f8fb7f1594d0afda4bba8",
+      "template_digest": "sha256:51dba1fab684e722d37cf2c10e089ca47ee005b141f9e54ff173dac7c3e6fe8c",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/Phi-3-mini-4k-instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 0.9065263830125332,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "microsoft/Phi-3-mini-4k-instruct",
+    "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+    "tokenizer_digest": "sha256:f34640b4f2336b6c623388ca4d3967bc620c750fc9b62b16da11f0ab99d0534e",
+    "tokenizer_implementation_digest": "sha256:b084d1f204c40c4abbb4451eaee694c5d367b2f99c3f8fb7f1594d0afda4bba8",
+    "template_digest": "sha256:51dba1fab684e722d37cf2c10e089ca47ee005b141f9e54ff173dac7c3e6fe8c",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      32006,
+      382,
+      4387,
+      403,
+      278,
+      19056,
+      848,
+      2750,
+      278,
+      3414,
+      29889,
+      3630,
+      338,
+      10757,
+      29892,
+      451,
+      11994,
+      29889,
+      7106,
+      3721,
+      278,
+      13877,
+      1234,
+      3858,
+      29889,
+      32007,
+      32010,
+      9330,
+      29901,
+      13,
+      3549,
+      278,
+      11962,
+      29915,
+      29879,
+      7601,
+      7609,
+      29889,
+      13,
+      13,
+      1469,
+      313,
+      7249,
+      1347,
+      1125,
+      13,
+      29908,
+      29902,
+      471,
+      20139,
+      8951,
+      322,
+      723,
+      763,
+      263,
+      2143,
+      870,
+      1213,
+      13,
+      13,
+      29909,
+      1983,
+      17538,
+      29901,
+      13,
+      29909,
+      29901,
+      14617,
+      1860,
+      29892,
+      21090,
+      29892,
+      470,
+      2143,
+      870,
+      29879,
+      13,
+      29933,
+      29901,
+      319,
+      16905,
+      12570,
+      297,
+      278,
+      3234,
+      13,
+      29907,
+      29901,
+      319,
+      1422,
+      11261,
+      13,
+      11609,
+      3721,
+      697,
+      1234,
+      3858,
+      29889,
+      32007,
+      32001
+    ],
+    "label_ids": [
+      319,
+      350,
+      315
+    ],
+    "logprobs": [
+      -0.008558026514947414,
+      -6.5085577964782715,
+      -7.0085577964782715
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790523079.8463397
+}

@@ -1,0 +1,27 @@
+{
+  "model_id": "microsoft/Phi-3-mini-4k-instruct",
+  "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "engine_logprobs": [
+    -0.008558026514947414,
+    -6.5085577964782715,
+    -7.0085577964782715
+  ],
+  "reference_logprobs": [
+    -0.010744458995759487,
+    -6.260744571685791,
+    -6.760744571685791
+  ],
+  "absolute_errors": [
+    0.0021864324808120728,
+    0.24781322479248047,
+    0.24781322479248047
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": false,
+  "started_at": 1790523204.4955847,
+  "finished_at": 1790523209.591069
+}
