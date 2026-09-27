@@ -91,7 +91,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Gateway crash recovery passed on both engines; soak not run | Remaining faults and complete 24h evidence |
-| LoRA lifecycle | Incomplete | Load/unload adapters, engine identity, draining, cache isolation |
+| LoRA lifecycle | Local immutable artifact, lifecycle, lease/race/restart checks implemented | Real native GPU load/unload, cache isolation, cancellation and rollback checks |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
 | Multi-replica rollout | Shared-local-registry activation barrier passed on both engines | Multi-node coordinator, quotas and cancellation routing |

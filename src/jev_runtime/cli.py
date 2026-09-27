@@ -18,6 +18,8 @@ calibration_app = typer.Typer(help="Collect fixed-task scores and fit held-out c
 app.add_typer(calibration_app, name="calibration")
 recovery_app = typer.Typer(help="Inspect and recover durable leases, including before API startup")
 app.add_typer(recovery_app, name="recovery")
+adapter_app = typer.Typer(help="Register, load, drain and unload immutable local LoRA artifacts")
+app.add_typer(adapter_app, name="adapter")
 
 
 def output(value):
@@ -135,16 +137,53 @@ def bundle_build_remote(
     url: str = "http://127.0.0.1:8795",
     name: str = "default",
     version: int = 1,
+    adapter: str | None = None,
 ):
     """Build against the running worker's tokenizer profile without activating it."""
     profile = admin_request(url, "/admin/profile")
     if not profile.get("model"):
         raise typer.BadParameter("The serving runtime does not expose a configured model identity")
-    bundle = Bundle(id=name, version=version, model=profile["model"])
+    model = dict(profile["model"])
+    if adapter:
+        matches = [
+            row for row in admin_request(url, "/admin/adapters") if row["reference"] == adapter
+        ]
+        if len(matches) != 1:
+            raise typer.BadParameter("Register the immutable adapter before building its bundle")
+        artifact = matches[0]["binding"]["artifact"]
+        if (artifact["base_model_id"], artifact["base_model_revision"]) != (
+            model["id"],
+            model["revision"],
+        ):
+            raise typer.BadParameter("Adapter and serving base model differ")
+        model.update(adapter_id=artifact["id"], adapter_revision=artifact["revision"])
+    bundle = Bundle(id=name, version=version, model=model)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("x") as file:
         file.write(bundle.model_dump_json(indent=2) + "\n")
     output({"path": str(destination), "reference": bundle.reference, "digest": bundle.digest})
+
+
+@adapter_app.command("list")
+def adapter_list(url: str = "http://127.0.0.1:8795"):
+    admin_call(url, "/admin/adapters")
+
+
+@adapter_app.command("register")
+def adapter_register(name: str, source: str, url: str = "http://127.0.0.1:8795"):
+    """Copy an allowed directory on the server into its immutable artifact store."""
+    admin_call(url, "/admin/adapters/register", {"id": name, "source": source})
+
+
+@adapter_app.command("load")
+def adapter_load(reference: str, url: str = "http://127.0.0.1:8795"):
+    admin_call(url, "/admin/adapters/load", {"reference": reference})
+
+
+@adapter_app.command("unload")
+def adapter_unload(reference: str, url: str = "http://127.0.0.1:8795", recover: bool = False):
+    """Disable all referencing aliases and drain leases before calling this command."""
+    admin_call(url, "/admin/adapters/unload", {"reference": reference, "recover": recover})
 
 
 @bundle_app.command("upload")

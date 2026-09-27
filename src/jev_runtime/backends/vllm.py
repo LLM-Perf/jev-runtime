@@ -4,6 +4,7 @@ from typing import Any
 
 import httpx
 
+from jev_runtime.adapters import AdapterBinding
 from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult
 from jev_runtime.errors import JevError
 
@@ -20,6 +21,73 @@ class VLLMNative:
         self.engine_client = engine_client
         self.model_id, self.max_context, self.version = model_id, max_context, version
         self.api_workers = api_workers
+        self.managed_lora = False
+        self._adapter_bindings: dict[str, AdapterBinding] = {}
+
+    def _lora_profile(self) -> bool:
+        config = getattr(self.engine_client, "vllm_config", None)
+        parallel = getattr(config, "parallel_config", None)
+        model = self.engine_client.model_config
+        architectures = getattr(getattr(model, "hf_config", None), "architectures", ()) or ()
+        return bool(
+            self.managed_lora
+            and self.version.split("+")[0] == "0.30.0"
+            and self.api_workers == 1
+            and getattr(config, "lora_config", None) is not None
+            and getattr(parallel, "tensor_parallel_size", None) == 1
+            and getattr(parallel, "pipeline_parallel_size", None) == 1
+            and getattr(parallel, "data_parallel_size", None) == 1
+            and getattr(parallel, "worker_extension_cls", None)
+            == "jev_vllm.worker.LoRAWorkerExtension"
+            and str(getattr(model, "dtype", None)) in {"torch.bfloat16", "bfloat16"}
+            and getattr(model, "quantization", None) is None
+            and set(architectures) <= {"LlamaForCausalLM", "Qwen3ForCausalLM"}
+            and architectures
+        )
+
+    @staticmethod
+    def _lora_request(binding: AdapterBinding):
+        from vllm.lora.request import LoRARequest
+
+        return LoRARequest(
+            lora_name=binding.engine_name,
+            lora_int_id=binding.engine_id,
+            lora_path=binding.artifact.path,
+            load_inplace=False,
+        )
+
+    async def _lora_barrier(self) -> None:
+        results = await self.engine_client.collective_rpc("jev_lora_barrier", timeout=30)
+        if not results or not all(value is True for value in results):
+            raise JevError("adapter_barrier", "GPU completion barrier was not confirmed", 503)
+
+    async def load_adapter(self, binding: AdapterBinding) -> None:
+        if not self._lora_profile():
+            raise JevError("adapter_profile", "Unsupported vLLM managed LoRA profile", 409)
+        if binding.engine_id in await self.engine_client.list_loras():
+            raise JevError(
+                "adapter_collision",
+                "Engine adapter ID is already resident; reconcile before loading",
+                409,
+            )
+        if not await self.engine_client.add_lora(self._lora_request(binding)):
+            raise JevError("adapter_load", "vLLM did not confirm LoRA loading", 503)
+        if not await self.engine_client.pin_lora(binding.engine_id):
+            raise JevError("adapter_pin", "vLLM did not pin the managed adapter", 503)
+        await self._lora_barrier()
+        self._adapter_bindings[binding.artifact.reference] = binding
+
+    async def unload_adapter(self, binding: AdapterBinding) -> None:
+        if not self._lora_profile():
+            raise JevError("adapter_profile", "Unsupported vLLM managed LoRA profile", 409)
+        await self._lora_barrier()
+        if binding.engine_id in await self.engine_client.list_loras():
+            if not await self.engine_client.remove_lora(binding.engine_id):
+                raise JevError("adapter_unload", "vLLM did not confirm LoRA removal", 503)
+        await self._lora_barrier()
+        if binding.engine_id in await self.engine_client.list_loras():
+            raise JevError("adapter_unload", "Adapter remains resident", 503)
+        self._adapter_bindings.pop(binding.artifact.reference, None)
 
     async def probe(self) -> Capabilities:
         model = self.engine_client.model_config
@@ -34,14 +102,21 @@ class VLLMNative:
             raw_logprobs=getattr(model, "logprobs_mode", None) == "raw_logprobs",
             prefix_cache=getattr(cache, "enable_prefix_caching", None),
             api_workers=self.api_workers,
+            lora=self._lora_profile(),
         )
 
     async def score(self, request: ScoreInput) -> ScoreResult:
         from vllm.inputs import tokens_input
         from vllm.sampling_params import SamplingParams
 
+        extra = {}
         if request.adapter_id:
-            raise JevError("lora_unsupported", "This adapter has no certified LoRA resolver", 409)
+            binding = self._adapter_bindings.get(request.adapter_id)
+            if binding is None or not self._lora_profile():
+                raise JevError(
+                    "adapter_not_ready", "Adapter has not been loaded by this worker", 503
+                )
+            extra["lora_request"] = self._lora_request(binding)
         params = SamplingParams(
             max_tokens=1,
             logprobs=len(request.label_ids),
@@ -49,7 +124,7 @@ class VLLMNative:
             n=1,
         )
         generator = self.engine_client.generate(
-            tokens_input(list(request.input_ids)), params, request.request_id
+            tokens_input(list(request.input_ids)), params, request.request_id, **extra
         )
         result = None
         try:
@@ -120,13 +195,17 @@ class VLLMHTTP:
                     "use native typed endpoints for multiple engine API workers",
                     503,
                 )
-            return capabilities
+            return capabilities.model_copy(update={"lora": False})
         except (httpx.HTTPError, ValueError) as exc:
             raise JevError(
                 "engine_probe_failed", "vLLM requires the Jev scoring endpoint plugin", 503
             ) from exc
 
     async def score(self, request: ScoreInput) -> ScoreResult:
+        if request.adapter_id:
+            raise JevError(
+                "lora_unsupported", "Managed LoRA requires the native typed endpoint", 409
+            )
         try:
             response = await self.client.post(
                 self.prefix + "/scores",

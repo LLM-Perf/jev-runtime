@@ -91,6 +91,12 @@ def launch(args):
         "port": args.port,
         "workers": args.api_workers,
     }
+    if args.adapters_root:
+        config["adapters"] = {
+            "enabled": True,
+            "store_path": str(root / "adapters"),
+            "allowed_roots": [str(args.adapters_root.resolve(strict=True))],
+        }
     (root / "config.json").write_text(json.dumps(config, indent=2) + "\n")
     keys = root / "keys.json"
     if not keys.exists():
@@ -149,6 +155,20 @@ def launch(args):
         ]
         if args.api_workers > 1:
             command.extend(["--api-server-count", str(args.api_workers)])
+        if args.adapters_root:
+            command.extend(
+                [
+                    "--enable-lora",
+                    "--max-loras",
+                    "2",
+                    "--max-cpu-loras",
+                    "4",
+                    "--max-lora-rank",
+                    "64",
+                    "--worker-extension-cls",
+                    "jev_vllm.worker.LoRAWorkerExtension",
+                ]
+            )
     else:
         env["SGLANG_PLUGINS"] = "jev_runtime"
         command = [
@@ -181,6 +201,26 @@ def launch(args):
         ]
         if args.api_workers > 1:
             command.extend(["--tokenizer-worker-num", str(args.api_workers)])
+        if args.adapters_root:
+            command.extend(
+                [
+                    "--enable-lora",
+                    "--max-lora-rank",
+                    "64",
+                    "--max-loaded-loras",
+                    "4",
+                    "--max-loras-per-batch",
+                    "2",
+                    "--lora-target-modules",
+                    "q_proj",
+                    "k_proj",
+                    "v_proj",
+                    "o_proj",
+                    "gate_proj",
+                    "up_proj",
+                    "down_proj",
+                ]
+            )
     with (root / "engine.log").open("ab") as log:
         child = subprocess.Popen(command, env=env, stdout=log, stderr=log, start_new_session=True)
     identity = process_identity(child.pid)
@@ -243,6 +283,7 @@ def main():
     parser.add_argument("--engine-url")
     parser.add_argument("--engine-run-dir", type=Path)
     parser.add_argument("--api-workers", type=int, default=1)
+    parser.add_argument("--adapters-root", type=Path)
     args = parser.parse_args()
     if args.action == "launch":
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
@@ -253,6 +294,8 @@ def main():
             parser.error("engine-run-dir only supplies credentials for a gateway")
         if not 1 <= args.api_workers <= 128:
             parser.error("api-workers must be between 1 and 128")
+        if args.adapters_root and (args.gateway or args.api_workers != 1):
+            parser.error("managed adapters require the native single-worker profile")
     {"launch": launch, "status": status, "stop": stop}[args.action](args)
 
 

@@ -7,6 +7,7 @@ import time
 import uuid
 from dataclasses import asdict
 
+from jev_runtime.adapters import AdapterStore
 from jev_runtime.admission import Admission
 from jev_runtime.backends.base import Capabilities, EngineAdapter, ScoreInput, ScoreResult
 from jev_runtime.compiler import CompiledQuestion, Compiler
@@ -38,10 +39,14 @@ class Runtime:
         model_id: str,
         admission: Admission | None = None,
         expected_model: ModelIdentity | None = None,
+        adapter_store: AdapterStore | None = None,
+        adapter_timeout: int = 120,
     ):
         self.backend, self.compiler, self.registry = backend, compiler, registry
         self.backend_identity, self.model_id = backend_identity, model_id
         self.expected_model = expected_model
+        self.adapter_store, self.adapter_timeout = adapter_store, adapter_timeout
+        self._adapter_tasks: set[asyncio.Task] = set()
         self.admission = admission or Admission()
         self.capabilities: Capabilities | None = None
         self._management_lock = asyncio.Lock()
@@ -59,6 +64,14 @@ class Runtime:
         self._prepared.clear()
         self.registry.start_worker(self.backend_identity)
         self.capabilities = await self.backend.probe()
+        if self.adapter_store is not None:
+            if not self.capabilities.lora:
+                raise JevError(
+                    "adapter_profile",
+                    "Native engine configuration does not support managed LoRA",
+                    409,
+                )
+            self.registry.start_adapter_session(self.backend_identity)
         if not self.capabilities.selected_logprobs or not self.capabilities.raw_logprobs:
             raise JevError(
                 "unsupported_engine", "Engine must return complete raw selected logprobs", 503
@@ -126,9 +139,9 @@ class Runtime:
         return self.registry.activate(alias, reference, expected_generation)
 
     async def close(self) -> None:
-        self.registry.stop_worker()
+        self.registry.drain_worker()
         self.control_healthy = False
-        tasks = [*self._active.values(), *self._cancel_jobs]
+        tasks = [*self._active.values(), *self._cancel_jobs, *self._adapter_tasks]
         if self._control_task is not None:
             tasks.append(self._control_task)
         try:
@@ -137,6 +150,7 @@ class Runtime:
             try:
                 await self.backend.close()
             finally:
+                self.registry.stop_worker()
                 self.registry.close()
 
     def _validate_bundle(self, bundle: Bundle) -> None:
@@ -158,6 +172,75 @@ class Runtime:
                     )
         if bundle.model.adapter_id and (not self.capabilities or not self.capabilities.lora):
             raise JevError("lora_unsupported", "Backend has not enabled adapter scoring", 409)
+        if bundle.model.adapter_id:
+            self.registry.adapter_binding(
+                f"{bundle.model.adapter_id}@{bundle.model.adapter_revision}", self.backend_identity
+            )
+
+    def _require_adapters(self) -> None:
+        if self.adapter_store is None or self.capabilities is None or not self.capabilities.lora:
+            raise JevError(
+                "lora_unsupported", "Managed LoRA is not configured for this engine", 409
+            )
+
+    async def register_adapter(self, adapter_id: str, source: str) -> dict:
+        self._require_adapters()
+        if self.expected_model is None:
+            raise JevError("adapter_profile", "A frozen base-model identity is required", 409)
+        # Registration copies files but never dispatches GPU work. A cancelled
+        # filesystem copy can leave only an unreferenced immutable artifact.
+        try:
+            artifact = await asyncio.to_thread(
+                self.adapter_store.register,
+                adapter_id,
+                source,
+                self.expected_model.id,
+                self.expected_model.revision,
+            )
+        except JevError:
+            raise
+        except Exception as exc:
+            raise JevError(
+                "adapter_artifact_invalid",
+                "Cannot read or validate the local adapter artifact",
+                409,
+            ) from exc
+        return self.registry.register_adapter(artifact, self.backend_identity)
+
+    async def change_adapter(self, reference: str, action: str, recover: bool = False) -> dict:
+        self._require_adapters()
+        task = asyncio.current_task()
+        self._adapter_tasks.add(task)
+        try:
+            async with self._management_lock:
+                operation, binding = self.registry.begin_adapter_operation(
+                    reference, self.backend_identity, action, recover
+                )
+                error = None
+                try:
+                    async with asyncio.timeout(self.adapter_timeout):
+                        if action == "load":
+                            await asyncio.to_thread(self.adapter_store.verify, binding.artifact)
+                            await self.backend.load_adapter(binding)
+                        else:
+                            await self.backend.unload_adapter(binding)
+                except BaseException as exc:
+                    error = exc.code if isinstance(exc, JevError) else type(exc).__name__
+                    if isinstance(exc, Exception) and not isinstance(exc, JevError):
+                        raise JevError(
+                            "adapter_operation_failed",
+                            "Adapter operation could not be confirmed; reconcile before reuse",
+                            503,
+                        ) from exc
+                    raise
+                finally:
+                    self.registry.finish_adapter_operation(reference, operation, error)
+                    for bundle in self.registry.inspect_adapter(reference)["bundles"]:
+                        self._prepared.discard(bundle)
+                        self.registry.forget_worker_prepared(bundle)
+                return self.registry.inspect_adapter(reference)
+        finally:
+            self._adapter_tasks.discard(task)
 
     async def prepare(self, reference: str) -> dict:
         async with self._management_lock:

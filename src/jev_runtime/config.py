@@ -8,6 +8,7 @@ from typing import Literal
 import yaml
 from pydantic import Field
 
+from jev_runtime.adapters import AdapterStore
 from jev_runtime.admission import Admission
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
@@ -25,6 +26,14 @@ class AdmissionSettings(Contract):
     max_tenant_requests: int = Field(default=16, gt=0)
     max_tenant_tokens: int = Field(default=262_144, gt=0)
     max_tenant_queue: int = Field(default=64, gt=0)
+
+
+class AdapterSettings(Contract):
+    enabled: bool = False
+    store_path: str = ".jev/adapters"
+    allowed_roots: tuple[str, ...] = ()
+    max_bytes: int = Field(default=268435456, ge=1, le=2147483648)
+    operation_timeout_seconds: int = Field(default=120, ge=1, le=300)
 
 
 class Settings(Contract):
@@ -49,6 +58,7 @@ class Settings(Contract):
     bootstrap_bundle_id: str = "default"
     tenant_key_envs: dict[str, str] = Field(default_factory=dict)
     admission: AdmissionSettings = Field(default_factory=AdmissionSettings)
+    adapters: AdapterSettings = Field(default_factory=AdapterSettings)
 
 
 def tenant_keys(settings: Settings) -> dict[str, str]:
@@ -106,6 +116,18 @@ async def build_runtime(
     identity = (
         f"{settings.backend}:{settings.engine_url}:{settings.model_id}:{settings.model_revision}"
     )
+    store = None
+    if settings.adapters.enabled:
+        if native_backend is None or settings.workers != 1:
+            raise JevError(
+                "adapter_profile", "Managed LoRA requires a native single-worker plugin", 409
+            )
+        store = AdapterStore(
+            settings.adapters.store_path,
+            settings.adapters.allowed_roots,
+            settings.adapters.max_bytes,
+        )
+        backend.managed_lora = True
     return Runtime(
         backend,
         compiler,
@@ -114,6 +136,8 @@ async def build_runtime(
         settings.model_id,
         admission=Admission(**settings.admission.model_dump()),
         expected_model=model_identity(settings, compiler),
+        adapter_store=store,
+        adapter_timeout=settings.adapters.operation_timeout_seconds,
     )
 
 

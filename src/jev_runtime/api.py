@@ -15,7 +15,7 @@ from jev_runtime.config import Settings, bootstrap, build_runtime, load_settings
 from jev_runtime.errors import JevError
 from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
-from jev_runtime.schema import Bundle, Contract, DecisionRequest
+from jev_runtime.schema import Bundle, Contract, DecisionRequest, Identifier
 from jev_runtime.systemone import SystemOneRequest, from_decision
 
 
@@ -32,6 +32,15 @@ class Disable(Contract):
 
 class Reference(Contract):
     reference: str
+
+
+class AdapterRegistration(Contract):
+    id: Identifier
+    source: str = Field(min_length=1, max_length=4096)
+
+
+class AdapterRemoval(Reference):
+    recover: bool = False
 
 
 async def disconnect_guard(request: Request, coroutine):
@@ -173,6 +182,22 @@ def install_routes(
     @management.get("/bundles")
     async def list_bundles(request: Request):
         return runtime(request).registry.list()
+
+    @management.get("/adapters")
+    async def adapters(request: Request):
+        return runtime(request).registry.list_adapters()
+
+    @management.post("/adapters/register")
+    async def register_adapter(body: AdapterRegistration, request: Request):
+        return await runtime(request).register_adapter(body.id, body.source)
+
+    @management.post("/adapters/load")
+    async def load_adapter(body: Reference, request: Request):
+        return await runtime(request).change_adapter(body.reference, "load")
+
+    @management.post("/adapters/unload")
+    async def unload_adapter(body: AdapterRemoval, request: Request):
+        return await runtime(request).change_adapter(body.reference, "unload", body.recover)
 
     @management.get("/workers")
     async def workers(request: Request):

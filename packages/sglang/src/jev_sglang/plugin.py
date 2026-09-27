@@ -75,6 +75,23 @@ def _check_granian_workers(*args, **kwargs):
         raise ValueError("Jev multi-tokenizer integration currently requires the Uvicorn HTTP path")
 
 
+def _before_lora_unload(*args, **kwargs):
+    import torch
+
+    torch.cuda.synchronize()
+
+
+def _after_lora_update(result, *args, **kwargs):
+    if result.success:
+        import torch
+
+        torch.cuda.synchronize()
+        # The native coordinator verifies this marker in the scheduler reply;
+        # an uninstalled/failed hook cannot advertise completed GPU cleanup.
+        result.error_message = "jev_gpu_barrier_v1"
+    return result
+
+
 def register():
     global _registered
     if _registered:
@@ -90,4 +107,10 @@ def register():
         _check_granian_workers,
         HookType.BEFORE,
     )
+    path = os.environ.get("JEV_CONFIG")
+    if path and load_settings(path).adapters.enabled:
+        target = "sglang.srt.managers.scheduler.Scheduler."
+        HookRegistry.register(target + "unload_lora_adapter", _before_lora_unload, HookType.BEFORE)
+        for method in ("load_lora_adapter", "unload_lora_adapter"):
+            HookRegistry.register(target + method, _after_lora_update, HookType.AFTER)
     _registered = True

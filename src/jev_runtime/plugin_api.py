@@ -67,6 +67,10 @@ def install_plugin_routes(app: FastAPI) -> None:
 
     @router.post("/scores")
     async def score(body: ScoreWire, request: Request):
+        if body.adapter_id:
+            raise JevError(
+                "lora_unsupported", "Managed LoRA requires the leased typed decision endpoint", 409
+            )
         adapter = backend(request)
         capabilities = await adapter.probe()
         if len(body.input_ids) + 1 > capabilities.max_context_tokens:

@@ -12,6 +12,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 
+from jev_runtime.adapters import AdapterArtifact, AdapterBinding
 from jev_runtime.errors import JevError
 from jev_runtime.schema import Bundle
 
@@ -84,6 +85,16 @@ class Registry:
                 );
                 CREATE INDEX IF NOT EXISTS cancel_commands_by_owner
                     ON cancel_commands(owner,state);
+                CREATE TABLE IF NOT EXISTS adapters (
+                    ref TEXT PRIMARY KEY, manifest TEXT NOT NULL, digest TEXT NOT NULL,
+                    binding TEXT NOT NULL, backend TEXT NOT NULL, state TEXT NOT NULL,
+                    operation TEXT, owner TEXT, error TEXT, created REAL NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS bundle_adapters (
+                    ref TEXT PRIMARY KEY REFERENCES bundles(ref),
+                    adapter_ref TEXT NOT NULL REFERENCES adapters(ref)
+                );
+                CREATE INDEX IF NOT EXISTS bundles_by_adapter ON bundle_adapters(adapter_ref);
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
                     action TEXT NOT NULL, details TEXT NOT NULL
@@ -190,6 +201,26 @@ class Registry:
 
     def upload(self, bundle: Bundle) -> dict:
         with self._transaction() as db:
+            adapter_ref = None
+            if bundle.model.adapter_id:
+                adapter_ref = f"{bundle.model.adapter_id}@{bundle.model.adapter_revision}"
+                adapter = db.execute(
+                    "SELECT * FROM adapters WHERE ref=?", (adapter_ref,)
+                ).fetchone()
+                if adapter is None:
+                    raise JevError(
+                        "adapter_not_found", "Register the immutable adapter before its bundle", 409
+                    )
+                artifact = AdapterArtifact.model_validate_json(adapter["manifest"])
+                if (artifact.base_model_id, artifact.base_model_revision) != (
+                    bundle.model.id,
+                    bundle.model.revision,
+                ):
+                    raise JevError(
+                        "adapter_base_mismatch",
+                        "Adapter belongs to a different base model revision",
+                        409,
+                    )
             previous = db.execute(
                 "SELECT * FROM bundles WHERE ref=?", (bundle.reference,)
             ).fetchone()
@@ -212,11 +243,16 @@ class Registry:
                     ),
                 )
                 self._event(db, "upload", ref=bundle.reference, digest=bundle.digest)
+                if adapter_ref is not None:
+                    db.execute(
+                        "INSERT INTO bundle_adapters VALUES(?,?)", (bundle.reference, adapter_ref)
+                    )
         return self.inspect(bundle.reference)
 
     def begin_prepare(self, reference: str, backend: str, request_id: str) -> tuple[Bundle, str]:
         with self._transaction() as db:
             row = self._get(db, reference)
+            self._adapter_ready(db, reference, backend)
             if row["state"] not in ("VALIDATED", "FAILED", "RETIRED"):
                 raise JevError("invalid_state", f"Cannot prepare a {row['state']} bundle", 409)
             if db.execute("SELECT 1 FROM leases WHERE ref=?", (reference,)).fetchone():
@@ -325,6 +361,10 @@ class Registry:
         with self._transaction() as db:
             db.execute("UPDATE workers SET state='STOPPED' WHERE owner=?", (self.owner,))
 
+    def drain_worker(self) -> None:
+        with self._transaction() as db:
+            db.execute("UPDATE workers SET state='DRAINING' WHERE owner=?", (self.owner,))
+
     def worker_status(self) -> list[dict]:
         with self._connection() as db:
             rows = db.execute(
@@ -349,6 +389,7 @@ class Registry:
             bundle = self._get(db, reference)
             if bundle["state"] not in ("READY", "ACTIVE", "DRAINING"):
                 raise JevError("not_ready", "Only prepared bundles can receive traffic", 409)
+            self._adapter_ready(db, reference, bundle["backend"])
             route = db.execute("SELECT * FROM routes WHERE alias=?", (alias,)).fetchone()
             generation = route["generation"] if route else 0
             if expected_generation != generation:
@@ -428,6 +469,7 @@ class Registry:
             row = self._get(db, route["ref"])
             if row["state"] != "ACTIVE" or row["backend"] != backend:
                 raise JevError("bundle_not_ready", "Bundle is not prepared for this backend", 503)
+            self._adapter_ready(db, row["ref"], backend)
             lease = uuid.uuid4().hex
             db.execute(
                 "INSERT INTO leases VALUES(?,?,?,?,?)",
@@ -543,6 +585,7 @@ class Registry:
         """Probe an existing version without changing another worker's active route."""
         with self._transaction() as db:
             row = self._get(db, reference)
+            self._adapter_ready(db, reference, backend)
             if row["state"] not in {"READY", "ACTIVE", "DRAINING"} or row["backend"] != backend:
                 raise JevError("not_ready", "Bundle is not prepared for this engine target", 409)
             lease = uuid.uuid4().hex
@@ -671,6 +714,235 @@ class Registry:
                 "error": row["error"],
                 "inflight": count,
             }
+
+    @staticmethod
+    def _adapter_ready(db: sqlite3.Connection, reference: str, backend: str) -> None:
+        row = db.execute(
+            "SELECT a.state,a.backend FROM bundle_adapters b JOIN adapters a "
+            "ON a.ref=b.adapter_ref WHERE b.ref=?",
+            (reference,),
+        ).fetchone()
+        if row is not None and (row["state"] != "READY" or row["backend"] != backend):
+            raise JevError("adapter_not_ready", "Bundle adapter is not loaded for this engine", 503)
+        if row is None:
+            bundle = db.execute("SELECT manifest FROM bundles WHERE ref=?", (reference,)).fetchone()
+            if bundle and json.loads(bundle["manifest"])["model"].get("adapter_id"):
+                raise JevError(
+                    "adapter_not_registered", "Legacy adapter bundle needs registration", 409
+                )
+
+    def start_adapter_session(self, backend: str) -> list[str]:
+        """Single frontend only: quarantine previous engine state on restart.
+
+        GPU residency cannot be inferred from SQLite. Pause affected aliases,
+        preserve leases, and require explicit unload/reload and new canaries.
+        A verified dead or gracefully stopped coordinator is required.
+        """
+        with self._transaction() as db:
+            for worker in db.execute(
+                "SELECT w.*,o.identity FROM workers w JOIN owners o ON o.owner=w.owner "
+                "WHERE backend=? AND w.owner!=? AND state!='STOPPED'",
+                (backend, self.owner),
+            ):
+                if self._owner_status(json.loads(worker["identity"])) != "dead":
+                    raise JevError(
+                        "adapter_coordinator_active",
+                        "Managed LoRA requires one exclusive API worker",
+                        409,
+                    )
+            affected = [
+                row["ref"]
+                for row in db.execute(
+                    "SELECT ref FROM adapters WHERE backend=? "
+                    "AND state IN ('READY','LOADING','UNLOADING')",
+                    (backend,),
+                )
+            ]
+            for reference in affected:
+                db.execute(
+                    "UPDATE adapters SET state='UNKNOWN',operation=NULL,owner=NULL,"
+                    "error='engine_session_changed' WHERE ref=?",
+                    (reference,),
+                )
+                db.execute(
+                    "UPDATE routes SET ref=NULL,generation=generation+1 WHERE ref IN "
+                    "(SELECT ref FROM bundle_adapters WHERE adapter_ref=?)",
+                    (reference,),
+                )
+                db.execute(
+                    "DELETE FROM worker_bundles WHERE ref IN "
+                    "(SELECT ref FROM bundle_adapters WHERE adapter_ref=?)",
+                    (reference,),
+                )
+                db.execute(
+                    "UPDATE bundles SET state='VALIDATED' WHERE state IN "
+                    "('PREPARING','READY','ACTIVE','DRAINING') AND ref IN "
+                    "(SELECT ref FROM bundle_adapters WHERE adapter_ref=?)",
+                    (reference,),
+                )
+                self._event(db, "adapter_session_quarantine", ref=reference)
+            return affected
+
+    def register_adapter(self, artifact: AdapterArtifact, backend: str) -> dict:
+        with self._transaction() as db:
+            row = db.execute("SELECT * FROM adapters WHERE ref=?", (artifact.reference,)).fetchone()
+            if row is not None:
+                if row["manifest"] != artifact.model_dump_json() or row["backend"] != backend:
+                    raise JevError(
+                        "immutable_adapter",
+                        "An adapter reference cannot be overwritten or rebound",
+                        409,
+                    )
+            else:
+                binding = AdapterBinding(
+                    artifact=artifact,
+                    engine_name="jev-lora-" + uuid.uuid4().hex,
+                    engine_id=(uuid.uuid4().int & ((1 << 63) - 1)) or 1,
+                )
+                db.execute(
+                    "INSERT INTO adapters VALUES(?,?,?,?,?,'REGISTERED',NULL,NULL,NULL,?)",
+                    (
+                        artifact.reference,
+                        artifact.model_dump_json(),
+                        artifact.revision,
+                        binding.model_dump_json(),
+                        backend,
+                        time.time(),
+                    ),
+                )
+                self._event(db, "adapter_register", ref=artifact.reference, backend=backend)
+        return self.inspect_adapter(artifact.reference)
+
+    def inspect_adapter(self, reference: str) -> dict:
+        with self._connection() as db:
+            row = db.execute("SELECT * FROM adapters WHERE ref=?", (reference,)).fetchone()
+            if row is None:
+                raise JevError("adapter_not_found", "Unknown immutable adapter", 404)
+            bundles = [
+                item["ref"]
+                for item in db.execute(
+                    "SELECT ref FROM bundle_adapters WHERE adapter_ref=?", (reference,)
+                )
+            ]
+            return {
+                "reference": reference,
+                "state": row["state"],
+                "backend": row["backend"],
+                "binding": json.loads(row["binding"]),
+                "operation": row["operation"],
+                "owner": row["owner"],
+                "error": row["error"],
+                "bundles": bundles,
+            }
+
+    def list_adapters(self) -> list[dict]:
+        with self._connection() as db:
+            references = [row["ref"] for row in db.execute("SELECT ref FROM adapters ORDER BY ref")]
+        return [self.inspect_adapter(reference) for reference in references]
+
+    def adapter_binding(self, reference: str, backend: str) -> AdapterBinding:
+        row = self.inspect_adapter(reference)
+        if row["state"] != "READY" or row["backend"] != backend:
+            raise JevError("adapter_not_ready", "Adapter is not loaded for this engine", 503)
+        return AdapterBinding.model_validate(row["binding"])
+
+    def begin_adapter_operation(
+        self,
+        reference: str,
+        backend: str,
+        action: str,
+        recover: bool = False,
+    ) -> tuple[str, AdapterBinding]:
+        if action not in {"load", "unload"} or (recover and action != "unload"):
+            raise ValueError("Invalid adapter lifecycle operation")
+        with self._transaction() as db:
+            row = db.execute("SELECT * FROM adapters WHERE ref=?", (reference,)).fetchone()
+            if row is None:
+                raise JevError("adapter_not_found", "Unknown immutable adapter", 404)
+            if row["backend"] != backend:
+                raise JevError("adapter_backend_mismatch", "Adapter belongs to another engine", 409)
+            if row["state"] in {"LOADING", "UNLOADING"}:
+                owner = db.execute(
+                    "SELECT identity FROM owners WHERE owner=?", (row["owner"],)
+                ).fetchone()
+                if (
+                    not recover
+                    or not owner
+                    or self._owner_status(json.loads(owner["identity"])) != "dead"
+                ):
+                    raise JevError(
+                        "adapter_operation_active",
+                        "An adapter operation has a live or unverified owner",
+                        409,
+                    )
+            elif action == "load" and row["state"] not in {"REGISTERED", "UNLOADED"}:
+                raise JevError(
+                    "adapter_state", "Reconcile an uncertain adapter before loading it", 409
+                )
+            elif action == "unload" and row["state"] not in {
+                "READY",
+                "UNKNOWN",
+                "REGISTERED",
+                "UNLOADED",
+            }:
+                raise JevError(
+                    "adapter_state", "Adapter cannot be unloaded from its current state", 409
+                )
+            if action == "unload":
+                active = db.execute(
+                    "SELECT 1 FROM routes r JOIN bundle_adapters b ON r.ref=b.ref "
+                    "WHERE b.adapter_ref=? LIMIT 1",
+                    (reference,),
+                ).fetchone()
+                leased = db.execute(
+                    "SELECT 1 FROM leases l JOIN bundle_adapters b ON l.ref=b.ref "
+                    "WHERE b.adapter_ref=? LIMIT 1",
+                    (reference,),
+                ).fetchone()
+                if active or leased:
+                    raise JevError(
+                        "adapter_in_use",
+                        "Disable every adapter route and drain all leases before unloading",
+                        409,
+                    )
+            operation = uuid.uuid4().hex
+            db.execute(
+                "UPDATE adapters SET state=?,operation=?,owner=?,error=NULL WHERE ref=?",
+                ("LOADING" if action == "load" else "UNLOADING", operation, self.owner, reference),
+            )
+            self._event(db, "adapter_" + action, ref=reference, operation=operation)
+            return operation, AdapterBinding.model_validate_json(row["binding"])
+
+    def finish_adapter_operation(
+        self, reference: str, operation: str, error: str | None = None
+    ) -> None:
+        with self._transaction() as db:
+            row = db.execute("SELECT * FROM adapters WHERE ref=?", (reference,)).fetchone()
+            if not row or row["operation"] != operation or row["owner"] != self.owner:
+                raise JevError(
+                    "adapter_operation_conflict", "Adapter operation ownership changed", 409
+                )
+            if row["state"] not in {"LOADING", "UNLOADING"}:
+                raise JevError(
+                    "adapter_operation_conflict", "Adapter operation already settled", 409
+                )
+            state = "UNKNOWN" if error else "READY" if row["state"] == "LOADING" else "UNLOADED"
+            db.execute(
+                "UPDATE adapters SET state=?,error=?,operation=NULL,owner=NULL WHERE ref=?",
+                (state, error, reference),
+            )
+            if state == "UNLOADED":
+                db.execute(
+                    "DELETE FROM worker_bundles WHERE ref IN "
+                    "(SELECT ref FROM bundle_adapters WHERE adapter_ref=?)",
+                    (reference,),
+                )
+                db.execute(
+                    "UPDATE bundles SET state='VALIDATED' WHERE state IN ('READY','DRAINING') "
+                    "AND ref IN (SELECT ref FROM bundle_adapters WHERE adapter_ref=?)",
+                    (reference,),
+                )
+            self._event(db, "adapter_settled", ref=reference, operation=operation, state=state)
 
     def list(self) -> dict:
         with self._connection() as db:

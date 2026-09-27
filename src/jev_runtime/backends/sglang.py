@@ -5,6 +5,7 @@ from typing import Any
 
 import httpx
 
+from jev_runtime.adapters import AdapterBinding
 from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult
 from jev_runtime.errors import JevError
 
@@ -83,7 +84,7 @@ class SGLangHTTP:
                     info.get("context_length") or config.get("context_length") or 32768
                 ),
                 max_label_tokens=128,
-                lora=bool(config.get("enable_lora", False)),
+                lora=False,
                 prefix_cache=not bool(config.get("disable_radix_cache", False)),
                 verified=False,
             )
@@ -93,6 +94,10 @@ class SGLangHTTP:
             ) from exc
 
     async def score(self, request: ScoreInput) -> ScoreResult:
+        if request.adapter_id:
+            raise JevError(
+                "lora_unsupported", "Managed LoRA requires the native typed endpoint", 409
+            )
         try:
             response = await self.client.post("/generate", json=generate_payload(request))
             response.raise_for_status()
@@ -113,6 +118,77 @@ class SGLangHTTP:
 class SGLangNative:
     def __init__(self, manager: Any, version: str):
         self.manager, self.version = manager, version
+        self.managed_lora = False
+        self._adapter_bindings: dict[str, AdapterBinding] = {}
+        self._adapter_attempts: set[str] = set()
+
+    def _lora_profile(self) -> bool:
+        args = self.manager.server_args
+        model = self.manager.model_config
+        architectures = getattr(getattr(model, "hf_config", None), "architectures", ()) or ()
+        return bool(
+            self.managed_lora
+            and self.version.split("+")[0] == "0.5.19"
+            and getattr(args, "enable_lora", False)
+            and getattr(args, "tokenizer_worker_num", None) == 1
+            and getattr(args, "tp_size", None) == 1
+            and getattr(args, "dp_size", None) == 1
+            and getattr(args, "pp_size", None) == 1
+            and str(getattr(model, "dtype", None)) in {"torch.bfloat16", "bfloat16"}
+            and getattr(args, "quantization", None) is None
+            and set(architectures) <= {"LlamaForCausalLM", "Qwen3ForCausalLM"}
+            and architectures
+        )
+
+    async def load_adapter(self, binding: AdapterBinding) -> None:
+        from sglang.srt.managers.io_struct import LoadLoRAAdapterReqInput
+
+        if not self._lora_profile():
+            raise JevError("adapter_profile", "Unsupported SGLang managed LoRA profile", 409)
+        if binding.engine_name in self.manager.lora_registry.get_all_adapters():
+            raise JevError("adapter_collision", "Engine adapter name is already resident", 409)
+        limit = getattr(self.manager.server_args, "max_loaded_loras", None)
+        if limit is not None and self.manager.lora_registry.num_registered_loras >= limit:
+            raise JevError(
+                "adapter_capacity", "Unload an adapter before exceeding engine capacity", 409
+            )
+        self._adapter_attempts.add(binding.engine_name)
+        result = await self.manager.load_lora_adapter(
+            LoadLoRAAdapterReqInput(
+                lora_name=binding.engine_name, lora_path=binding.artifact.path, pinned=True
+            )
+        )
+        if not result.success or result.error_message != "jev_gpu_barrier_v1":
+            raise JevError("adapter_load", "SGLang load and GPU barrier were not confirmed", 503)
+        self._adapter_bindings[binding.artifact.reference] = binding
+
+    async def unload_adapter(self, binding: AdapterBinding) -> None:
+        from sglang.srt.managers.io_struct import UnloadLoRAAdapterReqInput
+
+        if not self._lora_profile():
+            raise JevError("adapter_profile", "Unsupported SGLang managed LoRA profile", 409)
+        resident = self.manager.lora_registry.get_all_adapters().get(binding.engine_name)
+        if resident is None:
+            if binding.engine_name in self._adapter_attempts:
+                raise JevError(
+                    "adapter_restart_required",
+                    "An uncertain SGLang load/unload requires a full engine restart",
+                    503,
+                )
+            # Fresh single-frontend engine session; no operation has dispatched
+            # this opaque adapter name. Old database state is not residency.
+            return
+        if resident.lora_path != binding.artifact.path:
+            raise JevError("adapter_collision", "Resident adapter path differs", 409)
+        result = await self.manager.unload_lora_adapter(
+            UnloadLoRAAdapterReqInput(lora_name=binding.engine_name)
+        )
+        if not result.success or result.error_message != "jev_gpu_barrier_v1":
+            raise JevError(
+                "adapter_unload", "SGLang drain, removal and GPU barrier were not confirmed", 503
+            )
+        self._adapter_bindings.pop(binding.artifact.reference, None)
+        self._adapter_attempts.discard(binding.engine_name)
 
     async def probe(self) -> Capabilities:
         config = self.manager.model_config
@@ -122,16 +198,22 @@ class SGLangNative:
             version=self.version,
             model_id=str(config.model_path),
             max_context_tokens=config.context_len,
-            lora=bool(getattr(args, "enable_lora", False)),
+            lora=self._lora_profile(),
             prefix_cache=not bool(getattr(args, "disable_radix_cache", False)),
         )
 
     async def score(self, request: ScoreInput) -> ScoreResult:
         from sglang.srt.managers.io_struct import GenerateReqInput
 
-        generator = self.manager.generate_request(
-            GenerateReqInput(**generate_payload(request)), None
-        )
+        payload = generate_payload(request)
+        if request.adapter_id:
+            binding = self._adapter_bindings.get(request.adapter_id)
+            if binding is None or not self._lora_profile():
+                raise JevError(
+                    "adapter_not_ready", "Adapter has not been loaded by this worker", 503
+                )
+            payload["lora_path"] = binding.engine_name
+        generator = self.manager.generate_request(GenerateReqInput(**payload), None)
         try:
             result = await anext(generator)
             return parse_sglang(result, request)

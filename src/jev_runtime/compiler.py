@@ -213,7 +213,11 @@ class Compiler:
                         input_ids=input_ids,
                         label_ids=label_ids,
                         candidate_id=candidate_id,
-                        adapter_id=bundle.model.adapter_id,
+                        adapter_id=(
+                            f"{bundle.model.adapter_id}@{bundle.model.adapter_revision}"
+                            if bundle.model.adapter_id
+                            else None
+                        ),
                     )
                 )
                 break
