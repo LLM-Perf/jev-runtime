@@ -43,9 +43,11 @@ def test_budget_uses_each_device_memory_denominator_and_records_mapping(monkeypa
     "engine,flag", [("vllm", "--tensor-parallel-size"), ("sglang", "--tp-size")]
 )
 @pytest.mark.parametrize("readout", ["model", "float32"])
+@pytest.mark.parametrize("explicit_template", [False, True])
 def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
-    engine, flag, readout, monkeypatch, tmp_path
+    engine, flag, readout, explicit_template, monkeypatch, tmp_path
 ):
+    import hashlib
     import json
     from types import SimpleNamespace
 
@@ -72,7 +74,15 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         adapters_root=None,
         engine_run_dir=None,
         readout_dtype=readout,
+        chat_template_path=None,
+        chat_template_sha256=None,
+        chat_template_format="json",
     )
+    if explicit_template:
+        args.chat_template_path = tmp_path / "template.json"
+        raw = json.dumps({"chat_template": "{{ messages[0].content }}"}).encode()
+        args.chat_template_path.write_bytes(raw)
+        args.chat_template_sha256 = hashlib.sha256(raw).hexdigest()
     monkeypatch.setattr(
         dsw_service,
         "get_gpu",
@@ -102,6 +112,13 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     expected = "bfloat16" if readout == "model" else readout
     assert record["readout_dtype"] == expected
     assert json.loads((args.run_dir / "config.json").read_text())["readout_dtype"] == expected
+    assert ("--chat-template" in command) == explicit_template
+    if explicit_template:
+        snapshot = record["chat_template_snapshot"]
+        assert command[command.index("--chat-template") + 1] == snapshot["path"]
+        assert record["chat_template_source"]["sha256"] == args.chat_template_sha256
+        assert snapshot["sha256"] == hashlib.sha256(b"{{ messages[0].content }}").hexdigest()
+        assert (args.run_dir / "chat_template.jinja").read_text() == "{{ messages[0].content }}"
     if engine == "vllm":
         assert ("--hf-overrides" in command) == (readout == "float32")
         if readout == "float32":

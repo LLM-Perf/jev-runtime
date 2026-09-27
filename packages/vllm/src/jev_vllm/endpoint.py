@@ -5,8 +5,7 @@ from contextlib import asynccontextmanager
 from importlib.metadata import version
 
 from jev_runtime.backends.vllm import VLLMNative
-from jev_runtime.compiler import Compiler
-from jev_runtime.config import bootstrap, build_runtime, load_settings
+from jev_runtime.config import bootstrap, build_runtime, compiler_for_tokenizer, load_settings
 from jev_runtime.plugin_api import install_plugin_routes
 from jev_vllm.tokenizer import compiler_tokenizer
 
@@ -60,9 +59,7 @@ class JevEndpointPlugin:
             if tokenizer is None:
                 raise ValueError("Jev typed compilation requires the host tokenizer")
             tokenizer, copied = compiler_tokenizer(tokenizer)
-            compiler = Compiler(
-                tokenizer, settings.compiler_cache_tokens, settings.compiler_cache_entries
-            )
+            compiler = compiler_for_tokenizer(settings, tokenizer)
             compiler.copied_from_host_pool = copied
             runtime = await build_runtime(settings, native_backend=backend, compiler=compiler)
             try:

@@ -9,6 +9,7 @@ Explicit GPU lists enable tensor parallel functional checks, not performance cer
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import secrets
@@ -118,6 +119,24 @@ def launch(args):
         "port": args.port,
         "workers": args.api_workers,
     }
+    template_source = None
+    if args.chat_template_path:
+        from jev_runtime.templates import TemplateFile, read_template
+
+        template_source = TemplateFile(
+            path=str(args.chat_template_path.resolve(strict=True)),
+            sha256=args.chat_template_sha256,
+            format=args.chat_template_format,
+        )
+        rendered_template = read_template(template_source)
+        snapshot = root / "chat_template.jinja"
+        with snapshot.open("x", encoding="utf-8") as file:
+            file.write(rendered_template)
+        config["chat_template"] = {
+            "path": str(snapshot),
+            "sha256": hashlib.sha256(rendered_template.encode()).hexdigest(),
+            "format": "jinja",
+        }
     if args.admission_config:
         from jev_runtime.config import AdmissionSettings
 
@@ -284,6 +303,8 @@ def launch(args):
                     "down_proj",
                 ]
             )
+    if template_source is not None and not args.gateway:
+        command.extend(["--chat-template", config["chat_template"]["path"]])
     with (root / "engine.log").open("ab") as log:
         child = subprocess.Popen(command, env=env, stdout=log, stderr=log, start_new_session=True)
     identity = process_identity(child.pid)
@@ -299,6 +320,8 @@ def launch(args):
         "gpus_before": gpus,
         "tensor_parallel_size": len(indices) if gpus else None,
         "readout_dtype": config["readout_dtype"],
+        "chat_template_source": template_source.model_dump() if template_source else None,
+        "chat_template_snapshot": config.get("chat_template"),
         "created": time.time(),
         "port": args.port,
         "qualification": "colocated-functional-test",
@@ -349,6 +372,9 @@ def main():
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
     parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
+    parser.add_argument("--chat-template-path", type=Path)
+    parser.add_argument("--chat-template-sha256")
+    parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
     parser.add_argument("--gateway", action="store_true")
     parser.add_argument("--engine-url")
     parser.add_argument("--engine-run-dir", type=Path)
@@ -359,6 +385,10 @@ def main():
     parser.add_argument("--tenant", action="append", default=[])
     args = parser.parse_args()
     if args.action == "launch":
+        if bool(args.chat_template_path) != bool(args.chat_template_sha256):
+            parser.error("chat-template-path and chat-template-sha256 must be supplied together")
+        if args.chat_template_format != "jinja" and not args.chat_template_path:
+            parser.error("chat-template-format requires a chat-template-path")
         try:
             indices = device_indices(args.gpu, args.gpus)
         except ValueError as exc:

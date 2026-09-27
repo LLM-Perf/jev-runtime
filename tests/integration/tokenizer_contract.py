@@ -10,15 +10,19 @@ from pathlib import Path
 
 from jev_runtime.config import Settings, load_compiler, model_identity
 from jev_runtime.schema import Bundle, Option, Policy, Question, TemplateSpec
+from jev_runtime.templates import TemplateFile
 
 
-def probe(item: dict, tokenizer: str | None = None) -> dict:
+def probe(
+    item: dict, tokenizer: str | None = None, chat_template: TemplateFile | None = None
+) -> dict:
     result = {
         "model": item["id"],
         "revision": item["revision"],
         "started_at": time.time(),
         "cases": [],
         "passed": False,
+        "explicit_chat_template": chat_template.model_dump() if chat_template else None,
     }
     try:
         settings = Settings(
@@ -26,6 +30,7 @@ def probe(item: dict, tokenizer: str | None = None) -> dict:
             model_id=item["id"],
             model_revision=item["revision"],
             tokenizer=tokenizer,
+            chat_template=chat_template,
         )
         compiler = load_compiler(settings)
         result["model_identity"] = model_identity(settings, compiler).model_dump(mode="json")
@@ -96,6 +101,15 @@ def main(args):
         raise SystemExit("Requested model is not in the frozen inventory")
     if args.output.exists():
         raise SystemExit("Output exists; retain previous attempts and choose a new artifact")
+    template = None
+    if args.chat_template_path:
+        if len(selected) != 1:
+            raise SystemExit("An explicit template probe must select exactly one pinned model")
+        template = TemplateFile(
+            path=str(args.chat_template_path.resolve(strict=True)),
+            sha256=args.chat_template_sha256,
+            format=args.chat_template_format,
+        )
     report = {
         "schema_version": 1,
         "source_commit": args.source_commit,
@@ -113,7 +127,7 @@ def main(args):
             manifest = json.loads((local_path / "jev-source.json").read_text())
             if (manifest["model_id"], manifest["revision"]) != (item["id"], item["revision"]):
                 raise SystemExit("Local checkpoint identity differs from frozen inventory")
-        result = probe(item, str(local_path) if local_path else None)
+        result = probe(item, str(local_path) if local_path else None, template)
         report["models"].append(result)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
         print(
@@ -142,4 +156,10 @@ if __name__ == "__main__":
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--model", action="append")
     parser.add_argument("--local-models", type=Path)
-    main(parser.parse_args())
+    parser.add_argument("--chat-template-path", type=Path)
+    parser.add_argument("--chat-template-sha256")
+    parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
+    args = parser.parse_args()
+    if bool(args.chat_template_path) != bool(args.chat_template_sha256):
+        parser.error("chat-template-path and chat-template-sha256 must be supplied together")
+    main(args)

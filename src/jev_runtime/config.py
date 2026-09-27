@@ -17,8 +17,9 @@ from jev_runtime.errors import JevError
 from jev_runtime.health import HealthSettings
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
-from jev_runtime.schema import Bundle, Contract, FloatingDType, ModelIdentity
+from jev_runtime.schema import Bundle, Contract, FloatingDType, ModelIdentity, content_digest
 from jev_runtime.shared_admission import SharedAdmission
+from jev_runtime.templates import TemplateFile, read_template
 
 
 class AdmissionSettings(Contract):
@@ -47,6 +48,7 @@ class Settings(Contract):
     model_revision: str = Field(pattern=r"^(?:[a-fA-F0-9]{40,64}|local-sha256:[a-fA-F0-9]{64})$")
     tokenizer: str | None = None
     tokenizer_revision: str | None = None
+    chat_template: TemplateFile | None = None
     dtype: str = "bfloat16"
     readout_dtype: FloatingDType | None = None
     quantization: str | None = None
@@ -92,7 +94,16 @@ def load_compiler(settings: Settings) -> Compiler:
     if not Path(settings.tokenizer or settings.model_id).is_dir():
         kwargs["revision"] = revision
     tokenizer = AutoTokenizer.from_pretrained(settings.tokenizer or settings.model_id, **kwargs)
-    return Compiler(tokenizer, settings.compiler_cache_tokens, settings.compiler_cache_entries)
+    return compiler_for_tokenizer(settings, tokenizer)
+
+
+def compiler_for_tokenizer(settings: Settings, tokenizer) -> Compiler:
+    return Compiler(
+        tokenizer,
+        settings.compiler_cache_tokens,
+        settings.compiler_cache_entries,
+        chat_template=read_template(settings.chat_template) if settings.chat_template else None,
+    )
 
 
 def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
@@ -112,6 +123,12 @@ async def build_runtime(
     settings: Settings, native_backend=None, compiler: Compiler | None = None
 ) -> Runtime:
     compiler = compiler or await asyncio.to_thread(load_compiler, settings)
+    if settings.chat_template is not None:
+        expected_template = await asyncio.to_thread(read_template, settings.chat_template)
+        if compiler.template_digest != content_digest(expected_template):
+            raise JevError(
+                "template_mismatch", "Compiler differs from configured chat template", 409
+            )
     if native_backend is not None:
         backend = native_backend
     elif settings.backend == "sglang":

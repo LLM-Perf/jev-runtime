@@ -52,6 +52,7 @@ def test_failure_after_launch_still_cleans_up_and_preserves_attempt(monkeypatch,
         reserve_mib=3072,
         readout_dtype="model",
         startup_timeout=5,
+        chat_template_path=None,
     )
     record = {"identity": {"pid": 123}}
 

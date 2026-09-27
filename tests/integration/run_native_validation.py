@@ -246,6 +246,17 @@ def validate(args) -> dict:
             "--readout-dtype",
             args.readout_dtype,
         ]
+        if args.chat_template_path:
+            launch.extend(
+                [
+                    "--chat-template-path",
+                    args.chat_template_path,
+                    "--chat-template-sha256",
+                    args.chat_template_sha256,
+                    "--chat-template-format",
+                    args.chat_template_format,
+                ]
+            )
         code = execute(ROOT / "deployment/dsw_service.py", launch, run / "launch.log", 60)
         if (run / "process.json").exists():
             record = json.loads((run / "process.json").read_text())
@@ -355,6 +366,9 @@ def main():
     parser.add_argument("--memory-fraction", type=float, required=True)
     parser.add_argument("--reserve-mib", type=int, default=3072)
     parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
+    parser.add_argument("--chat-template-path", type=Path)
+    parser.add_argument("--chat-template-sha256")
+    parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
     parser.add_argument("--switches", type=int, default=1000)
     parser.add_argument("--startup-timeout", type=float, default=600)
     parser.add_argument("--check-timeout", type=float, default=600)
@@ -363,6 +377,8 @@ def main():
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--runtime-source-commit", required=True)
     args = parser.parse_args()
+    if bool(args.chat_template_path) != bool(args.chat_template_sha256):
+        parser.error("chat-template-path and chat-template-sha256 must be supplied together")
     if not all(
         re.fullmatch(r"[0-9a-f]{40}", value)
         for value in (args.source_commit, args.runtime_source_commit)

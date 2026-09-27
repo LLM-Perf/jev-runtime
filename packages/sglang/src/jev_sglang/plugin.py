@@ -5,8 +5,7 @@ from contextlib import asynccontextmanager
 from importlib.metadata import version
 
 from jev_runtime.backends.sglang import SGLangNative
-from jev_runtime.compiler import Compiler
-from jev_runtime.config import bootstrap, build_runtime, load_settings
+from jev_runtime.config import bootstrap, build_runtime, compiler_for_tokenizer, load_settings
 from jev_runtime.plugin_api import install_plugin_routes
 
 _registered = False
@@ -38,11 +37,7 @@ def configure_http_app():
                     runtime = await build_runtime(
                         settings,
                         native_backend=backend,
-                        compiler=Compiler(
-                            manager.tokenizer,
-                            settings.compiler_cache_tokens,
-                            settings.compiler_cache_entries,
-                        ),
+                        compiler=compiler_for_tokenizer(settings, manager.tokenizer),
                     )
                     await runtime.start()
                     await bootstrap(runtime, settings)

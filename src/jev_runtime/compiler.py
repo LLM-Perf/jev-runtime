@@ -39,7 +39,14 @@ def supports_backend_ids_only(tokenizer) -> bool:
 
 
 class Compiler:
-    def __init__(self, tokenizer: Any, cache_tokens: int = 262144, cache_entries: int = 256):
+    def __init__(
+        self,
+        tokenizer: Any,
+        cache_tokens: int = 262144,
+        cache_entries: int = 256,
+        *,
+        chat_template: str | None = None,
+    ):
         if cache_tokens < 0 or cache_entries < 0:
             raise ValueError("Compiler cache bounds cannot be negative")
         self.tokenizer = tokenizer
@@ -50,9 +57,28 @@ class Compiler:
         self._cache_lock = threading.Lock()
         self._fast_ids = supports_backend_ids_only(tokenizer)
         self.copied_from_host_pool = False
-        if not getattr(tokenizer, "chat_template", None):
+        self.explicit_chat_template = chat_template
+        if chat_template is not None:
+            render = tokenizer.apply_chat_template
+            if (getattr(render, "__module__", None), getattr(render, "__qualname__", None)) != (
+                "transformers.tokenization_utils_base",
+                "PreTrainedTokenizerBase.apply_chat_template",
+            ):
+                raise JevError(
+                    "template_override_unsupported",
+                    "Explicit templates require the standard Transformers chat renderer",
+                    409,
+                )
+            if not isinstance(chat_template, str) or not chat_template.strip():
+                raise JevError("template_file_invalid", "Explicit chat template is empty", 409)
+        self.chat_template = (
+            chat_template
+            if chat_template is not None
+            else getattr(tokenizer, "chat_template", None)
+        )
+        if not self.chat_template:
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
-        self.template_digest = content_digest(tokenizer.chat_template)
+        self.template_digest = content_digest(self.chat_template)
         backend = getattr(tokenizer, "backend_tokenizer", None)
         # Record the complete normalization/pretokenization/BPE implementation
         # for experiment identity. This is separate from the existing bundle
@@ -76,6 +102,9 @@ class Compiler:
         return {
             "tokenizer_class": implementation(type(self.tokenizer)),
             "copied_from_host_pool": self.copied_from_host_pool,
+            "chat_template_source": "explicit"
+            if self.explicit_chat_template is not None
+            else "host",
             "encode_implementation": implementation(self.tokenizer.encode),
             "encode_plus_implementation": implementation(
                 getattr(self.tokenizer, "_encode_plus", None)
@@ -144,7 +173,9 @@ class Compiler:
             body = spec.system_prompt + "\n\n" + body
         messages.append({"role": "user", "content": body})
         kwargs = {}
-        if "enable_thinking" in str(self.tokenizer.chat_template):
+        if self.explicit_chat_template is not None:
+            kwargs["chat_template"] = self.explicit_chat_template
+        if "enable_thinking" in str(self.chat_template):
             kwargs["enable_thinking"] = spec.thinking
         try:
             return self.tokenizer.apply_chat_template(
