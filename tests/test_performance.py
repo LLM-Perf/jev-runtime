@@ -55,3 +55,14 @@ def test_cohort_rejects_omitted_drain_duplicate_ids_and_late_dispatch():
         summarize_cohort([row("a", 0, 1), row("a", 0, 2)], 0.003, 0.003)
     with pytest.raises(ValueError, match="outside"):
         summarize_cohort([row("late", 3, 4)], 0.003, 0.004)
+
+
+def test_fixture_coverage_keeps_failed_and_unobserved_attempts_distinct():
+    rows = [
+        row("native-0", 0, 1).model_copy(update={"input_fixture_index": 0}),
+        row("native-1", 1, 2).model_copy(update={"input_fixture_index": 1}),
+        row("error", 2, 3, outcome="failed", successes=0),
+    ]
+    coverage = summarize_cohort(rows, 0.004, 0.004)["input_fixtures"]
+    assert coverage["observed_attempts"] == 2
+    assert coverage["counts"] == {"0": 1, "1": 1}

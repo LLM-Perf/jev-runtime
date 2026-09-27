@@ -195,3 +195,21 @@ its observed stages; summary statistics expose stage-specific observation counts
 for all attempts and strict successes separately. Stage percentiles are descriptive
 and must not be added. Independent-candidate work may have overlapping branches;
 its serial runtime phases still partition the request's observed total.
+
+`--input-variants N` (1–1024, default 1) extends the native/typed scoring comparison
+to a frozen round-robin pool. Every input is independently padded to the exact
+requested length using the serving compiler; every branch length must match the
+first fixture. The pool preserves all actual token IDs, distinct request texts and
+digests. All variants must pass numeric parity after an explicit per-variant
+rewarm. Each timed method/repeat starts at variant 0; at least one full traversal
+warms the pool beforehand. Per-attempt fixture indices and observed counts expose
+unequal distributions when methods dispatch at different rates. Missing indices
+on failed attempts remain unknown.
+
+With multiple inputs, `hot` means prefix caching is enabled and the pool is warmed;
+it does not guarantee that the entire pool fits in KV or the compiler encoding
+cache. Report actual token hits and configured capacity. A pool larger than the
+compiler's 256-entry bound exercises encoding misses during sequential traversal.
+This pool consists of synthetic variants, not representative business prompts.
+Multi-input structured generation is explicitly rejected until its per-input
+native token traces and output contracts are implemented.

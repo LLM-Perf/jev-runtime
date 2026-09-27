@@ -113,6 +113,11 @@ async def measure(
 
 
 async def run(args):
+    if args.structured_generation and args.input_variants != 1:
+        raise ValueError(
+            "Multi-input generation requires separate per-input token traces; "
+            "use the scoring comparison"
+        )
     if args.structured_generation and args.scoring_mode != "joint-label":
         raise ValueError("The generation comparison currently uses the joint-label choice fixture")
     if args.output.exists():
@@ -143,11 +148,16 @@ async def run(args):
             "scoring_mode": args.scoring_mode,
             "structured_generation": args.structured_generation,
             "runtime_timing": args.runtime_timing,
+            "input_variants": args.input_variants,
         },
         "model": {"id": settings.model_id, "revision": settings.model_revision},
         "duration_seconds": args.duration,
         "repeats": args.repeats,
-        "warmup_requests_per_method": args.warmup,
+        "warmup_requests_per_method": max(args.warmup, args.input_variants),
+        "input_schedule": (
+            "Each method/repeat starts at fixture 0, round-robin by dispatch; "
+            "coverage reported per attempt"
+        ),
         "service_process_identity": record["identity"],
         "service_launch_command": record["command"],
         "measurements": [],
@@ -201,7 +211,10 @@ async def run(args):
                     "run on a separately configured matching engine"
                 )
             report["cache_definition"] = (
-                "repeated exact prompt after warmup"
+                (
+                    f"prefix cache enabled; round-robin over {args.input_variants} exact inputs "
+                    "after warmup; actual hits reported"
+                )
                 if expected_cache
                 else "engine prefix cache disabled, including candidate reuse"
             )
@@ -254,38 +267,64 @@ async def run(args):
                 "questions": [question],
                 "execution": {"timeout_ms": 120000},
             }
-            # Token lengths are measured by the actual worker, including template,
-            # labels and task text. Search padding; never round an 8k request down.
-            low, high = 0, args.context_tokens
-            fixture = None
-            while low <= high:
-                size = (low + high) // 2
-                body["input"]["text"] = " x" * (size + 1)
-                try:
-                    candidate = await preview(body)
-                except httpx.HTTPStatusError as exc:
-                    if exc.response.status_code == 413:
+
+            # Every variant is rendered/tokenized by the actual serving worker.
+            async def build_fixture(index):
+                variation = f"Variant {index}:" if args.input_variants > 1 else ""
+                low, high = 0, args.context_tokens
+                fixture = None
+                while low <= high:
+                    size = (low + high) // 2
+                    body["input"]["text"] = variation + " x" * (size + 1)
+                    try:
+                        candidate = await preview(body)
+                    except httpx.HTTPStatusError as exc:
+                        if exc.response.status_code == 413:
+                            high = size - 1
+                            continue
+                        raise
+                    length = max(len(sequence["input_ids"]) for sequence in candidate["sequences"])
+                    if length == args.context_tokens:
+                        fixture = candidate
+                        break
+                    if length < args.context_tokens:
+                        low = size + 1
+                    else:
                         high = size - 1
-                        continue
-                    raise
-                length = max(len(sequence["input_ids"]) for sequence in candidate["sequences"])
-                if length == args.context_tokens:
-                    fixture = candidate
-                    break
-                if length < args.context_tokens:
-                    low = size + 1
-                else:
-                    high = size - 1
-            if fixture is None:
-                raise ValueError("Cannot construct the exact requested context with this profile")
-            fixture["request"] = body
-            fixture["sequence_lengths"] = [len(s["input_ids"]) for s in fixture["sequences"]]
-            fixture["fixture_digest"] = content_digest(fixture)
+                if fixture is None:
+                    raise ValueError(
+                        "Cannot construct the exact requested context with this profile"
+                    )
+                fixture["request"] = json.loads(json.dumps(body))
+                fixture["variant_index"] = index
+                fixture["sequence_lengths"] = [len(s["input_ids"]) for s in fixture["sequences"]]
+                fixture["fixture_digest"] = content_digest(fixture)
+                return fixture
+
+            fixtures = [await build_fixture(index) for index in range(args.input_variants)]
+            fixture = fixtures[0]
+            body = fixture["request"]
+            if any(f["sequence_lengths"] != fixture["sequence_lengths"] for f in fixtures):
+                raise ValueError(
+                    "Variant branch lengths differ; cannot claim a fixed-length cohort"
+                )
+            if len({content_digest(f["request"]) for f in fixtures}) != len(fixtures):
+                raise ValueError("Input variants are not distinct")
             (args.output / "fixture.json").write_text(json.dumps(fixture, indent=2) + "\n")
+            if len(fixtures) > 1:
+                (args.output / "fixtures.json").write_text(json.dumps(fixtures, indent=2) + "\n")
             report["fixture_digest"] = fixture["fixture_digest"]
+            report["fixture_pool_digest"] = content_digest([f["fixture_digest"] for f in fixtures])
             report["sequence_lengths"] = fixture["sequence_lengths"]
             report["bundle_digest"] = bundle.digest
             report["tokenizer_implementation_digest"] = fixture["tokenizer_implementation_digest"]
+            positions = {"native": 0, "typed": 0}
+
+            def next_fixture(method):
+                index = positions[method] % len(fixtures)
+                positions[method] += 1
+                return fixtures[index]
+
             reference_candidate = None
 
             async def native_branch(sequence, request_id):
@@ -317,12 +356,13 @@ async def run(args):
                 return parse_native(settings.backend, response, item)
 
             async def native_call(request_id):
+                active = next_fixture("native")
                 # A native logical request retains every scoring branch. The
                 # independent baseline is deliberately serial within a request;
                 # cross-request engine scheduling is unchanged and recorded.
                 values = [
                     await native_branch(sequence, f"{request_id}.{i}")
-                    for i, sequence in enumerate(fixture["sequences"])
+                    for i, sequence in enumerate(active["sequences"])
                 ]
 
                 def summed(key):
@@ -335,10 +375,11 @@ async def run(args):
                 selected = None
                 if args.structured_generation:
                     scores = values[0]["logprobs"]
-                    selected = fixture["questions"][0]["keys"][
+                    selected = active["questions"][0]["keys"][
                         max(range(len(scores)), key=scores.__getitem__)
                     ]
                 return {
+                    "input_fixture_index": active["variant_index"],
                     "outcome": "completed",
                     "successful_questions": 1,
                     "http_status": 200,
@@ -352,9 +393,10 @@ async def run(args):
                 }
 
             async def typed_call(request_id):
+                active = next_fixture("typed")
                 response = await typed.post(
                     prefix + "/v1/decisions",
-                    json={**body, "request_id": request_id},
+                    json={**active["request"], "request_id": request_id},
                     headers={"X-Jev-Timing": "1"} if args.runtime_timing else {},
                 )
                 observed = {}
@@ -372,7 +414,7 @@ async def run(args):
                 try:
                     result = DecisionResponse.model_validate(response.json())
                     assert result.bundle_digest == bundle.digest and result.generation == 1
-                    assert result.usage.logical_prompt_tokens == fixture["logical_prompt_tokens"]
+                    assert result.usage.logical_prompt_tokens == active["logical_prompt_tokens"]
                     probabilities = result.answers["category"].probabilities or {}
                     assert set(probabilities) == {f"c{i}" for i in range(args.candidates)}
                     assert all(0 <= value <= 1 for value in probabilities.values())
@@ -384,6 +426,7 @@ async def run(args):
                 answer = result.answers["category"]
                 return {
                     **observed,
+                    "input_fixture_index": active["variant_index"],
                     "outcome": result.status,
                     "successful_questions": result.usage.successful_questions,
                     "http_status": response.status_code,
@@ -407,48 +450,70 @@ async def run(args):
                     result = await call("parity-warmup-" + uuid.uuid4().hex)
                     assert result["outcome"] == "completed"
             report["parity_warmup_requests_per_method"] = args.warmup
-            reference_sequences, reference_results, reference_cache = [], [], []
-            for sequence in fixture["sequences"]:
-                rid = "parity-" + uuid.uuid4().hex
-                actual = await native_branch(sequence, rid)
-                reference_cache.append(actual.get("cached_tokens"))
-                reference_sequences.append(
-                    ScoreInput(
-                        **{
-                            **sequence,
-                            "request_id": rid,
-                            "input_ids": tuple(sequence["input_ids"]),
-                            "label_ids": tuple(sequence["label_ids"]),
-                        }
+            report["parity_variant_rewarm_requests_per_method"] = int(len(fixtures) > 1)
+            parity_results = []
+            for fixture in fixtures:
+                if len(fixtures) > 1:
+                    # Earlier variants may be evicted from engine KV during pool
+                    # traversal. Rewarm this exact variant before numeric parity.
+                    for sequence in fixture["sequences"]:
+                        await native_branch(sequence, "parity-rewarm-" + uuid.uuid4().hex)
+                    warm = await typed.post(prefix + "/v1/decisions", json=fixture["request"])
+                    warm.raise_for_status()
+                reference_sequences, reference_results, reference_cache = [], [], []
+                for sequence in fixture["sequences"]:
+                    rid = "parity-" + uuid.uuid4().hex
+                    actual = await native_branch(sequence, rid)
+                    reference_cache.append(actual.get("cached_tokens"))
+                    reference_sequences.append(
+                        ScoreInput(
+                            **{
+                                **sequence,
+                                "request_id": rid,
+                                "input_ids": tuple(sequence["input_ids"]),
+                                "label_ids": tuple(sequence["label_ids"]),
+                            }
+                        )
                     )
+                    reference_results.append(ScoreResult(rid, tuple(actual["logprobs"])))
+                expected = assemble(
+                    CompiledQuestion(
+                        Question.model_validate(question),
+                        args.scoring_mode,
+                        tuple(fixture["questions"][0]["keys"]),
+                        tuple(reference_sequences),
+                    ),
+                    reference_results,
+                    bundle,
                 )
-                reference_results.append(ScoreResult(rid, tuple(actual["logprobs"])))
-            expected = assemble(
-                CompiledQuestion(
-                    Question.model_validate(question),
-                    args.scoring_mode,
-                    tuple(fixture["questions"][0]["keys"]),
-                    tuple(reference_sequences),
-                ),
-                reference_results,
-                bundle,
-            )
-            response = await typed.post(prefix + "/v1/decisions", json=body)
-            response.raise_for_status()
-            actual_response = DecisionResponse.model_validate(response.json())
-            actual_answer = actual_response.answers["category"]
-            parity = max(
-                abs(expected.probabilities[key] - actual_answer.probabilities[key])
-                for key in expected.probabilities
-            )
-            report["native_typed_probability_parity"] = {
-                "max_absolute_error": parity,
-                "tolerance": args.parity_tolerance,
-                "passed": parity <= args.parity_tolerance,
-                "native_cached_tokens_per_branch": reference_cache,
-                "typed_cached_prompt_tokens": actual_response.usage.cached_prompt_tokens,
-            }
-            assert parity <= args.parity_tolerance, report["native_typed_probability_parity"]
+                response = await typed.post(prefix + "/v1/decisions", json=fixture["request"])
+                response.raise_for_status()
+                actual_response = DecisionResponse.model_validate(response.json())
+                actual_answer = actual_response.answers["category"]
+                parity = max(
+                    abs(expected.probabilities[key] - actual_answer.probabilities[key])
+                    for key in expected.probabilities
+                )
+                parity_result = {
+                    "input_fixture_index": fixture["variant_index"],
+                    "max_absolute_error": parity,
+                    "tolerance": args.parity_tolerance,
+                    "passed": parity <= args.parity_tolerance,
+                    "native_cached_tokens_per_branch": reference_cache,
+                    "typed_cached_prompt_tokens": actual_response.usage.cached_prompt_tokens,
+                }
+                parity_results.append(parity_result)
+                report["native_typed_probability_parity"] = {
+                    "max_absolute_error": max(p["max_absolute_error"] for p in parity_results),
+                    "tolerance": args.parity_tolerance,
+                    "passed": all(p["passed"] for p in parity_results),
+                    "variants_checked": len(parity_results),
+                    "variants_required": len(fixtures),
+                    "per_variant": parity_results,
+                }
+                assert parity <= args.parity_tolerance, report["native_typed_probability_parity"]
+
+            fixture = fixtures[0]
 
             methods = [("native-label", native_call), (record["mode"], typed_call)]
             generation_prompt_tokens = None
@@ -548,9 +613,11 @@ async def run(args):
             for repeat in range(args.repeats):
                 offset = repeat % len(methods)
                 for name, call in methods[offset:] + methods[:offset]:
-                    for _ in range(args.warmup):
+                    positions.update(native=0, typed=0)
+                    for _ in range(max(args.warmup, len(fixtures))):
                         result = await call("warmup-" + uuid.uuid4().hex)
                         assert result["outcome"] == "completed"
+                    positions.update(native=0, typed=0)
                     rows, summary = await measure(
                         call,
                         args.duration,
@@ -628,6 +695,7 @@ if __name__ == "__main__":
         "--scoring-mode", choices=("joint-label", "independent-candidate"), default="joint-label"
     )
     parser.add_argument("--runtime-timing", action="store_true")
+    parser.add_argument("--input-variants", type=int, default=1)
     parser.add_argument("--duration", type=float, default=180)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--warmup", type=int, default=32)
@@ -636,7 +704,8 @@ if __name__ == "__main__":
     parser.add_argument("--generation-max-tokens", type=int, default=64)
     args = parser.parse_args()
     if (
-        args.duration <= 0
+        not 1 <= args.input_variants <= 1024
+        or args.duration <= 0
         or not math.isfinite(args.duration)
         or args.repeats <= 0
         or args.warmup < 1

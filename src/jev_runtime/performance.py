@@ -32,6 +32,7 @@ class Measurement(Contract):
     runtime_timings_ms: dict[Stage, Annotated[float, Field(ge=0, allow_inf_nan=False)]] | None = (
         None
     )
+    input_fixture_index: int | None = Field(default=None, ge=0, strict=True)
     error_code: str | None = None
     http_status: int | None = None
 
@@ -155,6 +156,20 @@ def summarize_cohort(
         ),
         "latency_successful_requests": _latencies(completed),
         "latency_all_attempts": _latencies(rows),
+        "input_fixtures": {
+            "observed_attempts": sum(row.input_fixture_index is not None for row in rows),
+            "counts": dict(
+                Counter(
+                    str(row.input_fixture_index)
+                    for row in rows
+                    if row.input_fixture_index is not None
+                )
+            ),
+            "qualification": (
+                "Per-dispatch round-robin selection; unequal completed rates "
+                "can produce unequal fixture frequencies"
+            ),
+        },
         "outcomes": dict(Counter(row.outcome for row in rows)),
         "errors": dict(
             Counter(row.error_code or "unspecified" for row in rows if row.outcome != "completed")
