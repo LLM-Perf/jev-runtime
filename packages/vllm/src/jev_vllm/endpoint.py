@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from contextlib import asynccontextmanager
 from importlib.metadata import version
 
 from jev_runtime.backends.vllm import VLLMNative
@@ -13,7 +14,24 @@ class JevEndpointPlugin:
     required_tasks = ("generate",)
 
     def attach_router(self, app):
+        if getattr(app.state, "jev_lifespan_installed", False):
+            return
         install_plugin_routes(app)
+        original = app.router.lifespan_context
+
+        @asynccontextmanager
+        async def lifespan(fastapi_app):
+            try:
+                async with original(fastapi_app):
+                    yield
+            finally:
+                runtime = getattr(fastapi_app.state, "jev_runtime", None)
+                if runtime is not None:
+                    await runtime.close()
+                    fastapi_app.state.jev_runtime = None
+
+        app.router.lifespan_context = lifespan
+        app.state.jev_lifespan_installed = True
 
     async def init_state(self, engine_client, state, args):
         if engine_client is None:
@@ -27,6 +45,10 @@ class JevEndpointPlugin:
             if settings.backend != "vllm":
                 raise ValueError("JEV_CONFIG backend must match the host engine")
             runtime = await build_runtime(settings, native_backend=backend)
-            await runtime.start()
-            await bootstrap(runtime, settings)
+            try:
+                await runtime.start()
+                await bootstrap(runtime, settings)
+            except BaseException:
+                await runtime.close()
+                raise
             state.jev_runtime = runtime

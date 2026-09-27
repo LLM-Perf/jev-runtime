@@ -1,0 +1,27 @@
+{
+  "model_id": "Qwen/Qwen3-0.6B",
+  "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "reference": "Transformers cuda BF16 sdpa forward; FP32 log_softmax",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "engine_logprobs": [
+    -0.0001436368766007945,
+    -9.125144004821777,
+    -13.875144004821777
+  ],
+  "reference_logprobs": [
+    -0.00017271934484597296,
+    -9.00017261505127,
+    -13.62517261505127
+  ],
+  "absolute_errors": [
+    2.908246824517846e-05,
+    0.12497138977050781,
+    0.2499713897705078
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": false,
+  "started_at": 1790493087.3854682,
+  "finished_at": 1790493091.928254
+}

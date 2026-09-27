@@ -124,3 +124,27 @@ async def test_1000_atomic_config_switches(runtime, bundle):
         result = runtime.registry.activate("model", target.reference, generation)
         assert result["generation"] == generation + 1
     assert runtime.registry.list()["leases"] == []
+
+
+@pytest.mark.parametrize("abort_fails", [False, True])
+async def test_prepare_cancellation_pins_canary_until_abort_confirmed(runtime, bundle, abort_fails):
+    next_bundle = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(next_bundle)
+    runtime.backend.gate.clear()
+    runtime.backend.fail_cancel = abort_fails
+    task = asyncio.create_task(runtime.prepare(next_bundle.reference))
+    await asyncio.wait_for(runtime.backend.started.wait(), 1)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    assert runtime.registry.inspect(next_bundle.reference)["state"] == "FAILED"
+    leases = runtime.registry.list()["leases"]
+    if abort_fails:
+        assert len(leases) == 1
+        with pytest.raises(JevError, match="in-flight"):
+            runtime.registry.retire(next_bundle.reference)
+        runtime.backend.fail_cancel = False
+        assert await runtime.recover_cancelled(leases[0]["request_id"])
+    else:
+        assert not leases and runtime.backend.cancelled
+    assert runtime.registry.retire(next_bundle.reference)["state"] == "RETIRED"

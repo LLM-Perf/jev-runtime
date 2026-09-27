@@ -14,6 +14,8 @@ from jev_runtime.schema import Bundle, DecisionRequest
 app = typer.Typer(help="Typed decisions, immutable bundles and reproducible engine validation")
 bundle_app = typer.Typer(help="Bundle build, prepare, activate, disable and retire")
 app.add_typer(bundle_app, name="bundle")
+calibration_app = typer.Typer(help="Collect fixed-task scores and fit held-out calibration")
+app.add_typer(calibration_app, name="calibration")
 
 
 def output(value):
@@ -134,3 +136,52 @@ def decide(path: Path, url: str = "http://127.0.0.1:8795"):
     )
     result.raise_for_status()
     output(result.json())
+
+
+@calibration_app.command("collect")
+def calibration_collect(config: Path, bundle_path: Path, dataset: Path, destination: Path):
+    from jev_runtime.evaluation import collect_scores, read_samples
+
+    if destination.exists():
+        raise typer.BadParameter("Destination exists; choose a new artifact path")
+    bundle = Bundle.model_validate_json(bundle_path.read_text())
+    report = asyncio.run(collect_scores(load_settings(config), bundle, read_samples(dataset)))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    output({"scores": str(destination), "rows": len(report["rows"])})
+
+
+@calibration_app.command("fit")
+def calibration_fit(
+    bundle_path: Path,
+    fit_scores: Path,
+    heldout_scores: Path,
+    destination: Path,
+    method: str = "temperature",
+):
+    from jev_runtime.calibration import bind_calibration, fit_platt, fit_temperature
+    from jev_runtime.evaluation import read_scores
+
+    if method not in {"temperature", "platt"}:
+        raise typer.BadParameter("Method must be temperature or platt")
+    if destination.exists():
+        raise typer.BadParameter("Destination exists; choose a new artifact directory")
+    bundle = Bundle.model_validate_json(bundle_path.read_text())
+    fit = read_scores(json.loads(fit_scores.read_text()), bundle)
+    heldout = read_scores(json.loads(heldout_scores.read_text()), bundle)
+    fitter = fit_platt if method == "platt" else fit_temperature
+    artifact, report = fitter(fit, heldout, bundle.scoring_contract_digest)
+    calibrated = bind_calibration(bundle, artifact)
+    calibrated = Bundle.model_validate({**calibrated.model_dump(), "version": bundle.version + 1})
+    destination.mkdir(parents=True)
+    (destination / "bundle.json").write_text(calibrated.model_dump_json(indent=2) + "\n")
+    (destination / "calibration.json").write_text(artifact.model_dump_json(indent=2) + "\n")
+    (destination / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+    output(
+        {
+            "artifacts": str(destination),
+            "bundle": calibrated.reference,
+            "heldout_uncalibrated_nll": report["heldout_uncalibrated"]["nll"],
+            "heldout_calibrated_nll": report["heldout_calibrated"]["nll"],
+        }
+    )

@@ -6,6 +6,7 @@ from pydantic import ValidationError
 from jev_runtime.calibration import (
     LabeledScores,
     bind_calibration,
+    fit_platt,
     fit_temperature,
     quality_metrics,
 )
@@ -50,3 +51,32 @@ def test_quality_metric_counts_and_empty_coverage():
     assert result["accuracy"] == pytest.approx(0.8)
     assert sum(item["count"] for item in result["ece_bins"]) == 50
     assert result["risk_coverage"][-1]["risk"] is None
+
+
+def test_platt_corrects_base_rate_without_heldout_label_selection(bundle):
+    fit = [LabeledScores(f"fit-{i}", f"fit-{i}", (0, 0), int(i % 4 == 0)) for i in range(80)]
+    heldout = [
+        LabeledScores(f"heldout-{i}", f"heldout-{i}", (0, 0), int(i % 4 == 0)) for i in range(80)
+    ]
+    artifact, report = fit_platt(fit, heldout, bundle.scoring_contract_digest)
+    assert artifact.bias == pytest.approx(math.log(3), abs=1e-4)
+    assert report["heldout_calibrated"]["nll"] < report["heldout_uncalibrated"]["nll"]
+    changed = [LabeledScores(r.sample_id, r.group_id, r.logprobs, 1 - r.label) for r in heldout]
+    other, _ = fit_platt(fit, changed, bundle.scoring_contract_digest)
+    assert artifact.temperature == other.temperature and artifact.bias == other.bias
+
+
+def test_platt_rejects_multiclass_and_task_dimension_drift(bundle):
+    bad = [LabeledScores("a", "a", (0, -1, -2), 0)]
+    with pytest.raises(ValueError, match="dimension"):
+        fit_temperature(bad, rows("heldout"), bundle.scoring_contract_digest)
+    with pytest.raises(ValueError, match="two classes"):
+        fit_platt(bad, [LabeledScores("b", "b", (0, -1, -2), 0)], bundle.scoring_contract_digest)
+
+
+def test_macro_f1_keeps_different_task_class_namespaces_separate():
+    samples = [
+        LabeledScores("a", "a", (0, -1), 0, "task-a"),
+        LabeledScores("b", "b", (-1, 0), 1, "task-b"),
+    ]
+    assert quality_metrics(samples)["macro_f1"] == pytest.approx(0.5)

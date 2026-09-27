@@ -15,9 +15,10 @@ class LabeledScores:
     group_id: str
     logprobs: tuple[float, ...]
     label: int
+    task_id: str = "default"
 
     def validate(self) -> None:
-        if not self.sample_id or not self.group_id:
+        if not self.sample_id or not self.group_id or not self.task_id:
             raise ValueError("Sample and leakage-group identifiers are required")
         if len(self.logprobs) < 2 or not 0 <= self.label < len(self.logprobs):
             raise ValueError("A target index must refer to one of at least two classes")
@@ -37,6 +38,13 @@ def check_split(fit: list[LabeledScores], heldout: list[LabeledScores]) -> None:
         raise ValueError("Sample leakage between calibration and held-out evaluation")
     if {r.group_id for r in fit} & {r.group_id for r in heldout}:
         raise ValueError("Group leakage between calibration and held-out evaluation")
+    if {r.task_id for r in fit} != {r.task_id for r in heldout}:
+        raise ValueError("Fit and held-out sets must cover the same tasks")
+    dimensions = {}
+    for row in fit + heldout:
+        width = dimensions.setdefault(row.task_id, len(row.logprobs))
+        if width != len(row.logprobs):
+            raise ValueError("Class dimension changed within the same task")
 
 
 def _probabilities(row: LabeledScores, temperature: float, bias: float = 0) -> np.ndarray:
@@ -56,7 +64,7 @@ def quality_metrics(
     if not rows or temperature <= 0 or bins < 1:
         raise ValueError("Metrics require samples, positive temperature and bins")
     confidence, correctness, nll, brier = [], [], [], []
-    per_class: dict[int, list[int]] = {}
+    per_class: dict[tuple[str, int], list[int]] = {}
     for row in rows:
         row.validate()
         probs = _probabilities(row, temperature, bias)
@@ -68,7 +76,7 @@ def quality_metrics(
         truth[row.label] = 1
         brier.append(float(np.sum((probs - truth) ** 2)))
         for label in range(len(probs)):
-            counts = per_class.setdefault(label, [0, 0, 0])
+            counts = per_class.setdefault((row.task_id, label), [0, 0, 0])
             counts[0] += int(predicted == label and row.label == label)
             counts[1] += int(predicted == label and row.label != label)
             counts[2] += int(predicted != label and row.label == label)
@@ -200,3 +208,68 @@ def bind_calibration(bundle, artifact: Calibration):
     return type(bundle).model_validate(
         {**bundle.model_dump(), "calibration": artifact.model_dump()}
     )
+
+
+def fit_platt(
+    fit: list[LabeledScores], heldout: list[LabeledScores], scoring_contract_digest: str
+) -> tuple[Calibration, dict]:
+    """Fit positive-slope binary scaling using fit data only, with bounded Newton steps."""
+    check_split(fit, heldout)
+    if any(len(row.logprobs) != 2 for row in fit + heldout):
+        raise ValueError("Platt calibration requires exactly two classes")
+    x = np.asarray([r.logprobs[0] - r.logprobs[1] for r in fit], dtype=np.float64)
+    y = np.asarray([int(r.label == 0) for r in fit], dtype=np.float64)
+    design = np.column_stack((x, np.ones_like(x)))
+    parameters = np.asarray([1.0, 0.0])
+
+    def objective(value):
+        z = design @ value
+        return float(np.mean(np.logaddexp(0, z) - y * z))
+
+    loss = objective(parameters)
+    iterations = 0
+    for _ in range(100):
+        iterations += 1
+        z = design @ parameters
+        probability = np.exp(-np.logaddexp(0, -z))
+        gradient = design.T @ (probability - y) / len(fit)
+        weights = probability * (1 - probability)
+        hessian = (design.T * weights) @ design / len(fit) + np.eye(2) * 1e-10
+        step = np.linalg.solve(hessian, gradient)
+        rate = 1.0
+        accepted = False
+        for _ in range(40):
+            candidate = np.clip(parameters - rate * step, [0.01, -100], [100, 100])
+            candidate_loss = objective(candidate)
+            if candidate_loss < loss - 1e-12:
+                parameters, loss, accepted = candidate, candidate_loss, True
+                break
+            rate *= 0.5
+        if not accepted:
+            break
+    temperature, bias = float(1 / parameters[0]), float(parameters[1])
+    dataset_digest = content_digest(
+        {"fit": [vars(r) for r in fit], "heldout": [vars(r) for r in heldout]}
+    )
+    report = {
+        "method": "platt",
+        "temperature": temperature,
+        "bias": bias,
+        "scoring_contract_digest": scoring_contract_digest,
+        "dataset_digest": dataset_digest,
+        "fit_samples": len(fit),
+        "iterations": iterations,
+        "fit_nll": loss,
+        "heldout_uncalibrated": quality_metrics(heldout),
+        "heldout_calibrated": quality_metrics(heldout, temperature, bias),
+        "selection": "positive slope and bias chosen using fit split only",
+    }
+    artifact = Calibration(
+        method="platt",
+        temperature=temperature,
+        bias=bias,
+        contract_digest=scoring_contract_digest,
+        dataset_digest=dataset_digest,
+        report_digest=content_digest(report),
+    )
+    return artifact, report

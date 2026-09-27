@@ -80,6 +80,10 @@ class Runtime:
     async def prepare(self, reference: str) -> dict:
         async with self._management_lock:
             bundle = self.registry.begin_prepare(reference, self.backend_identity)
+            request_id = "prepare-" + uuid.uuid4().hex
+            lease_id = self.registry.pin_preparation(reference, request_id, self.backend_identity)
+            self._active[request_id] = asyncio.current_task()
+            unconfirmed: set[str] = set()
             try:
                 self._validate_bundle(bundle)
                 questions = bundle.questions or (
@@ -91,16 +95,22 @@ class Runtime:
                 )
                 async with asyncio.timeout(120):
                     for question in questions:
-                        compiled = self.compiler.compile(
-                            "ready", question, bundle, uuid.uuid4().hex
-                        )
+                        compiled = self.compiler.compile("ready", question, bundle, request_id)
                         self._validate_sequences(compiled.sequences, bundle)
-                        results = [await self.backend.score(seq) for seq in compiled.sequences]
+                        results = [
+                            await self._score(seq, unconfirmed) for seq in compiled.sequences
+                        ]
                         assemble(compiled, results, bundle)
             except BaseException as exc:
                 message = exc.message if isinstance(exc, JevError) else type(exc).__name__
                 self.registry.finish_prepare(reference, message)
                 raise
+            finally:
+                if unconfirmed:
+                    self._unconfirmed_leases[request_id] = (lease_id, unconfirmed)
+                else:
+                    self.registry.release(lease_id)
+                self._active.pop(request_id, None)
             self.registry.finish_prepare(reference)
             return self.registry.inspect(reference)
 
@@ -122,6 +132,18 @@ class Runtime:
             )
         return total
 
+    async def _score(self, seq: ScoreInput, unconfirmed: set[str]) -> ScoreResult:
+        try:
+            return await self.backend.score(seq)
+        except BaseException:
+            try:
+                async with asyncio.timeout(5):
+                    await self.backend.cancel(seq.request_id)
+            except BaseException:
+                unconfirmed.add(seq.request_id)
+                logger.exception("Engine cancellation could not be confirmed")
+            raise
+
     async def _question(
         self,
         compiled: CompiledQuestion,
@@ -131,16 +153,7 @@ class Runtime:
     ) -> tuple[Answer, list[ScoreResult]]:
         async def score(seq: ScoreInput) -> ScoreResult:
             async with semaphore:
-                try:
-                    return await self.backend.score(seq)
-                except BaseException:
-                    try:
-                        async with asyncio.timeout(5):
-                            await asyncio.shield(self.backend.cancel(seq.request_id))
-                    except BaseException:
-                        unconfirmed.add(seq.request_id)
-                        logger.exception("Engine cancellation could not be confirmed")
-                    raise
+                return await self._score(seq, unconfirmed)
 
         tasks = [asyncio.create_task(score(seq)) for seq in compiled.sequences]
         try:

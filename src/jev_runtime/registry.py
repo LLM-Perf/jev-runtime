@@ -219,6 +219,19 @@ class Registry:
         with self._transaction() as db:
             db.execute("DELETE FROM leases WHERE id=? AND owner=?", (lease_id, self.owner))
 
+    def pin_preparation(self, reference: str, request_id: str, backend: str) -> str:
+        """Canary inference must block retirement just like ordinary traffic."""
+        with self._transaction() as db:
+            row = self._get(db, reference)
+            if row["state"] != "PREPARING" or row["backend"] != backend:
+                raise JevError("invalid_state", "Preparation no longer owns this bundle", 409)
+            lease = uuid.uuid4().hex
+            db.execute(
+                "INSERT INTO leases VALUES(?,?,?,?,?)",
+                (lease, reference, self.owner, request_id, time.time()),
+            )
+            return lease
+
     def retire(self, reference: str) -> dict:
         with self._transaction() as db:
             row = self._get(db, reference)
