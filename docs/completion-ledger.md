@@ -124,6 +124,35 @@ replacement for any requirement in `implementation-plan.md`.
   All owned process groups exited and GPU7 returned to 11,990 MiB free. Local
   regression now has 165 passing Python tests; TypeScript retains 62 passing tests.
 
+
+- Structured-generation choice baseline now preserves the exact same task/input,
+  actual native prompt/output token traces, strict JSON/stop validation and output
+  costs for successful and failed attempts. At harness `444fd1b` / runtime `60b3415`,
+  both engines completed three five-second colocated SmolLM2 repeats: SGLang
+  1,268/1,268 and vLLM 1,502/1,502 strict successes across all three methods. The
+  JSON lane disagreed with the selected-label reference on every timed response;
+  this fixture has no gold labels and establishes no equivalent-quality speedup.
+  A real SGLang one-token-budget negative preflight correctly rejected HTTP 200
+  truncation and retained its usage. Some plugin/native throughput ratios remain
+  below 90%. Both process groups exited and GPU7 returned to 11,990 MiB free.
+  See `docs/performance.md`. Local packaging at `444fd1b` built all three wheels;
+  its 179 passing Python tests and checks are recorded separately from GPU runs.
+
+
+- A real SGLang fault check reproduced collateral cancellation with the legacy IDs:
+  aborting `parent.a.1` also aborted `parent.a.1.0`. At `0421d50`, fixed-length
+  question/index suffixes remove this prefix relationship. Two CPU regressions
+  cover dotted question names/candidate indices and actual runtime partial-result
+  isolation; both failed before the fix. The live serving compiler's IDs passed
+  the GPU retest: the selected branch aborted at three tokens while its sibling
+  completed 128 tokens. Both engines then passed the full functional suite and
+  1,000 hot switches again (SGLang 519 / vLLM 469 successful traffic
+  requests, no mixed versions, zero native/attach logprob difference). The number
+  of distinct supported combinations remains six. Both process groups exited and
+  GPU7 returned to 11,990 MiB free. Local regression has 181 passing Python tests;
+  lint/format and all three wheels passed at this source. These targeted checks
+  do not recertify every earlier LoRA, multi-worker, quality or performance profile.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

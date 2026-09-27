@@ -124,6 +124,17 @@ instead of acknowledging success. Administrative recovery remains explicit.
 This covers local API workers, not multiple nodes or a multi-worker vLLM HTTP bridge.
 Readiness fails while the local cancellation control loop reports database errors.
 
+Engine branch IDs are opaque internal identifiers, separate from client question
+IDs. Each request has a random namespace; each question uses a fixed-length SHA256
+suffix and a fixed-width branch index. SGLang matches abort IDs by prefix, so
+variable-length concatenation such as `parent.a.1` and `parent.a.1.0` could abort an
+unrelated question. The compiler now prevents that relationship among its branches.
+Recovery continues using the exact IDs already persisted in a lease; changing code
+does not rewrite existing dispatch journals. The SGLang regression uses IDs exported
+by the live compiler and confirms that a sibling completes after one branch is
+aborted. See [the retained reproduction](../evidence/dsw/sglang-abort-prefix-60b3415-reproduction.json)
+and [the fixed GPU check](../evidence/dsw/sglang-prefix-0421d50/abort-prefix.json).
+
 Client disconnects and request deadlines propagate to scoring branches. `partial`
 retains per-question errors; unknown or incomplete engine usage is `null`, not zero.
 Do not count a partial response as a successful whole request in a load test.

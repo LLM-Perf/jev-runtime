@@ -484,6 +484,23 @@
         "source_commit": "febb5d86451d9f66520088e263de21495a901159",
         "evidence": "evidence/dsw/sglang-lora-febb5d8.json",
         "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
+      },
+      "functional_rechecks": [
+        {
+          "source_commit": "0421d50d8c3f3adf379dfdfe9b3099c88e63f3a9",
+          "status": "passed",
+          "evidence": "evidence/dsw/sglang-prefix-0421d50/contract.json",
+          "cleanup_evidence": "evidence/dsw/sglang-prefix-0421d50/cleanup.json",
+          "scope": "BF16 TP1 API1; four types, native parity, 1000 switches; not quality/performance certification"
+        }
+      ],
+      "development_generation_comparison": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "harness_source_commit": "444fd1b1dc9a6d74aa350572568005e4508234f3",
+        "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
+        "evidence": "evidence/dsw/sglang-generation-444fd1b/report.json",
+        "quality_equivalence_established": false
       }
     },
     {
@@ -514,6 +531,23 @@
         "source_commit": "febb5d86451d9f66520088e263de21495a901159",
         "evidence": "evidence/dsw/vllm-lora-febb5d8.json",
         "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
+      },
+      "functional_rechecks": [
+        {
+          "source_commit": "0421d50d8c3f3adf379dfdfe9b3099c88e63f3a9",
+          "status": "passed",
+          "evidence": "evidence/dsw/vllm-prefix-0421d50/contract.json",
+          "cleanup_evidence": "evidence/dsw/vllm-prefix-0421d50/cleanup.json",
+          "scope": "BF16 TP1 API1; four types, native parity, 1000 switches; not quality/performance certification"
+        }
+      ],
+      "development_generation_comparison": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "harness_source_commit": "444fd1b1dc9a6d74aa350572568005e4508234f3",
+        "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
+        "evidence": "evidence/dsw/vllm-generation-444fd1b/report.json",
+        "quality_equivalence_established": false
       }
     }
   ],

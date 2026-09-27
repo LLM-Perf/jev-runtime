@@ -123,3 +123,44 @@ HTTP/contract success. That agreement is not accuracy against labels. This fixtu
 is synthetic padding: a faster JSON or typed path does not establish equivalent
 business quality, calibrated confidence or an overall product speedup. The held-out
 quality gate and controlled 144-scenario performance gate remain outstanding.
+
+## Recorded three-method development check
+
+At harness `444fd1b` and runtime `60b3415`, both native engines ran the same frozen
+SmolLM2-1.7B checkpoint on the shared DSW L20Z GPU7 (BF16, TP1, eager,
+context limit 2048). The scenario was joint L=256/K=8/C=1 with a hot repeated
+prompt, two warmups and five seconds per method per repeat, for three repeats.
+Generation used the same task/input, an actual 299-token prompt and a 64-token
+output budget. Both preflights retained actual input/output token IDs. All JSON
+responses used eight completion tokens; the native selected-label lane reported
+zero completion tokens on SGLang and one on vLLM. These are observed engine
+counters, not interchangeable estimates of computation.
+
+| Engine | Method | Strict successes / attempts | Full-cohort RPS, three repeats | P95 ms, three repeats | Observed completion tokens, all attempts |
+|---|---|---:|---|---|---:|
+| sglang | native-label | 628/628 | 42.61, 40.73, 41.89 | 27.76, 27.91, 27.92 | 0 |
+| sglang | native-plugin | 554/554 | 35.29, 38.64, 36.57 | 34.28, 29.88, 30.77 | 0 |
+| sglang | structured-generation | 86/86 | 5.41, 5.62, 5.65 | 217.44, 204.63, 206.24 | 688 |
+| vllm | native-label | 739/739 | 49.57, 49.07, 48.90 | 23.18, 23.26, 23.23 | 739 |
+| vllm | native-plugin | 654/654 | 44.13, 42.44, 43.89 | 25.48, 27.83, 26.05 | 654 |
+| vllm | structured-generation | 109/109 | 7.08, 7.40, 7.15 | 170.63, 155.28, 159.34 | 872 |
+
+Native/typed probability parity error was zero. The label reference selected `c1`;
+all 86 SGLang and 109 vLLM timed JSON responses selected `c0`. This is zero
+agreement with that reference, not zero accuracy: the padding fixture has no gold
+label. No equivalent-quality speedup can be concluded. Plugin/native throughput
+also remains below 90% in multiple repeats. No P99, independent capacity claim,
+confidence interval or controlled release-gate pass follows from this short run.
+
+The SGLang negative preflight with `max_tokens=1` returned HTTP 200, one completion
+token and `finish_reason: length`; the harness correctly failed it as
+`generation_truncated` and retained its observed output cost. It dispatched no timed
+cohort and retired its temporary alias. The original failure is preserved alongside
+an explicit expected-negative check. Both task-owned engine process groups exited;
+GPU7 returned to 11,990 MiB free. Other services were not changed.
+
+Evidence: [SGLang](../evidence/dsw/sglang-generation-444fd1b/report.json),
+[vLLM](../evidence/dsw/vllm-generation-444fd1b/report.json), and
+[truncation negative check](../evidence/dsw/sglang-generation-truncated-444fd1b/report.json).
+The native candidate/other Jev baselines, controlled matrix, varying-input workloads
+and business-quality equivalence remain outstanding.

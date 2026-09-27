@@ -502,11 +502,15 @@
       "actual_deliverables": [
         "tests/test_remote_cancel.py",
         "tests/test_recovery.py",
-        "tests/integration/live_remote_cancel.py"
+        "tests/integration/live_remote_cancel.py",
+        "tests/test_branch_identity.py",
+        "tests/integration/live_abort_prefix.py",
+        "evidence/dsw/sglang-prefix-0421d50/abort-prefix.json"
       ],
       "progress_notes": [
         "Durable cancellation ownership and uncertain-abort retention are implemented.",
-        "Both native engines have peer-worker cancellation evidence; expanded fault suites remain."
+        "Both native engines have peer-worker cancellation evidence; expanded fault suites remain.",
+        "A real SGLang prefix-abort collision was reproduced and fixed with fixed-length branch IDs. The live serving compiler retest preserves sibling completion; both engines pass their functional/1,000-switch suites at 0421d50."
       ],
       "acceptance_complete": false
     },
@@ -534,11 +538,16 @@
       "actual_deliverables": [
         "profiles/performance-matrix.json",
         "benchmarks/run_case.py",
-        "docs/performance.md"
+        "docs/performance.md",
+        "evidence/dsw/sglang-generation-444fd1b/report.json",
+        "evidence/dsw/vllm-generation-444fd1b/report.json",
+        "evidence/dsw/sglang-generation-truncated-444fd1b/report.json"
       ],
       "progress_notes": [
-        "144 scenarios and strict native-vs-typed paired accounting are implemented.",
-        "Remaining generation/candidate baselines and the controlled matrix are not complete."
+        "144 scenarios, strict native-vs-typed paired accounting and structured-generation choice baseline are implemented.",
+        "Both engines completed three five-second colocated SmolLM2 repeats at harness 444fd1b/runtime 60b3415; actual generation prompt/output IDs and all-attempt costs are retained. HTTP 200 truncation is rejected in a real SGLang negative check.",
+        "Generation and selected-label decisions disagree on the synthetic fixture; no equivalent-quality speedup is claimed. Plugin/native throughput remains below 90% in several repeats.",
+        "Remaining candidate/other Jev baselines, varying-input workloads and the controlled matrix are not complete."
       ],
       "acceptance_complete": false
     },
@@ -731,7 +740,7 @@
         "profiles/certification-matrix.json"
       ],
       "progress_notes": [
-        "Four combinations each completed 1,000 configuration switches; gateway crash recovery passed.",
+        "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix.",
         "The controlled 24-hour soak is not run."
       ],
       "acceptance_complete": false

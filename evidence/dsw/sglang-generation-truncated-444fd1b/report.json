@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "source_commit": "444fd1b1dc9a6d74aa350572568005e4508234f3",
+  "provided_runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
+  "started_at": 1790509839.2023058,
+  "qualification": "development HTTP measurements; not release performance certification",
+  "release_gate_passed": false,
+  "engine": "sglang",
+  "mode": "native-plugin",
+  "scenario": {
+    "context_tokens": 256,
+    "candidates": 8,
+    "concurrency": 1,
+    "cache": "hot",
+    "scoring_mode": "joint-label",
+    "structured_generation": true
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674"
+  },
+  "duration_seconds": 1.0,
+  "repeats": 1,
+  "warmup_requests_per_method": 2,
+  "service_process_identity": {
+    "pid": 2601835,
+    "start_ticks": "426523350",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/sglang/bin/python",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18794",
+    "--dtype",
+    "bfloat16",
+    "--context-length",
+    "2048",
+    "--max-running-requests",
+    "4",
+    "--chunked-prefill-size",
+    "512",
+    "--max-total-tokens",
+    "2048",
+    "--mem-fraction-static",
+    "0.65",
+    "--disable-cuda-graph",
+    "--attention-backend",
+    "triton"
+  ],
+  "measurements": [],
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false
+  },
+  "cache_definition": "repeated exact prompt after warmup",
+  "fixture_digest": "sha256:9d464287544e809341bde25d9ad0c4266f6403c5e399cb95a1d12de7702dbe76",
+  "sequence_lengths": [
+    256
+  ],
+  "bundle_digest": "sha256:9fa9bf8461b66b9e7ea18aa595dc24fb3a9ae16456bc55f4aea3aa580d2e4e2c",
+  "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+  "parity_warmup_requests_per_method": 2,
+  "native_typed_probability_parity": {
+    "max_absolute_error": 0.0,
+    "tolerance": 0.0001,
+    "passed": true,
+    "native_cached_tokens_per_branch": [
+      255
+    ],
+    "typed_cached_prompt_tokens": 255
+  },
+  "generation_preflight": {
+    "http_status": 200,
+    "passed": false,
+    "observations": {
+      "engine_prompt_tokens": 299,
+      "engine_completion_tokens": 1,
+      "finish_reason": "length",
+      "response_content_bytes": 2
+    },
+    "error_code": "generation_truncated"
+  },
+  "measurement_complete": false,
+  "failure": {
+    "type": "InvalidBenchmarkResponse",
+    "message": "generation_truncated",
+    "http_status": 200,
+    "error_code": "generation_truncated",
+    "observations": {
+      "engine_prompt_tokens": 299,
+      "engine_completion_tokens": 1,
+      "finish_reason": "length",
+      "response_content_bytes": 2
+    }
+  },
+  "temporary_alias_retired": true,
+  "finished_at": 1790509839.6686156,
+  "expected_failure_check": {
+    "passed": true,
+    "injected_condition": "generation max_tokens=1",
+    "requirement": "HTTP 200 truncation is not a successful decision; observed output cost is retained"
+  }
+}
