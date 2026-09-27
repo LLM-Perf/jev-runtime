@@ -459,6 +459,12 @@
         "status": "completed_short_colocated_measurements",
         "release_gate_passed": false,
         "evidence": "evidence/dsw/sglang-benchmark-4e5203f/report.json"
+      },
+      "development_lora": {
+        "status": "passed_single_frozen_profile",
+        "source_commit": "febb5d86451d9f66520088e263de21495a901159",
+        "evidence": "evidence/dsw/sglang-lora-febb5d8.json",
+        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
       }
     },
     {
@@ -483,11 +489,18 @@
         "status": "completed_short_colocated_measurements",
         "release_gate_passed": false,
         "evidence": "evidence/dsw/vllm-benchmark-fad1d84/report.json"
+      },
+      "development_lora": {
+        "status": "passed_single_frozen_profile",
+        "source_commit": "febb5d86451d9f66520088e263de21495a901159",
+        "evidence": "evidence/dsw/vllm-lora-febb5d8.json",
+        "scope": "BF16 TP1/PP1/DP1 API1, two untrained rank-8 o_proj fixtures; not a quality/performance gate"
       }
     }
   ],
   "qualification_definitions": {
     "quality": "approved business-task release gate; public engineering runs are tracked separately",
-    "performance": "controlled release matrix; colocated short measurements are tracked separately"
+    "performance": "controlled release matrix; colocated short measurements are tracked separately",
+    "development_lora": "Separate LoRA lifecycle, cache-hit isolation and cancellation checks; does not change the base-model functional denominator or release quality/performance columns."
   }
 }

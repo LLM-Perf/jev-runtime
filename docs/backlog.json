@@ -1,8 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_working_name": "Jev Runtime",
   "plan_date": "2026-09-27",
-  "status": "planning_only_not_implemented",
+  "status": "implementation_and_development_validation_in_progress",
   "assumptions": {
     "core_engineers": 3,
     "weeks": 12,
@@ -91,7 +91,17 @@
         "列出40个引擎模型组合及业务验收标准"
       ],
       "deliverable": "scope-and-compatibility-contract.md",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "profiles/certification-matrix.json",
+        "docs/implementation-plan.md"
+      ],
+      "progress_notes": [
+        "20 revisions and 40 engine combinations are frozen.",
+        "Two business tasks, labels and owner-approved thresholds remain missing."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P02",
@@ -110,7 +120,17 @@
         "探测标签位置、usage、插件生命周期和能力边界"
       ],
       "deliverable": "capability-probe-and-spike-report",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/backends",
+        "evidence/dsw"
+      ],
+      "progress_notes": [
+        "Two checkpoint functional paths per engine have GPU evidence.",
+        "Loaded weight/revision attestation is still incomplete; capabilities.verified remains false."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P03",
@@ -129,7 +149,17 @@
         "思考前缀、空格、特殊token和多语言fixture通过"
       ],
       "deliverable": "template-compiler-and-label-contract",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/compiler.py",
+        "tests/integration/tokenizer_contract.py"
+      ],
+      "progress_notes": [
+        "Frozen continuation and implementation fingerprints are enforced.",
+        "The 20-checkpoint tokenizer inventory retains inaccessible and unsupported entries."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P04",
@@ -149,7 +179,18 @@
         "概率语义、partial、tie和错误合同可验证"
       ],
       "deliverable": "jev-core-and-openapi",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/schema.py",
+        "src/jev_runtime/scoring.py",
+        "tests/test_scoring.py"
+      ],
+      "progress_notes": [
+        "Four result types, calibration status, abstention and partial failures are implemented.",
+        "Further malformed-response validation in the Python SDK remains to harden."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P05",
@@ -170,7 +211,17 @@
         "真实请求的token位置与零输出计数得到验证"
       ],
       "deliverable": "jev-sglang-score-adapter",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/backends/sglang.py",
+        "tests/integration/live_contract.py"
+      ],
+      "progress_notes": [
+        "Zero-output selected-label scoring has real two-checkpoint evidence.",
+        "Native cancellation now retains the receiver through terminal output."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P06",
@@ -191,7 +242,17 @@
         "不把首标签score端点当成完整多分类返回"
       ],
       "deliverable": "jev-vllm-score-adapter",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/backends/vllm.py",
+        "tests/integration/live_contract.py"
+      ],
+      "progress_notes": [
+        "One-token full selected-label scoring has real two-checkpoint evidence.",
+        "The HTTP bridge requires one engine API worker for abort ownership."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P07",
@@ -213,7 +274,17 @@
         "按精度冻结数值误差预算并单列近并列样本"
       ],
       "deliverable": "reference-scorer-and-parity-report",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "tests/integration/reference_logits.py",
+        "profiles/certification-matrix.json"
+      ],
+      "progress_notes": [
+        "Reference tooling exists; frozen BF16 tolerance failures remain unresolved.",
+        "Top-label agreement is not a numerical-gate pass."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P08",
@@ -233,7 +304,17 @@
         "独立路由、幂等注册、多进程只在前端创建服务"
       ],
       "deliverable": "jev-sglang-package",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "packages/sglang",
+        "tests/test_plugin_lifespan.py"
+      ],
+      "progress_notes": [
+        "Official hooks and spawned-worker entrypoint integration have native GPU evidence.",
+        "Granian multi-worker integration remains unsupported."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P09",
@@ -253,7 +334,17 @@
         "attach_router/init_state生命周期与关闭行为通过"
       ],
       "deliverable": "jev-vllm-package",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "packages/vllm",
+        "tests/test_plugin_lifespan.py"
+      ],
+      "progress_notes": [
+        "Native endpoint plugin and two-worker serving passed.",
+        "Runtime now drains before host engine/state teardown."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P10",
@@ -274,7 +365,18 @@
         "加载失败保留旧版本、排空后卸载、控制面失联继续服务"
       ],
       "deliverable": "bundle-registry-and-lifecycle-controller",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/registry.py",
+        "src/jev_runtime/runtime.py",
+        "tests/test_lifecycle.py"
+      ],
+      "progress_notes": [
+        "Immutable manifests, canaries, generation CAS, durable leases and local publication barriers are implemented.",
+        "Multi-node coordination belongs to a later stage."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P11",
@@ -294,7 +396,19 @@
         "独立数据集的质量、校准与风险覆盖报告"
       ],
       "deliverable": "calibration-and-quality-eval",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/calibration.py",
+        "src/jev_runtime/evaluation.py",
+        "benchmarks/public_quality.py",
+        "docs/public-quality.md"
+      ],
+      "progress_notes": [
+        "Both engines completed 768 public requests and live calibrated switching.",
+        "Public tasks do not substitute for business acceptance."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P12",
@@ -316,7 +430,17 @@
         "功能、数值、业务质量、性能四列分别记录"
       ],
       "deliverable": "model-certification-matrix",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "profiles/certification-matrix.json"
+      ],
+      "progress_notes": [
+        "4/40 engine/checkpoint functional combinations have development GPU evidence.",
+        "Remaining 36 combinations and separate numerical/quality/performance gates remain.",
+        "Six gated model repositories require authorized access."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P13",
@@ -337,7 +461,18 @@
         "有限并发及等价评分语义内的候选编排"
       ],
       "deliverable": "admission-and-batch-planner",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/admission.py",
+        "src/jev_runtime/runtime.py",
+        "tests/test_admission.py"
+      ],
+      "progress_notes": [
+        "Pre-dispatch branch/token budgets and per-process tenant fairness are implemented.",
+        "Replica-wide quotas and controlled mixed-load validation remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P14",
@@ -357,7 +492,18 @@
         "无引用泄漏、partial与数值错误不伪装成功"
       ],
       "deliverable": "cancellation-and-failure-tests",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "tests/test_remote_cancel.py",
+        "tests/test_recovery.py",
+        "tests/integration/live_remote_cancel.py"
+      ],
+      "progress_notes": [
+        "Durable cancellation ownership and uncertain-abort retention are implemented.",
+        "Both native engines have peer-worker cancellation evidence; expanded fault suites remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P15",
@@ -378,7 +524,18 @@
         "原生评分、结构化生成、候选基线边界与分母一致"
       ],
       "deliverable": "performance-harness-and-workload-manifest",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "profiles/performance-matrix.json",
+        "benchmarks/run_case.py",
+        "docs/performance.md"
+      ],
+      "progress_notes": [
+        "144 scenarios and strict native-vs-typed paired accounting are implemented.",
+        "Remaining generation/candidate baselines and the controlled matrix are not complete."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P16",
@@ -398,7 +555,18 @@
         "达到原生评分90%吞吐等必须门槛；额外收益按实测报告"
       ],
       "deliverable": "optimization-patches-and-ablation-report",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/compiler.py",
+        "tests/test_registry_connections.py",
+        "docs/performance.md"
+      ],
+      "progress_notes": [
+        "CPU profiles motivated bounded encoding caching and persistent FULL-synchronous WAL connections.",
+        "Colocated SGLang repeats remain below the 90% throughput target; release performance is not certified."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P17",
@@ -420,7 +588,18 @@
         "在途旧adapter排空后卸载且cache身份隔离"
       ],
       "deliverable": "lora-compatibility-profile",
-      "status": "planned"
+      "status": "implemented",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/adapters.py",
+        "docs/adapters.md",
+        "profiles/lora-lifecycle.json"
+      ],
+      "progress_notes": [
+        "Both engines passed the SmolLM2 BF16 TP1/API1 synthetic LoRA lifecycle/cache/cancel profile at febb5d8.",
+        "The exposed checkpoint scope is explicitly restricted; GPU crash-restart and other profiles are not certified."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P18",
@@ -442,7 +621,20 @@
         "独立引擎环境、镜像与发布回退命令齐全"
       ],
       "deliverable": "sdk-cli-and-deployment-examples",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/sdk.py",
+        "src/jev_runtime/cli.py",
+        "packages/typescript",
+        "deployment",
+        "evidence/package-check-febb5d8.json"
+      ],
+      "progress_notes": [
+        "Python/TypeScript SDKs, CLI and three wheel builds have evidence.",
+        "Container image builds and final release packaging remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P19",
@@ -463,7 +655,17 @@
         "指标分母清楚、管理面隔离、readiness执行canary"
       ],
       "deliverable": "metrics-and-runbooks",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "src/jev_runtime/api.py",
+        "docs/operations.md"
+      ],
+      "progress_notes": [
+        "Separate admin authorization, readiness canaries and request/branch correlation exist.",
+        "Detailed stage telemetry and operational handoff remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P20",
@@ -485,7 +687,17 @@
         "混合长短/聊天流量与TP代表组合报告"
       ],
       "deliverable": "integration-and-coexistence-report",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "tests/integration",
+        "evidence/dsw"
+      ],
+      "progress_notes": [
+        "Native plugins and standalone gateways have real serving evidence.",
+        "Controlled mixed long/short/chat loads and TP configurations remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P21",
@@ -507,7 +719,17 @@
         "1000次配置发布回退，无版本混用和引用泄漏"
       ],
       "deliverable": "soak-and-failure-injection-report",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "tests/integration/live_crash_recovery.py",
+        "profiles/certification-matrix.json"
+      ],
+      "progress_notes": [
+        "Four combinations each completed 1,000 configuration switches; gateway crash recovery passed.",
+        "The controlled 24-hour soak is not run."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P22",
@@ -530,7 +752,16 @@
         "正式支持范围、失败项和质量证据公开"
       ],
       "deliverable": "release-acceptance-report",
-      "status": "planned"
+      "status": "blocked_missing_inputs",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "docs/completion-ledger.md"
+      ],
+      "progress_notes": [
+        "At least two approved real business tasks, labeled data and owner acceptance are needed.",
+        "No formal release acceptance is claimed."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P23",
@@ -553,7 +784,19 @@
         "快速开始、限制和示例由其他人复现"
       ],
       "deliverable": "release-documentation",
-      "status": "planned"
+      "status": "partial",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "README.md",
+        "docs/public-quality.md",
+        "docs/performance.md",
+        "evidence"
+      ],
+      "progress_notes": [
+        "Failure-inclusive quality/performance artifacts and usage documentation are available.",
+        "Complete quality/performance pairing and independent reproduction remain."
+      ],
+      "acceptance_complete": false
     },
     {
       "id": "P24",
@@ -573,7 +816,22 @@
         "灰度、回退、值守与移交演练通过"
       ],
       "deliverable": "v0.1-release-candidate",
-      "status": "planned"
+      "status": "not_started",
+      "original_status": "planned",
+      "actual_deliverables": [
+        "docs/completion-ledger.md"
+      ],
+      "progress_notes": [
+        "Formal release, canary rollout and operational handoff depend on unmet acceptance gates."
+      ],
+      "acceptance_complete": false
     }
-  ]
+  ],
+  "updated_at": "2026-09-27",
+  "release_accepted": false,
+  "status_semantics": "Implementation status is separate from acceptance. Development GPU evidence does not satisfy the full release gates. Original estimates and dependencies remain unchanged.",
+  "observed_engine_versions": {
+    "sglang": "0.5.19 (isolated CUDA 12.9 dependency lane for R550)",
+    "vllm": "0.30.0+cu129"
+  }
 }

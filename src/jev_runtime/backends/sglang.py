@@ -144,7 +144,7 @@ class SGLangNative:
             and getattr(args, "pp_size", None) == 1
             and str(getattr(model, "dtype", None)) in {"torch.bfloat16", "bfloat16"}
             and getattr(args, "quantization", None) is None
-            and set(architectures) <= {"LlamaForCausalLM", "Qwen3ForCausalLM"}
+            and set(architectures) <= {"LlamaForCausalLM"}
             and architectures
         )
 

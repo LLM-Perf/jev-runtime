@@ -69,7 +69,8 @@ replacement for any requirement in `implementation-plan.md`.
   GPU-serving validation passed through an independent two-worker SGLang gateway
   at `364b6e0`: worker B cancelled worker A's journaled 128-branch request, no lease
   remained, and serving resumed. vLLM's native two-worker path also passed at
-  `97271f8`; SGLang's native path still needs this check. This is not multi-node routing.
+  `97271f8`; SGLang's native two-worker path also passed at `febb5d8`, including
+  terminal-response drain and serving after cancellation. This is not multi-node routing.
 - Public AG News/SST-2 fixture preparation and HTTP quality/calibration runners
   are implemented with immutable source revisions and full attempted denominators.
   The existing raw-score collector now also journals work and preserves uncertain
@@ -92,7 +93,15 @@ replacement for any requirement in `implementation-plan.md`.
   and the in-flight old-version drain check, then failed unload after cancellation.
   Its native generator had discarded request state before abort, leaving a LoRA
   usage count unreleased. The receiver now remains shielded through a bounded
-  terminal-response wait; the failing run and cleanup are retained for retest.
+  terminal-response wait. At `febb5d8`, both native engines passed the full suite:
+  24 alternating switches with observed hits (SGLang 90/91 prompt tokens, vLLM
+  80/91), a 128-question old request across publication, blocked premature unload,
+  cancellation followed by GPU-fenced removal, and six reload/rollback cycles.
+  Warm-baseline probability error was zero for switches and reloads. Every owned
+  process group exited and GPU7 free memory returned to 11,990 MiB. The public
+  managed-LoRA gate now permits only this checkpoint revision with BF16,
+  TP/PP/DP=1 and one API worker. See `profiles/lora-lifecycle.json`; this is a
+  synthetic lifecycle profile, not task-quality or overall release certification.
 
 ## Required evidence still outstanding
 
@@ -108,10 +117,10 @@ replacement for any requirement in `implementation-plan.md`.
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Gateway crash recovery passed on both engines; soak not run | Remaining faults and complete 24h evidence |
-| LoRA lifecycle | Local immutable artifact, lifecycle, lease/race/restart checks implemented | Real native GPU load/unload, cache isolation, cancellation and rollback checks |
+| LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 profile | GPU crash/restart checks; further profiles require separate evidence |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
-| Multi-replica rollout | Shared-local-registry activation barrier passed on both engines | Multi-node coordinator, quotas and cancellation routing |
+| Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
 
 ## DSW preflight, 2026-09-27
@@ -134,3 +143,8 @@ Optional Rust extensions were not built in this text-only functional environment
 GitHub Actions run 36301507239 never started its test job because organization
 billing/spending eligibility rejected it. Hosted CI is not green; local checks
 and DSW checks are reported separately.
+
+The same eligibility rejection was rechecked at run `36313600555` for `febb5d8`.
+Local checks at that source passed 103 Python tests, lint/format and all three
+wheel builds. The subsequent conservative checkpoint gate has its own local tests;
+GPU reports retain the exact runtime commit rather than claiming a later source ran.

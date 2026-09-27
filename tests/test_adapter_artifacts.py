@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from safetensors.numpy import save_file
 
-from jev_runtime.adapters import AdapterStore
+from jev_runtime.adapters import AdapterStore, validate_lora_base
 from jev_runtime.errors import JevError
 
 
@@ -83,3 +83,16 @@ def test_adapter_store_refuses_budget_and_non_lora_tensors(tmp_path, adapter_sou
     with pytest.raises(JevError) as exc:
         store.register("task", str(adapter_source), "fixture", "a" * 40)
     assert exc.value.code == "adapter_tensor"
+
+
+def test_lora_profile_does_not_generalize_checkpoint_or_revision():
+    validate_lora_base(
+        "HuggingFaceTB/SmolLM2-1.7B-Instruct", "31b70e2e869a7173562077fd711b654946d38674"
+    )
+    for model, revision in (
+        ("Qwen/Qwen3-0.6B", "c1899de289a04d12100db370d81485cdf75e47ca"),
+        ("HuggingFaceTB/SmolLM2-1.7B-Instruct", "a" * 40),
+    ):
+        with pytest.raises(JevError) as error:
+            validate_lora_base(model, revision)
+        assert error.value.code == "adapter_profile"

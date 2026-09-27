@@ -1,10 +1,14 @@
 # Managed LoRA lifecycle
 
 Managed LoRA is opt-in and initially limited to native plugins, BF16, no
-quantization, TP/PP/DP=1 and one API/tokenizer worker. The implementation permits
-dense `LlamaForCausalLM` and `Qwen3ForCausalLM` on SGLang 0.5.19 or vLLM 0.30.0.
-An allowed architecture is not a certified checkpoint: consult the completion
-ledger for actual GPU evidence. HTTP gateway LoRA is intentionally unavailable.
+quantization, TP/PP/DP=1 and one API/tokenizer worker. The exposed checkpoint is
+`HuggingFaceTB/SmolLM2-1.7B-Instruct` at revision
+`31b70e2e869a7173562077fd711b654946d38674`, using `LlamaForCausalLM` on SGLang
+0.5.19 or vLLM 0.30.0. Startup rejects other checkpoint revisions for this optional
+feature; ordinary base-model scoring has its separate, broader compatibility path.
+The GPU lifecycle evidence uses an L20Z and untrained synthetic adapters. It is
+not business-quality or overall release certification. HTTP gateway LoRA is
+intentionally unavailable. See [the tested profiles](../profiles/lora-lifecycle.json).
 
 Add to the Jev configuration (server-local absolute paths):
 

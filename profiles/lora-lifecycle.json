@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "status": "development_lifecycle_profiles",
+  "qualification": "Colocated synthetic nonzero LoRA tests; not overall release or task-quality certification. Other checkpoints, engine versions, dtypes and parallel configurations are not enabled for managed LoRA.",
+  "base_model_scoring_scope": "separate broader model matrix; this restriction only applies to managed LoRA",
+  "profiles": [
+    {
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "architecture": "LlamaForCausalLM",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "tp": 1,
+      "pp": 1,
+      "dp": 1,
+      "api_workers": 1,
+      "gpu": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "source_commit": "febb5d86451d9f66520088e263de21495a901159",
+      "functional_lifecycle": "passed",
+      "evidence": "evidence/dsw/sglang-lora-febb5d8.json",
+      "cleanup_evidence": "evidence/dsw/sglang-lora-febb5d8-cleanup.json",
+      "tested_artifacts": {
+        "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+        "base_model": {
+          "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+        },
+        "seed": 20260927,
+        "artifacts": {
+          "positive": {
+            "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+            "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+          },
+          "negative": {
+            "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+            "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+          }
+        }
+      },
+      "tested_rank": 8,
+      "tested_target_modules": [
+        "o_proj"
+      ],
+      "cached_prompt_tokens_observed": [
+        90
+      ],
+      "logical_prompt_tokens": [
+        91
+      ],
+      "alternating_switches": 24,
+      "max_probability_error_after_switch": 0.0,
+      "reload_cycles": 6,
+      "max_probability_error_after_reload": 0.0,
+      "inflight_questions": 128,
+      "premature_unload_rejected": true,
+      "cancel_then_unload": "passed",
+      "business_quality": "not_evaluated",
+      "controlled_performance": "not_evaluated",
+      "crash_restart_gpu_validation": "not_run; local registry restart tests pass"
+    },
+    {
+      "engine": "vllm",
+      "engine_version": "0.30.0",
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "architecture": "LlamaForCausalLM",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "tp": 1,
+      "pp": 1,
+      "dp": 1,
+      "api_workers": 1,
+      "gpu": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "source_commit": "febb5d86451d9f66520088e263de21495a901159",
+      "functional_lifecycle": "passed",
+      "evidence": "evidence/dsw/vllm-lora-febb5d8.json",
+      "cleanup_evidence": "evidence/dsw/vllm-lora-febb5d8-cleanup.json",
+      "tested_artifacts": {
+        "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+        "base_model": {
+          "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+        },
+        "seed": 20260927,
+        "artifacts": {
+          "positive": {
+            "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+            "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+          },
+          "negative": {
+            "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+            "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+          }
+        }
+      },
+      "tested_rank": 8,
+      "tested_target_modules": [
+        "o_proj"
+      ],
+      "cached_prompt_tokens_observed": [
+        80
+      ],
+      "logical_prompt_tokens": [
+        91
+      ],
+      "alternating_switches": 24,
+      "max_probability_error_after_switch": 0.0,
+      "reload_cycles": 6,
+      "max_probability_error_after_reload": 0.0,
+      "inflight_questions": 128,
+      "premature_unload_rejected": true,
+      "cancel_then_unload": "passed",
+      "business_quality": "not_evaluated",
+      "controlled_performance": "not_evaluated",
+      "crash_restart_gpu_validation": "not_run; local registry restart tests pass"
+    }
+  ],
+  "preserved_failures": [
+    "evidence/dsw/vllm-lora-67a6fbb.json",
+    "evidence/dsw/sglang-lora-500b197.json",
+    "evidence/dsw/sglang-lora-c36d65d.json"
+  ]
+}

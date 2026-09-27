@@ -14,6 +14,27 @@ from pydantic import Field, TypeAdapter
 from jev_runtime.errors import JevError
 from jev_runtime.schema import Contract, Identifier, content_digest
 
+# Expand only alongside native lifecycle/cache/cancellation GPU evidence.
+# This limits the optional LoRA feature, not base-model typed scoring.
+LORA_BASE_PROFILES = frozenset(
+    {
+        (
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "31b70e2e869a7173562077fd711b654946d38674",
+        )
+    }
+)
+
+
+def validate_lora_base(model_id: str, revision: str) -> None:
+    if (model_id, revision) not in LORA_BASE_PROFILES:
+        raise JevError(
+            "adapter_profile",
+            "Managed LoRA is restricted to lifecycle-tested checkpoint revisions; "
+            "base-model scoring remains available",
+            409,
+        )
+
 
 class AdapterArtifact(Contract):
     id: Identifier

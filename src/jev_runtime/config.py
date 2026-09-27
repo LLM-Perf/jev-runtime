@@ -8,7 +8,7 @@ from typing import Literal
 import yaml
 from pydantic import Field
 
-from jev_runtime.adapters import AdapterStore
+from jev_runtime.adapters import AdapterStore, validate_lora_base
 from jev_runtime.admission import Admission
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
@@ -122,6 +122,7 @@ async def build_runtime(
             raise JevError(
                 "adapter_profile", "Managed LoRA requires a native single-worker plugin", 409
             )
+        validate_lora_base(settings.model_id, settings.model_revision)
         store = AdapterStore(
             settings.adapters.store_path,
             settings.adapters.allowed_roots,
