@@ -48,9 +48,11 @@ async def run(args):
     url = f"http://127.0.0.1:{gateway['port']}"
     report = {
         "source_commit": args.source_commit,
+        "runtime_source_commit": args.runtime_source_commit or args.source_commit,
         "qualification": (
             "Colocated single-worker gateway/native-engine pause and recovery; "
-            "not failover, performance or soak certification"
+            "warm-to-warm recovery comparison; not cache-state numerical invariance, "
+            "failover, performance or soak certification"
         ),
         "engine": engine["engine"],
         "model": engine["model"],
@@ -92,9 +94,18 @@ async def run(args):
 
             response = await client.post("/v1/decisions", json=payload)
             response.raise_for_status()
+            checks["first_baseline_response"] = response.json()
+            first = DecisionResponse.model_validate(response.json())
+            assert first.status == "completed"
+            response = await client.post("/v1/decisions", json=payload)
+            response.raise_for_status()
             baseline = DecisionResponse.model_validate(response.json())
             assert baseline.status == "completed"
             checks["baseline"] = baseline.model_dump(mode="json")
+            checks["first_to_warm_probability_difference"] = max(
+                abs(value - baseline.answers["refund"].probabilities[key])
+                for key, value in first.answers["refund"].probabilities.items()
+            )
             routes_before = (await get(admin, "/admin/bundles"))["routes"]
             checks["routes_before"] = routes_before
             checks["profile_before"] = await get(admin, "/admin/profile")
@@ -156,6 +167,8 @@ async def run(args):
             for _ in range(2):
                 response = await client.post("/v1/decisions", json=payload)
                 response.raise_for_status()
+                measured = {"response": response.json()}
+                checks["recovered_outputs"].append(measured)
                 decision = DecisionResponse.model_validate(response.json())
                 assert decision.status == "completed"
                 assert decision.bundle_digest == baseline.bundle_digest
@@ -164,10 +177,8 @@ async def run(args):
                     abs(value - decision.answers["refund"].probabilities[key])
                     for key, value in baseline.answers["refund"].probabilities.items()
                 )
+                measured["max_probability_error"] = error
                 assert error <= 1e-4
-                checks["recovered_outputs"].append(
-                    {"response": decision.model_dump(mode="json"), "max_probability_error": error}
-                )
             async with asyncio.timeout(5):
                 while True:
                     listing = await get(admin, "/admin/bundles")
@@ -219,5 +230,6 @@ if __name__ == "__main__":
     parser.add_argument("--engine-dir", type=Path, required=True)
     parser.add_argument("--gateway-dir", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--runtime-source-commit")
     parser.add_argument("--output", type=Path, required=True)
     asyncio.run(run(parser.parse_args()))
