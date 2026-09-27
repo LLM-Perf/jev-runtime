@@ -64,7 +64,20 @@ class Compiler:
         )
 
     def profile(self) -> dict:
+        def implementation(value):
+            module = getattr(value, "__module__", "")
+            name = getattr(value, "__qualname__", type(value).__name__)
+            return f"{module}.{name}"
+
         return {
+            "tokenizer_class": implementation(type(self.tokenizer)),
+            "encode_implementation": implementation(self.tokenizer.encode),
+            "encode_plus_implementation": implementation(
+                getattr(self.tokenizer, "_encode_plus", None)
+            ),
+            "backend_class": implementation(
+                type(getattr(self.tokenizer, "backend_tokenizer", None))
+            ),
             "cache_token_limit": self._cache_tokens,
             "cache_entry_limit": self._cache_entries,
             "continuation_encoder": "backend-ids-only" if self._fast_ids else "serial-wrapper",
