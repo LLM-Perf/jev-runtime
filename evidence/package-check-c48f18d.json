@@ -1,0 +1,29 @@
+{
+  "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+  "wheel_builds": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "3da7214f1dd911cfd855644ff2cd517575bcaee590bcc0909da6c7dadbc0ebce",
+      "python_files_verified": 29
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "0ebaf934ef98bae20d47dcb8ddf84f61d0802f7ed5638ab27bb246585d893ecb",
+      "python_files_verified": 4
+    }
+  ],
+  "pytest": {
+    "result": "307 passed in 20.18s",
+    "passed": 307
+  },
+  "qualification": "Local exact-commit CPU tests and wheel byte checks; DSW results are separate. TypeScript tests were not rerun.",
+  "ruff_check": "passed: src tests packages deployment benchmarks",
+  "ruff_format": "99 files already formatted: src tests packages deployment benchmarks",
+  "pip_check": "No broken requirements found",
+  "repository_wide_format_extra_check": "outside CI scope: existing docs/public-model-pair-validation.md code block would reformat; unchanged"
+}

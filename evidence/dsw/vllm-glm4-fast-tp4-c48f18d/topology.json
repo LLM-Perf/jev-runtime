@@ -1,0 +1,49 @@
+{
+  "tensor_parallel_size": 4,
+  "parent_cuda_visible_devices": "3,4,5,6",
+  "selected_gpus": [
+    {
+      "index": 3,
+      "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-3da7ba65-db60-947b-5477-1743e56b1f86",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "owned_worker_rank_pids": {
+    "1": 2680634,
+    "2": 2680700,
+    "3": 2680842,
+    "0": 2680600
+  },
+  "proof": "Live rank-labelled workers and parent CUDA mapping; no NVML PID mapping claimed"
+}

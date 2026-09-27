@@ -1,0 +1,61 @@
+"""Download only pinned public model artifacts, then verify every selected byte."""
+import fnmatch
+import hashlib
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+from huggingface_hub import HfApi
+
+ROOT = Path('/root/jev-runtime')
+MODELS = [
+    ('deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', '916b56a44061fd5cd7d6a8fb632557ed4f724f60'),
+    ('zai-org/glm-4-9b-chat', 'bd8234fe5e0c09c48637a92abb0c797cb5fa0e73'),
+]
+patterns = ['*.json', '*.safetensors', '*.model', '*.txt', '*.tiktoken', '*.py', 'README.md', 'LICENSE*']
+report = {'started_at': time.time(), 'harness_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'models': []}
+output = ROOT / 'model-verification-glm-r1-d1ef50e.json'
+assert not output.exists()
+try:
+    for model_id, revision in MODELS:
+        target = ROOT/'models'/model_id.split('/')[-1]
+        assert not target.exists(), 'Use a fresh model directory for this attempt'
+        info = HfApi(token=False).model_info(model_id, revision=revision, files_metadata=True)
+        assert info.sha == revision and not info.private and not info.gated
+        files = [f for f in info.siblings if any(fnmatch.fnmatch(f.rfilename, p) for p in patterns)]
+        assert all('/' not in f.rfilename for f in files)
+        item = {'model_id':model_id,'revision':revision,'gated':info.gated,'private':info.private,
+                'path':str(target),'expected_files':len(files),'files':[],'verified':False}
+        report['models'].append(item)
+        output.write_text(json.dumps(report,indent=2)+'\n')
+        command=[str(Path(sys.executable).with_name('hf')),'download',model_id,
+                 *[f.rfilename for f in files],'--revision',revision,'--local-dir',str(target),
+                 '--max-workers','4','--quiet']
+        item['download_command']=command
+        env=dict(os.environ);env['HF_HUB_DISABLE_IMPLICIT_TOKEN']='1';env.pop('HF_TOKEN',None)
+        subprocess.run(command,env=env,check=True)
+        for f in files:
+            path=target/f.rfilename;size=path.stat().st_size;assert size==f.size,f.rfilename
+            sha=hashlib.sha256();blob=hashlib.sha1(f'blob {size}\0'.encode())
+            with path.open('rb') as stream:
+                while data:=stream.read(16*1024*1024):sha.update(data);blob.update(data)
+            actual=sha.hexdigest() if f.lfs else blob.hexdigest()
+            expected=f.lfs.sha256 if f.lfs else f.blob_id
+            assert actual==expected,f.rfilename
+            item['files'].append({'name':f.rfilename,'size_bytes':size,'sha256':sha.hexdigest(),
+                                  'remote_digest_kind':'lfs_sha256' if f.lfs else 'git_blob_sha1',
+                                  'remote_digest':expected,'verified':True})
+        item['verified']=True;item['verified_files']=len(item['files'])
+        item['weight_bytes']=sum(f['size_bytes'] for f in item['files'] if f['name'].endswith('.safetensors'))
+        item['architecture']=json.loads((target/'config.json').read_text())['architectures']
+        (target/'jev-source.json').write_text(json.dumps({'model_id':model_id,'revision':revision,'path':str(target)},indent=2)+'\n')
+        output.write_text(json.dumps(report,indent=2)+'\n')
+        print(json.dumps({'model_id':model_id,'verified_files':item['verified_files'],'weight_bytes':item['weight_bytes']}),flush=True)
+    report['passed']=True
+except BaseException as exc:
+    report['passed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)}
+    raise
+finally:
+    report['finished_at']=time.time();output.write_text(json.dumps(report,indent=2)+'\n')

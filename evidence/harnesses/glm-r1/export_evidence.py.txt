@@ -1,0 +1,62 @@
+"""Read-only rehash and allowlisted export after all four serving runs terminate."""
+import hashlib,json,subprocess,sys,tarfile,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime'); SOURCE='c48f18dfc9715dae09588e0c592c38e25c9e4b80'
+TAG='glm-r1-c48f18d'; out=ROOT/f'{TAG}-final-audit.json'; assert not out.exists()
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+files={};sources={}
+for campaign in ('r1-qwen7b-campaign-d1ef50e.json','glm4-campaign-c48f18d.json'):
+ c=read(ROOT/campaign);assert c['completed']
+ files[campaign]=ROOT/campaign
+ sources[c['source_commit']]=c['source_files']
+ for a in c['attempts']:
+  run=Path(a['run']);v=read(run/'validation.json');assert v['cleanup_passed']
+  for n in ('validation.json','contract.json','precision-binding.json','reference-cpu.json','topology.json','profile.json','environment.json','postcheck.json','cleanup.json','process.json'):
+   if (run/n).exists():files[run.name+'/'+n]=run/n
+  if 'glm4' in run.name:
+   files[run.name+'/reference-cpu.log']=run/'reference-cpu.log'
+for commit,inventory in sources.items():
+ for name,digest in inventory.items():assert sha(ROOT/'releases'/commit/name)==digest,name
+# Rehash all downloaded input files after serving/reference execution.
+verification=read(ROOT/'model-verification-glm-r1-d1ef50e.json');model_files=[]
+for m in verification['models']:
+ for f in m['files']:
+  p=Path(m['path'])/f['name'];before=p.stat();digest=sha(p);after=p.stat()
+  assert before.st_size==after.st_size==f['size_bytes'] and before.st_mtime_ns==after.st_mtime_ns
+  assert digest==f['sha256'],p
+  model_files.append({'model_id':m['model_id'],'revision':m['revision'],'name':f['name'],'size_bytes':after.st_size,'sha256':digest})
+profile=ROOT/'tokenizers/GLM4-fast-bd8234f-c48f18d';manifest=read(profile/'jev-tokenizer-profile.json')
+# Persist full provenance manifest, never the tokenizer/model weights or credentials.
+files['glm4-tokenizer-profile-c48f18d.json']=profile/'jev-tokenizer-profile.json'
+sys.path.insert(0,str(ROOT/'releases'/SOURCE))
+from deployment.dsw_service import process_identity
+records=[]
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ d=read(p);expected=d.get('identity')
+ if expected:records.append({'record':str(p),'identity':expected,'matching_live_process':process_identity(expected['pid'])==expected})
+live=[r for r in records if r['matching_live_process']];assert not live,live
+groups={r['identity'].get('pgid',r['identity']['pid']) for r in records};members=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal():continue
+ try:f=(p/'stat').read_text().rsplit(')',1)[1].split()
+ except (FileNotFoundError,ProcessLookupError):continue
+ if f[0]!='Z' and int(f[2]) in groups:members.append({'pid':int(p.name),'pgid':int(f[2])})
+assert not members,members
+snapshot=subprocess.check_output(['nvidia-smi','--query-gpu=index,uuid,memory.free,memory.total,utilization.gpu','--format=csv,noheader,nounits'],text=True)
+expected={3:'GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9',4:'GPU-3da7ba65-db60-947b-5477-1743e56b1f86',5:'GPU-8e41fade-5347-a642-ed43-0129afc7bec6',6:'GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe'}
+for line in snapshot.splitlines():
+ i,u,f,_,_=map(str.strip,line.split(','))
+ if int(i) in expected:assert u==expected[int(i)] and int(f)==10792,(i,u,f)
+report={'script_sha256':sha(Path(__file__)),'observed_at':time.time(),'passed':True,'source_files':sources,'model_files':model_files,
+        'owned_records_checked':len(records),'records':records,'matching_live_owned_records':live,'live_owned_group_members':members,'gpu_snapshot':snapshot}
+out.write_text(json.dumps(report,indent=2)+'\n');files[out.name]=out
+for n in ('model-verification-glm-r1-d1ef50e.json','r1-qwen7b-tokenizer-fidelity-d1ef50e.json','glm4-tokenizer-fidelity-c48f18d.json','glm4-conversion-c48f18d.json','glm4-profile-equivalence-vllm-c48f18d.json','glm4-profile-equivalence-sglang-c48f18d.json','glm-reference-loader-d1ef50e.json','glm4-reference-tf444-c48f18d.json','glm-tokenizer-conversion-probe2-d1ef50e.json','probe-glm-conversion-d1ef50e.log'):
+ files[n]=ROOT/n;assert files[n].exists(),n
+export={'script_sha256':sha(Path(__file__)),'artifacts':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in sorted(files.items())}}
+p=ROOT/f'{TAG}-export-manifest.json';assert not p.exists();p.write_text(json.dumps(export,indent=2)+'\n');files[p.name]=p
+archive=ROOT/f'{TAG}-evidence.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for n,p in sorted(files.items()):tar.add(p,arcname=n,recursive=False)
+print(json.dumps({'files':len(files),'model_files':len(model_files),'owned_records':len(records),'archive':str(archive),'archive_bytes':archive.stat().st_size}))

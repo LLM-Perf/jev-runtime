@@ -22,7 +22,7 @@ replacement for any requirement in `implementation-plan.md`.
   is distinct from new GPU execution: both clients accepted all 26 complete payloads
   in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
   that source; see `evidence/package-check-fe71bb3.json`.
-- Twenty real GPU combinations (ten models per engine) each passed 1,000 bundle
+- Twenty-four real GPU combinations (twelve models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, quotas and cancellation ownership.
   Shared same-host quotas are now implemented and checked at `4944efd` below;
@@ -365,16 +365,31 @@ replacement for any requirement in `implementation-plan.md`.
   checks passed, and GPU7 returned to 11,990 MiB free. See
   [reference diagnosis](numerical-reference-diagnostics.md).
 
+- At `c48f18d`, the GLM4 vocabulary converter produces a bound fast tokenizer
+  without executing checkpoint Python in serving. Its 588 built-in cases pass;
+  both engine environments match the pinned original wrapper on 630 encoding
+  comparisons, 40 rendered templates and 16 compiler configurations each. Actual
+  saved GPU input/label IDs also match. GLM-4-9B and R1-Distill-Qwen-7B add four
+  native TP4 combinations, each with 1,000 switches and zero mixed responses:
+  24/40 functional profiles, 12/20 per engine. R1's vLLM CPU reference passes one
+  position (0.124721); SGLang fails (0.187206). Default GLM reference loading fails;
+  the isolated official Transformers 4.44.2 reference runs but exceeds tolerance
+  on both engines (0.875 / 0.625). Failures remain visible. All four groups exit,
+  30 checkpoint files rehash unchanged, 91 historical owned server records have no
+  live matches, and GPUs 3–6 return to 10,792 MiB free each. Local 307 tests and
+  three source-matched wheels pass. No quality/performance/soak release gate is
+  closed. See [GLM/R1 validation](glm-r1-model-validation.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
-| SGLang real serving | Ten checkpoints pass functional profiles, including explicit R1 ByteLevel tokenizer | Remaining matrix; independent numerical failures remain |
-| vLLM real serving | Ten checkpoints pass functional profiles, including corrected R1 ByteLevel tokenizer | Default R1 tokenizer is unqualified; remaining matrix and numerical failures |
+| SGLang real serving | Twelve checkpoints pass functional profiles, including explicit R1 ByteLevel and GLM4 fast tokenizers | Remaining matrix; independent numerical failures remain |
+| vLLM real serving | Twelve checkpoints pass functional profiles, including explicit R1 ByteLevel and GLM4 fast tokenizers | Default R1 Llama tokenizer is unqualified; remaining matrix and numerical failures |
 | Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
-| GPU hot-switch and drain | Twenty combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
-| 20-model/40-combination matrix | 10/20 functional profiles per engine | Remaining 20 combinations and numerical/quality/performance gates |
+| GPU hot-switch and drain | Twenty-four combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
+| 20-model/40-combination matrix | 12/20 functional profiles per engine | Remaining 16 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |

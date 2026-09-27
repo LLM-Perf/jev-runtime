@@ -1,0 +1,40 @@
+import hashlib,importlib.util,json,random,time
+from pathlib import Path
+from transformers import PreTrainedTokenizerFast,AutoTokenizer
+from transformers.convert_slow_tokenizer import TikTokenConverter
+from tokenizers.processors import TemplateProcessing
+
+root=Path('/root/jev-runtime');model=root/'models/glm-4-9b-chat'
+out=root/'glm-tokenizer-conversion-probe-d1ef50e.json';assert not out.exists()
+cfg=json.loads((model/'tokenizer_config.json').read_text())
+spec=importlib.util.spec_from_file_location('audited_glm_tokenizer',model/'tokenization_chatglm.py')
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+legacy=module.ChatGLM4Tokenizer.from_pretrained(str(model),local_files_only=True)
+special=[x['content'] for _,x in sorted(cfg['added_tokens_decoder'].items(),key=lambda x:int(x[0]))]
+backend=TikTokenConverter(vocab_file=str(model/'tokenizer.model'),pattern=legacy.tokenizer._pat_str,
+                         extra_special_tokens=special).converted()
+assert all(backend.token_to_id(t)==legacy.convert_tokens_to_ids(t) for t in special)
+backend.post_processor=TemplateProcessing(single='[gMASK] <sop> $A',special_tokens=[(t,backend.token_to_id(t)) for t in ('[gMASK]','<sop>')])
+options={k:v for k,v in cfg.items() if k not in ('auto_map','tokenizer_class')}
+fast=PreTrainedTokenizerFast(tokenizer_object=backend,**options)
+profile=root/'tokenizers/glm4-fast-probe-bd8234f';profile.mkdir(parents=True,exist_ok=False)
+fast.save_pretrained(profile)
+loaded=AutoTokenizer.from_pretrained(profile,trust_remote_code=False,local_files_only=True)
+rng=random.Random(1931)
+texts=['','Hello world','  Hello\tworld\r\n','退款问题、账户密码。','é e\u0301 😀 123456789',*special]
+atoms=['a','abc','他','你','退款','/',' ','  ','\r\n','\t','1234567','0.005','😀','é','e\u0301','\x00','\u200b',*special]
+texts += [''.join(rng.choices(atoms,k=rng.randint(1,30))) for _ in range(256)]
+messages=[[{'role':'user','content':s}] for s in texts[:20]]
+messages += [[{'role':'system','content':'You are a classifier.'},{'role':'user','content':s}] for s in texts[20:40]]
+texts += [legacy.apply_chat_template(m,tokenize=False,add_generation_prompt=True) for m in messages]
+checks=[]
+for text in texts:
+ for add in (False,True):
+  expected=legacy.encode(text,add_special_tokens=add);actual=loaded.encode(text,add_special_tokens=add)
+  checks.append({'input_sha256':hashlib.sha256(text.encode()).hexdigest(),'add_special_tokens':add,'equal':expected==actual,
+                'expected_ids':expected,'actual_ids':actual})
+result={'started_at':time.time(),'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'profile':str(profile),'checks':checks,'passed':all(c['equal'] for c in checks),
+        'template_equal':all(legacy.apply_chat_template(m,tokenize=False,add_generation_prompt=True)==loaded.apply_chat_template(m,tokenize=False,add_generation_prompt=True) for m in messages)}
+out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'passed':result['passed'],'cases':len(checks),'template_equal':result['template_equal'],'failures':sum(not c['equal'] for c in checks)}))

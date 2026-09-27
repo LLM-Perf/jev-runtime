@@ -1,0 +1,52 @@
+"""Independent pinned official GLM4 CPU forward in an isolated legacy HF environment."""
+import hashlib,json,time,traceback
+from pathlib import Path
+import torch,transformers,tokenizers,huggingface_hub
+
+root=Path('/root/jev-runtime');model=root/'models/glm-4-9b-chat'
+out=root/'glm4-reference-tf444-c48f18d.json';assert not out.exists()
+verification=json.loads((root/'model-verification-glm-r1-d1ef50e.json').read_text())['models'][1]
+code={f['name']:f['sha256'] for f in verification['files'] if f['name'].endswith('.py')}
+assert all(hashlib.sha256((model/name).read_bytes()).hexdigest()==digest for name,digest in code.items())
+assert transformers.__version__=='4.44.2' and tokenizers.__version__=='0.19.1' and huggingface_hub.__version__=='0.36.0'
+report={'model_id':verification['model_id'],'revision':verification['revision'],
+        'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'qualification':'one saved answer position per engine; official local code, CPU BF16 eager, FP32 log_softmax',
+        'local_code_sha256':code,'environment':{'torch':torch.__version__,'torch_path':torch.__file__,
+          'transformers':transformers.__version__,'transformers_path':transformers.__file__,
+          'tokenizers':tokenizers.__version__,'huggingface_hub':huggingface_hub.__version__},
+        'started_at':time.time(),'positions':[]}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+save()
+try:
+ torch.set_num_threads(2)
+ m=transformers.AutoModelForCausalLM.from_pretrained(model,trust_remote_code=True,local_files_only=True,
+       torch_dtype=torch.bfloat16,attn_implementation='eager').eval()
+ assert m.config._attn_implementation=='eager'
+ head=m.transformer.output_layer;assert isinstance(head,torch.nn.Linear)
+ observed=[]
+ handle=head.register_forward_hook(lambda module,inputs,output: observed.append(str(output.dtype)))
+ try:
+  for engine in ('vllm','sglang'):
+   path=root/'runs'/f'{engine}-glm4-fast-tp4-c48f18d'/'contract.json';contract=json.loads(path.read_text())
+   identity=contract['model'];assert identity['id']==verification['model_id'] and identity['revision']==verification['revision']
+   assert identity['dtype']==identity['readout_dtype']=='bfloat16' and identity['quantization'] is None
+   example=contract['reference_logits'];ids=example['input_ids'];labels=example['label_ids']
+   observed.clear()
+   with torch.inference_mode():
+    logits=m(torch.tensor([ids]),use_cache=False,return_last_logit=True).logits[0,-1].float()
+    scores=torch.log_softmax(logits,-1)[labels].tolist()
+   assert observed==['torch.bfloat16']
+   errors=[abs(a-b) for a,b in zip(scores,example['logprobs'],strict=True)]
+   top_equal=max(range(len(labels)),key=scores.__getitem__)==max(range(len(labels)),key=example['logprobs'].__getitem__)
+   report['positions'].append({'engine':engine,'contract_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+     'input_ids':ids,'label_ids':labels,'engine_logprobs':example['logprobs'],'reference_logprobs':scores,
+     'absolute_errors':errors,'atol':.15,'top_label_equal':top_equal,'observed_readout_dtype':'bfloat16',
+     'passed':max(errors)<=.15 and top_equal})
+   save()
+ finally:handle.remove()
+ report['completed']=True
+except BaseException as exc:
+ report['completed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)};traceback.print_exc();raise
+finally:
+ report['finished_at']=time.time();save();print(json.dumps({'completed':report['completed'],'positions':report['positions'],'failure':report.get('failure')}))

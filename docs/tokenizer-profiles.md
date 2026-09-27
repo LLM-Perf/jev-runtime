@@ -32,8 +32,8 @@ successful command with its final manifest qualifies the artifact.
 This is the **GLM4 single text / rendered chat prompt profile**. It does not claim
 equivalence for arbitrary custom Python tokenizer behavior, text pairs, generated
 position-ID fields or multimodal processing. Another checkpoint or converter
-version needs validation before claiming compatibility. The target checkpoint
-for native GPU validation is `zai-org/glm-4-9b-chat` at
+version needs validation before claiming compatibility. The checkpoint tested on
+both native GPU engines is `zai-org/glm-4-9b-chat` at
 `bd8234fe5e0c09c48637a92abb0c797cb5fa0e73`.
 The encoding pattern and prefix contract come from its
 [original tokenizer implementation](https://huggingface.co/zai-org/glm-4-9b-chat/blob/bd8234fe5e0c09c48637a92abb0c797cb5fa0e73/tokenization_chatglm.py).
@@ -61,3 +61,7 @@ The tokenizer is loaded at engine startup. To change it, deploy a separately
 validated engine profile and build new bundles against that host identity.
 Bundle hot-switching does not mutate an active engine's tokenizer. Task quality,
 quantization, numerical budgets and performance remain separate model-profile gates.
+
+The [GLM/R1 report](glm-r1-model-validation.md) records the passing functional
+profile, original-tokenizer equality checks and failed independent numerical
+comparisons. A functional pass is not a numerical or quality certificate.

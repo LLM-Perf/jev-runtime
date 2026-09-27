@@ -1,0 +1,35 @@
+{
+  "harness_source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+  "runtime_source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+  "started_at": 1790536732.728408,
+  "qualification": "colocated functional validation; single-position numerical development check",
+  "stages": {
+    "readiness": {
+      "ready": true,
+      "elapsed_seconds": 77.13927977532148
+    },
+    "topology": {
+      "passed": true
+    },
+    "contract": {
+      "returncode": 0,
+      "passed": true
+    },
+    "precision_binding": {
+      "returncode": 0,
+      "passed": true
+    },
+    "postcheck": {
+      "passed": true
+    }
+  },
+  "functional_passed": true,
+  "failure": {
+    "stage": "cpu_reference",
+    "type": "FileNotFoundError",
+    "message": "[Errno 2] No such file or directory: '/root/jev-runtime/runs/sglang-glm4-fast-tp4-c48f18d/reference-cpu.json'"
+  },
+  "cleanup_passed": true,
+  "passed": false,
+  "finished_at": 1790536843.9115098
+}

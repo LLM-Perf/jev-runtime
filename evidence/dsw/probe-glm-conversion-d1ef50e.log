@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/root/jev-runtime/probe-glm-conversion-d1ef50e.py", line 19, in <module>
+    fast=PreTrainedTokenizerFast(tokenizer_object=backend,**options)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_tokenizers.py", line 514, in __init__
+    self.add_tokens(tokens)
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 1248, in add_tokens
+    return self._add_tokens(new_tokens, special_tokens=special_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_tokenizers.py", line 845, in _add_tokens
+    return self._tokenizer.add_tokens(new_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Input must be a List[Union[str, AddedToken]]

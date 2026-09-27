@@ -1,0 +1,18 @@
+{
+  "model_id": "zai-org/glm-4-9b-chat",
+  "revision": "bd8234fe5e0c09c48637a92abb0c797cb5fa0e73",
+  "local_code_sha256": {
+    "configuration_chatglm.py": "db714e8a9f7532eb2b6bfd4df01d24c700b373d2ab76b81eff0fe5a2617edb11",
+    "modeling_chatglm.py": "cb7b04f1ba3026677a714807da539a0abe6437203eb95e1ebd3aeda0ec634a36",
+    "tokenization_chatglm.py": "90a9a1b739f834cdf7a2f40959f9eeff2a705b80acefb2cea9c19ff3958a9279"
+  },
+  "torch": "2.13.0+cu129",
+  "transformers": "5.17.0",
+  "started_at": 1790536508.2201226,
+  "passed": false,
+  "failure": {
+    "type": "AttributeError",
+    "message": "'ChatGLMConfig' object has no attribute 'max_length'"
+  },
+  "finished_at": 1790536510.382499
+}

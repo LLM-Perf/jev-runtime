@@ -1,0 +1,60 @@
+{
+  "path": "/root/jev-runtime/tokenizers/GLM4-fast-bd8234f-c48f18d",
+  "schema_version": 1,
+  "kind": "glm4-tiktoken-fast-v1",
+  "implementation_sha256": "88488c47b06e1d93756e2080a2fb3419e5996ff029784b896d255a32b7898459",
+  "scope": "single UTF-8 text and rendered chat prompts; no text-pair or multimodal certification",
+  "source_path": "/root/jev-runtime/models/glm-4-9b-chat",
+  "source_files": {
+    "config.json": {
+      "sha256": "d135f1555ed1036be6eda988fc6ae365cdc8a8122aff0bf6d0602c1e1c93bee6",
+      "size_bytes": 1437
+    },
+    "tokenizer_config.json": {
+      "sha256": "f891e4d4ebb4009b6996dea97befb77a60c0cef0e88ac1edd6c741b1367f9c62",
+      "size_bytes": 6153
+    },
+    "tokenizer.model": {
+      "sha256": "5a493598071550244b2ee7f26118f3edec2150b9dfa967929a99052ac83fe716",
+      "size_bytes": 2623634
+    }
+  },
+  "transformers_version": "5.17.0",
+  "tokenizers_version": "0.23.2",
+  "tiktoken_version": "0.14.0",
+  "vocabulary_size": 151329,
+  "special_token_ids": {
+    "<|endoftext|>": 151329,
+    "[MASK]": 151330,
+    "[gMASK]": 151331,
+    "[sMASK]": 151332,
+    "<sop>": 151333,
+    "<eop>": 151334,
+    "<|system|>": 151335,
+    "<|user|>": 151336,
+    "<|assistant|>": 151337,
+    "<|observation|>": 151338,
+    "<|begin_of_image|>": 151339,
+    "<|end_of_image|>": 151340,
+    "<|begin_of_video|>": 151341,
+    "<|end_of_video|>": 151342
+  },
+  "validation": {
+    "passed": true,
+    "cases": 588,
+    "ledger_sha256": "fd2d1d9c3e515b713aa45648be85031319b604d43885362101866bf372897457"
+  },
+  "tokenizer_digest": "sha256:37d71f963b64e549364fd07618de547c8827a48c3040753bbcc56d3bff6493ea",
+  "tokenizer_implementation_digest": "sha256:781719944c8597db5954229c2942077f81de1c342b68aed0252b58a8dd25282b",
+  "template_digest": "sha256:4495dc5a6a6a64d5c712b5e2135a7068d0306f58314b3911201a9265f04a7a82",
+  "files": {
+    "tokenizer.json": {
+      "sha256": "ec456c893ae880e4721a767aeb586c1d9970619c6608a40c8e22b7a57c875dfd",
+      "size_bytes": 19967188
+    },
+    "tokenizer_config.json": {
+      "sha256": "fab5b174a0d3201239a7e4e6551252ec5160dd00738f7daa24cfae988c76dbb1",
+      "size_bytes": 6116
+    }
+  }
+}

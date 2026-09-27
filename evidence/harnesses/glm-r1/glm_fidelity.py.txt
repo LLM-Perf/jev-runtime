@@ -1,0 +1,51 @@
+"""Audit actual saved GLM4 serving IDs against the pinned official tokenizer."""
+import hashlib,json,importlib.util,time
+from pathlib import Path
+from tokenizers import Tokenizer
+from transformers import AutoTokenizer,PreTrainedTokenizerFast
+from jev_runtime.compiler import Compiler
+from jev_runtime.schema import Bundle,ModelIdentity,Question
+
+root=Path('/root/jev-runtime');model=root/'models/glm-4-9b-chat'
+out=root/'glm4-tokenizer-fidelity-c48f18d.json';assert not out.exists()
+source=json.loads((model/'jev-source.json').read_text())
+report={'model_id':source['model_id'],'revision':source['revision'],'started_at':time.time(),
+        'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'qualification':'Exact tokenizer artifact and saved-input audit; no GPU scoring in this script'}
+digest='90a9a1b739f834cdf7a2f40959f9eeff2a705b80acefb2cea9c19ff3958a9279'
+assert hashlib.sha256((model/'tokenization_chatglm.py').read_bytes()).hexdigest()==digest
+spec=importlib.util.spec_from_file_location('audited_glm4',model/'tokenization_chatglm.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+legacy=module.ChatGLM4Tokenizer.from_pretrained(model,local_files_only=True)
+generic=AutoTokenizer.from_pretrained(root/'tokenizers/GLM4-fast-bd8234f-c48f18d',trust_remote_code=False)
+report['original_code_sha256']=digest
+compiler=Compiler(generic)
+bundle=Bundle(id='fidelity',version=1,model=ModelIdentity(id=source['model_id'],revision=source['revision'],
+    tokenizer_digest=compiler.tokenizer_digest,tokenizer_implementation_digest=compiler.tokenizer_implementation_digest,
+    template_digest=compiler.template_digest))
+question=Question.model_validate({'id':'intent','type':'choice','instruction':"Select the customer's primary intent.",
+    'options':[{'id':'billing','description':'Payments, charges, or refunds'},
+               {'id':'technical','description':'A technical fault in the product'},
+               {'id':'other','description':'A different topic'}]})
+prompts=[];label_text=[];original=compiler._encode
+
+def capture(prompt,labels,budget):
+    prompts.append(prompt);label_text.append(labels);return original(prompt,labels,budget)
+compiler._encode=capture
+seq=compiler.compile('I was charged twice and would like a refund.',question,bundle,'audit').sequences[0]
+assert list(seq.input_ids)==legacy.encode(prompts[-1],add_special_tokens=False)
+continuations=[legacy.encode(prompts[-1]+label,add_special_tokens=False) for label in label_text[-1]]
+assert all(x[:-1]==list(seq.input_ids) and len(x)==len(seq.input_ids)+1 for x in continuations)
+assert [x[-1] for x in continuations]==list(seq.label_ids)
+report['expected_input_ids']=list(seq.input_ids);report['expected_label_ids']=list(seq.label_ids)
+report['rendered_prompt_sha256']=hashlib.sha256(prompts[-1].encode()).hexdigest()
+report['saved_serving_inputs']={}
+for engine in ('vllm','sglang'):
+ contract=json.loads((root/'runs'/f'{engine}-glm4-fast-tp4-c48f18d/contract.json').read_text())
+ actual=contract['reference_logits']
+ report['saved_serving_inputs'][engine]={'input_ids':actual['input_ids'],'label_ids':actual['label_ids'],
+    'matches_checkpoint_tokenizer':actual['input_ids']==list(seq.input_ids) and actual['label_ids']==list(seq.label_ids),
+    'tokenizer_implementation_digest':contract['model']['tokenizer_implementation_digest']}
+
+assert all(c['matches_checkpoint_tokenizer'] for c in report['saved_serving_inputs'].values())
+report['finished_at']=time.time();out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({e:c['matches_checkpoint_tokenizer'] for e,c in report['saved_serving_inputs'].items()}))

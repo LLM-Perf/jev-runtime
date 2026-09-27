@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/root/jev-runtime/releases/c48f18dfc9715dae09588e0c592c38e25c9e4b80/tests/integration/reference_logits.py", line 163, in <module>
+    main()
+  File "/root/jev-runtime/releases/c48f18dfc9715dae09588e0c592c38e25c9e4b80/tests/integration/reference_logits.py", line 75, in main
+    transformers.AutoModelForCausalLM.from_pretrained(
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 336, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 400, in from_pretrained
+    trust_remote_code = resolve_trust_remote_code(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/dynamic_module_utils.py", line 789, in resolve_trust_remote_code
+    raise ValueError(
+ValueError: The repository /root/jev-runtime/models/glm-4-9b-chat contains custom code which must be executed to correctly load the model. You can inspect the repository content at /root/jev-runtime/models/glm-4-9b-chat .
+ You can inspect the repository content at https://hf.co//root/jev-runtime/models/glm-4-9b-chat.
+Please pass the argument `trust_remote_code=True` to allow custom code to be run.

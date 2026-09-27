@@ -15,7 +15,7 @@ See [the implementation plan](docs/implementation-plan.md) and
 
 ```sh
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -e '.[dev,tokenizers]' -e packages/sglang -e packages/vllm
+.venv/bin/python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm
 .venv/bin/pytest
 .venv/bin/ruff check .
 ```
@@ -33,6 +33,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [Mistral validation](docs/mistral-validation.md),
 [Qwen2.5/R1 Llama validation and tokenizer profiles](docs/public-model-pair-validation.md),
 [GLM4 tokenizer conversion](docs/tokenizer-profiles.md),
+[GLM4/R1 Qwen GPU validation](docs/glm-r1-model-validation.md),
 [CPU/GPU numerical reference diagnosis](docs/numerical-reference-diagnostics.md),
 [reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
