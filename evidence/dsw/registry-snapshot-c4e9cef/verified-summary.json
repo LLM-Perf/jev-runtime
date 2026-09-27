@@ -1,0 +1,33 @@
+{
+  "verified": true,
+  "source_commit": "c4e9cefa6f6d97fc283513b04836f4d0079bcfd8",
+  "native_source": "b20d3f43d91c2e13ed2b044a77d35cc3037eb62b",
+  "results": [
+    {
+      "engine": "vllm",
+      "before_requests": 10,
+      "after_requests": 10,
+      "generation_three_control_requests": 1,
+      "restored_generation": 3,
+      "live_and_stale_restore_rejected": true,
+      "old_generation_rejected": true,
+      "original_state_preserved": true,
+      "zero_final_leases": true
+    },
+    {
+      "engine": "sglang",
+      "before_requests": 10,
+      "after_requests": 10,
+      "generation_three_control_requests": 1,
+      "restored_generation": 3,
+      "live_and_stale_restore_rejected": true,
+      "old_generation_rejected": true,
+      "original_state_preserved": true,
+      "zero_final_leases": true
+    }
+  ],
+  "owned_records_terminal": 159,
+  "gpu7_free_mib": 11990,
+  "snapshot_payloads_verified_remotely": 6,
+  "qualification": "Same-host staged copy of identical stopped state; no schema migration, lost-source recovery, container replacement or performance gate."
+}

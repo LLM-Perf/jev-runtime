@@ -1,0 +1,103 @@
+"""DSW same-host snapshot/staging and real serving after restored route state."""
+import hashlib,json,os,secrets,signal,socket,sqlite3,subprocess,sys,tarfile,time
+from contextlib import closing
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='c4e9cefa6f6d97fc283513b04836f4d0079bcfd8';NATIVE='b20d3f43d91c2e13ed2b044a77d35cc3037eb62b'
+source=ROOT/'registry-sources'/SOURCE;source.mkdir(parents=True,exist_ok=False);archive=ROOT/'registry-source-c4e9cef.tar.gz';assert hashlib.sha256(archive.read_bytes()).hexdigest()=='889383140b0a5387b7f66ad9792e5d15ddb15046c4a0ef92ebeb84cdcf84a993'
+with tarfile.open(archive) as tar:tar.extractall(source,filter='data')
+sys.path[:0]=[str(source),str(source/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import cleanup,wait_ready,group_members
+from jev_runtime.registry_backup import snapshot,stage_restore,verify_snapshot,connect,summary,blockers
+from jev_runtime.rollout import GatewayProbe
+from jev_runtime.schema import DecisionResponse
+import httpx
+
+def read(p):return json.loads(p.read_text())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+out=ROOT/'registry-campaign-c4e9cef.json';assert not out.exists()
+report={'source_commit':SOURCE,'native_source':NATIVE,'script_sha256':sha(Path(__file__)),'started_at':time.time(),'attempts':[],
+ 'qualification':'Colocated same-host compatible-schema snapshot/staging and serving; not lost-database recovery, migration, container replacement, quality or performance certification'}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+save()
+def stop_gateway(process,identity):
+ if process.poll() is None:
+  assert process_identity(process.pid)==identity;os.killpg(process.pid,signal.SIGTERM)
+  try:process.wait(timeout=40)
+  except subprocess.TimeoutExpired:
+   assert process_identity(process.pid)==identity;os.killpg(process.pid,signal.SIGKILL);process.wait(timeout=10)
+ remaining=group_members(process.pid);assert not remaining
+ return {'returncode':process.returncode,'remaining_group':remaining}
+try:
+ for engine in ['vllm','sglang']:
+  for p in (ROOT/'runs').rglob('process.json'):
+   i=read(p)['identity'];assert process_identity(i['pid'])!=i,('owned process still live',str(p))
+  assert int(get_gpu(7)['free_mib'])==11990
+  run=ROOT/'runs'/f'registry-{engine}-c4e9cef';run.mkdir(exist_ok=False);native=ROOT/'runs'/f'registry-native-{engine}-c4e9cef'
+  for port in [18831,18795 if engine=='vllm' else 18794]:
+   with socket.socket() as s:s.bind(('127.0.0.1',port))
+  attempt={'engine':engine,'native_run':str(native),'run_dir':str(run),'gateways':[],'started_at':time.time()};report['attempts'].append(attempt);save();record=None;processes=[]
+  try:
+   historical=ROOT/'runs'/f'image-entry-{engine}-49fea1c-r2/registry.db'
+   seed=snapshot(historical,run/'historical-snapshot');attempt['historical_snapshot']=seed
+   staged=stage_restore(run/'historical-snapshot',seed['manifest_sha256'],historical,run/'first-registry');attempt['historical_staging']=staged
+   env={k:v for k,v in os.environ.items() if not k.startswith(('PYTHON','PIP_'))};env.update(HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
+   ep=ROOT/'envs'/engine/'bin/python';command=[str(ep),str(ROOT/'releases'/NATIVE/'deployment/dsw_service.py'),'launch','--run-dir',str(native),'--engine',engine,'--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),'--tokenizer-path',str(ROOT/'tokenizers'/f'SmolLM2-1.7B-Instruct-preserved-{engine}-cdd0caf'),'--gpus','7','--port','18795' if engine=='vllm' else '18794','--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072']
+   attempt['launch_command']=command;save()
+   with (run/'native-launch.log').open('x') as log:subprocess.run(command,env=env,cwd=ROOT/'releases'/NATIVE,stdout=log,stderr=subprocess.STDOUT,check=True)
+   record=read(native/'process.json');keys=read(native/'keys.json');attempt['readiness']=wait_ready(record,keys['api'],300)
+   own={'api':secrets.token_urlsafe(32),'admin':secrets.token_urlsafe(32)};(run/'keys.json').write_text(json.dumps(own));env.update(JEV_API_KEY=own['api'],JEV_ADMIN_KEY=own['admin'],JEV_ENGINE_API_KEY=keys['api'],PYTHONPATH=str(source/'src'))
+   python=ROOT/'envs/native-cancel-wheel-6f0cda8/bin/python'
+   audit_code="import pathlib,hashlib,json,jev_runtime; p=pathlib.Path(jev_runtime.__file__).parent; print(json.dumps({'path':str(p),'files':{str(f.relative_to(p)):hashlib.sha256(f.read_bytes()).hexdigest() for f in p.rglob('*.py')}}))"
+   attempt['gateway_imports']=json.loads(subprocess.check_output([str(python),'-c',audit_code],env=env,text=True));assert str(source/'src') in attempt['gateway_imports']['path']
+   probe=GatewayProbe(own['api'],own['admin'],timeout=5)
+   def launch(label,registry):
+    config={**read(native/'config.json'),'host':'127.0.0.1','port':18831,'workers':2,'registry_path':str(registry),'deployment_id':'registry-'+label+'-'+engine,'release_id':SOURCE,'tenant_key_envs':{}}
+    path=run/(label+'.json');path.write_text(json.dumps(config,indent=2)+'\n');this_env={**env,'JEV_CONFIG':str(path)}
+    command=[str(python),'-m','uvicorn','jev_runtime.api:create_app_from_env','--factory','--host','127.0.0.1','--port','18831','--workers','2','--timeout-graceful-shutdown','30']
+    log=(run/(label+'.log')).open('x');process=subprocess.Popen(command,env=this_env,cwd=run,stdout=log,stderr=subprocess.STDOUT,start_new_session=True);log.close();identity=process_identity(process.pid);assert identity
+    item={'label':label,'identity':identity,'command':command,'registry':str(registry)};attempt['gateways'].append(item);processes.append((process,identity,item));save();deadline=time.monotonic()+60
+    while True:
+     assert process.poll() is None,'gateway exited before readiness'
+     try:qualified=probe.snapshot(18831);break
+     except Exception:
+      if time.monotonic()>deadline:raise
+      time.sleep(.25)
+    item['qualified']=qualified;assert len(qualified['workers'])==2;save();return process,identity,item
+   def request(client,generation):
+    response=client.post('/v1/decisions',json={'model':'decision-model','input':{'text':'Please refund my duplicate payment.'},'questions':[{'id':'q','type':'boolean','instruction':'Is a refund requested?'}]});response.raise_for_status();value=DecisionResponse.model_validate(response.json());assert value.status=='completed' and value.usage.successful_questions==1 and value.bundle=='default@1' and value.generation==generation;return value.model_dump(mode='json')
+   headers={'Authorization':'Bearer '+own['api']};admin={'Authorization':'Bearer '+own['admin']};first=run/'first-registry/registry.sqlite3';original_process,original_identity,original_item=launch('original',first)
+   with httpx.Client(base_url='http://127.0.0.1:18831',headers=headers,timeout=30,trust_env=False) as client:
+    attempt['before_decisions']=[request(client,1) for _ in range(10)]
+    live=snapshot(first,run/'live-snapshot');attempt['live_snapshot']=live
+    try:stage_restore(run/'live-snapshot',live['manifest_sha256'],first,run/'must-reject-live');raise AssertionError('Live restore unexpectedly staged')
+    except ValueError as exc:attempt['live_restore_rejection']=str(exc)
+    response=client.post('/admin/bundles/disable',json={'alias':'decision-model','expected_generation':1},headers=admin);response.raise_for_status();assert response.json()['generation']==2
+    response=client.post('/admin/bundles/activate',json={'alias':'decision-model','reference':'default@1','expected_generation':2},headers=admin);response.raise_for_status();assert response.json()['generation']==3
+    attempt['generation_three_decision']=request(client,3)
+   original_item['cleanup']=stop_gateway(original_process,original_identity);assert original_item['cleanup']['returncode']==0;save()
+   try:stage_restore(run/'live-snapshot',live['manifest_sha256'],first,run/'must-reject-stale');raise AssertionError('Stale restore unexpectedly staged')
+   except ValueError as exc:assert 'changed since snapshot' in str(exc);attempt['stale_restore_rejection']=str(exc)
+   final=snapshot(first,run/'final-snapshot');attempt['final_snapshot']=final;assert not final['restore_blockers_at_snapshot'];verify_snapshot(run/'final-snapshot',final['manifest_sha256'])
+   restored=stage_restore(run/'final-snapshot',final['manifest_sha256'],first,run/'restored-registry');attempt['restore']=restored;assert restored['summary']==final['summary']
+   with closing(connect(first)) as db:attempt['original_state_before_restored_start']=summary(db)
+   restored_process,restored_identity,restored_item=launch('restored',run/'restored-registry/registry.sqlite3')
+   with httpx.Client(base_url='http://127.0.0.1:18831',headers=headers,timeout=30,trust_env=False) as client:
+    response=client.post('/admin/bundles/activate',json={'alias':'decision-model','reference':'default@1','expected_generation':1},headers=admin);assert response.status_code==409 and response.json()['error']['code']=='generation_conflict';attempt['stale_generation_rejected']=True
+    attempt['after_decisions']=[request(client,3) for _ in range(10)]
+   restored_item['cleanup']=stop_gateway(restored_process,restored_identity);assert restored_item['cleanup']['returncode']==0
+   with closing(connect(first)) as db:assert summary(db)==attempt['original_state_before_restored_start'];attempt['original_unchanged_after_serving_restored']=True
+   with closing(connect(run/'restored-registry/registry.sqlite3')) as db:
+    attempt['restored_final_summary']=summary(db);attempt['restored_blockers']=blockers(db);assert not attempt['restored_blockers']
+   attempt['same_native_engine_identity']=process_identity(record['identity']['pid'])==record['identity'];assert attempt['same_native_engine_identity'];attempt['passed']=True
+  except BaseException as exc:attempt['passed']=False;attempt['failure']={'type':type(exc).__name__,'message':str(exc)}
+  finally:
+   for process,identity,item in reversed(processes):item['cleanup']=stop_gateway(process,identity)
+   if record is None and (native/'process.json').exists():record=read(native/'process.json')
+   if record is not None:attempt['native_cleanup']=cleanup(native,record)
+   attempt['finished_at']=time.time();save()
+  if record is not None:assert attempt.get('native_cleanup',{}).get('passed')
+  print(json.dumps({'engine':engine,'passed':attempt['passed'],'failure':attempt.get('failure'),'before':len(attempt.get('before_decisions',[])),'after':len(attempt.get('after_decisions',[]))}),flush=True)
+ report['completed']=True;report['passed']=all(a['passed'] for a in report['attempts'])
+finally:report['finished_at']=time.time();save()
+raise SystemExit(0 if report.get('passed') else 1)

@@ -98,3 +98,60 @@ Actual DDL migrations/downgrades, backup encryption/retention automation, lost-h
 recovery, container replacement and final release acceptance remain open work.
 The target engine, model, tokenizer, calibration and adapter artifacts must still
 match their existing compatibility contracts after a restore.
+
+## Real DSW validation at c4e9cef
+
+Both native engines passed the same-host exercise with SmolLM2-1.7B-Instruct
+revision `31b70e2e869a7173562077fd711b654946d38674`, BF16, TP1, eager execution,
+context 2048 and preserved tokenizer profiles. Native serving remained at
+`b20d3f4` (SGLang 0.5.19 and vLLM 0.30.0+cu129); the two-worker gateway and backup
+tool ran exact source `c4e9cef`. Every imported gateway Python file was hashed
+against that source. This was source execution with existing isolated gateway
+dependencies, not an installation test of the newly built wheel.
+
+| Check | vLLM | SGLang |
+|---|---:|---:|
+| Original-registry decisions at generation 1 | 10/10 | 10/10 |
+| Control decision after disable/reactivate, generation 3 | 1/1 | 1/1 |
+| Restored-registry decisions at generation 3 | 10/10 | 10/10 |
+| Live restore rejected with two live owners | Passed | Passed |
+| Stale snapshot rejected after publication/shutdown | Passed | Passed |
+| Old generation 1 write rejected after restore | HTTP 409 | HTTP 409 |
+| Original registry unchanged while restored registry served | Passed | Passed |
+| Final leases, work/tenant journals and admission tickets | 0 | 0 |
+
+The original seed was a private snapshot/staging copy of the previous stopped
+image-entrypoint test registry. The historical registry was never started or
+modified by this campaign. During the new original gateway's lifetime, an online
+snapshot succeeded but staging it was rejected because its two owners were alive.
+The route was then disabled and reactivated (generation 1 → 2 → 3). After shutdown,
+that old snapshot was rejected for changed source state. A fresh stopped snapshot
+and staged copy had identical table content and database hashes before activation.
+The restarted workers ran fresh canaries; generation 3 and the bundle digest were
+preserved, and the old generation remained invalid.
+
+There are 21 successful decisions per engine: the two ten-request cohorts plus
+one generation-control request. Readiness and preparation canaries are outside
+that denominator. These are functional/state-preservation checks, not a latency,
+throughput, cross-engine numerical or business-quality comparison.
+
+All four gateway process groups exited with status zero. The native engines kept
+their process identities throughout each restore exercise and were then stopped.
+The final independent audit verifies all 159 distinct historical task-owned
+process identities/groups are terminal, GPU7 free memory is 11,990 MiB, both
+tokenizer profiles verify and six model files rehash against fixed Hub metadata.
+Six snapshot payloads were verified on DSW. Only their manifests and restore
+receipts were exported; private SQLite database contents remain outside Git.
+
+Local validation at this source passed 406 Python tests, Ruff and three
+source-matched wheel builds (31 core Python files and four per engine plugin).
+The TypeScript source was unchanged and was not rerun. Use:
+
+```sh
+.venv/bin/python evidence/harnesses/verify_registry_snapshot_c4e9cef.py
+```
+
+[The verified summary](../evidence/dsw/registry-snapshot-c4e9cef/verified-summary.json)
+retains the exact sources and checks. This closes the tested backup/staging case;
+DDL migration/downgrade, destroyed-source recovery, container restart, full model
+coverage, controlled performance and the 24-hour soak remain separate gates.

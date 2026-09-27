@@ -458,6 +458,16 @@ owned records are terminal. The actual image is neither built nor run: selected
 base ABI, PID 1, non-root/mount/network behavior, engine images and container
 restart/rollout remain open. See [image input and entrypoint evidence](container-images.md).
 
+At `c4e9cef`, consistent private registry snapshots and guarded inactive restore
+staging pass 406 local tests, three wheel builds and a real two-engine DSW
+exercise. Each engine serves 10 requests before restore, one generation-control
+request and 10 after restore, retaining generation 3 and rejecting generation 1.
+Live/stale staging is rejected, the original registry remains unchanged and final
+work/quotas drain. All 159 historical owned records are terminal; six snapshots
+verify remotely. This preserves identical stopped same-host state; schema
+migration/downgrade, destroyed-source recovery and container replacement remain
+unimplemented. See [registry snapshots](registry-snapshots.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |

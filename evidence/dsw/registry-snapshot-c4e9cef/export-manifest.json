@@ -1,0 +1,69 @@
+{
+  "script_sha256": "920f7f44a5ee4843a9e3eb4d13367a281ebc35c32065efd05bd62132591e8c03",
+  "artifacts": {
+    "campaign.json": {
+      "sha256": "0abf9f143c511926d90164e09a5824d5536c4200fe2c1b41591d410b098db7da",
+      "size_bytes": 133187
+    },
+    "vllm/historical-snapshot-manifest.json": {
+      "sha256": "70daca9253cccdc314a8b849903e53d3e498540e0166e954d72108c8d58646cd",
+      "size_bytes": 2342
+    },
+    "vllm/live-snapshot-manifest.json": {
+      "sha256": "f0bfb377f658edba055dd6170c87c3765b12c324ed99d7f58f9468cb89e9b37f",
+      "size_bytes": 2371
+    },
+    "vllm/final-snapshot-manifest.json": {
+      "sha256": "a23daa11348c4f973e61852fdb9f2eed7ccf374d7d496291716082b5fc679cff",
+      "size_bytes": 2355
+    },
+    "vllm/first-restore.json": {
+      "sha256": "440e286b91a9e4f9bfa9265abc1deaf51b30b1790b437337703995eacb9ce28c",
+      "size_bytes": 2541
+    },
+    "vllm/restored-restore.json": {
+      "sha256": "8d8de42000c31dcdee50a3fa30073d3351b0235bd68e6ea7b60d3c64a8876912",
+      "size_bytes": 2555
+    },
+    "sglang/historical-snapshot-manifest.json": {
+      "sha256": "da380e3b4d31525e8ed8697a5632644522210b3ce2b25498865bad3b6544d31a",
+      "size_bytes": 2344
+    },
+    "sglang/live-snapshot-manifest.json": {
+      "sha256": "3b818c6aeb78dfab1e0d222fa6aefbe6c24e6dff8bc7b9ad7f74bc05c791df83",
+      "size_bytes": 2374
+    },
+    "sglang/final-snapshot-manifest.json": {
+      "sha256": "6782cc179da569007b9f40e07f95ed1c4d6ce87eca4765a66c069e09455b59b0",
+      "size_bytes": 2358
+    },
+    "sglang/first-restore.json": {
+      "sha256": "fa6cebd8bac76284720736fb23a6f8b59ca4217bf047188eb6e8542b73962354",
+      "size_bytes": 2544
+    },
+    "sglang/restored-restore.json": {
+      "sha256": "69e2e9ff13ead2fa5d597dbd605f884ff759efe772e37de2de4dfe81fbe3c5a5",
+      "size_bytes": 2558
+    },
+    "audit.json": {
+      "sha256": "9f0d9baf26367a76fb71265d0846a73defe219dbb16d10bc60b74bbe7f946000",
+      "size_bytes": 62608
+    },
+    "native-vllm/process.json": {
+      "sha256": "172448629f579d2c7f66164adb6fba2a01355ce48ef056ef1ecb4abe84f4b6ce",
+      "size_bytes": 1793
+    },
+    "native-vllm/cleanup.json": {
+      "sha256": "07bf322db0b099154307eb4c15c2e08c6bff489e07d4b04d843ab5214b562f59",
+      "size_bytes": 2323
+    },
+    "native-sglang/process.json": {
+      "sha256": "f44ebc6637f90d4f85c369e7490d3b297735a2de37a9cccb4b08a6395bbea1f9",
+      "size_bytes": 1906
+    },
+    "native-sglang/cleanup.json": {
+      "sha256": "7bacb22f6010cfadbf972e912a4cedc1d37b80580cb25a8052816d5e99e68f7f",
+      "size_bytes": 2443
+    }
+  }
+}
