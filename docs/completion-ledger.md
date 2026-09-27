@@ -22,7 +22,7 @@ replacement for any requirement in `implementation-plan.md`.
   is distinct from new GPU execution: both clients accepted all 26 complete payloads
   in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
   that source; see `evidence/package-check-fe71bb3.json`.
-- Four real GPU combinations (two models per engine) each passed 1,000 bundle
+- Six real GPU combinations (three models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, request/token quotas and cancellation
   ownership. Quotas are per API process; multi-replica quotas remain unfinished.
@@ -108,16 +108,32 @@ replacement for any requirement in `implementation-plan.md`.
   TP/PP/DP=1 and one API worker. See `profiles/lora-lifecycle.json`; this is a
   synthetic lifecycle profile, not task-quality or overall release certification.
 
+- DeepSeek-R1-Distill-Qwen-1.5B (Qwen2 architecture) passed both native engines
+  at runtime `ad9b417`. Each passed 1,000 switches with no mixed-bundle responses
+  and zero native/attach logprob difference. vLLM served 406 requests during the
+  switch test and SGLang served 444. Both SDKs received
+  live responses (TypeScript on vLLM, Python on SGLang). The initial vLLM harness
+  wrongly iterated a legitimate rank abstention; the initial SGLang harness built
+  a manifest using a different local tokenizer and was correctly rejected. Both
+  failures are retained. The harness now checks default-policy abstention and an
+  explicit `tie: first` bundle separately, and obtains serving identity/input IDs
+  from the actual worker. Core runtime guards were not relaxed. Selected-label
+  mass can be very small on this reasoning-distilled checkpoint; no business
+  accuracy claim follows from these functional checks. Downloaded weight SHA256
+  matches the immutable Hub LFS object; in-memory weight attestation remains false.
+  All owned process groups exited and GPU7 returned to 11,990 MiB free. Local
+  regression now has 165 passing Python tests; TypeScript retains 62 passing tests.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
-| SGLang real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| vLLM real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| SGLang real serving | Qwen3-0.6B, SmolLM2-1.7B and DeepSeek-R1-Distill-Qwen-1.5B functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| vLLM real serving | Qwen3-0.6B, SmolLM2-1.7B and DeepSeek-R1-Distill-Qwen-1.5B functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
 | Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
-| GPU hot-switch and drain | Four combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
-| 20-model/40-combination matrix | 2/20 functional checks per engine | Remaining 36 combinations and numerical/quality/performance gates |
+| GPU hot-switch and drain | Six combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
+| 20-model/40-combination matrix | 3/20 functional checks per engine | Remaining 34 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
@@ -153,3 +169,7 @@ The same eligibility rejection was rechecked at run `36313600555` for `febb5d8`.
 Local checks at that source passed 103 Python tests, lint/format and all three
 wheel builds. The subsequent conservative checkpoint gate has its own local tests;
 GPU reports retain the exact runtime commit rather than claiming a later source ran.
+
+Hosted CI run `36315081675` at `ad9b417` again had zero executed steps because
+organization billing/spending eligibility rejected job startup. This is separate
+from the passing local and DSW checks; see `evidence/hosted-ci-ad9b417.json`.

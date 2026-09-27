@@ -1,0 +1,58 @@
+{
+  "runtime_source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "process_record": {
+    "identity": {
+      "pid": 2598640,
+      "start_ticks": "426334926",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "vllm",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/vllm/bin/vllm",
+      "serve",
+      "/root/jev-runtime/models/DeepSeek-R1-Distill-Qwen-1.5B",
+      "--served-model-name",
+      "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "2048",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "512",
+      "--max-logprobs",
+      "128",
+      "--gpu-memory-utilization",
+      "0.07",
+      "--enforce-eager"
+    ],
+    "model": {
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+      "path": "/root/jev-runtime/models/DeepSeek-R1-Distill-Qwen-1.5B"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790507809.9254792,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "total_mib"
+  },
+  "remaining_process_group_members": [],
+  "process_group_exited": true,
+  "gpu_after": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e, 11990, 69006",
+  "cleanup_checked_at": 1790508194.1145694,
+  "qualification": "task-owned native engine stopped; unrelated services untouched"
+}

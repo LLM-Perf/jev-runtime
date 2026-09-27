@@ -1,0 +1,109 @@
+{
+  "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "runtime_source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "python": "3.12.11 (main, Nov  6 2025, 02:27:35) [GCC 13.3.0]",
+  "qualification": "real Python SDK HTTP contract check; no business quality claim",
+  "checks": {
+    "four_types": {
+      "request_id": "dec-e4827b9752e24f758ef5e331290ed704",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:1841c1137ccc36989261a770dce48b3ca4099ab1e9c0edde407c82fd39e94edc",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.4059708144720709,
+            "technical": 0.2970145927639646,
+            "other": 0.2970145927639646
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 4.022835927072651e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.5621765008857981,
+            "false": 0.4378234991142019
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 6.3709555725667445e-06,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 3.1106598367581086,
+          "probabilities": {
+            "low": 0.5977780941438816,
+            "medium": 0.18231184436061484,
+            "high": 0.21991006149550346
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 3.0051214346058785e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "abstained",
+          "value": null,
+          "probabilities": {
+            "payments": 0.3891380243609678,
+            "engineering": 0.22172395127806446,
+            "sales": 0.3891380243609678
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 3.233725921987566e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": true,
+          "reason": "tie",
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 301,
+        "engine_prompt_tokens": 301,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 297
+      },
+      "latency_ms": 60.709853656589985
+    },
+    "missing_cancel": true,
+    "unauthorized_rejected": true
+  },
+  "passed": true
+}

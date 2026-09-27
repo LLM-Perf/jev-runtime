@@ -6,8 +6,9 @@ engine's lifetime. Do not use a plugin update to restart an unrelated service.
 
 ## Current tested scope
 
-DSW functional checks cover Qwen3-0.6B and SmolLM2-1.7B on SGLang 0.5.19 and vLLM
-0.30.0 with CUDA 12.9, BF16, TP=1 and eager execution. Check the evidence files for
+DSW functional checks cover Qwen3-0.6B, SmolLM2-1.7B and
+DeepSeek-R1-Distill-Qwen-1.5B on SGLang 0.5.19 and vLLM 0.30.0 with CUDA 12.9,
+BF16, TP=1 and eager execution. Check the evidence files for
 the exact source commit: these are development snapshots, not a certification of
 every later commit. Config switches have been tested. Managed LoRA swaps also
 passed a scoped, frozen SmolLM2 BF16 TP1/API1 profile on both native engines at
@@ -169,8 +170,11 @@ bundle digest/generation and all internal engine IDs, without input text or keys
 
 Use `tests/integration/live_contract.py` only against task-owned aliases/services.
 Pass `--source-commit` for the harness revision and `--runtime-source-commit` for
-the deployed server revision; use a new output path for every attempt:
-it creates temporary versions and runs real traffic. Its reports include strict
+the deployed server revision, and use a new output path for every attempt.
+It creates temporary versions and runs real traffic. The harness uses the actual
+serving profile and compiled IDs, accepts legitimate default-policy abstentions,
+and separately exercises selected values with an explicit `tie: first` test bundle.
+Its reports include strict
 successes, native/attach parity, switches and mixed-version failures. It does not
 measure a dedicated throughput baseline. `reference_logits.py` separately reports
 cross-implementation numerical differences and preserves failures.

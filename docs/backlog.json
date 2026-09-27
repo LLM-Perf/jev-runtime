@@ -440,9 +440,10 @@
         "profiles/certification-matrix.json"
       ],
       "progress_notes": [
-        "4/40 engine/checkpoint functional combinations have development GPU evidence.",
-        "Remaining 36 combinations and separate numerical/quality/performance gates remain.",
-        "Six gated model repositories require authorized access."
+        "6/40 engine/checkpoint functional combinations have development GPU evidence.",
+        "Remaining 34 combinations and separate numerical/quality/performance gates remain.",
+        "Six gated model repositories require authorized access.",
+        "DeepSeek-R1-Distill-Qwen-1.5B passed both native engines at runtime ad9b417, with 1,000 switches per engine; initial harness abstention and local-tokenizer mismatch failures remain recorded."
       ],
       "acceptance_complete": false
     },

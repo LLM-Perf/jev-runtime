@@ -4,8 +4,8 @@
   "model_denominator": 20,
   "combination_denominator": 40,
   "functional_passes": {
-    "sglang": 2,
-    "vllm": 2
+    "sglang": 3,
+    "vllm": 3
   },
   "required_functional_passes_per_engine": 18,
   "release_gate_passed": false,
@@ -332,22 +332,41 @@
       "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
+      "functional": "passed",
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-deepseek15b-5c29bcb-contract.json",
+        "evidence/dsw/sglang-deepseek15b-b8fadbf-contract.json",
+        "evidence/dsw/sglang-deepseek15b-sdk-ad9b417.json",
+        "evidence/dsw/sglang-deepseek15b-ad9b417-cleanup.json",
+        "evidence/dsw/deepseek15b-provenance-ad9b417.json"
+      ],
+      "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+      "harness_source_commit": "b8fadbf25a63b8f8455cd0c73c04f917c09bf1d2",
+      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained."
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
       "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
+      "functional": "passed",
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-deepseek15b-ad9b417-contract.json",
+        "evidence/dsw/vllm-deepseek15b-ad9b417-abstention.json",
+        "evidence/dsw/vllm-deepseek15b-5c29bcb-contract.json",
+        "evidence/dsw/vllm-deepseek15b-sdk-5c29bcb.json",
+        "evidence/dsw/vllm-deepseek15b-ad9b417-cleanup.json",
+        "evidence/dsw/deepseek15b-provenance-ad9b417.json"
+      ],
+      "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+      "harness_source_commit": "5c29bcb86229cdd69aff59c91519d69e296ac720",
+      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained."
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
