@@ -16,32 +16,7 @@ from jev_runtime.adapters import AdapterArtifact, AdapterBinding
 from jev_runtime.errors import JevError
 from jev_runtime.schema import Bundle
 
-
-@dataclass(frozen=True)
-class Snapshot:
-    bundle: Bundle
-    generation: int
-    lease_id: str
-
-
-class Registry:
-    """Transactional bundle/route registry for a single-node deployment.
-
-    Multiple API processes can use the same local SQLite database. Leases are
-    durable and never expire merely because an observer timed out: a failed
-    worker can leave a lease requiring confirmed cancellation before recovery.
-    Network filesystems and multi-node SQLite are not supported deployments.
-    """
-
-    def __init__(self, path: str | Path):
-        self.path = Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.owner = uuid.uuid4().hex
-        self._pid = os.getpid()
-        self._connection_lock = threading.RLock()
-        self._db: sqlite3.Connection | None = None
-        with self._connection() as db:
-            db.executescript("""
+REGISTRY_SCHEMA_SQL = """
                 PRAGMA journal_mode=WAL;
                 CREATE TABLE IF NOT EXISTS bundles (
                     ref TEXT PRIMARY KEY, digest TEXT NOT NULL UNIQUE,
@@ -128,7 +103,34 @@ class Registry:
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
                     action TEXT NOT NULL, details TEXT NOT NULL
                 );
-            """)
+            """
+
+
+@dataclass(frozen=True)
+class Snapshot:
+    bundle: Bundle
+    generation: int
+    lease_id: str
+
+
+class Registry:
+    """Transactional bundle/route registry for a single-node deployment.
+
+    Multiple API processes can use the same local SQLite database. Leases are
+    durable and never expire merely because an observer timed out: a failed
+    worker can leave a lease requiring confirmed cancellation before recovery.
+    Network filesystems and multi-node SQLite are not supported deployments.
+    """
+
+    def __init__(self, path: str | Path):
+        self.path = Path(path)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.owner = uuid.uuid4().hex
+        self._pid = os.getpid()
+        self._connection_lock = threading.RLock()
+        self._db: sqlite3.Connection | None = None
+        with self._connection() as db:
+            db.executescript(REGISTRY_SCHEMA_SQL)
             db.execute(
                 "INSERT INTO owners VALUES(?,?,?)",
                 (self.owner, json.dumps(self._process_identity()), time.time()),

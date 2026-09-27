@@ -154,6 +154,8 @@ treated as having complete implementation identity coverage.
 The registry is local SQLite in WAL mode. Multiple processes can share a local file;
 network filesystems and multi-node SQLite are unsupported. Back up the database with
 SQLite's online backup API, not by copying a live `.db` without its WAL.
+Use the [registry snapshot and guarded staging commands](registry-snapshots.md);
+they preserve the complete stopped state and never activate or overwrite a registry.
 
 Each API worker also prepares its own engine path. On restart it revalidates active
 versions; a shared database's READY state does not bypass that worker's canary.

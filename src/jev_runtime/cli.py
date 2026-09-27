@@ -24,6 +24,34 @@ tokenizer_app = typer.Typer(help="Prepare immutable tokenizer profiles from loca
 app.add_typer(tokenizer_app, name="tokenizer")
 rollout_app = typer.Typer(help="Qualify and switch local gateway slots through HAProxy")
 app.add_typer(rollout_app, name="rollout")
+registry_app = typer.Typer(help="Private SQLite snapshots and inactive, guarded restore staging")
+app.add_typer(registry_app, name="registry")
+
+
+@registry_app.command("snapshot")
+def registry_snapshot(source: Path, destination: Path, timeout_seconds: float = 30):
+    """Back up a live local registry with its WAL state and a verified manifest."""
+    from jev_runtime.registry_backup import snapshot
+
+    output(snapshot(source, destination, timeout_seconds))
+
+
+@registry_app.command("verify-snapshot")
+def registry_verify_snapshot(directory: Path, manifest_sha256: str):
+    """Check the exact snapshot payload, supported schema and database integrity."""
+    from jev_runtime.registry_backup import verify_snapshot
+
+    output(verify_snapshot(directory, manifest_sha256))
+
+
+@registry_app.command("stage-restore")
+def registry_stage_restore(
+    snapshot_dir: Path, manifest_sha256: str, source: Path, destination: Path
+):
+    """Stage identical stopped state in a new directory; never replace or activate a DB."""
+    from jev_runtime.registry_backup import stage_restore
+
+    output(stage_restore(snapshot_dir, manifest_sha256, source, destination))
 
 
 def rollout_controller(directory: Path):
