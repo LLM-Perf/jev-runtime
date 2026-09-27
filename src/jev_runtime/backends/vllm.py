@@ -5,7 +5,7 @@ from typing import Any
 import httpx
 
 from jev_runtime.adapters import AdapterBinding
-from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult
+from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult, reported_dtype
 from jev_runtime.errors import JevError
 
 
@@ -41,6 +41,7 @@ class VLLMNative:
             == "jev_vllm.worker.LoRAWorkerExtension"
             and str(getattr(model, "dtype", None)) in {"torch.bfloat16", "bfloat16"}
             and getattr(model, "quantization", None) is None
+            and reported_dtype(getattr(model, "head_dtype", model.dtype)) == "bfloat16"
             and set(architectures) <= {"LlamaForCausalLM"}
             and architectures
         )
@@ -102,6 +103,12 @@ class VLLMNative:
             raw_logprobs=getattr(model, "logprobs_mode", None) == "raw_logprobs",
             prefix_cache=getattr(cache, "enable_prefix_caching", None),
             api_workers=self.api_workers,
+            model_dtype=reported_dtype(getattr(model, "dtype", None)),
+            readout_dtype=(
+                reported_dtype(getattr(model, "head_dtype", getattr(model, "dtype", None)))
+                if getattr(model, "quantization", None) is None
+                else None
+            ),
             lora=self._lora_profile(),
         )
 

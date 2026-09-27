@@ -110,6 +110,7 @@ def launch(args):
         "model_revision": source["revision"],
         "tokenizer": str(model),
         "dtype": "bfloat16",
+        "readout_dtype": "float32" if args.readout_dtype == "float32" else "bfloat16",
         "registry_path": str(root / "registry.db"),
         "bootstrap_alias": "decision-model",
         "bootstrap_bundle_id": "default",
@@ -211,6 +212,8 @@ def launch(args):
             command.extend(["--api-server-count", str(args.api_workers)])
         if len(indices) > 1:
             command.extend(["--tensor-parallel-size", str(len(indices))])
+        if args.readout_dtype == "float32":
+            command.extend(["--hf-overrides", json.dumps({"head_dtype": "float32"})])
         if args.adapters_root:
             command.extend(
                 [
@@ -259,6 +262,8 @@ def launch(args):
             command.extend(["--tokenizer-worker-num", str(args.api_workers)])
         if len(indices) > 1:
             command.extend(["--tp-size", str(len(indices))])
+        if args.readout_dtype == "float32":
+            command.append("--enable-fp32-lm-head")
         if args.adapters_root:
             command.extend(
                 [
@@ -293,6 +298,7 @@ def launch(args):
         "gpu_before": gpu,
         "gpus_before": gpus,
         "tensor_parallel_size": len(indices) if gpus else None,
+        "readout_dtype": config["readout_dtype"],
         "created": time.time(),
         "port": args.port,
         "qualification": "colocated-functional-test",
@@ -342,6 +348,7 @@ def main():
     parser.add_argument("--port", type=int, default=18795)
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
+    parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
     parser.add_argument("--gateway", action="store_true")
     parser.add_argument("--engine-url")
     parser.add_argument("--engine-run-dir", type=Path)
@@ -368,7 +375,12 @@ def main():
             parser.error("engine-run-dir only supplies credentials for a gateway")
         if not 1 <= args.api_workers <= 128:
             parser.error("api-workers must be between 1 and 128")
-        if args.adapters_root and (args.gateway or args.api_workers != 1 or len(indices) != 1):
+        if args.adapters_root and (
+            args.gateway
+            or args.api_workers != 1
+            or len(indices) != 1
+            or args.readout_dtype != "model"
+        ):
             parser.error("managed adapters require the native TP1 single-worker profile")
         if len(set(args.tenant)) != len(args.tenant) or any(
             not name or name == "default" for name in args.tenant

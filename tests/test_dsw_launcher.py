@@ -42,8 +42,9 @@ def test_budget_uses_each_device_memory_denominator_and_records_mapping(monkeypa
 @pytest.mark.parametrize(
     "engine,flag", [("vllm", "--tensor-parallel-size"), ("sglang", "--tp-size")]
 )
+@pytest.mark.parametrize("readout", ["model", "float32"])
 def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
-    engine, flag, monkeypatch, tmp_path
+    engine, flag, readout, monkeypatch, tmp_path
 ):
     import json
     from types import SimpleNamespace
@@ -70,6 +71,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         tenant=[],
         adapters_root=None,
         engine_run_dir=None,
+        readout_dtype=readout,
     )
     monkeypatch.setattr(
         dsw_service,
@@ -97,3 +99,14 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     assert record["tensor_parallel_size"] == 2
     assert [gpu["index"] for gpu in record["gpus_before"]] == [6, 7]
     assert record["gpu_before"]["uuid"] == "gpu-6"
+    expected = "bfloat16" if readout == "model" else readout
+    assert record["readout_dtype"] == expected
+    assert json.loads((args.run_dir / "config.json").read_text())["readout_dtype"] == expected
+    if engine == "vllm":
+        assert ("--hf-overrides" in command) == (readout == "float32")
+        if readout == "float32":
+            assert json.loads(command[command.index("--hf-overrides") + 1]) == {
+                "head_dtype": "float32"
+            }
+    else:
+        assert ("--enable-fp32-lm-head" in command) == (readout == "float32")

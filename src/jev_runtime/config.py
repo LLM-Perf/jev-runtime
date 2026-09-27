@@ -9,6 +9,7 @@ import yaml
 from pydantic import Field
 
 from jev_runtime.adapters import AdapterStore, validate_lora_base
+from jev_runtime.backends.base import reported_dtype
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.compiler import Compiler
@@ -16,7 +17,7 @@ from jev_runtime.errors import JevError
 from jev_runtime.health import HealthSettings
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
-from jev_runtime.schema import Bundle, Contract, ModelIdentity
+from jev_runtime.schema import Bundle, Contract, FloatingDType, ModelIdentity
 from jev_runtime.shared_admission import SharedAdmission
 
 
@@ -47,6 +48,7 @@ class Settings(Contract):
     tokenizer: str | None = None
     tokenizer_revision: str | None = None
     dtype: str = "bfloat16"
+    readout_dtype: FloatingDType | None = None
     quantization: str | None = None
     registry_path: str = ".jev/registry.db"
     host: str = "127.0.0.1"
@@ -101,6 +103,7 @@ def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
         tokenizer_implementation_digest=compiler.tokenizer_implementation_digest,
         template_digest=compiler.template_digest,
         dtype=settings.dtype,
+        readout_dtype=settings.readout_dtype or reported_dtype(settings.dtype),
         quantization=settings.quantization,
     )
 

@@ -29,6 +29,7 @@ class Contract(BaseModel):
 
 
 Identifier = Annotated[str, Field(min_length=1, max_length=128, pattern=r"^[\w.:-]+$")]
+FloatingDType = Literal["float16", "bfloat16", "float32"]
 
 
 class Option(Contract):
@@ -91,6 +92,7 @@ class ModelIdentity(Contract):
     )
     template_digest: str = Field(min_length=1)
     dtype: str = "bfloat16"
+    readout_dtype: FloatingDType | None = None
     quantization: str | None = None
     adapter_id: str | None = None
     adapter_revision: str | None = None
@@ -98,11 +100,13 @@ class ModelIdentity(Contract):
     @model_serializer(mode="wrap")
     def preserve_legacy_serialization(self, handler):
         result = handler(self)
-        # Adding this optional field must not change the digest of a stored
-        # legacy manifest. Legacy manifests remain readable; serving enforces
-        # the stronger identity when the tokenizer exposes its implementation.
+        # Optional identity additions must not rewrite stored legacy digests.
+        # Legacy manifests remain readable; serving enforces the stronger
+        # tokenizer and precision identity of the configured runtime.
         if self.tokenizer_implementation_digest is None:
             result.pop("tokenizer_implementation_digest", None)
+        if self.readout_dtype is None:
+            result.pop("readout_dtype", None)
         return result
 
     @model_validator(mode="after")

@@ -73,6 +73,20 @@ class Runtime:
         self._prepared.clear()
         self.admission.start(self.registry, self.backend_identity)
         self.capabilities = await self.backend.probe()
+        if self.expected_model is not None and self.capabilities.engine in {"sglang", "vllm"}:
+            for expected_field, observed_field in (
+                ("dtype", "model_dtype"),
+                ("readout_dtype", "readout_dtype"),
+            ):
+                expected = getattr(self.expected_model, expected_field)
+                observed = getattr(self.capabilities, observed_field)
+                if expected is not None and expected != observed:
+                    raise JevError(
+                        "engine_precision_mismatch",
+                        f"Configured {expected_field}={expected} differs from engine "
+                        f"report {observed}; use an explicit verified engine precision profile",
+                        409,
+                    )
         if self.adapter_store is not None:
             if not self.capabilities.lora:
                 raise JevError(
@@ -219,6 +233,7 @@ class Runtime:
             for field in (
                 "revision",
                 "dtype",
+                "readout_dtype",
                 "quantization",
                 "tokenizer_digest",
                 "tokenizer_implementation_digest",

@@ -7,7 +7,7 @@ from typing import Any
 import httpx
 
 from jev_runtime.adapters import AdapterBinding
-from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult
+from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult, reported_dtype
 from jev_runtime.errors import JevError
 
 
@@ -88,6 +88,14 @@ class SGLangHTTP:
                 lora=False,
                 prefix_cache=not bool(config.get("disable_radix_cache", False)),
                 verified=False,
+                model_dtype=reported_dtype(config.get("dtype")),
+                readout_dtype=(
+                    "float32"
+                    if config.get("enable_fp32_lm_head")
+                    else reported_dtype(config.get("dtype"))
+                )
+                if config.get("quantization") is None
+                else None,
             )
         except (httpx.HTTPError, ValueError, TypeError, KeyError) as exc:
             raise JevError(
@@ -144,6 +152,8 @@ class SGLangNative:
             and getattr(args, "pp_size", None) == 1
             and str(getattr(model, "dtype", None)) in {"torch.bfloat16", "bfloat16"}
             and getattr(args, "quantization", None) is None
+            and getattr(model, "quantization", None) is None
+            and not getattr(args, "enable_fp32_lm_head", False)
             and set(architectures) <= {"LlamaForCausalLM"}
             and architectures
         )
@@ -229,6 +239,15 @@ class SGLangNative:
             max_context_tokens=config.context_len,
             lora=self._lora_profile(),
             prefix_cache=not bool(getattr(args, "disable_radix_cache", False)),
+            model_dtype=reported_dtype(getattr(config, "dtype", None)),
+            readout_dtype=(
+                "float32"
+                if getattr(args, "enable_fp32_lm_head", False)
+                else reported_dtype(getattr(config, "dtype", None))
+            )
+            if getattr(config, "quantization", None) is None
+            and getattr(args, "quantization", None) is None
+            else None,
         )
 
     async def score(self, request: ScoreInput) -> ScoreResult:

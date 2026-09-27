@@ -290,6 +290,7 @@ async def test_configured_runtime_uses_shared_admission_and_global_metrics(
     try:
         assert isinstance(runtime.admission, SharedAdmission)
         await runtime.start()
+        bundle = bundle.model_copy(update={"model": runtime.expected_model})
         runtime.registry.upload(bundle)
         await runtime.prepare(bundle.reference)
         runtime.activate("model", bundle.reference, 0)

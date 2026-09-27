@@ -35,6 +35,9 @@ async def run(args):
     record = json.loads((root / "process.json").read_text())
     assert record["mode"] == "native-plugin" and settings.workers == 1
     assert record.get("tensor_parallel_size", 1) == 1, "Managed LoRA crash harness covers TP1 only"
+    assert record.get("readout_dtype", "bfloat16") == "bfloat16", (
+        "Managed LoRA crash harness covers the frozen BF16 readout profile only"
+    )
     assert settings.adapters.enabled
     assert settings.adapters.allowed_roots == (str(args.fixtures.resolve()),)
     assert settings.admission.max_requests >= 2

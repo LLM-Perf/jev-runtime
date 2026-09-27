@@ -104,6 +104,9 @@ async def run(args):
     if native_mode:
         assert settings.workers == 1 and not settings.adapters.enabled
         assert engine_record.get("tensor_parallel_size", 1) == 1, "Restart harness covers TP1 only"
+        assert engine_record.get("readout_dtype", "bfloat16") == "bfloat16", (
+            "Restart harness covers the frozen BF16 readout profile only"
+        )
         assert args.verify_admission, "Native crash checks require admission assertions"
     assert engine_record["mode"] == "native-plugin"
     assert identity(engine_record["identity"]["pid"]) == engine_record["identity"]

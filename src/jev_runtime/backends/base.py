@@ -5,7 +5,13 @@ from typing import Protocol
 
 from pydantic import Field
 
-from jev_runtime.schema import Contract
+from jev_runtime.schema import Contract, FloatingDType
+
+
+def reported_dtype(value) -> str | None:
+    """Normalize an observed engine dtype without guessing `auto` or quantized types."""
+    name = str(value).removeprefix("torch.")
+    return name if name in {"float16", "bfloat16", "float32"} else None
 
 
 class Capabilities(Contract):
@@ -21,6 +27,8 @@ class Capabilities(Contract):
     prefix_cache: bool | None = None
     api_workers: int | None = Field(default=None, ge=1)
     verified: bool = False
+    model_dtype: FloatingDType | None = None
+    readout_dtype: FloatingDType | None = None
 
 
 @dataclass(frozen=True)
