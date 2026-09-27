@@ -1,0 +1,12 @@
+{
+  "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "pytest": {
+    "passed": 292,
+    "result": "292 passed in 19.10s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "passed for changed source/test files",
+  "core_and_plugin_sources_unchanged_from_runtime": true,
+  "qualification": "Launcher/runner change with unchanged core and plugin packages; GPU profiles are reported separately"
+}

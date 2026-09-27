@@ -1,0 +1,51 @@
+"""Sequential fresh native validations; every attempt retains its own cleanup."""
+import hashlib
+import json
+import subprocess
+import time
+from pathlib import Path
+
+ROOT = Path('/root/jev-runtime')
+SOURCE = '3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1'
+release = ROOT/'releases'/SOURCE
+out = ROOT/'public-pair-campaign-3377c95.json'
+assert not out.exists()
+assets=json.loads((ROOT/'model-verification-public-pair-3377c95.json').read_text())
+assert assets['passed'] and all(m['verified'] for m in assets['models'])
+report={'source_commit':SOURCE,'started_at':time.time(),
+        'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'qualification':'colocated functional checks plus separate single-position CPU references',
+        'attempts':[]}
+try:
+    for model, tag in [('Qwen2.5-7B-Instruct','qwen25-7b'),('DeepSeek-R1-Distill-Llama-8B','r1-llama8b')]:
+        for engine in ('vllm','sglang'):
+            run=ROOT/'runs'/f'{engine}-{tag}-tp4-3377c95'
+            assert not run.exists()
+            command=[str(ROOT/'envs'/engine/'bin/python'),str(release/'tests/integration/run_native_validation.py'),
+                     '--run-dir',str(run),'--engine',engine,'--model-path',str(ROOT/'models'/model),
+                     '--gpus','3,4,5,6','--port','18795' if engine=='vllm' else '18794',
+                     '--memory-fraction','.075' if engine=='vllm' else '.65','--reserve-mib','3072',
+                     '--switches','1000','--startup-timeout','300','--check-timeout','300',
+                     '--reference-timeout','300','--reference-atol','.15',
+                     '--source-commit',SOURCE,'--runtime-source-commit',SOURCE]
+            attempt={'model':model,'engine':engine,'run':str(run),'command':command,'started_at':time.time()}
+            report['attempts'].append(attempt);out.write_text(json.dumps(report,indent=2)+'\n')
+            log=ROOT/(run.name+'-controller.log')
+            with log.open('x') as stream:
+                proc=subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT)
+            attempt['returncode']=proc.returncode
+            validation=json.loads((run/'validation.json').read_text())
+            attempt['validation']=validation
+            out.write_text(json.dumps(report,indent=2)+'\n')
+            print(json.dumps({'run':run.name,'returncode':proc.returncode,'functional':validation.get('functional_passed'),
+                              'numerical_position':validation.get('numerical_position_passed'),
+                              'cleanup':validation.get('cleanup_passed'),'failure':validation.get('failure')}),flush=True)
+            assert validation['cleanup_passed'], 'Resolve cleanup before using another GPU service'
+            assert proc.returncode == (0 if validation['passed'] else 1)
+    report['completed']=True
+    report['all_functional_passed']=all(a['validation'].get('functional_passed') for a in report['attempts'])
+except BaseException as exc:
+    report['completed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)}
+    raise
+finally:
+    report['finished_at']=time.time();out.write_text(json.dumps(report,indent=2)+'\n')

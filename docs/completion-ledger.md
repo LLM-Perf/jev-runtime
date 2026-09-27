@@ -22,7 +22,7 @@ replacement for any requirement in `implementation-plan.md`.
   is distinct from new GPU execution: both clients accepted all 26 complete payloads
   in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
   that source; see `evidence/package-check-fe71bb3.json`.
-- Sixteen real GPU combinations (eight models per engine) each passed 1,000 bundle
+- Twenty real GPU combinations (ten models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, quotas and cancellation ownership.
   Shared same-host quotas are now implemented and checked at `4944efd` below;
@@ -339,16 +339,29 @@ replacement for any requirement in `implementation-plan.md`.
   The failed readiness setup is retained. No model count or release gate changes.
   See [atomic admission comparison](atomic-admission-performance.md).
 
+- Runtime `3377c95` and launcher/runner `b28bb46` add Qwen2.5-7B and R1-Distill-
+  Llama-8B on both engines: 20/40 functional combinations, 10/20 per engine.
+  A tokenizer artifact audit invalidates the original vLLM R1 default-loader
+  profile despite its passing raw-token checks. The separately tested explicit
+  ByteLevel tokenizer preserves checkpoint IDs on both engines. `--tokenizer-path`
+  now reaches the Jev configuration and native engine consistently. Qwen BF16 and
+  FP32-head CPU-reference checks fail the unchanged 0.15 tolerance; the corrected
+  R1 vLLM position also fails (0.160690), while SGLang passes one position (0.129480).
+  All eight attempts, original tokenizer failure and numerical failures remain.
+  Every group exits and GPUs 3–6 return to baseline; 87 owned records have no live
+  match. Local checks pass 292 tests, with unchanged core/plugin source packages.
+  See [public-model pair validation](public-model-pair-validation.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
-| SGLang real serving | Eight checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2/Mistral7B TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| vLLM real serving | Eight checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2/Mistral7B TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| SGLang real serving | Ten checkpoints pass functional profiles, including explicit R1 ByteLevel tokenizer | Remaining matrix; independent numerical failures remain |
+| vLLM real serving | Ten checkpoints pass functional profiles, including corrected R1 ByteLevel tokenizer | Default R1 tokenizer is unqualified; remaining matrix and numerical failures |
 | Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
-| GPU hot-switch and drain | Sixteen combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
-| 20-model/40-combination matrix | 8/20 functional checks per engine | Remaining 24 combinations and numerical/quality/performance gates |
+| GPU hot-switch and drain | Twenty combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
+| 20-model/40-combination matrix | 10/20 functional profiles per engine | Remaining 20 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |

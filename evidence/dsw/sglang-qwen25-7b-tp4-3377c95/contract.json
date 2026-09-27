@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "started_at": 1790531953.7809682,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "b2dc02afca3849cfbe24f1ac31d23c32"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-da5ee367db2a4da3a86a2df2a318db64",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:a0e1e08458724fe68ad6c391ff80afe44ac567d706f22215ae4bfb22a4a0eea0",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999999999957612,
+            "technical": 3.09881913870869e-12,
+            "other": 1.1399918530395232e-12
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.0000000000042388,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999995400941,
+            "false": 4.599059214288085e-10
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999991659955679,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 4.967152689414541,
+          "probabilities": {
+            "low": 0.006692030939206526,
+            "medium": 0.9931854002386787,
+            "high": 0.00012256882211474337
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.000000027707223,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9999999693017447,
+            "engineering": 1.725783774464188e-08,
+            "sales": 1.3440417549646345e-08
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999994346521384,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 333,
+        "engine_prompt_tokens": 333,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 128
+      },
+      "latency_ms": 154.91637121886015
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 32,
+        "total_tokens": 40,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "reasoning_tokens": 0
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-8e9ea912daef46f38f732f05a0e80fe4",
+      "status": "completed",
+      "bundle": "cert-5534994d86d9@1",
+      "bundle_digest": "sha256:889385fe478843515a952441aa208c3b077c2f308f35f02c8df1b4a61160e7af",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999999999958951,
+            "technical": 3.0988191387091052e-12,
+            "other": 1.0060392792791873e-12
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.000000000004105,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999995400941,
+            "false": 4.5990597625381765e-10
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999990467864986,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 4.974379865701644,
+          "probabilities": {
+            "low": 0.005219627675305679,
+            "medium": 0.9946847715090597,
+            "high": 9.560081563454187e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.0000000741211683,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9999999693017483,
+            "engineering": 1.7257835687348468e-08,
+            "sales": 1.3440415947424624e-08
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999995538613071,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 333,
+        "engine_prompt_tokens": 333,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 329
+      },
+      "latency_ms": 89.1612060368061
+    },
+    "independent_candidate": {
+      "request_id": "dec-aa3d310ff83a46a786668192d0d68d93",
+      "status": "completed",
+      "bundle": "cert-5534994d86d9@2",
+      "bundle_digest": "sha256:13346970ee3343e90f80339bd2a8f11e4252b2dddb4646dcade448aa7ad131ca",
+      "generation": 2,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999999793403465,
+            "technical": 1.1032958058442265e-09,
+            "other": 1.955635775335977e-08
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.9999646437484679,
+            "technical": 1.1032568202331045e-09,
+            "other": 1.9555666717869293e-08
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999995941344,
+            "false": 4.0586559954607167e-10
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999990467324583,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.472629865521428,
+          "probabilities": {
+            "low": 0.008780788527471571,
+            "medium": 0.8879124498407711,
+            "high": 0.10330676163175725
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.003172682169457582,
+            "medium": 0.32082130082460697,
+            "high": 0.03732688921821231
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.5122626911415226,
+            "engineering": 0.2741945252084294,
+            "sales": 0.21354278365004795
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 9.545039474091123e-12,
+            "engineering": 5.109092682236895e-12,
+            "sales": 3.9789630097888485e-12
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 850,
+        "engine_prompt_tokens": 850,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 566
+      },
+      "latency_ms": 235.74169725179672
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 266,
+      "versions_seen": [
+        "cert-5534994d86d9@1",
+        "cert-5534994d86d9@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "serving_profile": {
+    "worker_id": "b2dc02afca3849cfbe24f1ac31d23c32",
+    "model": {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "tokenizer_digest": "sha256:1b2f8ead5b3422a89c85c6182076f9b18f331bd6863442f76bc987597491159a",
+      "tokenizer_implementation_digest": "sha256:85d1ceae9fd30a7936c899eedc50257787910fc7a6139f82c5d705694c7da944",
+      "template_digest": "sha256:2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "sglang",
+      "version": "0.5.19",
+      "model_id": "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": null,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16"
+    },
+    "compiler": {
+      "tokenizer_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+      "copied_from_host_pool": false,
+      "chat_template_source": "host",
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 1.555096604861319,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "tokenizer_digest": "sha256:1b2f8ead5b3422a89c85c6182076f9b18f331bd6863442f76bc987597491159a",
+    "tokenizer_implementation_digest": "sha256:85d1ceae9fd30a7936c899eedc50257787910fc7a6139f82c5d705694c7da944",
+    "template_digest": "sha256:2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      151644,
+      8948,
+      198,
+      82345,
+      279,
+      17221,
+      821,
+      2348,
+      279,
+      3383,
+      13,
+      2885,
+      374,
+      5904,
+      11,
+      537,
+      11221,
+      13,
+      3411,
+      6896,
+      279,
+      11223,
+      4226,
+      2383,
+      13,
+      151645,
+      198,
+      151644,
+      872,
+      198,
+      6262,
+      510,
+      3379,
+      279,
+      6002,
+      594,
+      6028,
+      7385,
+      382,
+      1043,
+      320,
+      5370,
+      914,
+      982,
+      7044,
+      572,
+      11430,
+      10917,
+      323,
+      1035,
+      1075,
+      264,
+      20965,
+      2217,
+      47232,
+      510,
+      32,
+      25,
+      57876,
+      11,
+      10195,
+      11,
+      476,
+      72518,
+      198,
+      33,
+      25,
+      362,
+      10916,
+      14527,
+      304,
+      279,
+      1985,
+      198,
+      34,
+      25,
+      362,
+      2155,
+      8544,
+      198,
+      5598,
+      6896,
+      825,
+      4226,
+      2383,
+      13,
+      151645,
+      198,
+      151644,
+      77091,
+      198
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      0.0,
+      -26.5,
+      -27.625
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790531964.9264731
+}

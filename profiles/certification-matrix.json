@@ -4,8 +4,8 @@
   "model_denominator": 20,
   "combination_denominator": 40,
   "functional_passes": {
-    "sglang": 8,
-    "vllm": 8
+    "sglang": 10,
+    "vllm": 10
   },
   "required_functional_passes_per_engine": 18,
   "release_gate_passed": false,
@@ -136,22 +136,104 @@
       "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/contract.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/precision-binding.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/reference-cpu.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/topology.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/postcheck.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/environment.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/cleanup.json",
+        "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/validation.json",
+        "evidence/dsw/public-pair-validation-3377c95.json"
+      ],
+      "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "tensor_parallel_size": 4,
+      "profile_scope": "BF16 backbone/readout, native TP4/API1/eager/context 2048; no broader topology, quality, performance or LoRA certification",
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.875,
+        "single_position_passed": false,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-qwen25-7b-tp4-3377c95/reference-cpu.json"
+      },
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_for_saved_compiled_input",
+        "evidence": "evidence/dsw/qwen25-tokenizer-fidelity-3377c95.json"
+      },
+      "development_readout_precision": {
+        "status": "functional_passed_single_position_reference_failed",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "readout_dtype": "float32",
+        "tensor_parallel_size": 4,
+        "functional_evidence": "evidence/dsw/sglang-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "reference_evidence": "evidence/dsw/sglang-qwen25-7b-f32-tp4-3377c95/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/sglang-qwen25-7b-f32-tp4-3377c95/cleanup.json",
+        "validation_evidence": "evidence/dsw/public-pair-validation-3377c95.json",
+        "reference_max_absolute_logprob_error": 0.8663520812988281,
+        "release_gate_passed": false,
+        "scope": "Separate BF16-backbone FP32-head profile; unchanged atol=0.15, no replacement of default BF16 failure"
+      }
     },
     {
       "model_id": "Qwen/Qwen2.5-7B-Instruct",
       "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/contract.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/precision-binding.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/reference-cpu.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/topology.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/postcheck.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/environment.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/cleanup.json",
+        "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/validation.json",
+        "evidence/dsw/public-pair-validation-3377c95.json"
+      ],
+      "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "tensor_parallel_size": 4,
+      "profile_scope": "BF16 backbone/readout, native TP4/API1/eager/context 2048; no broader topology, quality, performance or LoRA certification",
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 1.0,
+        "single_position_passed": false,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-qwen25-7b-tp4-3377c95/reference-cpu.json"
+      },
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_for_saved_compiled_input",
+        "evidence": "evidence/dsw/qwen25-tokenizer-fidelity-3377c95.json"
+      },
+      "development_readout_precision": {
+        "status": "functional_passed_single_position_reference_failed",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "readout_dtype": "float32",
+        "tensor_parallel_size": 4,
+        "functional_evidence": "evidence/dsw/vllm-qwen25-7b-f32-tp4-3377c95/contract.json",
+        "reference_evidence": "evidence/dsw/vllm-qwen25-7b-f32-tp4-3377c95/reference-cpu.json",
+        "cleanup_evidence": "evidence/dsw/vllm-qwen25-7b-f32-tp4-3377c95/cleanup.json",
+        "validation_evidence": "evidence/dsw/public-pair-validation-3377c95.json",
+        "reference_max_absolute_logprob_error": 1.1217460632324219,
+        "release_gate_passed": false,
+        "scope": "Separate BF16-backbone FP32-head profile; unchanged atol=0.15, no replacement of default BF16 failure"
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.2-1B-Instruct",
@@ -609,22 +691,86 @@
       "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/precision-binding.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/reference-cpu.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/topology.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/postcheck.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/environment.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/cleanup.json",
+        "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/validation.json",
+        "evidence/dsw/public-pair-validation-3377c95.json"
+      ],
+      "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+      "tensor_parallel_size": 4,
+      "profile_scope": "BF16 backbone/readout, native TP4/API1/eager/context 2048; no broader topology, quality, performance or LoRA certification; explicit checkpoint ByteLevel tokenizer with generic HF loader",
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.12948036193847656,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-r1-llama8b-bytelevel-tp4-b28bb46/reference-cpu.json"
+      },
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_for_saved_compiled_input",
+        "evidence": "evidence/dsw/r1-llama-tokenizer-fidelity-3377c95.json",
+        "configuration_change": {
+          "tokenizer_class": "PreTrainedTokenizerFast"
+        },
+        "original_vllm_default_loader": "failed: saved input IDs differ from original checkpoint tokenizer.json; preserved in fidelity report"
+      },
+      "preserved_initial_attempt": "evidence/dsw/sglang-r1-llama8b-tp4-3377c95/validation.json"
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
       "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "failed",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/contract.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/precision-binding.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/reference-cpu.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/topology.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/postcheck.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/environment.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/cleanup.json",
+        "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/validation.json",
+        "evidence/dsw/public-pair-validation-3377c95.json"
+      ],
+      "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+      "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+      "tensor_parallel_size": 4,
+      "profile_scope": "BF16 backbone/readout, native TP4/API1/eager/context 2048; no broader topology, quality, performance or LoRA certification; explicit checkpoint ByteLevel tokenizer with generic HF loader",
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.1606903076171875,
+        "single_position_passed": false,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-r1-llama8b-bytelevel-tp4-b28bb46/reference-cpu.json"
+      },
+      "tokenizer_artifact_fidelity": {
+        "status": "passed_for_saved_compiled_input",
+        "evidence": "evidence/dsw/r1-llama-tokenizer-fidelity-3377c95.json",
+        "configuration_change": {
+          "tokenizer_class": "PreTrainedTokenizerFast"
+        },
+        "original_vllm_default_loader": "failed: saved input IDs differ from original checkpoint tokenizer.json; preserved in fidelity report"
+      },
+      "preserved_initial_attempt": "evidence/dsw/vllm-r1-llama8b-tp4-3377c95/validation.json"
     },
     {
       "model_id": "zai-org/glm-4-9b-chat",

@@ -1,0 +1,30 @@
+{
+  "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+  "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/vllm-r1-llama8b-tp4-3377c95/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "engine_logprobs": [
+    -22.968753814697266,
+    -26.976566314697266,
+    -28.614261627197266
+  ],
+  "reference_logprobs": [
+    -23.062503814697266,
+    -27.062503814697266,
+    -28.562503814697266
+  ],
+  "absolute_errors": [
+    0.09375,
+    0.0859375,
+    0.0517578125
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790532087.6403928,
+  "finished_at": 1790532094.6571963
+}

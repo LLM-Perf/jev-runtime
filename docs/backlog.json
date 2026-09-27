@@ -227,12 +227,14 @@
       "actual_deliverables": [
         "src/jev_runtime/backends/sglang.py",
         "tests/integration/live_contract.py",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/public-model-pair-validation.md"
       ],
       "progress_notes": [
         "Zero-output selected-label scoring has real two-checkpoint evidence.",
         "Native cancellation now retains the receiver through terminal output.",
-        "At 737d814, Phi-3 mini and Phi-4 mini passed native BF16 TP2/API1 functional/parity checks and 1,000 switches each. Five checkpoint combinations now pass per engine; numerical, quality and performance evidence remain separate."
+        "At 737d814, Phi-3 mini and Phi-4 mini passed native BF16 TP2/API1 functional/parity checks and 1,000 switches each. Five checkpoint combinations now pass per engine; numerical, quality and performance evidence remain separate.",
+        "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change."
       ],
       "acceptance_complete": false
     },
@@ -260,12 +262,14 @@
       "actual_deliverables": [
         "src/jev_runtime/backends/vllm.py",
         "tests/integration/live_contract.py",
-        "docs/phi-tp2-validation.md"
+        "docs/phi-tp2-validation.md",
+        "docs/public-model-pair-validation.md"
       ],
       "progress_notes": [
         "One-token full selected-label scoring has real two-checkpoint evidence.",
         "The HTTP bridge requires one engine API worker for abort ownership.",
-        "At 737d814, Phi-3 mini and Phi-4 mini passed native BF16 TP2/API1 functional/parity checks and 1,000 switches each. Five checkpoint combinations now pass per engine; numerical, quality and performance evidence remain separate."
+        "At 737d814, Phi-3 mini and Phi-4 mini passed native BF16 TP2/API1 functional/parity checks and 1,000 switches each. Five checkpoint combinations now pass per engine; numerical, quality and performance evidence remain separate.",
+        "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change."
       ],
       "acceptance_complete": false
     },
@@ -466,7 +470,8 @@
         "docs/tp4-model-validation.md",
         "docs/native-validation-runner.md",
         "docs/explicit-chat-templates.md",
-        "docs/mistral-validation.md"
+        "docs/mistral-validation.md",
+        "docs/public-model-pair-validation.md"
       ],
       "progress_notes": [
         "10/40 engine/checkpoint functional combinations have development GPU evidence (5/20 per engine).",
@@ -476,7 +481,8 @@
         "Phi-3 mini and Phi-4 mini passed both native engines in BF16 TP2/API1 at 737d814; first pre-ready vLLM harness failure and SGLang memory-balance startup failure are retained. See docs/phi-tp2-validation.md.",
         "Precision profiles are tracked separately from base combinations. Four f6bda1a functional/binding checks do not change 10/40 model-engine coverage. Legacy Phi-4 BF16 failure/partial columns are preserved; SmolLM2 now has partial targeted numerical evidence.",
         "Harness b8742bd adds reusable isolated launch/readiness/topology/contract/precision/reference/cleanup orchestration, with fresh directories and retained failures. Qwen3-8B and OLMo-2 pass both native engines at BF16 TP4, raising fixed coverage to 14/40 (7/20 per engine); required 18/20 per engine and denominator 20 remain unchanged.",
-        "Mistral7B adds two native functional passes: fixed coverage is 16/40 (8/20 each), still requiring 18/20 each. Mistral Small passes 16/16 explicit-HF tokenizer cases per environment at 75649bf but remains GPU-not-run. Missing-template/common-renderer failures and GLM custom-loader rejection remain recorded; no model was removed or replaced."
+        "Mistral7B adds two native functional passes: fixed coverage is 16/40 (8/20 each), still requiring 18/20 each. Mistral Small passes 16/16 explicit-HF tokenizer cases per environment at 75649bf but remains GPU-not-run. Missing-template/common-renderer failures and GLM custom-loader rejection remain recorded; no model was removed or replaced.",
+        "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change."
       ],
       "acceptance_complete": false
     },
@@ -790,7 +796,8 @@
         "docs/tp4-model-validation.md",
         "docs/native-validation-runner.md",
         "docs/explicit-chat-templates.md",
-        "docs/mistral-validation.md"
+        "docs/mistral-validation.md",
+        "docs/public-model-pair-validation.md"
       ],
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
@@ -800,7 +807,8 @@
         "At 737d814, both Phi checkpoints passed native TP2/API1 scoring, native chat/parity and 1,000 switches per engine. Live topology, zero final admission/leases and every selected GPU cleanup were verified. This does not certify LoRA TP2, multi-worker TP2, mixed-load performance or TP crash recovery.",
         "At f6bda1a, both engines pass Phi-4 FP32-readout TP2 and SmolLM2 default-BF16 TP1 native suites and 1000 switches each. Harness 5aa59d6 verifies legacy/wrong bundle and mismatched attached-runtime rejection. All four owned groups exited and selected GPUs returned to baseline; managed-LoRA/multi-worker/performance profiles were not recertified.",
         "Four new TP4 native suites pass at runtime f6bda1a/harness b8742bd: Qwen3-8B and OLMo-2 on both engines, four output types/native parity/lifecycle/precision guards. All owned groups exited and all four GPU UUID/free-memory snapshots returned to baseline; no dependency/core upgrade or broader LoRA/performance certification.",
-        "Mistral7B native BF16 TP4/API1/eager runs at e17918e pass four types, native parity, precision guards and lifecycle. Each verifies its official template snapshot and live topology; both groups exit and all selected GPUs return to baseline. Later 75649bf tokenizer work has CPU/real-tokenizer evidence, not broad final-source GPU recertification."
+        "Mistral7B native BF16 TP4/API1/eager runs at e17918e pass four types, native parity, precision guards and lifecycle. Each verifies its official template snapshot and live topology; both groups exit and all selected GPUs return to baseline. Later 75649bf tokenizer work has CPU/real-tokenizer evidence, not broad final-source GPU recertification.",
+        "At runtime 3377c95/harness b28bb46, Qwen2.5-7B and R1-Distill-Llama-8B add four qualified native functional combinations (20/40, 10/20 per engine). The default vLLM R1 tokenizer failed checkpoint fidelity despite passing raw-token tests; an explicit ByteLevel profile fixes input IDs on both engines. Qwen BF16 and FP32-head CPU-reference failures and corrected R1 vLLM numerical failure remain. All eight owned TP4 groups exit; 292 local tests pass. No denominator or release-gate change."
       ],
       "acceptance_complete": false
     },

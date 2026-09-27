@@ -1,0 +1,163 @@
+{
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+  "harness_sha256": "72ead02ccbb5f31434f2c4351ba02e9cda5f36accae4ca6e8a41287044d82ce2",
+  "started_at": 1790532695.2305865,
+  "qualification": "Explicit checkpoint ByteLevel tokenizer profile",
+  "attempts": [
+    {
+      "engine": "vllm",
+      "run": "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/b28bb4611b6a8142ffc37b1b12af84514a713b5f/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/R1-Llama-8B-bytelevel-6a6f4aa",
+        "--gpus",
+        "3,4,5,6",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".075",
+        "--reserve-mib",
+        "3072",
+        "--switches",
+        "1000",
+        "--startup-timeout",
+        "300",
+        "--check-timeout",
+        "300",
+        "--reference-timeout",
+        "300",
+        "--reference-atol",
+        ".15",
+        "--source-commit",
+        "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+        "--runtime-source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1"
+      ],
+      "returncode": 1,
+      "validation": {
+        "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "started_at": 1790532695.445314,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 74.14132456853986
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 1,
+            "passed": false,
+            "max_absolute_error": 0.1606903076171875
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": false,
+        "cleanup_passed": true,
+        "passed": false,
+        "finished_at": 1790532801.1624353
+      },
+      "saved_input_matches_checkpoint_tokenizer": true
+    },
+    {
+      "engine": "sglang",
+      "run": "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/b28bb4611b6a8142ffc37b1b12af84514a713b5f/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--tokenizer-path",
+        "/root/jev-runtime/tokenizers/R1-Llama-8B-bytelevel-6a6f4aa",
+        "--gpus",
+        "3,4,5,6",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".65",
+        "--reserve-mib",
+        "3072",
+        "--switches",
+        "1000",
+        "--startup-timeout",
+        "300",
+        "--check-timeout",
+        "300",
+        "--reference-timeout",
+        "300",
+        "--reference-atol",
+        ".15",
+        "--source-commit",
+        "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+        "--runtime-source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1"
+      ],
+      "returncode": 0,
+      "validation": {
+        "harness_source_commit": "b28bb4611b6a8142ffc37b1b12af84514a713b5f",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "started_at": 1790532801.394502,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 66.13473361544311
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 0,
+            "passed": true,
+            "max_absolute_error": 0.12948036193847656
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": true,
+        "cleanup_passed": true,
+        "passed": true,
+        "finished_at": 1790532902.227642
+      },
+      "saved_input_matches_checkpoint_tokenizer": true
+    }
+  ],
+  "completed": true,
+  "finished_at": 1790532902.2774065
+}

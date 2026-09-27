@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "started_at": 1790532411.9297209,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-30984c5831aa4fb1a3ff68383900ef05@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-99689d9ef26c4ea7b7e59cc54ad4b242@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=bfloat16 differs from engine report float32; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "tokenizer_digest": "sha256:1b2f8ead5b3422a89c85c6182076f9b18f331bd6863442f76bc987597491159a",
+    "tokenizer_implementation_digest": "sha256:85d1ceae9fd30a7936c899eedc50257787910fc7a6139f82c5d705694c7da944",
+    "template_digest": "sha256:2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+    "dtype": "bfloat16",
+    "readout_dtype": "float32",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "float32"
+  },
+  "passed": true,
+  "finished_at": 1790532417.8595426
+}

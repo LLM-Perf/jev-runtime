@@ -1,7 +1,7 @@
 # Mistral native validation and explicit tokenizer profiles
 
 On 2026-09-28 (Asia/Shanghai), Mistral-7B-Instruct-v0.3 passed native functional
-validation on both engines. The fixed matrix is now **16/40 functional combinations,
+validation on both engines. At that checkpoint the fixed matrix reached **16/40 functional combinations,
 8/20 per engine**. The original target remains 18/20 per engine, with all numerical,
 quality, performance and lifecycle acceptance gates intact.
 

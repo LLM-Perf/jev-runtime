@@ -1,0 +1,52 @@
+from pathlib import Path
+import hashlib,json,tarfile,time,sys,subprocess
+ROOT=Path('/root/jev-runtime');SOURCE='3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1'
+allowed={'validation.json','contract.json','precision-binding.json','reference-cpu.json',
+         'topology.json','profile.json','environment.json','postcheck.json','cleanup.json','process.json'}
+files={}
+for engine in ('vllm','sglang'):
+ for tag in ('qwen25-7b','r1-llama8b','qwen25-7b-f32'):
+  run=ROOT/'runs'/f'{engine}-{tag}-tp4-3377c95'
+  assert (run/'validation.json').exists(), f'Attempt has not finished: {run.name}'
+  for name in allowed:
+   p=run/name
+   if p.exists():files[run.name+'/'+name]=p
+for engine in ('vllm','sglang'):
+ run=ROOT/'runs'/f'{engine}-r1-llama8b-bytelevel-tp4-b28bb46'
+ assert (run/'validation.json').exists(), f'Attempt has not finished: {run.name}'
+ for name in allowed:
+  p=run/name
+  if p.exists():files[run.name+'/'+name]=p
+for name in ('model-verification-public-pair-3377c95.json','public-pair-campaign-3377c95.json','precision-followup-public-pair-3377c95.json','r1-llama-tokenizer-fidelity-3377c95.json','qwen25-tokenizer-fidelity-3377c95.json','tokenizer-followup-public-pair-b28bb46.json','source-upload-b28bb46.json'):
+ files[name]=ROOT/name
+new_source=json.loads((ROOT/'source-upload-b28bb46.json').read_text())
+for name,digest in new_source['files'].items():
+ assert hashlib.sha256((ROOT/'releases'/new_source['source_commit']/name).read_bytes()).hexdigest()==digest,name
+source=json.loads((ROOT/'source-upload-3377c95.json').read_text())
+assert source['source_commit']==SOURCE
+for name,digest in source['files'].items():
+ assert hashlib.sha256((ROOT/'releases'/SOURCE/name).read_bytes()).hexdigest()==digest,name
+identity={'source_commit':SOURCE,'observed_at':time.time(),'verified_files':len(source['files']),'files':source['files']}
+p=ROOT/'source-revalidation-public-pair-3377c95.json'
+with p.open('x') as f:json.dump(identity,f,indent=2);f.write('\n')
+files[p.name]=p
+sys.path.insert(0,str(ROOT/'releases'/SOURCE))
+from deployment.dsw_service import process_identity
+records=[]
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ d=json.loads(p.read_text());expected=d.get('identity')
+ if expected:records.append({'record':str(p),'identity':expected,'matching_live_process':process_identity(expected['pid'])==expected})
+preflight={'observed_at':time.time(),'source_commit':SOURCE,'owned_records_checked':len(records),
+           'matching_live_owned_records':[r for r in records if r['matching_live_process']],
+           'records':records,'gpu_snapshot':subprocess.check_output(['nvidia-smi','--query-gpu=index,uuid,memory.free,memory.total,utilization.gpu','--format=csv,noheader,nounits'],text=True)}
+assert not preflight['matching_live_owned_records']
+p=ROOT/'preflight-public-pair-3377c95.json'
+with p.open('x') as f:json.dump(preflight,f,indent=2);f.write('\n')
+files[p.name]=p
+manifest={'artifacts':{name:hashlib.sha256(path.read_bytes()).hexdigest() for name,path in files.items()}}
+p=ROOT/'public-pair-export-manifest-3377c95.json'
+with p.open('x') as f:json.dump(manifest,f,indent=2);f.write('\n')
+files[p.name]=p
+with tarfile.open(ROOT/'public-pair-evidence-3377c95.tar.gz','w:gz') as tar:
+ for name,path in sorted(files.items()):tar.add(path,arcname=name,recursive=False)
+print(json.dumps({'files':len(files),'verified_source_files':len(source['files']),'owned_records_checked':len(records),'matching_live_owned_records':0,'archive_bytes':(ROOT/'public-pair-evidence-3377c95.tar.gz').stat().st_size}))

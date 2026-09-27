@@ -1,0 +1,262 @@
+{
+  "started_at": 1790531654.720778,
+  "harness_sha256": "b21b8869bcbbdbadcd485fb43eb6d56b8d24e6a241434f74e3fc108e34723f5c",
+  "models": [
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "gated": false,
+      "private": false,
+      "path": "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+      "expected_files": 13,
+      "files": [
+        {
+          "name": "LICENSE",
+          "size_bytes": 11343,
+          "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "6634c8cc3133b3848ec74b9f275acaaa1ea618ab",
+          "verified": true
+        },
+        {
+          "name": "README.md",
+          "size_bytes": 6240,
+          "sha256": "f366f33bbf6bcadbb7d87f0a21a7b65584a56b8d58b0743c77c88bee625b93a6",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "4e9536cebaeb5cac673952ad5d0eeae469900f81",
+          "verified": true
+        },
+        {
+          "name": "config.json",
+          "size_bytes": 663,
+          "sha256": "7463bb0ea78315365e6c6b74de4e73bbcc8359dfb0c5a737584e077d42c0b03c",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "0178295f88afc3c7f279ed284f961f8c1be00654",
+          "verified": true
+        },
+        {
+          "name": "generation_config.json",
+          "size_bytes": 243,
+          "sha256": "3a8f9087e486054c8a4a08dae2e5a3ba62e23da212b5b8c08bc42cb983c3459f",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "0eb3c536657dcd12626e09eca4b6198c0cbcde1e",
+          "verified": true
+        },
+        {
+          "name": "merges.txt",
+          "size_bytes": 1671839,
+          "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "20024bfe7c83998e9aeaf98a0cd6a2ce6306c2f0",
+          "verified": true
+        },
+        {
+          "name": "model-00001-of-00004.safetensors",
+          "size_bytes": 3945441440,
+          "sha256": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+          "verified": true
+        },
+        {
+          "name": "model-00002-of-00004.safetensors",
+          "size_bytes": 3864726352,
+          "sha256": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+          "verified": true
+        },
+        {
+          "name": "model-00003-of-00004.safetensors",
+          "size_bytes": 3864726424,
+          "sha256": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+          "verified": true
+        },
+        {
+          "name": "model-00004-of-00004.safetensors",
+          "size_bytes": 3556377672,
+          "sha256": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd",
+          "verified": true
+        },
+        {
+          "name": "model.safetensors.index.json",
+          "size_bytes": 27752,
+          "sha256": "624bf7c47cd12468fdc16e38a47cf4f19e0415b859a223ba3c027eed2f0e1028",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "14d037fdda5a1311dcc0275003a7a370d84114e6",
+          "verified": true
+        },
+        {
+          "name": "tokenizer.json",
+          "size_bytes": 7031645,
+          "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "443909a61d429dff23010e5bddd28ff530edda00",
+          "verified": true
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size_bytes": 7305,
+          "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "07bfe0640cb5a0037f9322287fbfc682806cf672",
+          "verified": true
+        },
+        {
+          "name": "vocab.json",
+          "size_bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "4783fe10ac3adce15ac8f358ef5462739852c569",
+          "verified": true
+        }
+      ],
+      "verified": true,
+      "download_command": [
+        "/root/jev-runtime/envs/vllm/bin/hf",
+        "download",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "LICENSE",
+        "README.md",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json",
+        "--revision",
+        "a09a35458c702b33eeacc393d103063234e8bc28",
+        "--local-dir",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--max-workers",
+        "4",
+        "--quiet"
+      ],
+      "verified_files": 13,
+      "weight_bytes": 15231271888,
+      "architecture": [
+        "Qwen2ForCausalLM"
+      ]
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+      "gated": false,
+      "private": false,
+      "path": "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+      "expected_files": 9,
+      "files": [
+        {
+          "name": "LICENSE",
+          "size_bytes": 1064,
+          "sha256": "1c8f573e830ca9b3ebfeb7ace1823146e22b66f99ee223840e7637c9e745e1c7",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "d42fae903e9fa07f3e8edb0db00a8d905ba49560",
+          "verified": true
+        },
+        {
+          "name": "README.md",
+          "size_bytes": 15994,
+          "sha256": "d26d26ddb518fee60c6c6bf7a708bd751b1619d93a4944f188143693d956c77f",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "1ae2b2ccda9cb58fb4179e30c1798b6e75980618",
+          "verified": true
+        },
+        {
+          "name": "config.json",
+          "size_bytes": 826,
+          "sha256": "54acfad3cffe057640904ca8a1e83525e6551c70c7a04c641f5a9eda0bbf64bd",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "cccf055d6f8f210387a248c91dc40e0c7a4bafab",
+          "verified": true
+        },
+        {
+          "name": "generation_config.json",
+          "size_bytes": 181,
+          "sha256": "cd5194726d1e8f7361a8c8425fc11d33ade5e69de1fd7615eb23fae5601af68b",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "b0334803c2c033a8276ccec19455277343e0b5d3",
+          "verified": true
+        },
+        {
+          "name": "model-00001-of-000002.safetensors",
+          "size_bytes": 8667826246,
+          "sha256": "7e6b24744354ef4ba547547cc758339090f46ba2da917845cfc69f7d4ded9edb",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "7e6b24744354ef4ba547547cc758339090f46ba2da917845cfc69f7d4ded9edb",
+          "verified": true
+        },
+        {
+          "name": "model-00002-of-000002.safetensors",
+          "size_bytes": 7392730108,
+          "sha256": "19fb83b79bd0d06d49b7cf6f86b83f5183cd292aa2c028d633ca4fceac1ae742",
+          "remote_digest_kind": "lfs_sha256",
+          "remote_digest": "19fb83b79bd0d06d49b7cf6f86b83f5183cd292aa2c028d633ca4fceac1ae742",
+          "verified": true
+        },
+        {
+          "name": "model.safetensors.index.json",
+          "size_bytes": 24240,
+          "sha256": "83bdf4be4bb1a054ff315cd804554c48a88036226fdfbc65bee84ff562fea32a",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "a280ed71c93ae808a4fde848adcbee94fe5ee3d4",
+          "verified": true
+        },
+        {
+          "name": "tokenizer.json",
+          "size_bytes": 9084480,
+          "sha256": "b9c9eb63a8e03059914880f918cd28a880dec8b6e15e4461e1ff677e3743dbb8",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "e9c8e7a2359b81191c8021d0f3c5f28c67f20962",
+          "verified": true
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size_bytes": 3071,
+          "sha256": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5",
+          "remote_digest_kind": "git_blob_sha1",
+          "remote_digest": "9967ff32d94b21c94dc7e2b3bcbea295a46cde50",
+          "verified": true
+        }
+      ],
+      "verified": true,
+      "download_command": [
+        "/root/jev-runtime/envs/vllm/bin/hf",
+        "download",
+        "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+        "LICENSE",
+        "README.md",
+        "config.json",
+        "generation_config.json",
+        "model-00001-of-000002.safetensors",
+        "model-00002-of-000002.safetensors",
+        "model.safetensors.index.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "--revision",
+        "6a6f4aa4197940add57724a7707d069478df56b1",
+        "--local-dir",
+        "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+        "--max-workers",
+        "4",
+        "--quiet"
+      ],
+      "verified_files": 9,
+      "weight_bytes": 16060556354,
+      "architecture": [
+        "LlamaForCausalLM"
+      ]
+    }
+  ],
+  "passed": true,
+  "finished_at": 1790531761.9541752
+}

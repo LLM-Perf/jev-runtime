@@ -1,0 +1,213 @@
+{
+  "engine_environment": "sglang",
+  "transformers_version": "5.12.1",
+  "observed_at": 1790533145.182617,
+  "harness_sha256": "dece5d1405408983cccb7e408514fe0fc7b217c99ee8de77fc93f9a0370431c1",
+  "qualification": "CPU loader component audit; AutoTokenizer probes are distinct from native serving-host behavior",
+  "sample": "Evaluate the supplied data against the task.\nReturn exactly one answer label.",
+  "checkpoint_ids": [
+    83445,
+    279,
+    17665,
+    828,
+    2403,
+    279,
+    3465,
+    627,
+    5715,
+    7041,
+    832,
+    4320,
+    2440,
+    13
+  ],
+  "profiles": {
+    "checkpoint_json": {
+      "class": "tokenizers.Tokenizer",
+      "input_ids": [
+        83445,
+        279,
+        17665,
+        828,
+        2403,
+        279,
+        3465,
+        627,
+        5715,
+        7041,
+        832,
+        4320,
+        2440,
+        13
+      ],
+      "matches_checkpoint": true,
+      "components": {
+        "normalizer": null,
+        "pre_tokenizer": {
+          "type": "Sequence",
+          "pretokenizers": [
+            {
+              "type": "Split",
+              "pattern": {
+                "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+              },
+              "behavior": "Isolated",
+              "invert": false
+            },
+            {
+              "type": "ByteLevel",
+              "add_prefix_space": false,
+              "trim_offsets": true,
+              "use_regex": false
+            }
+          ]
+        },
+        "decoder": {
+          "type": "ByteLevel",
+          "add_prefix_space": true,
+          "trim_offsets": true,
+          "use_regex": true
+        },
+        "post_processor": {
+          "type": "Sequence",
+          "processors": [
+            {
+              "type": "ByteLevel",
+              "add_prefix_space": true,
+              "trim_offsets": false,
+              "use_regex": true
+            }
+          ]
+        }
+      }
+    },
+    "default_auto": {
+      "class": "transformers.models.llama.tokenization_llama.LlamaTokenizer",
+      "input_ids": [
+        36,
+        26591,
+        266,
+        774,
+        288,
+        455,
+        3523,
+        695,
+        69849,
+        339,
+        295,
+        1091,
+        47450,
+        327,
+        33839,
+        606,
+        9399,
+        1530,
+        13
+      ],
+      "matches_checkpoint": false,
+      "components": {
+        "normalizer": null,
+        "pre_tokenizer": {
+          "type": "Metaspace",
+          "replacement": "\u2581",
+          "prepend_scheme": "always",
+          "split": false
+        },
+        "decoder": {
+          "type": "Sequence",
+          "decoders": [
+            {
+              "type": "Replace",
+              "pattern": {
+                "String": "\u2581"
+              },
+              "content": " "
+            },
+            {
+              "type": "ByteFallback"
+            },
+            {
+              "type": "Fuse"
+            },
+            {
+              "type": "Strip",
+              "content": " ",
+              "start": 1,
+              "stop": 0
+            }
+          ]
+        },
+        "post_processor": {
+          "type": "Sequence",
+          "processors": [
+            {
+              "type": "ByteLevel",
+              "add_prefix_space": true,
+              "trim_offsets": false,
+              "use_regex": true
+            }
+          ]
+        }
+      }
+    },
+    "explicit_generic": {
+      "class": "transformers.tokenization_utils_tokenizers.TokenizersBackend",
+      "input_ids": [
+        83445,
+        279,
+        17665,
+        828,
+        2403,
+        279,
+        3465,
+        627,
+        5715,
+        7041,
+        832,
+        4320,
+        2440,
+        13
+      ],
+      "matches_checkpoint": true,
+      "components": {
+        "normalizer": null,
+        "pre_tokenizer": {
+          "type": "Sequence",
+          "pretokenizers": [
+            {
+              "type": "Split",
+              "pattern": {
+                "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+              },
+              "behavior": "Isolated",
+              "invert": false
+            },
+            {
+              "type": "ByteLevel",
+              "add_prefix_space": false,
+              "trim_offsets": true,
+              "use_regex": false
+            }
+          ]
+        },
+        "decoder": {
+          "type": "ByteLevel",
+          "add_prefix_space": true,
+          "trim_offsets": true,
+          "use_regex": true
+        },
+        "post_processor": {
+          "type": "Sequence",
+          "processors": [
+            {
+              "type": "ByteLevel",
+              "add_prefix_space": true,
+              "trim_offsets": false,
+              "use_regex": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}

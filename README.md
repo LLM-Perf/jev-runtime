@@ -31,6 +31,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [TP4 model validation](docs/tp4-model-validation.md),
 [explicit templates and tokenizer profiles](docs/explicit-chat-templates.md),
 [Mistral validation](docs/mistral-validation.md),
+[Qwen2.5/R1 Llama validation and tokenizer profiles](docs/public-model-pair-validation.md),
 [reproducible native validation](docs/native-validation-runner.md),
 [managed LoRA](docs/adapters.md),
 [performance experiments](docs/performance.md),

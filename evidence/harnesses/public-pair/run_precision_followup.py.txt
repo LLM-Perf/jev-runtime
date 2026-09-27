@@ -1,0 +1,29 @@
+"""Separate precision profiles; original BF16 failures remain untouched."""
+import hashlib,json,subprocess,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1'
+prior=json.loads((ROOT/'public-pair-campaign-3377c95.json').read_text())
+assert prior['completed'] and all(a['validation']['cleanup_passed'] for a in prior['attempts'])
+out=ROOT/'precision-followup-public-pair-3377c95.json';assert not out.exists()
+report={'source_commit':SOURCE,'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'started_at':time.time(),'qualification':'Explicit FP32-head profiles; not replacement BF16 certification','attempts':[]}
+try:
+ for engine in ('vllm','sglang'):
+  run=ROOT/'runs'/f'{engine}-qwen25-7b-f32-tp4-3377c95';assert not run.exists()
+  cmd=[str(ROOT/'envs'/engine/'bin/python'),str(ROOT/'releases'/SOURCE/'tests/integration/run_native_validation.py'),
+       '--run-dir',str(run),'--engine',engine,'--model-path',str(ROOT/'models/Qwen2.5-7B-Instruct'),
+       '--gpus','3,4,5,6','--port','18795' if engine=='vllm' else '18794',
+       '--memory-fraction','.075' if engine=='vllm' else '.65','--reserve-mib','3072',
+       '--switches','1000','--startup-timeout','300','--check-timeout','300','--reference-timeout','300',
+       '--reference-atol','.15','--readout-dtype','float32','--source-commit',SOURCE,'--runtime-source-commit',SOURCE]
+  a={'engine':engine,'run':str(run),'command':cmd};report['attempts'].append(a);out.write_text(json.dumps(report,indent=2)+'\n')
+  with (ROOT/(run.name+'-controller.log')).open('x') as f: proc=subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT)
+  v=json.loads((run/'validation.json').read_text());a['returncode']=proc.returncode;a['validation']=v
+  out.write_text(json.dumps(report,indent=2)+'\n')
+  print(json.dumps({'run':run.name,'returncode':proc.returncode,'validation':v}),flush=True)
+  assert v['cleanup_passed'] and proc.returncode==(0 if v['passed'] else 1)
+ report['completed']=True
+except BaseException as exc:
+ report['completed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)};raise
+finally:
+ report['finished_at']=time.time();out.write_text(json.dumps(report,indent=2)+'\n')

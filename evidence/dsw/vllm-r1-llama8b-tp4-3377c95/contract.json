@@ -1,0 +1,573 @@
+{
+  "schema_version": 1,
+  "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "started_at": 1790532066.8353474,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "revision": "6a6f4aa4197940add57724a7707d069478df56b1"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "0bbea43b79004c5dbeae11464e6f823f"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-943000d605ed40b585f35aac7b42b77d",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:71c2e1e71e91ee26f9c39ba24601346b8980ca34aa53e47b648d1098d7ec01fe",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9780967780469311,
+            "technical": 0.018339296736271105,
+            "other": 0.003563925216797857
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.1522791684958738e-10,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9966233876182606,
+            "false": 0.0033766123817395013
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 2.2233973569500978e-08,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 0.8035754362341652,
+          "probabilities": {
+            "low": 0.8811456327150875,
+            "medium": 0.0769936473229919,
+            "high": 0.04186071996192056
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 9.069411253500467e-11,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.966155592712357,
+            "engineering": 0.021345157315209997,
+            "sales": 0.012499249972433117
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 7.299872446144332e-11,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 313,
+        "engine_prompt_tokens": 313,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 64
+      },
+      "latency_ms": 121.97019252926111
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 7,
+        "total_tokens": 15,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-593b13751f4d410eb34106502b44590f",
+      "status": "completed",
+      "bundle": "cert-bfe6eff9e740@1",
+      "bundle_digest": "sha256:36eda07a31232bd543cb45b7192c557850acf8a8729a45ee7b68f7059cb50b43",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.978754701091846,
+            "technical": 0.01778701239859474,
+            "other": 0.003458286509559293
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.0817405278598791e-10,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9966233876182606,
+            "false": 0.0033766123817395013
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 2.088696488673465e-08,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 0.8096338213752785,
+          "probabilities": {
+            "low": 0.8805651549901431,
+            "medium": 0.07694292574465814,
+            "high": 0.04249191926519879
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 9.66064698639136e-11,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9669189525781963,
+            "engineering": 0.02022515605137979,
+            "sales": 0.012855891370424
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 7.525634899808855e-11,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 313,
+        "engine_prompt_tokens": 313,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 272
+      },
+      "latency_ms": 70.09646948426962
+    },
+    "independent_candidate": {
+      "request_id": "dec-a162ccb3809e4868b42a13b738516879",
+      "status": "completed",
+      "bundle": "cert-bfe6eff9e740@2",
+      "bundle_digest": "sha256:ce56d7f2366ccb9f5667d75277ff32278569f2837785290747d361ca6a79fb21",
+      "generation": 2,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.3359989331745432,
+            "technical": 0.3328174262698366,
+            "other": 0.3311836405556201
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.9942250701465559,
+            "technical": 0.984810951192016,
+            "other": 0.9799765587105447
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9966233876182606,
+            "false": 0.0033766123817395013
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 2.2233973569500978e-08,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.017986921588946,
+          "probabilities": {
+            "low": 0.3311532240494355,
+            "medium": 0.3340961675833398,
+            "high": 0.33475060836722464
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.9783846672373524,
+            "medium": 0.9870795269609209,
+            "high": 0.9890130573694068
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "engineering",
+            "payments",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.33265469893859556,
+            "engineering": 0.3371681638548365,
+            "sales": 0.33017713720656794
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.9579122720843811,
+            "engineering": 0.9709092429574353,
+            "sales": 0.9507778868028013
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 828,
+        "engine_prompt_tokens": 828,
+        "engine_completion_tokens": 10,
+        "cached_prompt_tokens": 496
+      },
+      "latency_ms": 175.05738139152527
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 432,
+      "versions_seen": [
+        "cert-bfe6eff9e740@1",
+        "cert-bfe6eff9e740@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "serving_profile": {
+    "worker_id": "0bbea43b79004c5dbeae11464e6f823f",
+    "model": {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+      "tokenizer_digest": "sha256:1df8c26e8722a678ac35febaaae3bfe9d98ce46554f1c0c8dc5553c17fee6a8a",
+      "tokenizer_implementation_digest": "sha256:97eedcbe7b78a1c2d03ea46e7e26759a264bd96d919b2043bebfceb76c474b8d",
+      "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16"
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "chat_template_source": "host",
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 1.4315318446606398,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+    "tokenizer_digest": "sha256:1df8c26e8722a678ac35febaaae3bfe9d98ce46554f1c0c8dc5553c17fee6a8a",
+    "tokenizer_implementation_digest": "sha256:97eedcbe7b78a1c2d03ea46e7e26759a264bd96d919b2043bebfceb76c474b8d",
+    "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      128000,
+      36,
+      26591,
+      266,
+      774,
+      288,
+      455,
+      3523,
+      695,
+      69849,
+      339,
+      295,
+      1091,
+      3417,
+      1082,
+      28580,
+      11,
+      1962,
+      63395,
+      47450,
+      327,
+      33839,
+      19041,
+      724,
+      291,
+      9399,
+      1530,
+      13,
+      128011,
+      6396,
+      25,
+      3461,
+      339,
+      762,
+      4493,
+      596,
+      6682,
+      57531,
+      3417,
+      19676,
+      928,
+      1680,
+      7189,
+      16514,
+      38061,
+      15930,
+      560,
+      438,
+      41450,
+      4908,
+      548,
+      58703,
+      1210,
+      48332,
+      56748,
+      25,
+      88746,
+      11,
+      63399,
+      11,
+      269,
+      1116,
+      44050,
+      33,
+      56748,
+      73237,
+      60672,
+      48121,
+      752,
+      299,
+      1076,
+      34,
+      25,
+      2654,
+      18780,
+      16816,
+      5715,
+      327,
+      33839,
+      606,
+      9399,
+      1530,
+      13,
+      128012,
+      128013
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      -22.968753814697266,
+      -26.976566314697266,
+      -28.614261627197266
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790532076.6145132
+}

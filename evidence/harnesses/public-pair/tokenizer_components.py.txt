@@ -1,0 +1,24 @@
+import hashlib,json,sys,time
+from pathlib import Path
+import transformers
+from tokenizers import Tokenizer
+from transformers import AutoTokenizer
+root=Path('/root/jev-runtime');engine=sys.argv[1]
+model=root/'models/DeepSeek-R1-Distill-Llama-8B';profile=root/'tokenizers/R1-Llama-8B-bytelevel-6a6f4aa'
+raw=Tokenizer.from_file(str(model/'tokenizer.json'))
+text='Evaluate the supplied data against the task.\nReturn exactly one answer label.'
+report={'engine_environment':engine,'transformers_version':transformers.__version__,'observed_at':time.time(),
+        'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'qualification':'CPU loader component audit; AutoTokenizer probes are distinct from native serving-host behavior',
+        'sample':text,'checkpoint_ids':raw.encode(text,add_special_tokens=False).ids,'profiles':{}}
+for name,tok in [('checkpoint_json',raw),('default_auto',AutoTokenizer.from_pretrained(str(model),trust_remote_code=False)),('explicit_generic',AutoTokenizer.from_pretrained(str(profile),trust_remote_code=False))]:
+ backend=tok if name=='checkpoint_json' else tok.backend_tokenizer
+ parts=json.loads(backend.to_str());ids=backend.encode(text,add_special_tokens=False).ids if name=='checkpoint_json' else tok.encode(text,add_special_tokens=False)
+ report['profiles'][name]={'class':type(tok).__module__+'.'+type(tok).__name__,'input_ids':ids,
+                          'matches_checkpoint':ids==report['checkpoint_ids'],
+                          'components':{k:parts[k] for k in ('normalizer','pre_tokenizer','decoder','post_processor')}}
+assert not report['profiles']['default_auto']['matches_checkpoint']
+assert report['profiles']['explicit_generic']['matches_checkpoint']
+path=root/f'r1-tokenizer-components-{engine}-b28bb46.json'
+with path.open('x') as f:json.dump(report,f,indent=2);f.write('\n')
+print(json.dumps({'engine_environment':engine,'default_matches':False,'explicit_matches':True}))

@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "started_at": 1790532171.3602679,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-3bd3147e9fb540c798f5ee5a92c0ac45@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-d840ba712e424f239ed747f7fde256a6@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=float32 differs from engine report bfloat16; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+    "tokenizer_digest": "sha256:1df8c26e8722a678ac35febaaae3bfe9d98ce46554f1c0c8dc5553c17fee6a8a",
+    "tokenizer_implementation_digest": "sha256:9c14c9ac6ae880603e4cd4326baf5566a06395bf0ae304d96f03576aa3b5864b",
+    "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/DeepSeek-R1-Distill-Llama-8B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "passed": true,
+  "finished_at": 1790532178.4940352
+}

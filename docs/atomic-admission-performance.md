@@ -84,7 +84,7 @@ failure and successful cleanup remain in the evidence.
 
 Local verification: 284 Python tests, Ruff checks/format checks, dependency check,
 and three wheels with Python source bytes verified (28 core, four per plugin).
-This adds no new model to the 16/40 functional matrix and no performance release
+At that experiment checkpoint, this added no model to the 16/40 functional matrix and no performance release
 pass. Hosted CI eligibility remains separate from these local results.
 
 ## Reproduction and retained artifacts

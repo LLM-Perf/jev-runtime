@@ -1,0 +1,17 @@
+{
+  "zero_leases": true,
+  "zero_admission": true,
+  "all_active_bundles_healthy": true,
+  "active_routes": [
+    {
+      "alias": "cert-7fd1955e6223",
+      "ref": null,
+      "generation": 1003
+    },
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    }
+  ]
+}

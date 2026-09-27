@@ -1,0 +1,81 @@
+{
+  "worker_id": "8c45f6de7a4f43d3892da290f64c82d3",
+  "model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "tokenizer_digest": "sha256:1b2f8ead5b3422a89c85c6182076f9b18f331bd6863442f76bc987597491159a",
+    "tokenizer_implementation_digest": "sha256:85d1ceae9fd30a7936c899eedc50257787910fc7a6139f82c5d705694c7da944",
+    "template_digest": "sha256:2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "tokenizer_implementation_verified": true,
+  "engine_identity_verified": false,
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "compiler": {
+    "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+    "copied_from_host_pool": true,
+    "chat_template_source": "host",
+    "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+    "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+    "backend_class": "tokenizers.Tokenizer",
+    "cache_token_limit": 262144,
+    "cache_entry_limit": 256,
+    "continuation_encoder": "backend-ids-only",
+    "backend_ids_only_eligible": true,
+    "batch_size_limit": 32,
+    "contract": "full prompt plus each label; exact prefix and one-token checks"
+  },
+  "admission": {
+    "scope": "shared_registry_engine",
+    "limits": {
+      "max_requests": 64,
+      "max_tokens": 1048576,
+      "max_queue": 256,
+      "max_tenant_requests": 16,
+      "max_tenant_tokens": 262144,
+      "max_tenant_queue": 64,
+      "max_branches": 1024,
+      "max_tenant_branches": 256
+    },
+    "requests": 0,
+    "expanded_tokens": 0,
+    "expanded_branches": 0,
+    "queued_requests": 0
+  },
+  "health": {
+    "scope": "local_api_worker",
+    "settings": {
+      "interval_seconds": 30,
+      "timeout_seconds": 10,
+      "max_age_seconds": 90
+    },
+    "monitor_running": true,
+    "bundles": {
+      "default@1": {
+        "ready": true,
+        "last_success_age_seconds": 17.718180145137012,
+        "error": null,
+        "prepared": true
+      }
+    }
+  }
+}

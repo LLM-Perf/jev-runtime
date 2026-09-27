@@ -1,0 +1,62 @@
+"""Audit saved input IDs against checkpoint bytes and create an explicit generic profile."""
+import hashlib,json,shutil,time
+from pathlib import Path
+from tokenizers import Tokenizer
+from transformers import AutoTokenizer,PreTrainedTokenizerFast
+from jev_runtime.compiler import Compiler
+from jev_runtime.schema import Bundle,ModelIdentity,Question
+
+root=Path('/root/jev-runtime');model=root/'models/DeepSeek-R1-Distill-Llama-8B'
+out=root/'r1-llama-tokenizer-fidelity-3377c95.json';assert not out.exists()
+source=json.loads((model/'jev-source.json').read_text())
+report={'model_id':source['model_id'],'revision':source['revision'],'started_at':time.time(),
+        'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'qualification':'Exact tokenizer artifact and saved-input audit; no GPU scoring in this script'}
+raw=Tokenizer.from_file(str(model/'tokenizer.json'))
+generic=PreTrainedTokenizerFast.from_pretrained(str(model),trust_remote_code=False)
+compiler=Compiler(generic)
+bundle=Bundle(id='fidelity',version=1,model=ModelIdentity(id=source['model_id'],revision=source['revision'],
+    tokenizer_digest=compiler.tokenizer_digest,tokenizer_implementation_digest=compiler.tokenizer_implementation_digest,
+    template_digest=compiler.template_digest))
+question=Question.model_validate({'id':'intent','type':'choice','instruction':"Select the customer's primary intent.",
+    'options':[{'id':'billing','description':'Payments, charges, or refunds'},
+               {'id':'technical','description':'A technical fault in the product'},
+               {'id':'other','description':'A different topic'}]})
+prompts=[];original=compiler._encode
+
+def capture(prompt,labels,budget):
+    prompts.append(prompt);return original(prompt,labels,budget)
+compiler._encode=capture
+seq=compiler.compile('I was charged twice and would like a refund.',question,bundle,'audit').sequences[0]
+assert list(seq.input_ids)==raw.encode(prompts[-1],add_special_tokens=False).ids
+report['expected_input_ids']=list(seq.input_ids);report['expected_label_ids']=list(seq.label_ids)
+report['rendered_prompt_sha256']=hashlib.sha256(prompts[-1].encode()).hexdigest()
+report['saved_serving_inputs']={}
+for engine in ('vllm','sglang'):
+ contract=json.loads((root/'runs'/f'{engine}-r1-llama8b-tp4-3377c95/contract.json').read_text())
+ actual=contract['reference_logits']
+ report['saved_serving_inputs'][engine]={'input_ids':actual['input_ids'],'label_ids':actual['label_ids'],
+    'matches_checkpoint_tokenizer':actual['input_ids']==list(seq.input_ids) and actual['label_ids']==list(seq.label_ids),
+    'tokenizer_implementation_digest':contract['model']['tokenizer_implementation_digest']}
+profile=root/'tokenizers/R1-Llama-8B-bytelevel-6a6f4aa';profile.mkdir(parents=True,exist_ok=False)
+shutil.copyfile(model/'tokenizer.json',profile/'tokenizer.json')
+config=json.loads((model/'tokenizer_config.json').read_text())
+report['original_tokenizer_class']=config['tokenizer_class'];config['tokenizer_class']='PreTrainedTokenizerFast'
+(profile/'tokenizer_config.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n')
+fixed=AutoTokenizer.from_pretrained(str(profile),trust_remote_code=False)
+samples=['Evaluate the supplied data against the task.\nReturn exactly one answer label.',
+         'a b  c\tD\nE\r\nF','你好，世界。\n退款支持','é café e\u0301 😀','1234567890 0.001 -8.5',prompts[-1]]
+checks=[]
+for text in samples:
+ ids=raw.encode(text,add_special_tokens=False).ids;observed=fixed.encode(text,add_special_tokens=False)
+ assert observed==ids
+ checks.append({'text':text,'input_ids':ids,'matches_checkpoint_tokenizer':True})
+assert fixed.encode(prompts[-1],add_special_tokens=False)==list(seq.input_ids)
+report['explicit_profile']={'path':str(profile),'tokenizer_class':type(fixed).__module__+'.'+type(fixed).__name__,
+                           'files':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in profile.iterdir() if p.is_file()},
+                           'source_files':{n:hashlib.sha256((model/n).read_bytes()).hexdigest() for n in ('tokenizer.json','tokenizer_config.json')},
+                           'configuration_change':{'tokenizer_class':{'before':report['original_tokenizer_class'],'after':'PreTrainedTokenizerFast'}},
+                           'checks':checks}
+report['finished_at']=time.time();out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'saved_input_fidelity':{e:r['matches_checkpoint_tokenizer'] for e,r in report['saved_serving_inputs'].items()},
+                  'explicit_profile':str(profile),'sample_count':len(checks),'class':type(fixed).__name__}))

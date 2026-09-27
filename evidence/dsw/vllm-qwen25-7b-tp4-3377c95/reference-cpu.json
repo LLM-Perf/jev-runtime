@@ -1,0 +1,30 @@
+{
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/vllm-qwen25-7b-tp4-3377c95/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.17.0",
+  "engine_logprobs": [
+    0.0,
+    -26.375,
+    -27.5
+  ],
+  "reference_logprobs": [
+    0.0,
+    -27.375,
+    -28.0
+  ],
+  "absolute_errors": [
+    0.0,
+    1.0,
+    0.5
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": false,
+  "started_at": 1790531874.9114478,
+  "finished_at": 1790531882.0611923
+}

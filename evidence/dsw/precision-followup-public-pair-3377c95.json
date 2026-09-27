@@ -1,0 +1,160 @@
+{
+  "source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+  "harness_sha256": "83f3832e9ee182c9177d5335e0b99323620a3af782a568c26b73b030873c035a",
+  "started_at": 1790532236.1485987,
+  "qualification": "Explicit FP32-head profiles; not replacement BF16 certification",
+  "attempts": [
+    {
+      "engine": "vllm",
+      "run": "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/releases/3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--gpus",
+        "3,4,5,6",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".075",
+        "--reserve-mib",
+        "3072",
+        "--switches",
+        "1000",
+        "--startup-timeout",
+        "300",
+        "--check-timeout",
+        "300",
+        "--reference-timeout",
+        "300",
+        "--reference-atol",
+        ".15",
+        "--readout-dtype",
+        "float32",
+        "--source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "--runtime-source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1"
+      ],
+      "returncode": 1,
+      "validation": {
+        "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "started_at": 1790532236.3777168,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 69.1552969571203
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 1,
+            "passed": false,
+            "max_absolute_error": 1.1217460632324219
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": false,
+        "cleanup_passed": true,
+        "passed": false,
+        "finished_at": 1790532340.6028898
+      }
+    },
+    {
+      "engine": "sglang",
+      "run": "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/releases/3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/Qwen2.5-7B-Instruct",
+        "--gpus",
+        "3,4,5,6",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        ".65",
+        "--reserve-mib",
+        "3072",
+        "--switches",
+        "1000",
+        "--startup-timeout",
+        "300",
+        "--check-timeout",
+        "300",
+        "--reference-timeout",
+        "300",
+        "--reference-atol",
+        ".15",
+        "--readout-dtype",
+        "float32",
+        "--source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "--runtime-source-commit",
+        "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1"
+      ],
+      "returncode": 1,
+      "validation": {
+        "harness_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "runtime_source_commit": "3377c95ca9955ae96ce7c7deb2c4d97b41b1d9c1",
+        "started_at": 1790532340.835754,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 59.112825809046626
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 1,
+            "passed": false,
+            "max_absolute_error": 0.8663520812988281
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": false,
+        "cleanup_passed": true,
+        "passed": false,
+        "finished_at": 1790532440.7001572
+      }
+    }
+  ],
+  "completed": true,
+  "finished_at": 1790532440.7507463
+}
