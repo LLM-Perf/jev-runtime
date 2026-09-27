@@ -1,0 +1,223 @@
+{
+  "source_commit": "67a6fbbdccc38bdf80577c2e64349261a23258bc",
+  "started_at": 1790505083.2663915,
+  "qualification": "colocated BF16 TP1 single-frontend untrained-LoRA functional evidence",
+  "process": {
+    "identity": {
+      "pid": 2592185,
+      "start_ticks": "426057220",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "vllm",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/vllm/bin/vllm",
+      "serve",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "2048",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "512",
+      "--max-logprobs",
+      "128",
+      "--gpu-memory-utilization",
+      "0.07",
+      "--enforce-eager",
+      "--enable-lora",
+      "--max-loras",
+      "2",
+      "--max-cpu-loras",
+      "4",
+      "--max-lora-rank",
+      "64",
+      "--worker-extension-cls",
+      "jev_vllm.worker.LoRAWorkerExtension"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790505032.8664877,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "total_mib"
+  },
+  "fixture": {
+    "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+    "base_model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "seed": 20260927,
+    "artifacts": {
+      "positive": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+      },
+      "negative": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+      }
+    }
+  },
+  "probability_tolerance": 0.0001,
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "e04fe7392c9f4afaa99610b71e70b60c"
+    },
+    "immutable_bindings": [
+      {
+        "reference": "lora-2f4f90f7df6f-negative@sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+        "state": "READY",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-2f4f90f7df6f-negative",
+            "revision": "sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-smollm17b-lora-67a6fbb/adapters/66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-2f8e96b8f77746958b8b362ac8374946",
+          "engine_id": 295135142185842909
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      },
+      {
+        "reference": "lora-2f4f90f7df6f-positive@sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+        "state": "READY",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-2f4f90f7df6f-positive",
+            "revision": "sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-smollm17b-lora-67a6fbb/adapters/b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-74d57849039949eb9b485b1fa48badd9",
+          "engine_id": 651334678555591525
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "path": "ready",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/profile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 500,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 503,
+      "expected": 200
+    }
+  ],
+  "passed": false,
+  "failure": {
+    "type": "AssertionError",
+    "message": "('admin/bundles/prepare', 500, '{\"error\":{\"message\":\"EngineCore encountered an issue. See stack trace (above) for the root cause.\",\"type\":\"InternalServerError\",\"param\":null,\"code\":500}}')"
+  },
+  "cleanup_error": "('admin/adapters/unload', 503, '{\"error\":{\"code\":\"adapter_operation_failed\",\"message\":\"Adapter operation could not be confirmed; reconcile before reuse\"}}')",
+  "finished_at": 1790505083.514802
+}

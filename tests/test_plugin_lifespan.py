@@ -15,6 +15,7 @@ async def test_vllm_plugin_closes_runtime_and_preserves_host_lifespan(monkeypatc
     async def host_lifespan(app):
         events.append("host-start")
         yield
+        assert app.state.jev_runtime is None
         events.append("host-stop")
 
     app = FastAPI(lifespan=host_lifespan)
@@ -24,13 +25,33 @@ async def test_vllm_plugin_closes_runtime_and_preserves_host_lifespan(monkeypatc
     plugin.attach_router(app)
     assert context is app.router.lifespan_context
     runtime = AsyncMock()
+    runtime.close.side_effect = lambda: events.append("runtime-close")
     app.state.jev_runtime = runtime
     async with app.router.lifespan_context(app):
         assert events == ["host-start"]
         runtime.close.assert_not_awaited()
-    assert events == ["host-start", "host-stop"]
+    assert events == ["host-start", "runtime-close", "host-stop"]
     runtime.close.assert_awaited_once()
     assert app.state.jev_runtime is None
+
+
+async def test_vllm_host_may_delete_state_after_plugin_drains(monkeypatch):
+    monkeypatch.setenv("JEV_API_KEY", "test-key")
+    runtime = AsyncMock()
+
+    @asynccontextmanager
+    async def host_lifespan(app):
+        try:
+            yield
+        finally:
+            runtime.close.assert_awaited_once()
+            del app.state
+
+    app = FastAPI(lifespan=host_lifespan)
+    app.state.jev_runtime = runtime
+    JevEndpointPlugin().attach_router(app)
+    async with app.router.lifespan_context(app):
+        pass
 
 
 async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp_path):

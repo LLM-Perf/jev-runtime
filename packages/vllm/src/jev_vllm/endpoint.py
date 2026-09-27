@@ -22,14 +22,16 @@ class JevEndpointPlugin:
 
         @asynccontextmanager
         async def lifespan(fastapi_app):
-            try:
-                async with original(fastapi_app):
+            async with original(fastapi_app):
+                try:
                     yield
-            finally:
-                runtime = getattr(fastapi_app.state, "jev_runtime", None)
-                if runtime is not None:
-                    await runtime.close()
-                    fastapi_app.state.jev_runtime = None
+                finally:
+                    # Drain while the host engine and app.state still exist.
+                    # vLLM's outer lifespan deletes state during its teardown.
+                    runtime = getattr(fastapi_app.state, "jev_runtime", None)
+                    if runtime is not None:
+                        await runtime.close()
+                        fastapi_app.state.jev_runtime = None
 
         app.router.lifespan_context = lifespan
         app.state.jev_lifespan_installed = True

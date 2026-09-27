@@ -94,6 +94,10 @@ class Registry:
                     ref TEXT PRIMARY KEY REFERENCES bundles(ref),
                     adapter_ref TEXT NOT NULL REFERENCES adapters(ref)
                 );
+                CREATE UNIQUE INDEX IF NOT EXISTS adapter_engine_ids
+                    ON adapters(backend,json_extract(binding,'$.engine_id'));
+                CREATE UNIQUE INDEX IF NOT EXISTS adapter_engine_names
+                    ON adapters(backend,json_extract(binding,'$.engine_name'));
                 CREATE INDEX IF NOT EXISTS bundles_by_adapter ON bundle_adapters(adapter_ref);
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
@@ -794,10 +798,28 @@ class Registry:
                         409,
                     )
             else:
+                # vLLM's GPU request state stores LoRA IDs in an int32 array.
+                # Allocate in its positive range and check collisions inside
+                # the same write transaction; UUID truncation alone is not a
+                # uniqueness guarantee. IDs are never recycled by this registry.
+                for _ in range(16):
+                    engine_id = (uuid.uuid4().int & ((1 << 31) - 1)) or 1
+                    if not db.execute(
+                        "SELECT 1 FROM adapters WHERE backend=? "
+                        "AND json_extract(binding,'$.engine_id')=?",
+                        (backend, engine_id),
+                    ).fetchone():
+                        break
+                else:
+                    raise JevError(
+                        "adapter_id_exhausted",
+                        "Could not allocate a distinct engine adapter ID",
+                        503,
+                    )
                 binding = AdapterBinding(
                     artifact=artifact,
                     engine_name="jev-lora-" + uuid.uuid4().hex,
-                    engine_id=(uuid.uuid4().int & ((1 << 63) - 1)) or 1,
+                    engine_id=engine_id,
                 )
                 db.execute(
                     "INSERT INTO adapters VALUES(?,?,?,?,?,'REGISTERED',NULL,NULL,NULL,?)",

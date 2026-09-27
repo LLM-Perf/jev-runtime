@@ -194,3 +194,20 @@ def test_adapter_base_binding_and_immutable_registration(tmp_path, bundle):
         assert error.value.code == "adapter_base_mismatch"
     finally:
         registry.close()
+
+
+def test_adapter_ids_fit_int32_and_collisions_never_alias_weights(tmp_path, monkeypatch):
+    from jev_runtime import registry as module
+
+    registry = Registry(tmp_path / "registry.db")
+    try:
+        first = registry.register_adapter(artifact(), "engine")
+        identifier = first["binding"]["engine_id"]
+        assert 1 <= identifier <= 2**31 - 1
+        monkeypatch.setattr(module.uuid, "uuid4", lambda: SimpleNamespace(int=identifier))
+        with pytest.raises(JevError) as error:
+            registry.register_adapter(artifact().model_copy(update={"id": "other"}), "engine")
+        assert error.value.code == "adapter_id_exhausted"
+        assert len(registry.list_adapters()) == 1
+    finally:
+        registry.close()

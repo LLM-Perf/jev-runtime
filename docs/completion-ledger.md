@@ -76,6 +76,12 @@ replacement for any requirement in `implementation-plan.md`.
   aborts. Both engines completed all 768 public requests and a live calibrated
   hot-switch check; per-example results include errors/abstentions and numeric
   quality evidence. This does not replace business data or certify cross-engine parity.
+- Managed immutable LoRA artifacts, transactional drain guards and native completion
+  fences have local tests. The initial real vLLM attempt at `67a6fbb` failed when a
+  64-bit adapter ID reached vLLM's int32 GPU request array. Its report and verified
+  process-group cleanup are retained. IDs now have an int32 bound and transactional
+  collision checks; plugin cleanup now drains before host state/engine teardown.
+  The corrected GPU run remains pending.
 
 ## Required evidence still outstanding
 

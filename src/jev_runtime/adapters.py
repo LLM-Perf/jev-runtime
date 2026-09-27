@@ -34,7 +34,7 @@ class AdapterArtifact(Contract):
 class AdapterBinding(Contract):
     artifact: AdapterArtifact
     engine_name: str
-    engine_id: int = Field(ge=1, le=2**63 - 1)
+    engine_id: int = Field(ge=1, le=2**31 - 1)
 
 
 class AdapterStore:

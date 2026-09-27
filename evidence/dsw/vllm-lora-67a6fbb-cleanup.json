@@ -1,0 +1,17 @@
+{
+  "source_commit": "67a6fbbdccc38bdf80577c2e64349261a23258bc",
+  "process_identity": {
+    "pid": 2592185,
+    "start_ticks": "426057220",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "non_zombie_group_members": [],
+  "gpu_free_mib": 11990,
+  "failure_excerpt": [
+    "(EngineCore pid=2592387) ERROR 09-27 10:31:23 [core.py:1368]   File \"/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/worker/gpu/lora_utils.py\", line 88, in add_request",
+    "(EngineCore pid=2592387) ERROR 09-27 10:31:23 [core.py:1368]     self.lora_ids[req_index] = lora_request.lora_int_id",
+    "(EngineCore pid=2592387) ERROR 09-27 10:31:23 [core.py:1368] OverflowError: Python integer 651334678555591525 out of bounds for int32",
+    "(APIServer pid=2592185) AttributeError: 'FastAPI' object has no attribute 'state'"
+  ],
+  "timestamp": 1790505219.0778804
+}
