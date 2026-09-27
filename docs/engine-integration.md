@@ -56,6 +56,16 @@ the existing API lifespan. The separate `jev-sglang` launcher offers a startup
 integration path that installs the routes before invoking the upstream launcher.
 Neither path replaces a scheduler or modifies installed engine source files.
 
+SGLang 0.5.19 has a selected-logprob normalization incompatibility: its producer
+can return Python list rows while its consumers call `.tolist()` on every row.
+The plugin uses official BEFORE hooks on the two affected consumers to preserve
+host rows without changing tensor objects or numeric precision. Registration is
+restricted to 0.5.19, including build suffixes. An installed-upstream CPU
+reproduction and concurrent GPU serving passed at `533549a`; see the
+[failure, fix and evidence](lora-crash-recovery.md). A standalone HTTP gateway
+cannot repair an unmodified remote engine: mixed native/typed traffic on that
+version needs the engine-side plugin or a separately validated upstream fix.
+
 For SGLang 0.5.19 with multiple tokenizer workers, the parent plugin rewrites only
 the matching Uvicorn ASGI import target to `jev_sglang.worker:app` using a registered
 BEFORE hook. This installs the wrapper in every spawned worker before the host

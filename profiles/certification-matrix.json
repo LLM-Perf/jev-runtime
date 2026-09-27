@@ -537,6 +537,16 @@
         "native_cleanup_evidence": "evidence/dsw/sglang-native-quota-crash-0df49a1/cleanup.json",
         "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
         "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
+      },
+      "development_lora_crash_recovery": {
+        "status": "passed_scoped_native_process_group_checks",
+        "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+        "evidence": "evidence/dsw/sglang-lora-crash-533549a/lora-crash.json",
+        "lifecycle_recheck_evidence": "evidence/dsw/sglang-lora-crash-533549a/lifecycle.json",
+        "cleanup_evidence": "evidence/dsw/sglang-lora-crash-533549a/cleanup.json",
+        "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
+        "release_gate_passed": false,
+        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
       }
     },
     {
@@ -620,6 +630,16 @@
         "native_cleanup_evidence": "evidence/dsw/vllm-native-quota-crash-0df49a1/cleanup.json",
         "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
         "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
+      },
+      "development_lora_crash_recovery": {
+        "status": "passed_scoped_native_process_group_checks",
+        "source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+        "evidence": "evidence/dsw/vllm-lora-crash-5176a82/lora-crash.json",
+        "lifecycle_recheck_evidence": "evidence/dsw/vllm-lora-crash-5176a82/lifecycle.json",
+        "cleanup_evidence": "evidence/dsw/vllm-lora-crash-5176a82/cleanup.json",
+        "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
+        "release_gate_passed": false,
+        "scope": "Frozen SmolLM2 BF16 TP1/PP1/DP1 API1 eager, READY synthetic LoRA scoring during full native group SIGKILL; explicit quarantine/recovery/reload/canary/generation checks and lifecycle recheck; not load/unload interruption, worker-only, hardware, database, multi-node, quality, performance or soak certification"
       }
     }
   ],

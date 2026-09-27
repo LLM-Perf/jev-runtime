@@ -1,0 +1,656 @@
+{
+  "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+  "qualification": "Concurrent native/typed request lifetimes; not batch-composition or performance certification",
+  "process": {
+    "identity": {
+      "pid": 2621810,
+      "start_ticks": "427529057",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18794",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--enable-lora",
+      "--max-lora-rank",
+      "64",
+      "--max-loaded-loras",
+      "4",
+      "--max-loras-per-batch",
+      "4",
+      "--lora-target-modules",
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "7"
+    },
+    "created": 1790519751.2395685,
+    "port": 18794,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "started_at": 1790519836.9103794,
+  "decisions": [
+    {
+      "started_at": 1790519837.0987582,
+      "finished_at": 1790519837.1870227,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-fe064dd9a18f4a4ab97ee5eef46c73c2",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.5312093733737563,
+              "false": 0.46879062662624377
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9112441060390422,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 36
+        },
+        "latency_ms": 82.58616551756859
+      }
+    },
+    {
+      "started_at": 1790519837.1870625,
+      "finished_at": 1790519837.2901716,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-5f2887a998c94c929584a22df14955d2",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "abstained",
+            "value": null,
+            "probabilities": {
+              "true": 0.5,
+              "false": 0.5
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9135255166828186,
+            "calibration_status": "uncalibrated",
+            "abstained": true,
+            "reason": "tie",
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 99.10786151885986
+      }
+    },
+    {
+      "started_at": 1790519837.2901978,
+      "finished_at": 1790519837.3854742,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-eac0e6b432eb477685b8308a2c7239ec",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": false,
+            "probabilities": {
+              "true": 0.46879062662624377,
+              "false": 0.5312093733737563
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9083337108295295,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 91.3556320592761
+      }
+    },
+    {
+      "started_at": 1790519837.3855014,
+      "finished_at": 1790519837.4798777,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-a8efe593eaa9457c9d19033c4dfa2b34",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": false,
+            "probabilities": {
+              "true": 0.46879062662624377,
+              "false": 0.5312093733737563
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.8975819054168617,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 90.19496198743582
+      }
+    },
+    {
+      "started_at": 1790519837.47991,
+      "finished_at": 1790519837.5773268,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-15d4040a9f4947f08c7f305c6affa88c",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": false,
+            "probabilities": {
+              "true": 0.46879062662624377,
+              "false": 0.5312093733737563
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9011284569830331,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 93.24734844267368
+      }
+    },
+    {
+      "started_at": 1790519837.5773559,
+      "finished_at": 1790519837.6708903,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-c80034e4a2814ac7a9e8a6781ae3ea64",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "abstained",
+            "value": null,
+            "probabilities": {
+              "true": 0.5,
+              "false": 0.5
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.903764181467542,
+            "calibration_status": "uncalibrated",
+            "abstained": true,
+            "reason": "tie",
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 89.28752597421408
+      }
+    },
+    {
+      "started_at": 1790519837.670917,
+      "finished_at": 1790519837.7662568,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-ad2d0b3f78b5480a90ee476ab3bd5673",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "abstained",
+            "value": null,
+            "probabilities": {
+              "true": 0.5,
+              "false": 0.5
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9077718647425463,
+            "calibration_status": "uncalibrated",
+            "abstained": true,
+            "reason": "tie",
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 91.45093243569136
+      }
+    },
+    {
+      "started_at": 1790519837.7662833,
+      "finished_at": 1790519837.8539712,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-9fdaa53709b04726a66305e260ea644b",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.5312093733737563,
+              "false": 0.46879062662624377
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.8980551310684245,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 83.70380010455847
+      }
+    },
+    {
+      "started_at": 1790519837.853999,
+      "finished_at": 1790519837.9363596,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-634da47324e64cedb14b308703eb97eb",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "abstained",
+            "value": null,
+            "probabilities": {
+              "true": 0.5,
+              "false": 0.5
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.8932804255171068,
+            "calibration_status": "uncalibrated",
+            "abstained": true,
+            "reason": "tie",
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 78.25141306966543
+      }
+    },
+    {
+      "started_at": 1790519837.9363863,
+      "finished_at": 1790519838.018934,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-4a1ce2ad2f2d4c09be2dda78c62b5f19",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": false,
+            "probabilities": {
+              "true": 0.46879062662624377,
+              "false": 0.5312093733737563
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.897940320296544,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 93,
+          "engine_prompt_tokens": 93,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 54
+        },
+        "latency_ms": 78.39158549904823
+      }
+    },
+    {
+      "started_at": 1790519838.0189612,
+      "finished_at": 1790519838.1009226,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-a070ae12efed440ca5e176b0b3853fb4",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.5312093733737563,
+              "false": 0.46879062662624377
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9049962231436213,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 94,
+          "engine_prompt_tokens": 94,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 55
+        },
+        "latency_ms": 77.85593904554844
+      }
+    },
+    {
+      "started_at": 1790519838.100951,
+      "finished_at": 1790519838.184835,
+      "native_pending_before": true,
+      "native_pending_after": true,
+      "response": {
+        "request_id": "dec-2c2552a3155c4cc78c25d0cb9a377d6e",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:9dbd1c5c1adf9d07f6735f3dbc000f4b7e7c3b32f4873449c4820fbccf20182c",
+        "generation": 1,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "q0": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.5312093733737563,
+              "false": 0.46879062662624377
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9062463820518347,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 1,
+          "successful_questions": 1,
+          "scoring_sequences": 1,
+          "logical_prompt_tokens": 94,
+          "engine_prompt_tokens": 94,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 55
+        },
+        "latency_ms": 79.82232142239809
+      }
+    }
+  ],
+  "native_first_token_at": 1790519837.088543,
+  "native_finished_at": 1790519852.8782814,
+  "native_final_meta": {
+    "id": "7090e6228dd84158869d46d8fc9e99df",
+    "finish_reason": {
+      "type": "length",
+      "length": 512
+    },
+    "prompt_tokens": 7,
+    "weight_version": "default",
+    "num_retractions": 0,
+    "reasoning_tokens": 0,
+    "completion_tokens": 512,
+    "cached_tokens": 0,
+    "weight_versions": [
+      {
+        "version": "default",
+        "start": 0,
+        "end": 512
+      }
+    ],
+    "cached_tokens_details": null,
+    "dp_rank": null,
+    "e2e_latency": 15.861635570414364
+  },
+  "decisions_completed_during_native_stream": 12,
+  "passed": true,
+  "finished_at": 1790519852.8783073
+}

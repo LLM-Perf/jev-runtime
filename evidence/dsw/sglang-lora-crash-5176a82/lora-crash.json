@@ -1,0 +1,219 @@
+{
+  "source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+  "runtime_source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+  "qualification": "Colocated SmolLM2 BF16 TP1 API1 native process-group SIGKILL, LoRA quarantine/reconciliation; not hardware, worker-only or load/quality certification",
+  "started_at": 1790518973.8543494,
+  "engine": "sglang",
+  "process_record_before": {
+    "identity": {
+      "pid": 2620273,
+      "start_ticks": "427451271",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18794",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--enable-lora",
+      "--max-lora-rank",
+      "64",
+      "--max-loaded-loras",
+      "4",
+      "--max-loras-per-batch",
+      "4",
+      "--lora-target-modules",
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790518973.3782938,
+    "port": 18794,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "fixture": {
+    "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+    "base_model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "seed": 20260927,
+    "artifacts": {
+      "positive": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+      },
+      "negative": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+      }
+    }
+  },
+  "probability_tolerance": 0.0001,
+  "checks": {
+    "ready_before": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "cf068bca7f684007b6e97c08a0fd5040"
+    },
+    "profile_before": {
+      "worker_id": "cf068bca7f684007b6e97c08a0fd5040",
+      "model": {
+        "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+        "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+        "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "tokenizer_implementation_verified": true,
+      "engine_identity_verified": false,
+      "capabilities": {
+        "engine": "sglang",
+        "version": "0.5.19",
+        "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "max_label_tokens": 128,
+        "max_context_tokens": 2048,
+        "selected_logprobs": true,
+        "raw_logprobs": true,
+        "cancellation": true,
+        "lora": true,
+        "prefix_cache": true,
+        "api_workers": null,
+        "verified": false
+      },
+      "compiler": {
+        "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+        "copied_from_host_pool": false,
+        "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+        "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+        "backend_class": "tokenizers.Tokenizer",
+        "cache_token_limit": 262144,
+        "cache_entry_limit": 256,
+        "continuation_encoder": "backend-ids-only",
+        "backend_ids_only_eligible": true,
+        "batch_size_limit": 32,
+        "contract": "full prompt plus each label; exact prefix and one-token checks"
+      },
+      "admission": {
+        "scope": "shared_registry_engine",
+        "limits": {
+          "max_requests": 2,
+          "max_tokens": 262144,
+          "max_queue": 4,
+          "max_tenant_requests": 2,
+          "max_tenant_tokens": 262144,
+          "max_tenant_queue": 2,
+          "max_branches": 129,
+          "max_tenant_branches": 129
+        },
+        "requests": 0,
+        "expanded_tokens": 0,
+        "expanded_branches": 0,
+        "queued_requests": 0
+      }
+    }
+  },
+  "attempts": [
+    {
+      "path": "admin/profile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "passed": false,
+  "failure": {
+    "type": "RemoteProtocolError",
+    "message": "Server disconnected without sending a response."
+  },
+  "finished_at": 1790519095.0020666
+}

@@ -626,11 +626,14 @@
       "actual_deliverables": [
         "src/jev_runtime/adapters.py",
         "docs/adapters.md",
-        "profiles/lora-lifecycle.json"
+        "profiles/lora-lifecycle.json",
+        "tests/integration/live_lora_crash.py",
+        "docs/lora-crash-recovery.md",
+        "evidence/dsw/lora-crash-validation-533549a.json"
       ],
       "progress_notes": [
         "Both engines passed the SmolLM2 BF16 TP1/API1 synthetic LoRA lifecycle/cache/cancel profile at febb5d8.",
-        "The exposed checkpoint scope is explicitly restricted; GPU crash-restart and other profiles are not certified."
+        "The exposed checkpoint scope remains restricted. Full native process-group crash/restart during READY-adapter scoring and post-restart lifecycle rechecks passed at 5176a82 (vLLM) and 533549a (SGLang). Interrupted load/unload, worker-only faults and other execution/model profiles remain unverified."
       ],
       "acceptance_complete": false
     },
@@ -727,11 +730,15 @@
       "original_status": "planned",
       "actual_deliverables": [
         "tests/integration",
-        "evidence/dsw"
+        "evidence/dsw",
+        "tests/integration/sglang_logprob_rows.py",
+        "tests/integration/live_sglang_mixed.py",
+        "docs/lora-crash-recovery.md"
       ],
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
-        "Controlled mixed long/short/chat loads and TP configurations remain."
+        "Controlled mixed long/short/chat loads and TP configurations remain.",
+        "At 533549a, SGLang 0.5.19 host-list logprob normalization is handled through version-scoped official hooks. Actual upstream CPU producer/consumer reproduction passes, as does a 512-token native SSE stream with 12/12 typed requests completed inside its lifetime. This is targeted coexistence evidence, not a controlled mixed-load or TP report; initial failed GPU attempt is retained."
       ],
       "acceptance_complete": false
     },
@@ -761,12 +768,16 @@
         "tests/integration/live_crash_recovery.py",
         "profiles/certification-matrix.json",
         "docs/fault-recovery.md",
-        "evidence/dsw/quota-crash-validation-0df49a1.json"
+        "evidence/dsw/quota-crash-validation-0df49a1.json",
+        "tests/integration/live_lora_crash.py",
+        "docs/lora-crash-recovery.md",
+        "evidence/dsw/lora-crash-validation-533549a.json"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
         "The controlled 24-hour soak is not run.",
-        "Both engines passed gateway and native API/GPU process-group crash/restart with durable shared quotas; all owned groups exited and GPU7 returned to 11,990 MiB free. This does not certify hardware errors, managed-LoRA restart, database I/O failures, multi-node recovery or the 24-hour soak."
+        "Both engines passed gateway and native API/GPU process-group crash/restart with durable shared quotas; all owned groups exited and GPU7 returned to 11,990 MiB free. These quota-only cases do not certify hardware errors, managed LoRA, database I/O failures, multi-node recovery or the 24-hour soak.",
+        "Separate managed-LoRA crash/restart checks passed at 5176a82 (vLLM) and 533549a (SGLang): 128 branches / 133,376 reserved tokens retained, quarantined adapters, paused routes, explicit recovery, fresh canaries/generations, zero reload/switch probability error, lifecycle recheck and complete process-group cleanup. The preserved pre-fix SGLang attempt failed before planned SIGKILL. Other fault phases and controlled 24-hour soak remain."
       ],
       "acceptance_complete": false
     },

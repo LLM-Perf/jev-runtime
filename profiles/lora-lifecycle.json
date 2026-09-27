@@ -66,7 +66,45 @@
       "cancel_then_unload": "passed",
       "business_quality": "not_evaluated",
       "controlled_performance": "not_evaluated",
-      "crash_restart_gpu_validation": "not_run; local registry restart tests pass"
+      "crash_restart_gpu_validation": "passed_scoped_native_process_group_recovery; see crash_recovery for exact source and limits",
+      "crash_recovery": {
+        "status": "passed",
+        "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+        "evidence": "evidence/dsw/sglang-lora-crash-533549a/lora-crash.json",
+        "cleanup_evidence": "evidence/dsw/sglang-lora-crash-533549a/cleanup.json",
+        "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
+        "scope": "SmolLM2 frozen profile, BF16 TP1/PP1/DP1 API1 eager, full native process-group SIGKILL during READY-adapter scoring; not load/unload interruption, worker-only or hardware faults, other configurations, quality, performance or soak certification",
+        "retained_branches": 128,
+        "retained_expanded_tokens": 133376,
+        "post_restart_switches": 24,
+        "max_probability_error_after_reload": 0.0,
+        "max_probability_error_after_switch": 0.0,
+        "first_response_is_cold_cache_claim": false,
+        "final_leases_and_tickets": 0,
+        "release_gate_passed": false
+      },
+      "lifecycle_rechecks": [
+        {
+          "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+          "status": "passed",
+          "evidence": "evidence/dsw/sglang-lora-crash-533549a/lifecycle.json",
+          "cleanup_evidence": "evidence/dsw/sglang-lora-crash-533549a/cleanup.json",
+          "alternating_switches": 24,
+          "reload_cycles": 6,
+          "inflight_questions": 128,
+          "max_probability_error_after_reload": 0.0,
+          "cancel_then_unload": "passed"
+        }
+      ],
+      "host_logprob_row_compatibility": {
+        "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+        "scope": "0.5.19, including build suffixes",
+        "cpu_evidence": "evidence/dsw/sglang-logprob-rows-533549a.json",
+        "mixed_serving_evidence": "evidence/dsw/sglang-lora-crash-533549a/mixed-native-typed.json",
+        "native_generated_tokens": 512,
+        "typed_requests_completed_during_native_stream": 12,
+        "scheduler_batch_composition_observed": false
+      }
     },
     {
       "engine": "vllm",
@@ -130,12 +168,42 @@
       "cancel_then_unload": "passed",
       "business_quality": "not_evaluated",
       "controlled_performance": "not_evaluated",
-      "crash_restart_gpu_validation": "not_run; local registry restart tests pass"
+      "crash_restart_gpu_validation": "passed_scoped_native_process_group_recovery; see crash_recovery for exact source and limits",
+      "crash_recovery": {
+        "status": "passed",
+        "source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+        "evidence": "evidence/dsw/vllm-lora-crash-5176a82/lora-crash.json",
+        "cleanup_evidence": "evidence/dsw/vllm-lora-crash-5176a82/cleanup.json",
+        "validation_evidence": "evidence/dsw/lora-crash-validation-533549a.json",
+        "scope": "SmolLM2 frozen profile, BF16 TP1/PP1/DP1 API1 eager, full native process-group SIGKILL during READY-adapter scoring; not load/unload interruption, worker-only or hardware faults, other configurations, quality, performance or soak certification",
+        "retained_branches": 128,
+        "retained_expanded_tokens": 133376,
+        "post_restart_switches": 24,
+        "max_probability_error_after_reload": 0.0,
+        "max_probability_error_after_switch": 0.0,
+        "first_response_is_cold_cache_claim": false,
+        "final_leases_and_tickets": 0,
+        "release_gate_passed": false
+      },
+      "lifecycle_rechecks": [
+        {
+          "source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+          "status": "passed",
+          "evidence": "evidence/dsw/vllm-lora-crash-5176a82/lifecycle.json",
+          "cleanup_evidence": "evidence/dsw/vllm-lora-crash-5176a82/cleanup.json",
+          "alternating_switches": 24,
+          "reload_cycles": 6,
+          "inflight_questions": 128,
+          "max_probability_error_after_reload": 0.0,
+          "cancel_then_unload": "passed"
+        }
+      ]
     }
   ],
   "preserved_failures": [
     "evidence/dsw/vllm-lora-67a6fbb.json",
     "evidence/dsw/sglang-lora-500b197.json",
-    "evidence/dsw/sglang-lora-c36d65d.json"
+    "evidence/dsw/sglang-lora-c36d65d.json",
+    "evidence/dsw/sglang-lora-crash-5176a82/lora-crash.json"
   ]
 }

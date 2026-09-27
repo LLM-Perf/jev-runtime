@@ -1,0 +1,35 @@
+{
+  "source_commit": "533549ad62ee785e12f0fd0fb3328f507c6a57e6",
+  "qualification": "Installed upstream CPU producer/consumer reproduction; not GPU load",
+  "sglang": "0.5.19",
+  "torch": "2.13.0+cu129",
+  "upstream_files_sha256": {
+    "/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/layers/logprob_processor.py": "9e0258d52dab060cd4c7065cd6bfa7e6dfe710c508e09b5351a4d5aefa3bac4d",
+    "/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler_components/batch_result_processor.py": "0f0a3d92603c58bc555969b4f01daf2796f5aac9f38ad5a7155455ef5ca3ed4a"
+  },
+  "cases": [
+    {
+      "method": "move_logprobs_to_cpu",
+      "unpatched_error": "'list' object has no attribute 'tolist'",
+      "exact_rows_after_hook": [
+        [
+          -0.12345678912345678,
+          -2.125
+        ],
+        []
+      ]
+    },
+    {
+      "method": "_normalize_decode_outputs",
+      "unpatched_error": "'list' object has no attribute 'tolist'",
+      "exact_rows_after_hook": [
+        [
+          -0.12345678912345678,
+          -2.125
+        ],
+        []
+      ]
+    }
+  ],
+  "passed": true
+}

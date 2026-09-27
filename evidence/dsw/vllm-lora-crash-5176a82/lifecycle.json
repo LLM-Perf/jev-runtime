@@ -1,0 +1,1007 @@
+{
+  "source_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+  "runtime_commit": "5176a829ce7205995008fbc0e2c637843c115c62",
+  "started_at": 1790518918.4064217,
+  "qualification": "colocated BF16 TP1 single-frontend untrained-LoRA functional evidence",
+  "process": {
+    "identity": {
+      "pid": 2619304,
+      "start_ticks": "427436317",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "vllm",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/vllm/bin/vllm",
+      "serve",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "2048",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "512",
+      "--max-logprobs",
+      "128",
+      "--gpu-memory-utilization",
+      "0.07",
+      "--enforce-eager",
+      "--enable-lora",
+      "--max-loras",
+      "2",
+      "--max-cpu-loras",
+      "4",
+      "--max-lora-rank",
+      "64",
+      "--worker-extension-cls",
+      "jev_vllm.worker.LoRAWorkerExtension"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "8"
+    },
+    "created": 1790518823.8382561,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "total_mib"
+  },
+  "fixture": {
+    "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+    "base_model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "seed": 20260927,
+    "artifacts": {
+      "positive": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+      },
+      "negative": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+      }
+    }
+  },
+  "probability_tolerance": 0.0001,
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "3d78f8dda4404ef4b40342fe82339ab3"
+    },
+    "immutable_bindings": [
+      {
+        "reference": "lora-c6901fc061c1-negative@sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+        "state": "READY",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-c6901fc061c1-negative",
+            "revision": "sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-lora-crash-5176a82/adapters/66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-2133d7c2b27a4d0b8e593e2434425428",
+          "engine_id": 2081936282
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      },
+      {
+        "reference": "lora-c6901fc061c1-positive@sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+        "state": "READY",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-c6901fc061c1-positive",
+            "revision": "sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-lora-crash-5176a82/adapters/b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-b0bcbbbe69cd4126aa86481b7636a5bf",
+          "engine_id": 198329059
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      },
+      {
+        "reference": "lora-crash-985b682c7f94-negative@sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+        "state": "UNLOADED",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-crash-985b682c7f94-negative",
+            "revision": "sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-lora-crash-5176a82/adapters/66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-5bd15bd078c049ae99fa1203b24d26cf",
+          "engine_id": 387282226
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": [
+          "lora-crash-985b682c7f94@3"
+        ]
+      },
+      {
+        "reference": "lora-crash-985b682c7f94-positive@sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+        "state": "UNLOADED",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-crash-985b682c7f94-positive",
+            "revision": "sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/vllm-lora-crash-5176a82/adapters/b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-bca4c2bcf6e44281a6aa5e94da99b978",
+          "engine_id": 865605172
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": [
+          "lora-crash-985b682c7f94@2"
+        ]
+      }
+    ],
+    "distinct_nonzero_adapter_outputs": [
+      {
+        "true": 0.6513548511303336,
+        "false": 0.3486451488696663
+      },
+      {
+        "true": 0.5312093733737563,
+        "false": 0.46879062662624377
+      },
+      {
+        "true": 0.4073334000459302,
+        "false": 0.5926665999540697
+      }
+    ],
+    "alternating_cache_isolation": {
+      "switches": 24,
+      "max_probability_error": 0.0,
+      "cache_observations": [
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@1",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@2",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-c6901fc061c1@3",
+          "cached_prompt_tokens": 80,
+          "logical_prompt_tokens": 91
+        }
+      ]
+    },
+    "old_request_journal": {
+      "lease_id": "a522bc86ff624a13935099ca9fe90680",
+      "branches": 128
+    },
+    "inflight_switch_and_drain": {
+      "old_bundle": "lora-c6901fc061c1@2",
+      "questions": 128,
+      "new_bundle": "lora-c6901fc061c1@3",
+      "premature_unload_status": 409
+    },
+    "cancel_journal": {
+      "lease_id": "780d630371784696b2fdd1f0872f60b1",
+      "branches": 128
+    },
+    "cancel_then_gpu_unload": true,
+    "reload_and_rollback": {
+      "cycles": 6,
+      "max_probability_error": 0.0
+    },
+    "raw_adapter_bypass_refused": true,
+    "cleanup_completed": true
+  },
+  "attempts": [
+    {
+      "path": "ready",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/profile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/requests/lora-inflight-ae97c790f83c4402bbe412a19cedcdee/cancel",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/compile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/scores",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "path": "admin/bundles/disable",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "passed": true,
+  "finished_at": 1790518928.5330255
+}

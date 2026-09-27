@@ -1,0 +1,66 @@
+{
+  "qualification": "Natural SGLang crash before planned SIGKILL; preserved failed attempt",
+  "engine_source_commit": "0bcd822377da7b5718e674eaf9c870d349424dd1",
+  "stack": [
+    "[2026-09-27 14:24:49] Scheduler hit an exception: Traceback (most recent call last):",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 5600, in run_scheduler_process",
+    "    scheduler.run_event_loop()",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 1792, in run_event_loop",
+    "    dispatch_event_loop(self)",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 5446, in dispatch_event_loop",
+    "    scheduler.event_loop_overlap()",
+    "  File \"/root/jev-runtime/envs/sglang/lib/python3.12/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context",
+    "    return func(*args, **kwargs)",
+    "           ^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 1901, in event_loop_overlap",
+    "    pop_and_process()",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 1852, in pop_and_process",
+    "    self.process_batch_result(tmp_batch, tmp_result)",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/utils/nvtx_utils.py\", line 109, in wrapper",
+    "    return func(*args, **kwargs)",
+    "           ^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler.py\", line 4375, in process_batch_result",
+    "    self.batch_result_processor.process_batch_result_decode(batch, result)",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler_components/batch_result_processor.py\", line 900, in process_batch_result_decode",
+    "    next_token_ids, next_token_logprobs = self._normalize_decode_outputs(",
+    "                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/root/jev-runtime/sources/sglang-v0.5.19/python/sglang/srt/managers/scheduler_components/batch_result_processor.py\", line 1053, in _normalize_decode_outputs",
+    "    v.tolist() for v in logits_output.next_token_token_ids_logprobs_val",
+    "    ^^^^^^^^",
+    "AttributeError: 'list' object has no attribute 'tolist'"
+  ],
+  "registry_after_engine_exit": {
+    "adapters": [
+      {
+        "reference": "lora-crash-fdc9549169dd-positive@sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+        "state": "READY",
+        "error": null
+      },
+      {
+        "reference": "lora-crash-fdc9549169dd-negative@sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+        "state": "READY",
+        "error": null
+      }
+    ],
+    "bundles": [
+      {
+        "reference": "default@1",
+        "state": "ACTIVE"
+      },
+      {
+        "reference": "lora-crash-fdc9549169dd@1",
+        "state": "ACTIVE"
+      },
+      {
+        "reference": "lora-crash-fdc9549169dd@2",
+        "state": "PREPARING"
+      }
+    ],
+    "leases": [
+      {
+        "request_id": "prepare-7a33857438684a5e855224854547504c",
+        "reference": "lora-crash-fdc9549169dd@2"
+      }
+    ]
+  }
+}

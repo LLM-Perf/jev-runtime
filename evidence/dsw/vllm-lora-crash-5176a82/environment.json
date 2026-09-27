@@ -1,0 +1,13 @@
+{
+  "python": "3.12.11 (main, Nov  6 2025, 02:27:35) [GCC 13.3.0]",
+  "executable": "/root/jev-runtime/envs/vllm/bin/python",
+  "modules": {
+    "jev_runtime": "/root/jev-runtime/releases/5176a829ce7205995008fbc0e2c637843c115c62/src/jev_runtime/__init__.py",
+    "jev_vllm": "/root/jev-runtime/releases/5176a829ce7205995008fbc0e2c637843c115c62/packages/vllm/src/jev_vllm/__init__.py"
+  },
+  "versions": {
+    "vllm": "0.30.0+cu129",
+    "torch": "2.13.0+cu129",
+    "transformers": "5.17.0"
+  }
+}

@@ -220,6 +220,33 @@ replacement for any requirement in `implementation-plan.md`.
   faults, database I/O failure, managed-LoRA restart, multi-node failover, a 24h soak
   or a performance gate. The distinct model/engine denominator remains 6/40.
 
+- Managed-LoRA crash/restart passed at `5176a82` on vLLM and `533549a` on
+  SGLang with the frozen SmolLM2 BF16 TP1/API1 eager profile. Each test killed the
+  recorded full native process group during a 128-branch adapter request and
+  verified 133,376 reserved expanded tokens remained after restart. Adapter
+  residency became UNKNOWN, adapter routes paused, and explicit request recovery,
+  reconciliation, fresh canaries and current generations were required. First and
+  warm reload responses and 24 post-restart switches had zero probability error.
+  A separate lifecycle recheck on each restarted engine passed 24 switches,
+  old-request drain, cancellation/fenced unload and six reload/rollback cycles.
+  Passing registries ended with four UNLOADED adapters and zero leases/tickets.
+  All task-owned process groups exited; GPU7 returned to 11,990 MiB free.
+  The first SGLang run failed before planned SIGKILL: upstream selected-logprob
+  normalization called `.tolist()` on a Python list row. Its diagnostics and one
+  retained preparation lease remain in the stopped failed attempt. The plugin now
+  uses version-scoped official hooks for SGLang 0.5.19, preserving values and tensor
+  objects without editing installed engine source. Actual upstream CPU reproduction
+  passed for both affected consumers. A native 512-token SSE stream also completed
+  with 12/12 typed requests wholly inside its lifetime; scheduler batch composition
+  was not observed. Local validation at `533549a` passed 225 Python tests,
+  lint/format and all three wheels with verified Python contents. TypeScript was
+  unchanged and its prior 62 tests were not rerun. Core/vLLM/deployment sources are
+  identical between these tested revisions, while the SGLang plugin changed.
+  See [the LoRA crash report](lora-crash-recovery.md) and
+  `evidence/dsw/lora-crash-validation-533549a.json`. Interrupted GPU load/unload,
+  worker-only faults, other profiles, controlled performance and the 24h soak
+  remain unverified. The functional denominator stays 6/40.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
@@ -233,8 +260,8 @@ replacement for any requirement in `implementation-plan.md`.
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
-| 24h soak and fault injection | Gateway and native API/GPU process-group quota recovery passed on both engines; soak not run | Database/LoRA/other fault profiles and complete 24h evidence |
-| LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 profile | GPU crash/restart checks; further profiles require separate evidence |
+| 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
+| LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |

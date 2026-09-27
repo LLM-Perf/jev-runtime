@@ -107,3 +107,13 @@ surviving publication, rejected premature unload, cancellation/drain and six
 reload/rollback cycles. It retains a report on failures. These tests establish
 lifecycle behavior for the tested configuration; they do not establish business
 accuracy, LoRA training quality or controlled performance.
+
+`live_lora_crash.py` also passed on both native engines with this same frozen
+profile: it kills the recorded complete engine process group during a 128-branch
+adapter request, verifies retained quotas and quarantined residency after restart,
+then requires explicit recovery, new canaries and current route generations.
+Both first and warm reload outputs matched their pre-crash baselines, followed by
+24 switches and a separate full lifecycle recheck. SGLang required a version-scoped
+host-logprob-row compatibility hook; the initial failed attempt remains preserved.
+See [the crash/recovery report](lora-crash-recovery.md) for source identities,
+cleanup, evidence and remaining fault/configuration coverage.

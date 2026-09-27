@@ -12,12 +12,18 @@ BF16, TP=1 and eager execution. Check the evidence files for
 the exact source commit: these are development snapshots, not a certification of
 every later commit. Config switches have been tested. Managed LoRA swaps also
 passed a scoped, frozen SmolLM2 BF16 TP1/API1 profile on both native engines at
-`febb5d8`; see [adapter operations and limits](adapters.md). Other checkpoints and
+`febb5d8`; scoped crash/restart and lifecycle rechecks also passed at `5176a82`
+(vLLM) and `533549a` (SGLang), as detailed in the
+[LoRA recovery report](lora-crash-recovery.md). See
+[adapter operations and limits](adapters.md). Other checkpoints and
 parallel configurations are not certified for managed LoRA.
 
 For the R550 test host, `deployment/install_sglang_cu129.sh` uses the official
 0.5.19 CUDA 12 dependency substitutions and records the source revision and patch.
-The plugin itself does not patch the engine. This environment omits optional Rust
+The plugin does not modify installed engine source files. It uses the official
+hook registry, including a version-scoped SGLang 0.5.19 host-logprob-row
+compatibility hook described in [engine integration](engine-integration.md).
+This environment omits optional Rust
 extensions. SGLang 0.5.20/CUDA 13 requires a separate compatible-host certification.
 
 ## Keys, tenants and limits

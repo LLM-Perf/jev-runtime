@@ -1,0 +1,59 @@
+{
+  "identity": {
+    "pid": 2619304,
+    "start_ticks": "427436317",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager",
+    "--enable-lora",
+    "--max-loras",
+    "2",
+    "--max-cpu-loras",
+    "4",
+    "--max-lora-rank",
+    "64",
+    "--worker-extension-cls",
+    "jev_vllm.worker.LoRAWorkerExtension"
+  ],
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "gpu_before": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "8"
+  },
+  "created": 1790518823.8382561,
+  "port": 18795,
+  "qualification": "colocated-functional-test",
+  "memory_budget_denominator": "total_mib"
+}
