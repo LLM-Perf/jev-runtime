@@ -43,6 +43,14 @@ def main(args):
         "qualification": "Colocated rollout functional test; no performance certification",
         "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
+    releases = {
+        "blue": args.blue_release or args.source_commit,
+        "green": args.green_release or args.source_commit,
+    }
+    interpreters = {"blue": args.blue_python, "green": args.green_python}
+    if any(interpreters.values()) and (not all(interpreters.values()) or not args.engine_run_dir):
+        raise ValueError("Installed-wheel mode requires both interpreters and a native engine")
+    report["slot_releases"] = releases
     keys = {"api": secrets.token_urlsafe(32), "admin": secrets.token_urlsafe(32)}
     write_json(root / "keys.json", keys)
     env = {**os.environ, "JEV_API_KEY": keys["api"], "JEV_ADMIN_KEY": keys["admin"]}
@@ -61,6 +69,7 @@ def main(args):
             "api"
         ]
     records, stop_traffic, traffic, tasks = [], threading.Event(), [], []
+    partial = None
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     checks = report["checks"]
     front, blue, green = args.port, args.port + 1, args.port + 2
@@ -117,7 +126,7 @@ def main(args):
     def switch(slot):
         state = controller.status()["state"]
         return controller.switch(
-            slot, state["generation"], uuid.uuid4().hex, slot + "-test", args.source_commit, body
+            slot, state["generation"], uuid.uuid4().hex, slot + "-test", releases[slot], body
         )
 
     def traffic_loop():
@@ -150,7 +159,7 @@ def main(args):
                 "workers": 2,
                 "registry_path": str(root / "registry.db"),
                 "deployment_id": name + "-test",
-                "release_id": args.source_commit,
+                "release_id": releases[name],
                 "tenant_key_envs": {},
             }
             path = root / f"{name}.json"
@@ -160,10 +169,25 @@ def main(args):
                 if args.engine_run_dir is None
                 else ("jev_runtime.api:create_app_from_env")
             )
+            interpreter = str(interpreters[name] or sys.executable)
+            isolation = ["-I"] if interpreters[name] else []
+            if interpreters[name]:
+                audit = (
+                    "import hashlib,json,pathlib,jev_runtime; "
+                    "p=pathlib.Path(jev_runtime.__file__).parent; "
+                    "print(json.dumps({'path':str(p),'files':{str(f.relative_to(p)):"
+                    "hashlib.sha256(f.read_bytes()).hexdigest() for f in p.rglob('*.py')}}))"
+                )
+                installed = json.loads(subprocess.check_output([interpreter, "-I", "-c", audit]))
+                assert "/site-packages/" in installed["path"], (
+                    "Gateway must import its installed wheel"
+                )
+                report.setdefault("installed_code", {})[name] = installed
             process = launch(
                 name,
                 [
-                    sys.executable,
+                    interpreter,
+                    *isolation,
                     "-m",
                     "uvicorn",
                     factory,
@@ -290,7 +314,7 @@ def main(args):
                 state["generation"],
                 "interrupted",
                 target + "-test",
-                args.source_commit,
+                releases[target],
                 body,
                 checkpoint=interrupt,
             )
@@ -308,6 +332,8 @@ def main(args):
         raise
     finally:
         stop_traffic.set()
+        if partial is not None:
+            partial.close()
         for task in tasks:
             task.result(timeout=150)
         pool.shutdown(wait=True)
@@ -319,7 +345,12 @@ def main(args):
             identity = record["identity"]
             if process_identity(identity["pid"]) == identity:
                 os.killpg(identity["pid"], signal.SIGTERM)
-            process.wait(timeout=60)
+            try:
+                process.wait(timeout=60)
+            except subprocess.TimeoutExpired:
+                # Keep an unconfirmed group recorded; never silently force-kill
+                # it or omit cleanup evidence for the remaining groups.
+                report["passed"] = False
             remaining = group_members(identity["pid"])
             report["cleanup"].append(
                 {"name": record["name"], "remaining": remaining, "returncode": process.returncode}
@@ -341,6 +372,10 @@ if __name__ == "__main__":
     parser.add_argument("--haproxy", required=True, type=Path)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--engine-run-dir", type=Path)
+    parser.add_argument("--blue-python", type=Path)
+    parser.add_argument("--green-python", type=Path)
+    parser.add_argument("--blue-release")
+    parser.add_argument("--green-release")
     parser.add_argument("--port", type=int, default=18800)
     parser.add_argument("--switches", type=int, default=10)
     raise SystemExit(main(parser.parse_args()))

@@ -103,8 +103,18 @@ class HAProxy:
             line.split(": ", 1) for line in self.command("show info").splitlines() if ": " in line
         )
         require(info.get("Nbthread") == "1", "Rollout drain requires one HAProxy event loop")
-        require(info.get("Version", "").startswith("3.2.24"), "Use qualified HAProxy 3.2.24")
-        return {key: info[key] for key in ("Pid", "Version", "Nbthread")}
+        require(
+            re.fullmatch(r"3\.2\.24(?:-[A-Za-z0-9]+)?", info.get("Version", "")),
+            "Use qualified HAProxy 3.2.24",
+        )
+        pid = int(info["Pid"])
+        fields = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        require(fields[0] != "Z", "HAProxy process has exited")
+        return {
+            **{key: info[key] for key in ("Pid", "Version", "Nbthread")},
+            "start_ticks": fields[19],
+            "boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+        }
 
     def outstanding(self, slot: str) -> dict:
         rows = list(csv.DictReader(io.StringIO(self.command("show stat").removeprefix("# "))))
@@ -449,6 +459,10 @@ class Rollout:
             write_json(self.directory / "state.json", state)
             checkpoint("intent")
             self.proxy.select(target)
+            require(
+                self.proxy.identity() == state["pending"]["proxy"],
+                "Proxy restarted during selection; reconcile the pending operation",
+            )
             checkpoint("runtime")
             atomic_write(self.directory / "active.map", f"active {target}\n")
             checkpoint("disk")

@@ -4,7 +4,7 @@ import json
 import httpx
 import pytest
 
-from jev_runtime.rollout import GatewayProbe, Rollout, RolloutError
+from jev_runtime.rollout import GatewayProbe, HAProxy, Rollout, RolloutError
 
 
 class Proxy:
@@ -274,3 +274,36 @@ def test_gateway_probe_requires_every_worker(monkeypatch, failure):
     else:
         assert probe.snapshot(19002)["workers"] == template["workers"]
         assert counter == 2
+
+
+def test_proxy_identity_includes_start_time_and_rejects_version_prefix(monkeypatch, tmp_path):
+    from pathlib import Path
+
+    proxy = HAProxy(tmp_path)
+    monkeypatch.setattr(proxy, "command", lambda _: "Nbthread: 1\nPid: 123\nVersion: 3.2.24-abc")
+    ticks = "999"
+    monkeypatch.setattr(
+        Path,
+        "read_text",
+        lambda path: (
+            "boot-test" if str(path).endswith("boot_id") else "123 (haproxy) S " + "0 " * 18 + ticks
+        ),
+    )
+    first = proxy.identity()
+    assert first["start_ticks"] == "999" and first["boot_id"] == "boot-test"
+    ticks = "1000"
+    assert proxy.identity() != first
+    monkeypatch.setattr(proxy, "command", lambda _: "Nbthread: 1\nPid: 123\nVersion: 3.2.240")
+    with pytest.raises(RolloutError, match="qualified"):
+        proxy.identity()
+
+
+def test_proxy_restart_during_switch_retains_pending_intent(controller):
+    before = controller.proxy.identity()
+    controller.proxy.identity = lambda: (
+        before if controller.proxy.calls == 0 else {**before, "Pid": "124"}
+    )
+    with pytest.raises(RolloutError, match="restarted during"):
+        change(controller)
+    assert controller.status()["state"]["pending"] is not None
+    assert controller.reconcile()["observed"] == "green"
