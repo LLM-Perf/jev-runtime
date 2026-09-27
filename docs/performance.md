@@ -8,9 +8,10 @@ bound **per applicable measurement method**; baselines, loading, warmup and the
 
 The paired runner currently covers native selected-label HTTP scoring and the
 configured typed plugin or gateway. For independent-candidate mode it dispatches
-the native branches serially and records that distinction. Structured generation,
-other Jev implementations, upstream decisions, open-loop saturation sweeps and
-full GPU/CPU telemetry collection remain separate outstanding work.
+the native branches serially and records that distinction. Optional structured
+JSON generation is also implemented for the joint-label choice fixture. Other Jev
+implementations, upstream decisions, open-loop saturation sweeps and full GPU/CPU
+telemetry collection remain separate outstanding work.
 
 The first colocated SmolLM2 development runs at runtime `5c4fcbe` and runner
 `ebec8b3` completed on both engines. SGLang recorded 202/202 native and 132/132
@@ -87,3 +88,38 @@ parity or cleanup failures. The temporary benchmark alias is disabled and retire
 when its work drains. A failed retirement is recorded and never forces deletion of
 a retained lease. Do not mix measurements from different source commits, engine
 flags, checkpoints or background-load conditions into a single performance claim.
+
+## Structured generation comparison
+
+Add `--structured-generation --generation-max-tokens 64` to the runner command.
+This opt-in lane uses the same task, ordered candidate IDs/descriptions and input
+text, with a JSON Schema constraining the output to `{"choice": "candidate_id"}`.
+The benchmark bundle explicitly sets `tie: first` for selected-choice comparisons;
+the serving default remains `tie: abstain`. Independent-candidate mode cannot be
+combined with this generation lane.
+
+The label fixture retains its exact requested L. The generation prompt has a
+different instruction and JSON format, so its actual length is reported separately,
+not forced to L by changing the shared input text. Before timing, the runner asks
+the same native engine to return actual prompt/output token IDs and checks their
+lengths against its usage report. The fixture preserves these IDs, the exact HTTP
+request body, task/input digest, and serving tokenizer implementation digest.
+Timed generation requests omit large token-ID arrays and check the fixed prompt
+count. Grammar compilation/preflight and per-method warmups are outside timing.
+Three methods rotate first position across three repeats.
+
+Every timed generation request must complete with `finish_reason: stop`, one
+assistant choice, exactly one JSON key, and a candidate from the frozen set.
+Duplicate keys, malformed JSON, tool calls and truncation fail even with HTTP 200;
+a parseable JSON object at `finish_reason: length` still fails. Missing usage is
+not fabricated from content length. Trustworthy generated-token/byte observations
+remain attached to failed attempts, and summaries report all-attempt and
+strict-success cost denominators separately. Native/typed scoring also record
+observed completion tokens. Cached-token observations remain optional and unknown
+when the engine does not supply them.
+
+The report counts selections matching the label-score reference separately from
+HTTP/contract success. That agreement is not accuracy against labels. This fixture
+is synthetic padding: a faster JSON or typed path does not establish equivalent
+business quality, calibrated confidence or an overall product speedup. The held-out
+quality gate and controlled 144-scenario performance gate remain outstanding.

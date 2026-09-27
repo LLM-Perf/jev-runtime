@@ -21,7 +21,13 @@ class Measurement(Contract):
     scoring_sequences: int = Field(ge=1)
     logical_prompt_tokens: int = Field(ge=0)
     engine_prompt_tokens: int | None = Field(default=None, ge=0)
+    engine_completion_tokens: int | None = Field(default=None, ge=0, strict=True)
     cached_prompt_tokens: int | None = Field(default=None, ge=0)
+    response_content_bytes: int | None = Field(default=None, ge=0, strict=True)
+    finish_reason: str | None = Field(default=None, max_length=64)
+    selected_candidate: str | None = Field(default=None, min_length=1, max_length=128)
+    abstained: bool | None = Field(default=None, strict=True)
+    selected_candidate_matches_reference: bool | None = Field(default=None, strict=True)
     error_code: str | None = None
     http_status: int | None = None
 
@@ -35,6 +41,12 @@ class Measurement(Contract):
         partial = 0 < self.successful_questions < self.questions
         if (self.outcome == "completed") != complete or (self.outcome == "partial") != partial:
             raise ValueError("Outcome disagrees with strict question accounting")
+        if self.abstained is True and self.selected_candidate is not None:
+            raise ValueError("Abstentions cannot contain a selected candidate")
+        if self.selected_candidate_matches_reference is not None and (
+            self.selected_candidate is None or self.outcome != "completed"
+        ):
+            raise ValueError("Reference agreement requires a completed selected candidate")
         if (
             self.cached_prompt_tokens is not None
             and self.engine_prompt_tokens is not None
@@ -55,6 +67,22 @@ def _latencies(rows: list[Measurement]) -> dict:
         "p99_ms": float(np.percentile(values, 99)) if len(values) >= 10000 else None,
         "p99_minimum_samples": 10000,
         "statistics": "descriptive, not confidence intervals",
+    }
+
+
+def _generation_cost(rows: list[Measurement]) -> dict:
+    observed = [
+        row.engine_completion_tokens for row in rows if row.engine_completion_tokens is not None
+    ]
+    content = [row.response_content_bytes for row in rows if row.response_content_bytes is not None]
+    return {
+        "request_denominator": len(rows),
+        "requests_with_observed_completion_tokens": len(observed),
+        "observed_completion_tokens": sum(observed),
+        "full_cohort_completion_tokens": sum(observed) if len(observed) == len(rows) else None,
+        "requests_with_observed_content_bytes": len(content),
+        "observed_content_bytes": sum(content),
+        "finish_reasons": dict(Counter(row.finish_reason or "unknown" for row in rows)),
     }
 
 
@@ -80,6 +108,7 @@ def summarize_cohort(
     observed_prompt = sum(row.engine_prompt_tokens for row in observed_cache)
     observed_cached = sum(row.cached_prompt_tokens for row in observed_cache)
     observed_ratio = observed_cached / observed_prompt if observed_prompt else None
+    compared = [row for row in completed if row.selected_candidate_matches_reference is not None]
     return {
         "dispatched_requests": len(rows),
         "strict_success_requests": len(completed),
@@ -101,6 +130,30 @@ def summarize_cohort(
             Counter(row.error_code or "unspecified" for row in rows if row.outcome != "completed")
         ),
         "http_statuses": dict(Counter(str(row.http_status) for row in rows)),
+        "output_cost": {
+            "all_attempts": _generation_cost(rows),
+            "strict_successes": _generation_cost(completed),
+        },
+        "decision_outputs": {
+            "strict_success_denominator": len(completed),
+            "requests_with_selected_candidate": sum(
+                row.selected_candidate is not None for row in completed
+            ),
+            "candidate_counts": dict(
+                Counter(
+                    row.selected_candidate
+                    for row in completed
+                    if row.selected_candidate is not None
+                )
+            ),
+            "abstained_requests": sum(row.abstained is True for row in completed),
+            "requests_with_abstention_status": sum(row.abstained is not None for row in completed),
+            "reference_comparison_denominator": len(compared),
+            "matches_label_reference": sum(
+                row.selected_candidate_matches_reference is True for row in compared
+            ),
+            "qualification": "agreement with a readout reference, not accuracy against labels",
+        },
         "cache": {
             "scope": "strictly successful requests in this cohort",
             "requests_with_observed_tokens": len(observed_cache),

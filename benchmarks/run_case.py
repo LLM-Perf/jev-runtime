@@ -22,6 +22,11 @@ from jev_runtime.backends.base import ScoreInput, ScoreResult
 from jev_runtime.backends.sglang import generate_payload, parse_sglang
 from jev_runtime.compiler import CompiledQuestion
 from jev_runtime.config import load_settings
+from jev_runtime.generation_baseline import (
+    InvalidBenchmarkResponse,
+    generation_request,
+    parse_generation,
+)
 from jev_runtime.performance import Measurement, summarize_cohort
 from jev_runtime.schema import (
     Bundle,
@@ -32,11 +37,6 @@ from jev_runtime.schema import (
     content_digest,
 )
 from jev_runtime.scoring import assemble
-
-
-class InvalidResponse(Exception):
-    def __init__(self, http_status: int):
-        self.http_status = http_status
 
 
 def parse_native(engine: str, response: httpx.Response, item: ScoreInput) -> dict:
@@ -55,6 +55,7 @@ def parse_native(engine: str, response: httpx.Response, item: ScoreInput) -> dic
             result = {
                 "logprobs": [distributions[0][f"token_id:{token}"] for token in item.label_ids],
                 "prompt_tokens": body["usage"]["prompt_tokens"],
+                "completion_tokens": body["usage"]["completion_tokens"],
                 "cached_tokens": details.get("cached_tokens"),
             }
         assert len(result["logprobs"]) == len(item.label_ids)
@@ -62,7 +63,7 @@ def parse_native(engine: str, response: httpx.Response, item: ScoreInput) -> dic
         assert math.fsum(math.exp(value) for value in result["logprobs"]) <= 1.0001
         return result
     except Exception as exc:
-        raise InvalidResponse(response.status_code) from exc
+        raise InvalidBenchmarkResponse(response.status_code) from exc
 
 
 async def measure(
@@ -97,8 +98,9 @@ async def measure(
                     values.update(await call(request_id))
             except httpx.HTTPStatusError as exc:
                 values.update(http_status=exc.response.status_code, error_code="http_error")
-            except InvalidResponse as exc:
-                values.update(http_status=exc.http_status, error_code="invalid_response_contract")
+            except InvalidBenchmarkResponse as exc:
+                values.update(exc.observations)
+                values.update(http_status=exc.http_status, error_code=exc.code)
             except Exception as exc:
                 values.update(error_code=type(exc).__name__)
             values["finished_ms"] = (time.perf_counter() - started) * 1000
@@ -110,6 +112,8 @@ async def measure(
 
 
 async def run(args):
+    if args.structured_generation and args.scoring_mode != "joint-label":
+        raise ValueError("The generation comparison currently uses the joint-label choice fixture")
     if args.output.exists():
         raise ValueError("Output exists; retain previous attempts and choose a new directory")
     args.output.mkdir(parents=True)
@@ -136,6 +140,7 @@ async def run(args):
             "concurrency": args.concurrency,
             "cache": args.cache,
             "scoring_mode": args.scoring_mode,
+            "structured_generation": args.structured_generation,
         },
         "model": {"id": settings.model_id, "revision": settings.model_revision},
         "duration_seconds": args.duration,
@@ -213,7 +218,10 @@ async def run(args):
                 version=1,
                 model=model,
                 template=TemplateSpec(mode=args.scoring_mode),
-                policy=Policy(max_expanded_tokens=max(262144, args.context_tokens * 64)),
+                policy=Policy(
+                    max_expanded_tokens=max(262144, args.context_tokens * 64),
+                    tie="first" if args.structured_generation else "abstain",
+                ),
             )
             await manage("/admin/bundles", bundle.model_dump(mode="json"))
             async with asyncio.timeout(180):
@@ -276,6 +284,7 @@ async def run(args):
             report["sequence_lengths"] = fixture["sequence_lengths"]
             report["bundle_digest"] = bundle.digest
             report["tokenizer_implementation_digest"] = fixture["tokenizer_implementation_digest"]
+            reference_candidate = None
 
             async def native_branch(sequence, request_id):
                 item = ScoreInput(
@@ -321,12 +330,23 @@ async def run(args):
                         else None
                     )
 
+                selected = None
+                if args.structured_generation:
+                    scores = values[0]["logprobs"]
+                    selected = fixture["questions"][0]["keys"][
+                        max(range(len(scores)), key=scores.__getitem__)
+                    ]
                 return {
                     "outcome": "completed",
                     "successful_questions": 1,
                     "http_status": 200,
                     "engine_prompt_tokens": summed("prompt_tokens"),
+                    "engine_completion_tokens": summed("completion_tokens"),
                     "cached_prompt_tokens": summed("cached_tokens"),
+                    "selected_candidate": selected,
+                    "selected_candidate_matches_reference": (
+                        selected == reference_candidate if reference_candidate is not None else None
+                    ),
                 }
 
             async def typed_call(request_id):
@@ -343,13 +363,22 @@ async def run(args):
                     assert all(0 <= value <= 1 for value in probabilities.values())
                     assert abs(math.fsum(probabilities.values()) - 1) < 1e-6
                 except (ValueError, AssertionError, KeyError) as exc:
-                    raise InvalidResponse(response.status_code) from exc
+                    raise InvalidBenchmarkResponse(response.status_code) from exc
+                answer = result.answers["category"]
                 return {
                     "outcome": result.status,
                     "successful_questions": result.usage.successful_questions,
                     "http_status": response.status_code,
                     "engine_prompt_tokens": result.usage.engine_prompt_tokens,
+                    "engine_completion_tokens": result.usage.engine_completion_tokens,
                     "cached_prompt_tokens": result.usage.cached_prompt_tokens,
+                    "selected_candidate": answer.value,
+                    "abstained": answer.abstained,
+                    "selected_candidate_matches_reference": (
+                        answer.value == reference_candidate
+                        if reference_candidate is not None
+                        else None
+                    ),
                 }
 
             # A hot-cache comparison must not compare the first uncached
@@ -404,8 +433,102 @@ async def run(args):
             assert parity <= args.parity_tolerance, report["native_typed_probability_parity"]
 
             methods = [("native-label", native_call), (record["mode"], typed_call)]
+            generation_prompt_tokens = None
+            if args.structured_generation:
+                reference_candidate = expected.value
+                assert isinstance(reference_candidate, str)
+                generation_body = generation_request(
+                    settings.backend,
+                    settings.model_id,
+                    Question.model_validate(question),
+                    body["input"]["text"],
+                    args.generation_max_tokens,
+                )
+                capture_body = generation_request(
+                    settings.backend,
+                    settings.model_id,
+                    Question.model_validate(question),
+                    body["input"]["text"],
+                    args.generation_max_tokens,
+                    trace=True,
+                )
+                (args.output / "generation-request.json").write_text(
+                    json.dumps(generation_body, indent=2) + "\n"
+                )
+                # Capture actual rendered IDs from the engine once. Timed requests
+                # use the same fixed body without large token-ID response arrays.
+                capture = await native.post("/v1/chat/completions", json=capture_body)
+                report["generation_preflight"] = {"http_status": capture.status_code}
+                try:
+                    observations, token_trace = parse_generation(
+                        settings.backend,
+                        capture,
+                        {o["id"] for o in question["options"]},
+                        expected_prompt_tokens=None,
+                        max_tokens=args.generation_max_tokens,
+                        reference_candidate=reference_candidate,
+                        trace=True,
+                    )
+                    report["generation_preflight"].update(passed=True, observations=observations)
+                except InvalidBenchmarkResponse as exc:
+                    report["generation_preflight"].update(
+                        passed=False, observations=exc.observations, error_code=exc.code
+                    )
+                    raise
+                generation_prompt_tokens = observations["engine_prompt_tokens"]
+                generation_fixture = {
+                    "request": generation_body,
+                    "token_trace": token_trace,
+                    "preflight_observations": observations,
+                    "same_task_input_digest": content_digest(
+                        {"question": question, "text": body["input"]["text"]}
+                    ),
+                    "tokenizer_implementation_digest": fixture["tokenizer_implementation_digest"],
+                }
+                generation_fixture["fixture_digest"] = content_digest(generation_fixture)
+                (args.output / "generation-fixture.json").write_text(
+                    json.dumps(generation_fixture, indent=2) + "\n"
+                )
+                report["generation_comparison"] = {
+                    "fixture_digest": generation_fixture["fixture_digest"],
+                    "same_task_input_digest": generation_fixture["same_task_input_digest"],
+                    "label_prompt_tokens": fixture["sequence_lengths"],
+                    "generation_prompt_tokens": generation_prompt_tokens,
+                    "max_output_tokens": args.generation_max_tokens,
+                    "reference_candidate": reference_candidate,
+                    "grammar_warmup": (
+                        "preflight and per-method warmups excluded from timed requests"
+                    ),
+                    "identity_checks": (
+                        "actual input IDs at preflight; fixed request body and prompt count "
+                        "in timed requests"
+                    ),
+                    "quality_gate_evaluated": False,
+                    "qualification": (
+                        "same choice task with explicit tie=first; distinct prompts/readouts; "
+                        "JSON format and output cost included; no probability or "
+                        "task-quality equivalence claim"
+                    ),
+                }
+
+                async def generated_call(request_id):
+                    response = await native.post(
+                        "/v1/chat/completions", json={**generation_body, "request_id": request_id}
+                    )
+                    values, _ = parse_generation(
+                        settings.backend,
+                        response,
+                        {o["id"] for o in question["options"]},
+                        expected_prompt_tokens=generation_prompt_tokens,
+                        max_tokens=args.generation_max_tokens,
+                        reference_candidate=reference_candidate,
+                    )
+                    return values
+
+                methods.append(("structured-generation", generated_call))
             for repeat in range(args.repeats):
-                for name, call in methods[repeat % 2 :] + methods[: repeat % 2]:
+                offset = repeat % len(methods)
+                for name, call in methods[offset:] + methods[:offset]:
                     for _ in range(args.warmup):
                         result = await call("warmup-" + uuid.uuid4().hex)
                         assert result["outcome"] == "completed"
@@ -414,8 +537,10 @@ async def run(args):
                         args.duration,
                         args.concurrency,
                         1,
-                        len(fixture["sequences"]),
-                        fixture["logical_prompt_tokens"],
+                        1 if name == "structured-generation" else len(fixture["sequences"]),
+                        generation_prompt_tokens
+                        if name == "structured-generation"
+                        else fixture["logical_prompt_tokens"],
                     )
                     path = f"{repeat + 1}-{name}.jsonl"
                     (args.output / path).write_text(
@@ -445,6 +570,12 @@ async def run(args):
         except BaseException as exc:
             report["measurement_complete"] = False
             report["failure"] = {"type": type(exc).__name__, "message": str(exc)[:2000]}
+            if isinstance(exc, InvalidBenchmarkResponse):
+                report["failure"].update(
+                    http_status=exc.http_status,
+                    error_code=exc.code,
+                    observations=exc.observations,
+                )
             raise
         finally:
             if activated:
@@ -481,7 +612,18 @@ if __name__ == "__main__":
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--warmup", type=int, default=32)
     parser.add_argument("--parity-tolerance", type=float, default=1e-4)
+    parser.add_argument("--structured-generation", action="store_true")
+    parser.add_argument("--generation-max-tokens", type=int, default=64)
     args = parser.parse_args()
-    if args.duration <= 0 or args.repeats <= 0 or args.warmup < 1 or args.context_tokens < 16:
+    if (
+        args.duration <= 0
+        or not math.isfinite(args.duration)
+        or args.repeats <= 0
+        or args.warmup < 1
+        or args.context_tokens < 16
+        or args.generation_max_tokens < 1
+        or not math.isfinite(args.parity_tolerance)
+        or args.parity_tolerance < 0
+    ):
         parser.error("Duration, repeats, warmup and context must be positive")
     asyncio.run(run(args))
