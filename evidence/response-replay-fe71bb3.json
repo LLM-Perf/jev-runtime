@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "source_commit": "fe71bb3ce66679e11a76ed3397233a5348341ee9",
+  "checked_at": 1790507606.2276192,
+  "qualification": "offline replay of saved response payloads; no new GPU execution",
+  "selection_required_keys": [
+    "answers",
+    "bundle_digest",
+    "engine",
+    "generation",
+    "latency_ms",
+    "request_id",
+    "usage"
+  ],
+  "sources": {
+    "evidence/dsw/gateway-sglang-7eee70e.json": {
+      "sha256": "4161ea3794dfac21b9985839bb8feba18a45ac9655e3d0a3cd0d8a7e8940da6c",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-sglang-crash-7eee70e.json": {
+      "sha256": "1977d6de808a8cbfa0b56fbc4a063e0ac40f920bac37295ea24365f8dea2f979",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-sglang-multiworker-c5f8867.json": {
+      "sha256": "aef6af9dfb6ce8974f56e37e6317157536eb249b7cda3afed50cbf345e6f99c7",
+      "responses": 2
+    },
+    "evidence/dsw/gateway-sglang-smollm17b-cancel-failure.json": {
+      "sha256": "502baa13f6af8ca87e4b1f9747ca8f42327bc5a75718b613e5ecab811a4d2d50",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-sglang-smollm17b-v2.json": {
+      "sha256": "f92f5fe043680aeb071e6e00f467016c9a00cf172fbbee74bfd0d9c2b929e9f5",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-vllm-7eee70e.json": {
+      "sha256": "9a4df91ada1e6ec0502ee559aa942a292b76efd9b4c46c23b4c0e15f664dd94a",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-vllm-crash-7eee70e.json": {
+      "sha256": "8d2b43aa7653813259adc8c43e902db03cb863050554f1989e8f716e7aa26934",
+      "responses": 1
+    },
+    "evidence/dsw/gateway-vllm-crash-fad1d84.json": {
+      "sha256": "8b1ff1ec0a3fdd06d4787aac30fc650158c048728e32e63fa085eb70a04446b6",
+      "responses": 1
+    },
+    "evidence/dsw/sglang-qwen06b-contract.json": {
+      "sha256": "d5aee2e617681008339fc1934dcaed8e9fec4bbf89aa5726f39663106f0f00ff",
+      "responses": 2
+    },
+    "evidence/dsw/sglang-smollm17b-contract.json": {
+      "sha256": "cbabc674d92d31d6cff4eecc0e19e8bacf3f6d13e836afd46c5180085726419e",
+      "responses": 2
+    },
+    "evidence/dsw/sglang-smollm17b-eb9a4cb-contract.json": {
+      "sha256": "72af25f22a2b2e9acdcbdc7193978b742a9136b3db31640f4ca0b41559ab61dc",
+      "responses": 2
+    },
+    "evidence/dsw/sglang-smollm17b-multiworker-c5f8867.json": {
+      "sha256": "77fa33888ecbb15f7dbaafc3e428a6d7cbd84f5dbffdada6ed902c6aed62ff7f",
+      "responses": 2
+    },
+    "evidence/dsw/vllm-qwen06b-contract.json": {
+      "sha256": "aef06e41a86f1b2f96591833e9cd290673ef454fa09a0b64e289cafd6e7e8e8d",
+      "responses": 2
+    },
+    "evidence/dsw/vllm-smollm17b-7eee70e-contract.json": {
+      "sha256": "33b48cdab64ca70554e3ef703819845fa9fdfb1d1b6d9cb95987f42759f2ca28",
+      "responses": 2
+    },
+    "evidence/dsw/vllm-smollm17b-contract.json": {
+      "sha256": "6722e481ff4cfb1a64f4e4565f2cc1dc7b17e53ca1c298b01fb22feb6f8107e0",
+      "responses": 2
+    },
+    "evidence/dsw/vllm-smollm17b-multiworker-a283bd5.json": {
+      "sha256": "53ebbe68413a7e3ecea301f8c593d6593229efa3d59cb495855ead670d4873c5",
+      "responses": 2
+    },
+    "evidence/dsw/vllm-typescript-97271f8.json": {
+      "sha256": "3a7317525a81a39d84515b49060e34d437aec57c6b074ab04caa3a04acc4b012",
+      "responses": 1
+    }
+  },
+  "responses": 26,
+  "python": {
+    "passed": 26,
+    "failures": []
+  },
+  "typescript": {
+    "passed": 26,
+    "failures": []
+  },
+  "passed": true
+}

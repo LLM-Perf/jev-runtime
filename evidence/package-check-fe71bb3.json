@@ -1,0 +1,69 @@
+{
+  "source_commit": "fe71bb3ce66679e11a76ed3397233a5348341ee9",
+  "python": "3.12",
+  "pytest": {
+    "passed": 163
+  },
+  "ruff_check": "passed",
+  "ruff_format_check": {
+    "passed": true,
+    "files": 67,
+    "scope": "src tests packages deployment benchmarks"
+  },
+  "typescript": {
+    "tests": 62,
+    "passed": 62,
+    "shared_valid_cases": 10,
+    "shared_invalid_cases": 47
+  },
+  "saved_response_replay": "evidence/response-replay-fe71bb3.json",
+  "wheels": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "74aa0d7c5aaa0d218e8ef27a3bf07c00e3b40d04366f9494b9d3a175743fe9f1",
+      "bytes": 59451,
+      "requires": [
+        "Requires-Dist: fastapi<1,>=0.115",
+        "Requires-Dist: httpx<1,>=0.28",
+        "Requires-Dist: jinja2<4,>=3.1",
+        "Requires-Dist: numpy<3,>=1.26",
+        "Requires-Dist: prometheus-client<1,>=0.21",
+        "Requires-Dist: pydantic<3,>=2.10",
+        "Requires-Dist: pyyaml<7,>=6",
+        "Requires-Dist: safetensors<1,>=0.5",
+        "Requires-Dist: typer<1,>=0.15",
+        "Requires-Dist: uvicorn<1,>=0.32",
+        "Requires-Dist: build>=1.2; extra == 'dev'",
+        "Requires-Dist: pytest-asyncio<2,>=0.25; extra == 'dev'",
+        "Requires-Dist: pytest<10,>=8; extra == 'dev'",
+        "Requires-Dist: ruff<1,>=0.9; extra == 'dev'",
+        "Requires-Dist: pyarrow<26,>=18; extra == 'quality-data'",
+        "Requires-Dist: torch>=2.6; extra == 'reference'",
+        "Requires-Dist: transformers<6,>=4.51; extra == 'reference'",
+        "Requires-Dist: transformers<6,>=4.51; extra == 'tokenizers'"
+      ],
+      "vllm_worker_extension_present": null
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "4074e56433c31c002a76c03db8ce7411d7d3a6b81484d8dc244866ff57439221",
+      "bytes": 3556,
+      "requires": [
+        "Requires-Dist: jev-runtime-core==0.1.0a1"
+      ],
+      "vllm_worker_extension_present": null
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "e3c56330baf35ee408bd22e28ed42edabe2e789a874498e1f95308a44f8d022a",
+      "bytes": 2717,
+      "requires": [
+        "Requires-Dist: jev-runtime-core==0.1.0a1"
+      ],
+      "vllm_worker_extension_present": true
+    }
+  ],
+  "qualification": "local CPU contract, saved-response replay and wheel-build validation; not new GPU execution",
+  "container_build": "not_run; no docker/podman/buildah available",
+  "hosted_ci": "not checked at this source; prior run 36313600555 rejected before jobs started due to organization billing/spending eligibility"
+}

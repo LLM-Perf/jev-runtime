@@ -19,8 +19,9 @@ replacement for any requirement in `implementation-plan.md`.
   passed, including shared valid/malformed answer cases and cancellation errors.
   Both SDKs enforce values, rankings, explicit score expectations, abstention,
   probability semantics and consistent success accounting. Saved DSW payload replay
-  is distinct from new GPU execution. All three Python distributions were built at
-  the earlier `febb5d8` checkpoint; final-source packaging remains a release check.
+  is distinct from new GPU execution: both clients accepted all 26 complete payloads
+  in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
+  that source; see `evidence/package-check-fe71bb3.json`.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, request/token quotas and cancellation
