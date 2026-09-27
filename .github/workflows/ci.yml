@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m pip install -e '.[dev,tokenizers]' -e packages/sglang -e packages/vllm
+      - run: python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm
       - run: ruff check src tests packages deployment benchmarks
       - run: ruff format --check src tests packages deployment benchmarks
       - run: pytest -q

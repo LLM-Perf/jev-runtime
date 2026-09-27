@@ -95,6 +95,10 @@ def load_settings(path: str | Path) -> Settings:
 def load_compiler(settings: Settings) -> Compiler:
     from transformers import AutoTokenizer
 
+    from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+    verify_tokenizer_profile(Path(settings.tokenizer or settings.model_id))
+
     kwargs = {"trust_remote_code": False}
     kwargs.update(settings.tokenizer_options.model_dump(exclude_none=True))
     revision = settings.tokenizer_revision or settings.model_revision
@@ -105,12 +109,16 @@ def load_compiler(settings: Settings) -> Compiler:
 
 
 def compiler_for_tokenizer(settings: Settings, tokenizer) -> Compiler:
-    return Compiler(
+    from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+    compiler = Compiler(
         tokenizer,
         settings.compiler_cache_tokens,
         settings.compiler_cache_entries,
         chat_template=read_template(settings.chat_template) if settings.chat_template else None,
     )
+    verify_tokenizer_profile(Path(settings.tokenizer or settings.model_id), compiler)
+    return compiler
 
 
 def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
@@ -131,6 +139,11 @@ async def build_runtime(
 ) -> Runtime:
     provided_compiler = compiler is not None
     compiler = compiler or await asyncio.to_thread(load_compiler, settings)
+    from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+    await asyncio.to_thread(
+        verify_tokenizer_profile, Path(settings.tokenizer or settings.model_id), compiler
+    )
     if provided_compiler and settings.tokenizer_options.model_dump(exclude_none=True):
         expected = await asyncio.to_thread(load_compiler, settings)
         if (

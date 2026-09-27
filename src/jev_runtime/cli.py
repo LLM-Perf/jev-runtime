@@ -20,6 +20,16 @@ recovery_app = typer.Typer(help="Inspect and recover durable leases, including b
 app.add_typer(recovery_app, name="recovery")
 adapter_app = typer.Typer(help="Register, load, drain and unload immutable local LoRA artifacts")
 app.add_typer(adapter_app, name="adapter")
+tokenizer_app = typer.Typer(help="Prepare immutable tokenizer profiles from local checkpoint data")
+app.add_typer(tokenizer_app, name="tokenizer")
+
+
+@tokenizer_app.command("convert-glm4")
+def tokenizer_convert_glm4(model_dir: Path, destination: Path):
+    """Convert GLM4 tiktoken data to a verified fast tokenizer in a new directory."""
+    from jev_runtime.tokenizer_profiles import convert_glm4_tokenizer
+
+    output(convert_glm4_tokenizer(model_dir, destination))
 
 
 def output(value):
