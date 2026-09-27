@@ -26,7 +26,8 @@ Model weights, credentials, private workload text, and raw service logs are excl
 from this repository.
 
 See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
-[calibration](docs/calibration.md), [performance experiments](docs/performance.md), and
+[calibration](docs/calibration.md), [public quality checks](docs/public-quality.md),
+[performance experiments](docs/performance.md), and
 [the TypeScript SDK](packages/typescript/README.md).
 
 ## Design

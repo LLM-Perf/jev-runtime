@@ -16,8 +16,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e '.[dev]' -e packages/sglang -e packages/vllm
-      - run: ruff check src tests packages
-      - run: ruff format --check src tests packages
+      - run: ruff check src tests packages deployment benchmarks
+      - run: ruff format --check src tests packages deployment benchmarks
       - run: pytest -q
       - run: python -m build
       - run: python -m build packages/sglang

@@ -1,0 +1,115 @@
+{
+  "source_commit": "97271f8",
+  "qualification": "public engineering fixtures, not approved business evaluation",
+  "selection": "balanced classes; ascending SHA256(jev-public-v1:normalized-group-sha256)",
+  "grouping": "NFKC, collapsed whitespace, casefold; exact normalized duplicates only",
+  "per_class_per_split": 64,
+  "datasets": {
+    "ag_news": {
+      "repo": "fancyzhx/ag_news",
+      "revision": "eb185aade064a813bc0b7f42de02595523103ca4",
+      "files": {
+        "fit": "data/train-00000-of-00001.parquet",
+        "heldout": "data/test-00000-of-00001.parquet"
+      },
+      "classes": 4,
+      "source_files": {
+        "fit": {
+          "url": "https://huggingface.co/datasets/fancyzhx/ag_news/resolve/eb185aade064a813bc0b7f42de02595523103ca4/data/train-00000-of-00001.parquet",
+          "sha256": "fc508d6d9868594e3da960a8cfeb63ab5a4746598b93428c224397080c1f52ee",
+          "bytes": 18585438
+        },
+        "heldout": {
+          "url": "https://huggingface.co/datasets/fancyzhx/ag_news/resolve/eb185aade064a813bc0b7f42de02595523103ca4/data/test-00000-of-00001.parquet",
+          "sha256": "71de87ec66bc5737752a2502204dfa6d7fe9856ade3ea444dc6317789a4f13fb",
+          "bytes": 1234829
+        }
+      },
+      "accounting": {
+        "raw_rows": {
+          "fit": 120000,
+          "heldout": 7600
+        },
+        "unique_normalized_groups": {
+          "fit": 119849,
+          "heldout": 7600
+        },
+        "conflicting_groups_excluded": 22,
+        "cross_split_groups_excluded_from_fit": 10
+      },
+      "derived": {
+        "fit": {
+          "samples": 256,
+          "sha256": "3e2078a48bd1621ab202c27fccc0bb71e2a109efcbbbdb7fb3ec752d2eec019c",
+          "labels": {
+            "0": 64,
+            "1": 64,
+            "3": 64,
+            "2": 64
+          }
+        },
+        "heldout": {
+          "samples": 256,
+          "sha256": "a0cdd10d2408561d080eb4c20b2ebc8cb5d6fdc2e55e3312631c7bbf39c80c8a",
+          "labels": {
+            "2": 64,
+            "3": 64,
+            "0": 64,
+            "1": 64
+          }
+        }
+      }
+    },
+    "sst2": {
+      "repo": "SetFit/sst2",
+      "revision": "00ea8ccb7a54b4e3780a3e51aa3f80361ff849c0",
+      "files": {
+        "fit": "train.jsonl",
+        "heldout": "test.jsonl"
+      },
+      "classes": 2,
+      "source_files": {
+        "fit": {
+          "url": "https://huggingface.co/datasets/SetFit/sst2/resolve/00ea8ccb7a54b4e3780a3e51aa3f80361ff849c0/train.jsonl",
+          "sha256": "7a4b1cfdd65be1dc48339404db86528bb2427e1d8772860ef838b76b8c38c4a8",
+          "bytes": 1071431
+        },
+        "heldout": {
+          "url": "https://huggingface.co/datasets/SetFit/sst2/resolve/00ea8ccb7a54b4e3780a3e51aa3f80361ff849c0/test.jsonl",
+          "sha256": "08c1dbec23b2a6f5752158463da7e31b4376cb51997ef63a95abd75f0a29f67e",
+          "bytes": 281037
+        }
+      },
+      "accounting": {
+        "raw_rows": {
+          "fit": 6920,
+          "heldout": 1821
+        },
+        "unique_normalized_groups": {
+          "fit": 6911,
+          "heldout": 1821
+        },
+        "conflicting_groups_excluded": 0,
+        "cross_split_groups_excluded_from_fit": 2
+      },
+      "derived": {
+        "fit": {
+          "samples": 128,
+          "sha256": "b6bab3059ede2d1cbd56923f08157c1bfbda048a168ca4139371956f758ae335",
+          "labels": {
+            "0": 64,
+            "1": 64
+          }
+        },
+        "heldout": {
+          "samples": 128,
+          "sha256": "600904f150215923faa9557f465319991383273979e4a8620fdf5cfb509f4db2",
+          "labels": {
+            "0": 64,
+            "1": 64
+          }
+        }
+      }
+    }
+  }
+}

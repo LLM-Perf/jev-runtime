@@ -449,7 +449,17 @@
       "evidence": [
         "evidence/dsw/sglang-smollm17b-contract.json"
       ],
-      "source_commit": "a90e002"
+      "source_commit": "a90e002",
+      "public_quality": {
+        "status": "completed_development_evaluation",
+        "release_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-public-quality-97271f8/report.json"
+      },
+      "development_performance": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-benchmark-4e5203f/report.json"
+      }
     },
     {
       "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
@@ -463,7 +473,21 @@
       "evidence": [
         "evidence/dsw/vllm-smollm17b-contract.json"
       ],
-      "source_commit": "a90e002"
+      "source_commit": "a90e002",
+      "public_quality": {
+        "status": "completed_development_evaluation",
+        "release_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-public-quality-97271f8/report.json"
+      },
+      "development_performance": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-benchmark-fad1d84/report.json"
+      }
     }
-  ]
+  ],
+  "qualification_definitions": {
+    "quality": "approved business-task release gate; public engineering runs are tracked separately",
+    "performance": "controlled release matrix; colocated short measurements are tracked separately"
+  }
 }

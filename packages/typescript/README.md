@@ -27,3 +27,9 @@ disconnect cancellation to engine scoring. No automatic retries are made.
 Inspect `status`, `calibration_status`, and `probability_semantics`; a typed answer
 does not imply calibrated confidence. Partial/failing responses retain their status.
 The client validates core success counts, answer types and probability ranges.
+
+The opt-in `test/live.mjs` checks all four answer types, authentication errors and
+unknown-request cancellation against a real service. Build first, then set
+`JEV_BASE_URL`, `JEV_API_KEY` and a new `JEV_REPORT_FILE`; optional source-commit
+environment fields label the artifact. Run `node test/live.mjs`. It is excluded
+from the offline test glob and never prints the credential.

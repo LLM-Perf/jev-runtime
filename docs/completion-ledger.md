@@ -61,18 +61,21 @@ replacement for any requirement in `implementation-plan.md`.
   CLI avoid a separately loaded tokenizer; old immutable digests are preserved,
   while serving requires rebuilding legacy bundles with the stronger identity.
   Contract tests and a real SGLang remote-build/prepare/reject-mismatched-fingerprint
-  check pass. vLLM host-tokenizer revalidation remains pending.
+  check pass. vLLM's host tokenizer served both fixed public tasks with two native
+  API workers at `97271f8`.
 - Explicit cancellation now addresses the original local API worker through a
   durable command, bound to tenant/backend/lease ID. Peer-worker success, failed
   abort retention, ownership and reused-ID races have local tests. Real two-worker
   GPU-serving validation passed through an independent two-worker SGLang gateway
   at `364b6e0`: worker B cancelled worker A's journaled 128-branch request, no lease
-  remained, and serving resumed. Native plugin configurations still need this check;
-  this is not multi-node routing.
+  remained, and serving resumed. vLLM's native two-worker path also passed at
+  `97271f8`; SGLang's native path still needs this check. This is not multi-node routing.
 - Public AG News/SST-2 fixture preparation and HTTP quality/calibration runners
   are implemented with immutable source revisions and full attempted denominators.
   The existing raw-score collector now also journals work and preserves uncertain
-  aborts. Public GPU evaluation remains pending and does not replace business data.
+  aborts. Both engines completed all 768 public requests and a live calibrated
+  hot-switch check; per-example results include errors/abstentions and numeric
+  quality evidence. This does not replace business data or certify cross-engine parity.
 
 ## Required evidence still outstanding
 
