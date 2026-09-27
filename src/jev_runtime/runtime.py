@@ -58,6 +58,7 @@ class Runtime:
         self._active: dict[str, asyncio.Task] = {}
         self._tenants: dict[str, str] = {}
         self._active_leases: dict[str, str] = {}
+        self._progress: dict[str, tuple[DecisionTrace, dict]] = {}
         self._prepared: set[str] = set()
         self._control_task: asyncio.Task | None = None
         self._cancel_jobs: set[asyncio.Task] = set()
@@ -562,6 +563,16 @@ class Runtime:
         snapshot = None
         unconfirmed: set[str] = set()
         trace = trace or DecisionTrace()
+        progress = {
+            "request_id": rid,
+            "tenant": tenant,
+            "bundle": None,
+            "bundle_digest": None,
+            "generation": None,
+            "lease_id": None,
+            "scoring_sequences": None,
+        }
+        self._progress[rid] = (trace, progress)
         trace.switch("pin")
         try:
             async with asyncio.timeout(request.execution.timeout_ms / 1000):
@@ -570,10 +581,17 @@ class Runtime:
                 )
                 self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
+                progress.update(
+                    bundle=bundle.reference,
+                    bundle_digest=bundle.digest,
+                    generation=snapshot.generation,
+                    lease_id=snapshot.lease_id,
+                )
                 trace.switch("compile")
                 compiled, sequences, total_tokens = self._compile_request(
                     request, bundle, engine_rid
                 )
+                progress["scoring_sequences"] = len(sequences)
                 questions = tuple(item.question for item in compiled)
                 trace.switch("journal")
                 branch_ids = [seq.request_id for seq in sequences]
@@ -681,7 +699,17 @@ class Runtime:
                 self._active.pop(rid, None)
                 self._tenants.pop(rid, None)
                 self._active_leases.pop(rid, None)
+                self._progress.pop(rid, None)
                 trace.finish()
+
+    def request_progress(self, request_id: str) -> dict:
+        """Read only this worker's active request; absence is not a cluster-wide result."""
+        current = self._progress.get(request_id)
+        return {
+            "scope": "local_worker",
+            "worker_id": self.registry.owner,
+            "request": {**current[1], **current[0].progress()} if current else None,
+        }
 
     async def recover_cancelled(self, request_id: str) -> bool:
         snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)

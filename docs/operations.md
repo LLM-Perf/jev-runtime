@@ -278,6 +278,25 @@ before running the contract harness. See [TP2 reproduction](phi-tp2-validation.m
 
 ## Runtime metrics
 
+Administrators can inspect `GET /admin/requests/{request_id}/progress` on the
+owning worker. It returns `scope: local_worker`, `worker_id`, the pinned bundle
+digest/generation/lease and the current phase, plus started/active/succeeded/
+failed-or-cancelled counts for scoring calls, branch queueing, assembly and abort.
+No prompt, candidate text or per-branch database write is added. An active engine
+call is an adapter RPC, not evidence that a particular CUDA kernel is executing.
+A successful call means the adapter returned a validated score result; it does
+not certify prediction quality.
+
+The endpoint requires the separate admin credential. A null `request` means only
+that this worker has no in-memory observation. It does not mean the request is
+globally complete or its durable lease is released: another worker can own it,
+or an unconfirmed abort can outlive the request task. Use the shared registry
+inventory/recovery endpoint for that distinction, and pin an HTTP/1 connection to
+the worker ID when polling progress. Observations disappear when that local task
+finishes, including failure/cancellation; no history is retained by this endpoint.
+Successful cancellation replies additionally identify the handling worker through
+`X-Jev-Worker`, consistent with decision responses.
+
 Authenticated `/metrics` exposes observations for both decision and System One
 requests after they enter the runtime route. Request counters and histograms are
 process-local; admission gauges use the scope described below. Request observations

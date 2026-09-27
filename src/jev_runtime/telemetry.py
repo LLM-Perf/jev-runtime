@@ -9,6 +9,7 @@ from typing import Literal
 
 Stage = Literal["pin", "compile", "journal", "queue", "execute", "finalize", "release", "total"]
 STAGES = ("pin", "compile", "journal", "queue", "execute", "finalize", "release", "total")
+WORK_KINDS = ("branch_queue", "engine_call", "assembly", "abort")
 
 
 class DecisionTrace:
@@ -21,6 +22,8 @@ class DecisionTrace:
     def __init__(self):
         self.seconds: dict[str, float] = defaultdict(float)
         self.work: dict[str, list[float]] = defaultdict(list)
+        self._work_active: dict[str, int] = defaultdict(int)
+        self._work_failed: dict[str, int] = defaultdict(int)
         self._started = self._previous = None
         self._stage = None
 
@@ -43,10 +46,36 @@ class DecisionTrace:
     @contextmanager
     def measure_work(self, kind: Literal["branch_queue", "engine_call", "assembly", "abort"]):
         start = time.perf_counter()
+        self._work_active[kind] += 1
         try:
             yield
+        except BaseException:
+            self._work_failed[kind] += 1
+            raise
         finally:
             self.work[kind].append(time.perf_counter() - start)
+            self._work_active[kind] -= 1
+
+    def progress(self) -> dict:
+        """Event-loop-local counters; an active RPC does not attest CUDA occupancy."""
+        elapsed = (
+            time.perf_counter() - self._started
+            if self._stage is not None and self._started is not None
+            else self.seconds.get("total", 0)
+        )
+        return {
+            "stage": self._stage,
+            "elapsed_seconds": max(0, elapsed),
+            "work": {
+                kind: {
+                    "started": len(self.work.get(kind, ())) + self._work_active.get(kind, 0),
+                    "active": self._work_active.get(kind, 0),
+                    "succeeded": len(self.work.get(kind, ())) - self._work_failed.get(kind, 0),
+                    "failed_or_cancelled": self._work_failed.get(kind, 0),
+                }
+                for kind in WORK_KINDS
+            },
+        }
 
     def header(self) -> str:
         return ", ".join(

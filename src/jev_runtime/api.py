@@ -256,8 +256,10 @@ def install_routes(
         }
 
     @router.post("/v1/requests/{request_id}/cancel")
-    async def cancel(request_id: str, request: Request):
-        return {"cancelled": await runtime(request).cancel(request_id, request.state.jev_tenant)}
+    async def cancel(request_id: str, request: Request, http_response: Response):
+        instance = runtime(request)
+        http_response.headers["X-Jev-Worker"] = instance.registry.owner
+        return {"cancelled": await instance.cancel(request_id, request.state.jev_tenant)}
 
     @router.get("/ready")
     async def ready(request: Request):
@@ -356,6 +358,10 @@ def install_routes(
     @management.get("/requests/recovery")
     async def recovery_requests(request: Request):
         return {"requests": runtime(request).pending_cancellations()}
+
+    @management.get("/requests/{request_id}/progress")
+    async def request_progress(request_id: str, request: Request):
+        return runtime(request).request_progress(request_id)
 
     @management.post("/requests/{request_id}/recover")
     async def recover_request(request_id: str, request: Request):

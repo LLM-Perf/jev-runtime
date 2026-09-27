@@ -281,6 +281,22 @@ def main(args):
             assert work.result(timeout=30).status_code == 499
             assert controller.drain(switched["id"], timeout=30)["drained"]
             checks["peer_cancellation_across_switch"] = True
+        if args.native_cancel:
+            if args.engine_run_dir is None:
+                raise ValueError("Native cancellation requires a real engine")
+            from tests.integration.rollout_native_cancel import run_case
+
+            checks["native_cancellation_across_switch"] = run_case(
+                controller,
+                root,
+                front,
+                {"blue": blue, "green": green},
+                releases,
+                keys,
+                body,
+                args.native_cancel_slot,
+            )
+            assert checks["native_cancellation_across_switch"]["passed"]
         for _ in range(args.switches):
             target = "green" if controller.proxy.active() == "blue" else "blue"
             receipt = switch(target)
@@ -376,6 +392,8 @@ if __name__ == "__main__":
     parser.add_argument("--green-python", type=Path)
     parser.add_argument("--blue-release")
     parser.add_argument("--green-release")
+    parser.add_argument("--native-cancel", action="store_true")
+    parser.add_argument("--native-cancel-slot", choices=["blue", "green"], default="green")
     parser.add_argument("--port", type=int, default=18800)
     parser.add_argument("--switches", type=int, default=10)
     raise SystemExit(main(parser.parse_args()))
