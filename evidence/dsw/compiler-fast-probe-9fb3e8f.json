@@ -1,0 +1,50 @@
+{
+  "qualification": "CPU experimental direct backend encode_batch_fast; not yet production implementation",
+  "base_source": "9fb3e8f6e711b504470949e5ed48ed03058fe823",
+  "tokenizers_parallelism": false,
+  "exact_matches": 300,
+  "measurements": [
+    {
+      "repeat": 1,
+      "method": "wrapper_batch",
+      "mean_ms": 3.285615357259909,
+      "p95_ms": 4.070831695571542,
+      "samples": 300
+    },
+    {
+      "repeat": 1,
+      "method": "direct_fast",
+      "mean_ms": 2.8849118823806443,
+      "p95_ms": 3.358719637617469,
+      "samples": 300
+    },
+    {
+      "repeat": 2,
+      "method": "direct_fast",
+      "mean_ms": 2.5284693452219167,
+      "p95_ms": 3.343440918251872,
+      "samples": 300
+    },
+    {
+      "repeat": 2,
+      "method": "wrapper_batch",
+      "mean_ms": 3.0083188073088727,
+      "p95_ms": 3.351463144645095,
+      "samples": 300
+    },
+    {
+      "repeat": 3,
+      "method": "wrapper_batch",
+      "mean_ms": 3.1709735778470836,
+      "p95_ms": 4.095927905291319,
+      "samples": 300
+    },
+    {
+      "repeat": 3,
+      "method": "direct_fast",
+      "mean_ms": 2.55140971702834,
+      "p95_ms": 3.385265776887536,
+      "samples": 300
+    }
+  ]
+}

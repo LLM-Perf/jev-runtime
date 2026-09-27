@@ -61,8 +61,10 @@ code requires rolling a process; changing a manifest does not reload Python modu
 
 New bundles include `tokenizer_implementation_digest` when the tokenizer exposes
 its backend. This binds normalization, pretokenization and BPE rules, in addition
-to the vocabulary and template. Both native plugins compile with the host's
-actual tokenizer. A local AutoTokenizer can differ after engine adjustments, so
+to the vocabulary and template. Both native plugins derive compilation from the
+host's actual tokenizer. The verified standard vLLM pool may supply an
+identity-checked private copy so optimized encoding never bypasses the shared
+pool. A local AutoTokenizer can differ after engine adjustments, so
 build from the administrative serving profile when targeting a native plugin:
 
 ```sh

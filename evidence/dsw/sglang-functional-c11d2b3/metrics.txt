@@ -1,0 +1,314 @@
+# HELP jev_decisions_total Decision HTTP outcomes
+# TYPE jev_decisions_total counter
+jev_decisions_total{outcome="completed"} 2978.0
+jev_decisions_total{outcome="error"} 2.0
+# HELP jev_decisions_created Decision HTTP outcomes
+# TYPE jev_decisions_created gauge
+jev_decisions_created{outcome="completed"} 1.790513786590756e+09
+jev_decisions_created{outcome="error"} 1.7905139338877249e+09
+# HELP jev_request_seconds Decision endpoint latency
+# TYPE jev_request_seconds histogram
+jev_request_seconds_bucket{le="0.005"} 2.0
+jev_request_seconds_bucket{le="0.01"} 2.0
+jev_request_seconds_bucket{le="0.025"} 375.0
+jev_request_seconds_bucket{le="0.05"} 2584.0
+jev_request_seconds_bucket{le="0.1"} 2972.0
+jev_request_seconds_bucket{le="0.25"} 2980.0
+jev_request_seconds_bucket{le="0.5"} 2980.0
+jev_request_seconds_bucket{le="1.0"} 2980.0
+jev_request_seconds_bucket{le="2.5"} 2980.0
+jev_request_seconds_bucket{le="5.0"} 2980.0
+jev_request_seconds_bucket{le="10.0"} 2980.0
+jev_request_seconds_bucket{le="30.0"} 2980.0
+jev_request_seconds_bucket{le="60.0"} 2980.0
+jev_request_seconds_bucket{le="+Inf"} 2980.0
+jev_request_seconds_count 2980.0
+jev_request_seconds_sum 101.01095053646713
+# HELP jev_request_seconds_created Decision endpoint latency
+# TYPE jev_request_seconds_created gauge
+jev_request_seconds_created 1.790513767742204e+09
+# HELP jev_runtime_stage_seconds Serial runtime phases; total includes durable lease cleanup, excludes HTTP serialization
+# TYPE jev_runtime_stage_seconds histogram
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="pin"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="pin"} 1131.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="pin"} 2846.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="pin"} 2934.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="pin"} 2943.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="pin"} 2962.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="pin"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="pin"} 2.0776815060526133
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="compile"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="compile"} 854.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="compile"} 864.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="compile"} 2278.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="compile"} 2966.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="compile"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="compile"} 5.357447819784284
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="journal"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="journal"} 1359.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="journal"} 2898.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="journal"} 2953.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="journal"} 2955.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="journal"} 2966.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="journal"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="journal"} 1.8479659901931882
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="queue"} 2966.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="queue"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="queue"} 0.11586472485214472
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="execute"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="execute"} 1760.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="execute"} 2976.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="execute"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="execute"} 87.14188499841839
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="finalize"} 13.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="finalize"} 2976.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="finalize"} 2977.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="finalize"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="finalize"} 0.5517202215269208
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="release"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="release"} 2423.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="release"} 2854.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="release"} 2929.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="release"} 2937.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="release"} 2957.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="release"} 2977.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="release"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="release"} 1.7454482028260827
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="completed",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="completed",stage="total"} 466.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="completed",stage="total"} 2975.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_count{outcome="completed",stage="total"} 2978.0
+jev_runtime_stage_seconds_sum{outcome="completed",stage="total"} 98.83801346365362
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="error",stage="pin"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_count{outcome="error",stage="pin"} 2.0
+jev_runtime_stage_seconds_sum{outcome="error",stage="pin"} 0.0003169756382703781
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_count{outcome="error",stage="release"} 2.0
+jev_runtime_stage_seconds_sum{outcome="error",stage="release"} 1.9088387489318848e-05
+jev_runtime_stage_seconds_bucket{le="0.0001",outcome="error",stage="total"} 0.0
+jev_runtime_stage_seconds_bucket{le="0.0005",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.001",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.0025",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.005",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.01",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.025",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.1",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="0.5",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="1.0",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="5.0",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="30.0",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="120.0",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_bucket{le="+Inf",outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_count{outcome="error",stage="total"} 2.0
+jev_runtime_stage_seconds_sum{outcome="error",stage="total"} 0.00033606402575969696
+# HELP jev_runtime_stage_seconds_created Serial runtime phases; total includes durable lease cleanup, excludes HTTP serialization
+# TYPE jev_runtime_stage_seconds_created gauge
+jev_runtime_stage_seconds_created{outcome="completed",stage="pin"} 1.7905137865908444e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="compile"} 1.7905137865909162e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="journal"} 1.7905137865909514e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="queue"} 1.790513786590981e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="execute"} 1.7905137865910115e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="finalize"} 1.7905137865910387e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="release"} 1.790513786591066e+09
+jev_runtime_stage_seconds_created{outcome="completed",stage="total"} 1.7905137865910938e+09
+jev_runtime_stage_seconds_created{outcome="error",stage="pin"} 1.7905139338878188e+09
+jev_runtime_stage_seconds_created{outcome="error",stage="release"} 1.7905139338879137e+09
+jev_runtime_stage_seconds_created{outcome="error",stage="total"} 1.7905139338879466e+09
+# HELP jev_branch_work_seconds Individual branch operations; concurrent samples overlap and are not wall-time phases
+# TYPE jev_branch_work_seconds histogram
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.0001"} 3539.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.0005"} 3547.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.001"} 3547.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.005"} 3547.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.025"} 3547.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.1"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="0.5"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="1.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="5.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="30.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="120.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="branch_queue",le="+Inf"} 3549.0
+jev_branch_work_seconds_count{kind="branch_queue"} 3549.0
+jev_branch_work_seconds_sum{kind="branch_queue"} 0.13532923441380262
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.0001"} 0.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.0005"} 0.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.001"} 0.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.005"} 0.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.025"} 1790.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.1"} 3548.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="0.5"} 3549.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="1.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="5.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="30.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="120.0"} 3549.0
+jev_branch_work_seconds_bucket{kind="engine_call",le="+Inf"} 3549.0
+jev_branch_work_seconds_count{kind="engine_call"} 3549.0
+jev_branch_work_seconds_sum{kind="engine_call"} 112.35198830161244
+jev_branch_work_seconds_bucket{kind="assembly",le="0.0001"} 2062.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.0005"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.001"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.005"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.025"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.1"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="0.5"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="1.0"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="5.0"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="30.0"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="120.0"} 2987.0
+jev_branch_work_seconds_bucket{kind="assembly",le="+Inf"} 2987.0
+jev_branch_work_seconds_count{kind="assembly"} 2987.0
+jev_branch_work_seconds_sum{kind="assembly"} 0.2636186871677637
+# HELP jev_branch_work_seconds_created Individual branch operations; concurrent samples overlap and are not wall-time phases
+# TYPE jev_branch_work_seconds_created gauge
+jev_branch_work_seconds_created{kind="branch_queue"} 1.7905137865931556e+09
+jev_branch_work_seconds_created{kind="engine_call"} 1.7905137865932186e+09
+jev_branch_work_seconds_created{kind="assembly"} 1.7905137865932755e+09
+# HELP jev_request_errors_total Runtime failures by bounded category
+# TYPE jev_request_errors_total counter
+jev_request_errors_total{category="validation"} 1.0
+jev_request_errors_total{category="engine_or_internal"} 1.0
+# HELP jev_request_errors_created Runtime failures by bounded category
+# TYPE jev_request_errors_created gauge
+jev_request_errors_created{category="validation"} 1.7905139338876903e+09
+jev_request_errors_created{category="engine_or_internal"} 1.7905139429723248e+09
+# HELP jev_questions_total Returned question outcomes
+# TYPE jev_questions_total counter
+jev_questions_total{outcome="answered"} 2814.0
+jev_questions_total{outcome="abstained"} 173.0
+# HELP jev_questions_created Returned question outcomes
+# TYPE jev_questions_created gauge
+jev_questions_created{outcome="answered"} 1.7905137865933242e+09
+jev_questions_created{outcome="abstained"} 1.7905137867134683e+09
+# HELP jev_observed_tokens_total Known usage values only; no estimates for missing values
+# TYPE jev_observed_tokens_total counter
+jev_observed_tokens_total{quantity="logical_prompt_tokens"} 735080.0
+jev_observed_tokens_total{quantity="engine_prompt_tokens"} 735080.0
+jev_observed_tokens_total{quantity="engine_completion_tokens"} 0.0
+jev_observed_tokens_total{quantity="cached_prompt_tokens"} 360242.0
+# HELP jev_observed_tokens_created Known usage values only; no estimates for missing values
+# TYPE jev_observed_tokens_created gauge
+jev_observed_tokens_created{quantity="logical_prompt_tokens"} 1.790513786593351e+09
+jev_observed_tokens_created{quantity="engine_prompt_tokens"} 1.7905137865933702e+09
+jev_observed_tokens_created{quantity="engine_completion_tokens"} 1.7905137865933847e+09
+jev_observed_tokens_created{quantity="cached_prompt_tokens"} 1.7905137865933971e+09
+# HELP jev_token_observations_total Responses with a known usage value
+# TYPE jev_token_observations_total counter
+jev_token_observations_total{quantity="logical_prompt_tokens"} 2978.0
+jev_token_observations_total{quantity="engine_prompt_tokens"} 2978.0
+jev_token_observations_total{quantity="engine_completion_tokens"} 2978.0
+jev_token_observations_total{quantity="cached_prompt_tokens"} 2978.0
+# HELP jev_token_observations_created Responses with a known usage value
+# TYPE jev_token_observations_created gauge
+jev_token_observations_created{quantity="logical_prompt_tokens"} 1.7905137865933614e+09
+jev_token_observations_created{quantity="engine_prompt_tokens"} 1.7905137865933774e+09
+jev_token_observations_created{quantity="engine_completion_tokens"} 1.7905137865933907e+09
+jev_token_observations_created{quantity="cached_prompt_tokens"} 1.7905137865934045e+09
+# HELP jev_admission Current API-process admission occupancy
+# TYPE jev_admission gauge
+jev_admission{quantity="requests"} 0.0
+jev_admission{quantity="expanded_tokens"} 0.0
+jev_admission{quantity="queued_requests"} 0.0

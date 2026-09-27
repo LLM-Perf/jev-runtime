@@ -153,6 +153,32 @@ replacement for any requirement in `implementation-plan.md`.
   lint/format and all three wheels passed at this source. These targeted checks
   do not recertify every earlier LoRA, multi-worker, quality or performance profile.
 
+- Runtime phase timings, bounded branch/error metrics and known-token observation
+  denominators are implemented. A failed durable lease release now also clears
+  local request ownership while retaining the recoverable journal. Metrics remain
+  process-local; multi-worker aggregation is not implemented. The benchmark can
+  freeze and verify a round-robin input pool, retaining every attempted fixture
+  index and timing observation. Multi-input structured generation remains unsupported.
+- At `c11d2b3`, guarded IDs-only tokenization preserves full-context encoding and
+  one-token label checks. vLLM uses an identity-checked private copy of its actual
+  host pool prototype, without accessing the pool's shared mutable backend. The
+  initial wrapper-batch experiment showed no consistent CPU gain and was removed;
+  its negative evidence and the initial live fallback checks are retained.
+  On 300 exact L=256/K=8 inputs, colocated vLLM compilation fell from 3.85–3.91 ms
+  to 1.78–1.90 ms. The new source completed 2,608/2,608 vLLM and 2,078/2,078 SGLang
+  timed requests. All 300 input/label-ID lists match across engines and each
+  engine had zero native/typed probability error. The observed plugin/native
+  throughput remains about 80% for vLLM and 76–83% for SGLang, below the 90% gate.
+  These are short, shared-GPU development measurements; the controlled matrix
+  remains unrun. Both engines passed another 1,000 switches (SGLang 548 / vLLM
+  469 successful traffic requests, no mixed versions) and all owned process
+  groups exited. The distinct functional denominator remains six combinations.
+  Local regression at this source passed 207 Python tests, lint/format and all
+  three wheel builds; TypeScript's previous 62 tests are retained separately.
+  See `evidence/package-check-c11d2b3.json` and
+  `evidence/dsw/input300-validation-c11d2b3.json`. No earlier LoRA, multi-worker,
+  business-quality or full-release acceptance is implied by these targeted checks.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

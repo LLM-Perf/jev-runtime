@@ -1,0 +1,61 @@
+{
+  "source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+  "pytest": {
+    "passed": 207
+  },
+  "ruff_check": "passed",
+  "ruff_format_check": {
+    "passed": true,
+    "files": 77,
+    "scope": "src tests packages deployment benchmarks"
+  },
+  "wheels": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "ba20681b73ce2a3509b7db3725ededb6a53b0d183edc41ef0b495a0fc550628c",
+      "bytes": 66424,
+      "requires": [
+        "Requires-Dist: fastapi<1,>=0.115",
+        "Requires-Dist: httpx<1,>=0.28",
+        "Requires-Dist: jinja2<4,>=3.1",
+        "Requires-Dist: numpy<3,>=1.26",
+        "Requires-Dist: prometheus-client<1,>=0.21",
+        "Requires-Dist: pydantic<3,>=2.10",
+        "Requires-Dist: pyyaml<7,>=6",
+        "Requires-Dist: safetensors<1,>=0.5",
+        "Requires-Dist: typer<1,>=0.15",
+        "Requires-Dist: uvicorn<1,>=0.32",
+        "Requires-Dist: build>=1.2; extra == 'dev'",
+        "Requires-Dist: pytest-asyncio<2,>=0.25; extra == 'dev'",
+        "Requires-Dist: pytest<10,>=8; extra == 'dev'",
+        "Requires-Dist: ruff<1,>=0.9; extra == 'dev'",
+        "Requires-Dist: pyarrow<26,>=18; extra == 'quality-data'",
+        "Requires-Dist: torch>=2.6; extra == 'reference'",
+        "Requires-Dist: transformers<6,>=4.51; extra == 'reference'",
+        "Requires-Dist: transformers<6,>=4.51; extra == 'tokenizers'"
+      ],
+      "telemetry_and_ids_only_compiler_packaged": true
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "4074e56433c31c002a76c03db8ce7411d7d3a6b81484d8dc244866ff57439221",
+      "bytes": 3556,
+      "requires": [
+        "Requires-Dist: jev-runtime-core==0.1.0a1"
+      ]
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "76d4649e9d456345e35dbc9940b09a3074bd4ff6b4c2306604da865d58118eea",
+      "bytes": 3683,
+      "requires": [
+        "Requires-Dist: jev-runtime-core==0.1.0a1"
+      ],
+      "private_tokenizer_helper_packaged": true
+    }
+  ],
+  "qualification": "Local CPU contracts and wheel validation; DSW measurements recorded separately",
+  "typescript": "JSON contract unchanged; previous 62 local tests retained",
+  "container_build": "not_run; no builder available",
+  "hosted_ci": "previous job startup rejected by account billing/spending eligibility"
+}

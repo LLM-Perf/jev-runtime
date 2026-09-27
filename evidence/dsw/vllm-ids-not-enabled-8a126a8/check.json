@@ -1,0 +1,15 @@
+{
+  "runtime_source_commit": "8a126a84a2c7a6ce1a31ef8327282b2472173837",
+  "passed": false,
+  "check": "expected_ids_only_path_enabled",
+  "observed": {
+    "cache_token_limit": 262144,
+    "cache_entry_limit": 256,
+    "continuation_encoder": "serial-wrapper",
+    "backend_ids_only_eligible": false,
+    "batch_size_limit": 32,
+    "contract": "full prompt plus each label; exact prefix and one-token checks"
+  },
+  "timed_requests_dispatched": 0,
+  "qualification": "Readiness succeeded but optimization was not selected by the serving compiler; original serial path retained; no GPU performance claim"
+}

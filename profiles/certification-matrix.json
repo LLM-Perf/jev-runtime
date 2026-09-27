@@ -492,6 +492,13 @@
           "evidence": "evidence/dsw/sglang-prefix-0421d50/contract.json",
           "cleanup_evidence": "evidence/dsw/sglang-prefix-0421d50/cleanup.json",
           "scope": "BF16 TP1 API1; four types, native parity, 1000 switches; not quality/performance certification"
+        },
+        {
+          "source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+          "status": "passed",
+          "evidence": "evidence/dsw/sglang-functional-c11d2b3/contract.json",
+          "cleanup_evidence": "evidence/dsw/sglang-functional-c11d2b3/cleanup.json",
+          "scope": "BF16 TP1 API1; four types, native parity, 1000 switches after telemetry/tokenizer changes; not quality/performance certification"
         }
       ],
       "development_generation_comparison": {
@@ -501,6 +508,15 @@
         "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
         "evidence": "evidence/dsw/sglang-generation-444fd1b/report.json",
         "quality_equivalence_established": false
+      },
+      "development_multi_input_profiling": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "harness_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+        "runtime_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+        "evidence": "evidence/dsw/sglang-input300-c11d2b3/report.json",
+        "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
+        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
       }
     },
     {
@@ -539,6 +555,13 @@
           "evidence": "evidence/dsw/vllm-prefix-0421d50/contract.json",
           "cleanup_evidence": "evidence/dsw/vllm-prefix-0421d50/cleanup.json",
           "scope": "BF16 TP1 API1; four types, native parity, 1000 switches; not quality/performance certification"
+        },
+        {
+          "source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+          "status": "passed",
+          "evidence": "evidence/dsw/vllm-functional-c11d2b3/contract.json",
+          "cleanup_evidence": "evidence/dsw/vllm-functional-c11d2b3/cleanup.json",
+          "scope": "BF16 TP1 API1; four types, native parity, 1000 switches after telemetry/tokenizer changes; not quality/performance certification"
         }
       ],
       "development_generation_comparison": {
@@ -548,6 +571,15 @@
         "runtime_source_commit": "60b341595c516323f4cc73e9465c20319d8e414f",
         "evidence": "evidence/dsw/vllm-generation-444fd1b/report.json",
         "quality_equivalence_established": false
+      },
+      "development_multi_input_profiling": {
+        "status": "completed_short_colocated_measurements",
+        "release_gate_passed": false,
+        "harness_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+        "runtime_source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+        "evidence": "evidence/dsw/vllm-input300-c11d2b3/report.json",
+        "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
+        "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
       }
     }
   ],

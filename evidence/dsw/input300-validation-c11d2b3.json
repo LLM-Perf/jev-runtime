@@ -1,0 +1,167 @@
+{
+  "sglang": {
+    "benchmark_report": "evidence/dsw/sglang-input300-c11d2b3/report.json",
+    "functional_report": "evidence/dsw/sglang-functional-c11d2b3/contract.json",
+    "cleanup_report": "evidence/dsw/sglang-functional-c11d2b3/cleanup.json",
+    "strict_success_requests": 2078,
+    "attempts": 2078,
+    "variants_checked": 300,
+    "native_typed_probability_max_absolute_error": 0.0,
+    "measurements": [
+      {
+        "repeat": 1,
+        "method": "native-label",
+        "attempts": 396,
+        "rps": 39.538247591864966,
+        "p95_ms": 31.144224805757403,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": 0.20063920454545456
+      },
+      {
+        "repeat": 1,
+        "method": "native-plugin",
+        "attempts": 301,
+        "rps": 30.06020520086721,
+        "p95_ms": 38.814980536699295,
+        "compile_mean_ms": 2.411184511627907,
+        "full_cohort_token_weighted_cache_ratio": 0.2012951619601329
+      },
+      {
+        "repeat": 2,
+        "method": "native-plugin",
+        "attempts": 312,
+        "rps": 31.099489568381593,
+        "p95_ms": 37.736073741689324,
+        "compile_mean_ms": 2.3686095576923076,
+        "full_cohort_token_weighted_cache_ratio": 0.20112179487179488
+      },
+      {
+        "repeat": 2,
+        "method": "native-label",
+        "attempts": 386,
+        "rps": 38.54967778473839,
+        "p95_ms": 31.129289185628295,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": 0.2006861237046632
+      },
+      {
+        "repeat": 3,
+        "method": "native-label",
+        "attempts": 373,
+        "rps": 37.2189931449602,
+        "p95_ms": 32.47028570622206,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": 0.20074773793565684
+      },
+      {
+        "repeat": 3,
+        "method": "native-plugin",
+        "attempts": 310,
+        "rps": 30.952059021992223,
+        "p95_ms": 37.436727527529,
+        "compile_mean_ms": 2.280298112903226,
+        "full_cohort_token_weighted_cache_ratio": 0.20113407258064517
+      }
+    ],
+    "hot_switches": {
+      "switches": 1000,
+      "strict_success_requests": 548,
+      "versions_seen": [
+        "cert-60daa9d3ebdb@1",
+        "cert-60daa9d3ebdb@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+    "raw_cohort_summaries_recomputed_exactly": true,
+    "dispatch_round_robin_indices_verified": true,
+    "timing_partitions_verified": true,
+    "process_identity_and_launch_flags_verified": true
+  },
+  "vllm": {
+    "benchmark_report": "evidence/dsw/vllm-input300-c11d2b3/report.json",
+    "functional_report": "evidence/dsw/vllm-functional-c11d2b3/contract.json",
+    "cleanup_report": "evidence/dsw/vllm-functional-c11d2b3/cleanup.json",
+    "strict_success_requests": 2608,
+    "attempts": 2608,
+    "variants_checked": 300,
+    "native_typed_probability_max_absolute_error": 0.0,
+    "measurements": [
+      {
+        "repeat": 1,
+        "method": "native-label",
+        "attempts": 478,
+        "rps": 47.72930503318952,
+        "p95_ms": 24.02320927940309,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": null
+      },
+      {
+        "repeat": 1,
+        "method": "native-plugin",
+        "attempts": 381,
+        "rps": 38.04319869270264,
+        "p95_ms": 30.582631938159466,
+        "compile_mean_ms": 1.8997253254593176,
+        "full_cohort_token_weighted_cache_ratio": 0.1875
+      },
+      {
+        "repeat": 2,
+        "method": "native-plugin",
+        "attempts": 390,
+        "rps": 38.94202412010207,
+        "p95_ms": 29.427929595112797,
+        "compile_mean_ms": 1.8051908666666667,
+        "full_cohort_token_weighted_cache_ratio": 0.1875
+      },
+      {
+        "repeat": 2,
+        "method": "native-label",
+        "attempts": 485,
+        "rps": 48.493836712726974,
+        "p95_ms": 23.774510622024536,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": null
+      },
+      {
+        "repeat": 3,
+        "method": "native-label",
+        "attempts": 486,
+        "rps": 48.53279503429402,
+        "p95_ms": 23.48953695036471,
+        "compile_mean_ms": null,
+        "full_cohort_token_weighted_cache_ratio": null
+      },
+      {
+        "repeat": 3,
+        "method": "native-plugin",
+        "attempts": 388,
+        "rps": 38.75117751862698,
+        "p95_ms": 30.06151271983981,
+        "compile_mean_ms": 1.7752258041237112,
+        "full_cohort_token_weighted_cache_ratio": 0.1875
+      }
+    ],
+    "hot_switches": {
+      "switches": 1000,
+      "strict_success_requests": 469,
+      "versions_seen": [
+        "cert-ca7f7cf17a48@1",
+        "cert-ca7f7cf17a48@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "source_commit": "c11d2b360bbf6cc0504aacc4ba66f854932502b4",
+    "raw_cohort_summaries_recomputed_exactly": true,
+    "dispatch_round_robin_indices_verified": true,
+    "timing_partitions_verified": true,
+    "process_identity_and_launch_flags_verified": true
+  },
+  "cross_engine_input_id_identity": {
+    "matched_fixtures": 300,
+    "qualification": "Exact prompt/label IDs; not cross-engine numeric parity or quality equivalence",
+    "sha256": "f7b4f8151e2e652835c5b8735c4ded59ec55a68457689b7b8866021144516781"
+  },
+  "release_gate_passed": false,
+  "qualification": "Colocated short development checks; no controlled capacity claim, no 24-hour soak or business quality acceptance"
+}

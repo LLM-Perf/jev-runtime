@@ -541,13 +541,16 @@
         "docs/performance.md",
         "evidence/dsw/sglang-generation-444fd1b/report.json",
         "evidence/dsw/vllm-generation-444fd1b/report.json",
-        "evidence/dsw/sglang-generation-truncated-444fd1b/report.json"
+        "evidence/dsw/sglang-generation-truncated-444fd1b/report.json",
+        "evidence/dsw/vllm-input300-c11d2b3/report.json",
+        "evidence/dsw/sglang-input300-c11d2b3/report.json",
+        "evidence/dsw/input300-validation-c11d2b3.json"
       ],
       "progress_notes": [
         "144 scenarios, strict native-vs-typed paired accounting and structured-generation choice baseline are implemented.",
         "Both engines completed three five-second colocated SmolLM2 repeats at harness 444fd1b/runtime 60b3415; actual generation prompt/output IDs and all-attempt costs are retained. HTTP 200 truncation is rejected in a real SGLang negative check.",
         "Generation and selected-label decisions disagree on the synthetic fixture; no equivalent-quality speedup is claimed. Plugin/native throughput remains below 90% in several repeats.",
-        "Remaining candidate/other Jev baselines, varying-input workloads and the controlled matrix are not complete."
+        "A frozen 300-input scoring pool completed both engines with exact per-variant parity, round-robin indices and all-attempt phase observations. Multi-input generation, representative workloads, remaining candidate/other Jev baselines and the controlled matrix remain incomplete."
       ],
       "acceptance_complete": false
     },
@@ -574,11 +577,18 @@
       "actual_deliverables": [
         "src/jev_runtime/compiler.py",
         "tests/test_registry_connections.py",
-        "docs/performance.md"
+        "docs/performance.md",
+        "src/jev_runtime/telemetry.py",
+        "benchmarks/compare_compiler.py",
+        "packages/vllm/src/jev_vllm/tokenizer.py",
+        "evidence/dsw/vllm-encoding-comparison-c11d2b3.json"
       ],
       "progress_notes": [
         "CPU profiles motivated bounded encoding caching and persistent FULL-synchronous WAL connections.",
-        "Colocated SGLang repeats remain below the 90% throughput target; release performance is not certified."
+        "Colocated SGLang repeats remain below the 90% throughput target; release performance is not certified.",
+        "Per-request phase profiling separates warm-input and 300-variant compilation costs. The IDs-only path preserves exact full-context checks; vLLM uses a verified private copy of the host pool prototype.",
+        "On the 300-input colocated vLLM check, mean compilation fell from 3.85–3.91 ms to 1.78–1.90 ms, but plugin/native throughput remains about 80%. This is not controlled release certification.",
+        "SGLang at c11d2b3 completed all 2,078 attempts on the same 300 input/label-ID lists; compile means 2.28–2.41 ms and plugin/native throughput 76–83%. No matching pre-change varying-input GPU cohort was run for SGLang."
       ],
       "acceptance_complete": false
     },
@@ -673,11 +683,13 @@
       "original_status": "planned",
       "actual_deliverables": [
         "src/jev_runtime/api.py",
-        "docs/operations.md"
+        "docs/operations.md",
+        "src/jev_runtime/telemetry.py",
+        "tests/test_telemetry.py"
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
-        "Detailed stage telemetry and operational handoff remain."
+        "Bounded phase/branch-operation histograms, error categories, known-token observation denominators, admission occupancy and opt-in request-bound timing headers are implemented. Multi-worker metric aggregation and operational handoff remain."
       ],
       "acceptance_complete": false
     },
@@ -740,7 +752,7 @@
         "profiles/certification-matrix.json"
       ],
       "progress_notes": [
-        "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix.",
+        "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
         "The controlled 24-hour soak is not run."
       ],
       "acceptance_complete": false

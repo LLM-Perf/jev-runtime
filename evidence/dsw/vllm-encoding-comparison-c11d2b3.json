@@ -1,0 +1,167 @@
+{
+  "comparison": "vLLM 300-input full-context encoding development check",
+  "before_report": "vllm-input300-11791e0/report.json",
+  "after_report": "vllm-input300-c11d2b3/report.json",
+  "exact_input_and_label_id_matches": 300,
+  "canonical_workload_sha256": "3a609a4caa370ea8acdc628eb0852c2fc08587b437271b686d8972e3b3ce15da",
+  "measurements": [
+    {
+      "version": "before",
+      "repeat": 1,
+      "method": "native-label",
+      "attempts": 477,
+      "rps": 47.67747381504757,
+      "p95_ms": 24.191732332110405
+    },
+    {
+      "version": "before",
+      "repeat": 1,
+      "method": "native-plugin",
+      "attempts": 350,
+      "rps": 34.94569618772323,
+      "p95_ms": 32.426074938848615,
+      "runtime_phase_mean_ms": {
+        "pin": 0.6474049771428572,
+        "compile": 3.8597535085714285,
+        "journal": 0.4920633942857143,
+        "queue": 0.032836665714285715,
+        "execute": 19.67985100857143,
+        "finalize": 0.14797121714285716,
+        "release": 0.46900572,
+        "total": 25.328886559999997
+      }
+    },
+    {
+      "version": "before",
+      "repeat": 2,
+      "method": "native-plugin",
+      "attempts": 351,
+      "rps": 35.00322455156488,
+      "p95_ms": 32.712697982788086,
+      "runtime_phase_mean_ms": {
+        "pin": 0.5301614188034188,
+        "compile": 3.910095239316239,
+        "journal": 0.43538802849002844,
+        "queue": 0.03364967521367521,
+        "execute": 19.642524051282052,
+        "finalize": 0.15146917094017093,
+        "release": 0.4862430142450142,
+        "total": 25.18953058974359
+      }
+    },
+    {
+      "version": "before",
+      "repeat": 2,
+      "method": "native-label",
+      "attempts": 474,
+      "rps": 47.33312368738955,
+      "p95_ms": 24.001811258494854
+    },
+    {
+      "version": "before",
+      "repeat": 3,
+      "method": "native-label",
+      "attempts": 467,
+      "rps": 46.64467165660824,
+      "p95_ms": 24.402515310794115
+    },
+    {
+      "version": "before",
+      "repeat": 3,
+      "method": "native-plugin",
+      "attempts": 351,
+      "rps": 35.049299472912914,
+      "p95_ms": 32.21585135906935,
+      "runtime_phase_mean_ms": {
+        "pin": 0.47376206267806265,
+        "compile": 3.8496500313390323,
+        "journal": 0.5011461339031339,
+        "queue": 0.032993182336182335,
+        "execute": 19.668798783475786,
+        "finalize": 0.15087504558404558,
+        "release": 0.5219353276353276,
+        "total": 25.199160549857545
+      }
+    },
+    {
+      "version": "after",
+      "repeat": 1,
+      "method": "native-label",
+      "attempts": 478,
+      "rps": 47.72930503318952,
+      "p95_ms": 24.02320927940309
+    },
+    {
+      "version": "after",
+      "repeat": 1,
+      "method": "native-plugin",
+      "attempts": 381,
+      "rps": 38.04319869270264,
+      "p95_ms": 30.582631938159466,
+      "runtime_phase_mean_ms": {
+        "pin": 0.6814666010498688,
+        "compile": 1.8997253254593176,
+        "journal": 0.4357294908136482,
+        "queue": 0.0373758031496063,
+        "execute": 19.323247732283463,
+        "finalize": 0.15913581889763778,
+        "release": 0.47376088976377956,
+        "total": 23.01044164304462
+      }
+    },
+    {
+      "version": "after",
+      "repeat": 2,
+      "method": "native-plugin",
+      "attempts": 390,
+      "rps": 38.94202412010207,
+      "p95_ms": 29.427929595112797,
+      "runtime_phase_mean_ms": {
+        "pin": 0.5088066205128206,
+        "compile": 1.8051908666666667,
+        "journal": 0.4209321076923077,
+        "queue": 0.03505133846153846,
+        "execute": 19.008672535897436,
+        "finalize": 0.15487880512820512,
+        "release": 0.4729210025641025,
+        "total": 22.406453194871794
+      }
+    },
+    {
+      "version": "after",
+      "repeat": 2,
+      "method": "native-label",
+      "attempts": 485,
+      "rps": 48.493836712726974,
+      "p95_ms": 23.774510622024536
+    },
+    {
+      "version": "after",
+      "repeat": 3,
+      "method": "native-label",
+      "attempts": 486,
+      "rps": 48.53279503429402,
+      "p95_ms": 23.48953695036471
+    },
+    {
+      "version": "after",
+      "repeat": 3,
+      "method": "native-plugin",
+      "attempts": 388,
+      "rps": 38.75117751862698,
+      "p95_ms": 30.06151271983981,
+      "runtime_phase_mean_ms": {
+        "pin": 0.6437968221649484,
+        "compile": 1.7752258041237112,
+        "journal": 0.43845568556701037,
+        "queue": 0.03526073195876289,
+        "execute": 18.74391581185567,
+        "finalize": 0.15362148711340207,
+        "release": 0.6813912912371134,
+        "total": 22.47166772938144
+      }
+    }
+  ],
+  "release_gate_passed": false,
+  "qualification": "Sequential colocated development runs; same frozen input pool and engine launch flags, unequal per-variant dispatch frequencies recorded; not an isolated causal/performance certification"
+}

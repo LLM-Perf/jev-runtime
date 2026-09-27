@@ -162,8 +162,8 @@ GPU7 returned to 11,990 MiB free. Other services were not changed.
 Evidence: [SGLang](../evidence/dsw/sglang-generation-444fd1b/report.json),
 [vLLM](../evidence/dsw/vllm-generation-444fd1b/report.json), and
 [truncation negative check](../evidence/dsw/sglang-generation-truncated-444fd1b/report.json).
-The native candidate/other Jev baselines, controlled matrix, varying-input workloads
-and business-quality equivalence remain outstanding.
+The native candidate/other Jev baselines, controlled matrix, representative
+varying-input workloads and business-quality equivalence remain outstanding.
 
 ## Runtime phase profiling
 
@@ -213,3 +213,92 @@ compiler's 256-entry bound exercises encoding misses during sequential traversal
 This pool consists of synthetic variants, not representative business prompts.
 Multi-input structured generation is explicitly rejected until its per-input
 native token traces and output contracts are implemented.
+
+## Full-context encoding optimization
+
+The compiler can use the Rust tokenizer's `encode_batch_fast` for continuation
+IDs when the tokenizer uses the inspected standard `PreTrainedTokenizerBase.encode`
+and `TokenizersBackend._encode_plus` methods. The base prompt still goes through
+its normal wrapper first. Padding, truncation and special-token splitting settings
+must match before using the backend path. Every full `prompt + label` is encoded;
+every result must retain the complete prompt prefix and add exactly one token.
+Only unused offset mapping is omitted. At most 32 candidate texts are copied per
+batch. Unknown/custom encode methods retain the original wrapper path.
+
+vLLM 0.30's host tokenizer pool is never bypassed on its shared backend. For a
+standard pool prototype, the endpoint plugin creates an independent deep copy
+from the host's pickle-reduction protocol, verifies backend serialization,
+vocabulary, template and special-token identity, then uses that private object
+for synchronous compiler calls. Unsupported reductions or changed identity keep
+the original pooled API. This adds a CPU tokenizer copy per API worker; its memory
+cost is not yet a certified capacity result. It never reloads a tokenizer from a
+repository name. The admin profile records concrete method implementations,
+encoding eligibility, cache bounds and whether a host-pool copy was created.
+
+The initial HF wrapper-batch experiment (`9fb3e8f`) matched all 300 frozen inputs
+but showed no consistent CPU speedup; that generic batch path was removed. The
+IDs-only implementation at `8a126a8` matched all 300 serving fixtures and 12
+additional synthetic Unicode/whitespace/special-token/control-character cases.
+Its three CPU mean compile times were 2.34/2.36/2.30 ms versus the original
+3.13/3.32/3.13 ms with encoding caching disabled and tokenizer parallelism disabled.
+These CPU checks alone establish no serving speedup. The initial live vLLM
+eligibility check correctly selected the pooled fallback; the private-copy
+integration at `c11d2b3` enables the path only after identity verification.
+
+
+## Recorded multi-input profiling check
+
+The colocated vLLM SmolLM2 profile used the same 300 exact L=256/K=8 inputs at
+concurrency 1, BF16/TP1/eager, prefix caching enabled, and three ten-second timed
+repeats per method. The input pool exceeds the 256-entry compiler cache. Actual
+typed token-weighted KV hits were 18.75%, so this is not an all-cache-hit workload.
+All 300 input/label-ID sequences match across versions and passed per-variant
+native/typed probability parity. The comparison artifact records a canonical
+workload hash separately from run-specific aliases and bundle digests.
+
+| Runtime / method | Strict successes / attempts | RPS, repeats 1/2/3 | P95 ms, repeats 1/2/3 | Mean compile ms, repeats 1/2/3 |
+|---|---:|---|---|---|
+| da2293b before / native-label | 1418/1418 | 47.68, 47.33, 46.64 | 24.19, 24.00, 24.40 | not observed |
+| da2293b before / native-plugin | 1052/1052 | 34.95, 35.00, 35.05 | 32.43, 32.71, 32.22 | 3.86, 3.91, 3.85 |
+| c11d2b3 after / native-label | 1449/1449 | 47.73, 48.49, 48.53 | 24.02, 23.77, 23.49 | not observed |
+| c11d2b3 after / native-plugin | 1159/1159 | 38.04, 38.94, 38.75 | 30.58, 29.43, 30.06 | 1.90, 1.81, 1.78 |
+
+The observed compilation reduction did not satisfy the native-overhead gate:
+plugin/native throughput remained about 80% after the change. Native throughput
+also varied across the sequential runs; no isolated causal speedup or confidence
+interval is claimed. Fixed-duration methods have different request counts and
+per-variant frequencies, all retained in JSONL. The earlier one-input warm run
+had roughly 0.22–0.23 ms compilation and 1.4 ms combined pin/journal/release work;
+its cache behavior and results must not be substituted for this varying-input run.
+
+Evidence: [before](../evidence/dsw/vllm-input300-11791e0/report.json),
+[after](../evidence/dsw/vllm-input300-c11d2b3/report.json),
+[exact-input comparison](../evidence/dsw/vllm-encoding-comparison-c11d2b3.json),
+[one-input phase profile](../evidence/dsw/vllm-timing-da2293b/report.json), and
+[CPU encoding checks](../evidence/dsw/compiler-ids-8a126a8.json).
+
+SGLang at the same `c11d2b3` source completed the same 300 exact prompt/label-ID
+fixtures and three ten-second repeats. It uses the standard host tokenizer
+directly; the private host-pool copy applies only to vLLM. Every input passed
+within-engine native/typed parity with zero error. This does not establish
+cross-engine numeric parity. All 2,078 timed attempts succeeded:
+
+| Method | Strict successes / attempts | RPS, repeats 1/2/3 | P95 ms, repeats 1/2/3 | Mean compile ms, repeats 1/2/3 |
+|---|---:|---|---|---|
+| native-label | 1155/1155 | 39.54, 38.55, 37.22 | 31.14, 31.13, 32.47 | not observed |
+| native-plugin | 923/923 | 30.06, 31.10, 30.95 | 38.81, 37.74, 37.44 | 2.41, 2.37, 2.28 |
+
+SGLang plugin/native throughput ratios were 76.0%, 80.7% and 83.2%, below the
+90% target. Its actual token-weighted cache ratio was about 20.1% for typed
+requests and 20.1% for native requests; both denominators are observed. This
+differs from vLLM's cache behavior. No SGLang before/after encoding speedup is
+claimed because the matching pre-change varying-input GPU cohort was not run.
+
+Both engines also passed the full functional suite and 1,000 route switches at
+`c11d2b3`: SGLang served 548 requests and vLLM served 469 during switching, with
+no mixed versions. All owned process groups exited and GPU7 returned to the
+11,990 MiB free-memory baseline. The raw JSONL summaries were independently
+recomputed, including per-variant frequencies and timing observation counts.
+These checks do not recertify previous LoRA/multi-worker profiles or the release
+matrix. See the [SGLang report](../evidence/dsw/sglang-input300-c11d2b3/report.json)
+and [two-engine evidence validation](../evidence/dsw/input300-validation-c11d2b3.json).
