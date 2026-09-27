@@ -139,7 +139,7 @@ def install_routes(
             "data": [
                 {"id": route["alias"], "object": "model"}
                 for route in runtime(request).registry.list()["routes"]
-                if route["ref"]
+                if route["ref"] and runtime(request).is_prepared(route["ref"])
             ],
         }
 
@@ -151,9 +151,16 @@ def install_routes(
     async def ready(request: Request):
         instance = runtime(request)
         routes = instance.registry.list()["routes"]
-        if not any(route["ref"] for route in routes):
+        prepared = [
+            route["ref"] for route in routes if route["ref"] and instance.is_prepared(route["ref"])
+        ]
+        if not prepared:
             raise JevError("no_active_bundle", "No decision bundle is active", 503)
-        return {"ready": True, "engine": instance.capabilities.engine}
+        return {
+            "ready": True,
+            "engine": instance.capabilities.engine,
+            "prepared_bundles": sorted(set(prepared)),
+        }
 
     @router.get("/metrics")
     async def metrics():
@@ -173,9 +180,7 @@ def install_routes(
 
     @management.post("/bundles/activate")
     async def activate(body: Activation, request: Request):
-        return runtime(request).registry.activate(
-            body.alias, body.reference, body.expected_generation
-        )
+        return runtime(request).activate(body.alias, body.reference, body.expected_generation)
 
     @management.post("/bundles/disable")
     async def disable(body: Disable, request: Request):
@@ -215,8 +220,8 @@ def create_app(
     async def lifespan(app: FastAPI):
         current = instance or await build_runtime(settings)
         app.state.jev_runtime = current
-        await current.start()
         try:
+            await current.start()
             if settings:
                 await bootstrap(current, settings)
             yield

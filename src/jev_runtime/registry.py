@@ -77,9 +77,11 @@ class Registry:
             "pid": os.getpid(),
             "boot_id": None,
             "start_ticks": None,
+            "pid_namespace": None,
         }
         try:
             identity["boot_id"] = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+            identity["pid_namespace"] = os.readlink("/proc/self/ns/pid")
             identity["start_ticks"] = (
                 Path(f"/proc/{os.getpid()}/stat").read_text().rsplit(")", 1)[1].split()[19]
             )
@@ -94,12 +96,16 @@ class Registry:
             identity.get("host") != socket.gethostname()
             or not identity.get("boot_id")
             or not identity.get("start_ticks")
+            or not identity.get("pid_namespace")
         ):
             return "unknown"
         try:
             boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
-            if boot != identity["boot_id"]:
-                return "dead"
+            if (
+                boot != identity["boot_id"]
+                or os.readlink("/proc/self/ns/pid") != identity["pid_namespace"]
+            ):
+                return "unknown"
             try:
                 fields = (
                     Path(f"/proc/{int(identity['pid'])}/stat").read_text().rsplit(")", 1)[1].split()
@@ -171,7 +177,7 @@ class Registry:
                 self._event(db, "upload", ref=bundle.reference, digest=bundle.digest)
         return self.inspect(bundle.reference)
 
-    def begin_prepare(self, reference: str, backend: str) -> Bundle:
+    def begin_prepare(self, reference: str, backend: str, request_id: str) -> tuple[Bundle, str]:
         with self._transaction() as db:
             row = self._get(db, reference)
             if row["state"] not in ("VALIDATED", "FAILED", "RETIRED"):
@@ -189,14 +195,43 @@ class Registry:
                     reference,
                 ),
             )
+            lease = uuid.uuid4().hex
+            db.execute(
+                "INSERT INTO leases VALUES(?,?,?,?,?)",
+                (lease, reference, self.owner, request_id, time.time()),
+            )
+            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
             self._event(db, "prepare", ref=reference, backend=backend)
-            return Bundle.model_validate_json(row["manifest"])
+            return Bundle.model_validate_json(row["manifest"]), lease
 
-    def finish_prepare(self, reference: str, error: str | None = None) -> None:
+    def finish_prepare(
+        self,
+        reference: str,
+        lease_id: str,
+        error: str | None = None,
+        unconfirmed: set[str] | None = None,
+    ) -> None:
+        """Publish preparation and settle its lease in one crash-safe transaction."""
         with self._transaction() as db:
             row = self._get(db, reference)
             if row["state"] != "PREPARING":
                 raise JevError("invalid_state", "Prepare was superseded", 409)
+            if not db.execute(
+                "SELECT 1 FROM leases WHERE id=? AND ref=? AND owner=?",
+                (lease_id, reference, self.owner),
+            ).fetchone():
+                raise JevError("lease_not_owned", "Preparation lease is not owned", 409)
+            if unconfirmed:
+                error = error or "cancellation unconfirmed"
+                db.execute(
+                    "UPDATE lease_work SET branches=?,phase='abort_pending' WHERE lease_id=?",
+                    (json.dumps(sorted(unconfirmed)), lease_id),
+                )
+                self._event(
+                    db, "abort_pending", lease_id=lease_id, engine_request_ids=sorted(unconfirmed)
+                )
+            else:
+                db.execute("DELETE FROM leases WHERE id=?", (lease_id,))
             state = "FAILED" if error else "READY"
             db.execute("UPDATE bundles SET state=?,error=? WHERE ref=?", (state, error, reference))
             self._event(db, "prepare_finished", ref=reference, state=state)
@@ -284,20 +319,6 @@ class Registry:
         with self._transaction() as db:
             db.execute("DELETE FROM leases WHERE id=? AND owner=?", (lease_id, self.owner))
 
-    def pin_preparation(self, reference: str, request_id: str, backend: str) -> str:
-        """Canary inference must block retirement just like ordinary traffic."""
-        with self._transaction() as db:
-            row = self._get(db, reference)
-            if row["state"] != "PREPARING" or row["backend"] != backend:
-                raise JevError("invalid_state", "Preparation no longer owns this bundle", 409)
-            lease = uuid.uuid4().hex
-            db.execute(
-                "INSERT INTO leases VALUES(?,?,?,?,?)",
-                (lease, reference, self.owner, request_id, time.time()),
-            )
-            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
-            return lease
-
     def record_branches(self, lease_id: str, branches: list[str]) -> None:
         """Persist engine IDs before dispatch, including canaries and queued work."""
         with self._transaction() as db:
@@ -313,6 +334,20 @@ class Registry:
                 "UPDATE lease_work SET branches=? WHERE lease_id=?",
                 (json.dumps(combined), lease_id),
             )
+
+    def pin_revalidation(self, reference: str, request_id: str, backend: str) -> tuple[Bundle, str]:
+        """Probe an existing version without changing another worker's active route."""
+        with self._transaction() as db:
+            row = self._get(db, reference)
+            if row["state"] not in {"READY", "ACTIVE", "DRAINING"} or row["backend"] != backend:
+                raise JevError("not_ready", "Bundle is not prepared for this engine target", 409)
+            lease = uuid.uuid4().hex
+            db.execute(
+                "INSERT INTO leases VALUES(?,?,?,?,?)",
+                (lease, reference, self.owner, request_id, time.time()),
+            )
+            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
+            return Bundle.model_validate_json(row["manifest"]), lease
 
     def mark_abort_pending(self, lease_id: str, branches: set[str]) -> None:
         with self._transaction() as db:

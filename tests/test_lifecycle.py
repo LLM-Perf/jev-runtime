@@ -15,13 +15,13 @@ def request(question, **kwargs):
 
 async def test_switch_pins_old_request_until_drain(runtime, bundle, question):
     engine = runtime.backend
+    second = bundle.model_copy(update={"version": 2, "policy": Policy(min_probability=0.99)})
+    runtime.registry.upload(second)
+    await runtime.prepare(second.reference)
+    engine.started.clear()
     engine.gate.clear()
     work = asyncio.create_task(runtime.decide(request(question), "old"))
     await engine.started.wait()
-    second = bundle.model_copy(update={"version": 2, "policy": Policy(min_probability=0.99)})
-    runtime.registry.upload(second)
-    runtime.registry.begin_prepare(second.reference, runtime.backend_identity)
-    runtime.registry.finish_prepare(second.reference)
     runtime.registry.activate("model", second.reference, 1)
     with pytest.raises(JevError, match="in-flight"):
         runtime.registry.retire(bundle.reference)

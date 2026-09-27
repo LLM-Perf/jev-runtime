@@ -12,6 +12,7 @@ from jev_runtime.admission import Admission
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.compiler import Compiler
+from jev_runtime.errors import JevError
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, ModelIdentity
@@ -118,9 +119,35 @@ async def bootstrap(runtime: Runtime, settings: Settings) -> None:
     bundle = Bundle(
         id=settings.bootstrap_bundle_id, version=1, model=model_identity(settings, runtime.compiler)
     )
-    state = runtime.registry.upload(bundle)
-    if state["state"] in {"VALIDATED", "FAILED", "RETIRED"}:
-        await runtime.prepare(bundle.reference)
+    runtime.registry.upload(bundle)
+    async with asyncio.timeout(180):
+        while not runtime.is_prepared(bundle.reference):
+            state = runtime.registry.inspect(bundle.reference)["state"]
+            if state == "PREPARING":
+                # Another local API worker owns the initial preparation. Once
+                # published, this worker still runs its own engine canary.
+                await asyncio.sleep(0.05)
+                continue
+            try:
+                await runtime.prepare(bundle.reference)
+            except JevError as exc:
+                if exc.code not in {"invalid_state", "not_ready"}:
+                    raise
+                if runtime.registry.inspect(bundle.reference)["state"] not in {
+                    "PREPARING",
+                    "READY",
+                    "ACTIVE",
+                    "DRAINING",
+                }:
+                    raise
+                await asyncio.sleep(0.05)
     routes = {route["alias"]: route for route in runtime.registry.list()["routes"]}
     if settings.bootstrap_alias not in routes:
-        runtime.registry.activate(settings.bootstrap_alias, bundle.reference, 0)
+        try:
+            runtime.activate(settings.bootstrap_alias, bundle.reference, 0)
+        except JevError as exc:
+            if exc.code != "generation_conflict":
+                raise
+            current = {r["alias"]: r for r in runtime.registry.list()["routes"]}
+            if current.get(settings.bootstrap_alias, {}).get("ref") != bundle.reference:
+                raise

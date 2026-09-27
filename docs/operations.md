@@ -59,6 +59,13 @@ The registry is local SQLite in WAL mode. Multiple processes can share a local f
 network filesystems and multi-node SQLite are unsupported. Back up the database with
 SQLite's online backup API, not by copying a live `.db` without its WAL.
 
+Each API worker also prepares its own engine path. On restart it revalidates active
+versions; a shared database's READY state does not bypass that worker's canary.
+Prepare a version on every traffic-serving worker before activation. A worker that
+has not prepared the newly active version rejects it with `replica_not_ready`.
+Coordinated multi-replica rollout is still under development. Concurrent initial
+bootstrap waits for the global preparation and then runs each worker's local canary.
+
 ## Cancellation and failure accounting
 
 Clients may set a unique `request_id` before submitting. Cancellation is scoped to
@@ -77,18 +84,30 @@ Inspect `/admin/requests/recovery`, then retry aborts through
 `/admin/requests/{request_id}/recover`. Every engine ID is journaled transactionally
 before dispatch. Recovery survives a new API process using the same local registry.
 An explicitly `abort_pending` request is eligible; an interrupted in-flight request
-requires proof that its original Linux PID/start-tick/boot-ID owner has exited.
+requires proof that its original Linux PID/start-tick/boot-ID owner has exited
+within the same hostname and PID namespace.
 Unverifiable owners and legacy leases without a dispatch journal fail closed.
 A changed engine target or failed abort retry preserves the lease.
 The engine abort APIs acknowledge request cancellation; this is not a certified GPU
 LoRA unload barrier. Adapter lifecycle certification still requires separate checks.
 Recovery is an explicit administrative operation, not a time-based lease expiry.
+Preparation state, lease creation, and completion each use atomic transactions so
+a crash cannot leave a PREPARING version without its recovery journal. If a crashed
+bootstrap prevents HTTP startup, use the same config and engine credentials:
+
+```sh
+jevctl recovery list config.yaml
+jevctl recovery recover config.yaml prepare-REQUEST_ID
+```
+
+The recovery CLI does not activate routes or clear unknown leases. It contacts the
+configured engine and applies the same owner, backend and abort checks as the API.
 Unit tests cover cross-instance recovery and fail-closed identity checks; real
 process-kill fault injection is still pending. Unattended recovery is not certified.
 
 ## Health, metrics and evidence
 
-`/ready` requires initialized capabilities and an active alias. Startup/prepare
+`/ready` requires initialized capabilities and a locally prepared active alias. Startup/prepare
 executes a canary; readiness is not yet a periodic model liveness canary. The current
 metrics expose decision outcome counts and HTTP latency. Engine usage, canceled
 branches and registry state must also be retained in evaluation artifacts.

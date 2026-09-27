@@ -16,6 +16,8 @@ bundle_app = typer.Typer(help="Bundle build, prepare, activate, disable and reti
 app.add_typer(bundle_app, name="bundle")
 calibration_app = typer.Typer(help="Collect fixed-task scores and fit held-out calibration")
 app.add_typer(calibration_app, name="calibration")
+recovery_app = typer.Typer(help="Inspect and recover durable leases, including before API startup")
+app.add_typer(recovery_app, name="recovery")
 
 
 def output(value):
@@ -66,6 +68,31 @@ def inspect(config: Path):
                     "template_digest": runtime.compiler.template_digest,
                 }
             )
+        finally:
+            await runtime.close()
+
+    asyncio.run(run())
+
+
+@recovery_app.command("list")
+def recovery_list(config: Path):
+    """Inspect the local dispatch journal without starting an engine or API worker."""
+    from jev_runtime.registry import Registry
+
+    output({"requests": Registry(load_settings(config).registry_path).recovery_candidates()})
+
+
+@recovery_app.command("recover")
+def recovery_recover(config: Path, request_id: str):
+    """Abort an eligible recorded request against its original configured backend."""
+
+    async def run():
+        runtime = await build_runtime(load_settings(config))
+        try:
+            # Do not call start/bootstrap: a crashed bootstrap can itself leave
+            # PREPARING state. Recovery checks identity and dispatch ownership.
+            await runtime.backend.probe()
+            output({"recovered": await runtime.recover_cancelled(request_id)})
         finally:
             await runtime.close()
 

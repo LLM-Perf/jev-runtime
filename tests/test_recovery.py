@@ -29,6 +29,7 @@ async def test_failed_abort_journal_survives_new_runtime_instance(runtime, quest
         runtime.backend_identity,
         runtime.model_id,
     )
+    runtime.backend.gate.set()
     await recovered.start()
     pending = recovered.pending_cancellations()
     assert len(pending) == 1 and pending[0]["phase"] == "abort_pending"
@@ -64,15 +65,44 @@ async def test_crash_recovery_requires_dead_owner_matching_backend_and_abort(run
 async def test_prepare_cannot_reuse_failed_bundle_with_unconfirmed_work(runtime, bundle):
     next_bundle = bundle.model_copy(update={"version": 2})
     runtime.registry.upload(next_bundle)
-    runtime.registry.begin_prepare(next_bundle.reference, runtime.backend_identity)
-    lease = runtime.registry.pin_preparation(
-        next_bundle.reference, "canary-unknown", runtime.backend_identity
+    _, lease = runtime.registry.begin_prepare(
+        next_bundle.reference, runtime.backend_identity, "canary-unknown"
     )
     runtime.registry.record_branches(lease, ["canary-unknown.q.0"])
-    runtime.registry.mark_abort_pending(lease, {"canary-unknown.q.0"})
-    runtime.registry.finish_prepare(next_bundle.reference, "injected failure")
+    runtime.registry.finish_prepare(
+        next_bundle.reference, lease, "injected failure", {"canary-unknown.q.0"}
+    )
     with pytest.raises(JevError) as error:
         await runtime.prepare(next_bundle.reference)
     assert error.value.code == "bundle_in_use"
     assert await runtime.recover_cancelled("canary-unknown")
     assert (await runtime.prepare(next_bundle.reference))["state"] == "READY"
+
+
+async def test_preparation_has_recoverable_lease_before_first_dispatch(
+    runtime, bundle, monkeypatch
+):
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    _, lease = runtime.registry.begin_prepare(second.reference, runtime.backend_identity, "boot")
+    assert runtime.registry.inspect(second.reference)["state"] == "PREPARING"
+    pending = runtime.pending_cancellations()
+    assert pending[0]["lease_id"] == lease and pending[0]["engine_request_ids"] == []
+    monkeypatch.setattr(Registry, "_owner_status", staticmethod(lambda identity: "dead"))
+    assert await runtime.recover_cancelled("boot")
+    assert runtime.registry.inspect(second.reference)["state"] == "FAILED"
+    assert not runtime.registry.list()["leases"]
+    assert (await runtime.prepare(second.reference))["state"] == "READY"
+
+
+def test_preparation_lease_failure_rolls_back_state(runtime, bundle):
+    import sqlite3
+
+    snapshot = runtime.registry.acquire("model", "collision", None, runtime.backend_identity)
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    with pytest.raises(sqlite3.IntegrityError):
+        runtime.registry.begin_prepare(second.reference, runtime.backend_identity, "collision")
+    assert runtime.registry.inspect(second.reference)["state"] == "VALIDATED"
+    assert len(runtime.registry.list()["leases"]) == 1
+    runtime.registry.release(snapshot.lease_id)

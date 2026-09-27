@@ -103,6 +103,14 @@ def launch(args):
             "JEV_CONFIG": str(root / "config.json"),
         }
     )
+    if args.engine_run_dir:
+        engine_record = json.loads((args.engine_run_dir / "process.json").read_text())
+        expected_url = f"http://127.0.0.1:{engine_record['port']}"
+        if args.engine_url != expected_url or engine_record["engine"] != args.engine:
+            raise SystemExit("Engine credential source does not match the configured target")
+        env["JEV_ENGINE_API_KEY"] = json.loads((args.engine_run_dir / "keys.json").read_text())[
+            "api"
+        ]
     if args.gateway:
         command = [
             str(Path(sys.executable).with_name("jevctl")),
@@ -225,12 +233,15 @@ def main():
     parser.add_argument("--reserve-mib", type=int, default=3072)
     parser.add_argument("--gateway", action="store_true")
     parser.add_argument("--engine-url")
+    parser.add_argument("--engine-run-dir", type=Path)
     args = parser.parse_args()
     if args.action == "launch":
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
             parser.error("launch requires engine, model path and a valid memory fraction")
         if args.gateway and not args.engine_url:
             parser.error("gateway requires an explicit existing engine URL")
+        if args.engine_run_dir and not args.gateway:
+            parser.error("engine-run-dir only supplies credentials for a gateway")
     {"launch": launch, "status": status, "stop": stop}[args.action](args)
 
 

@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 50 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 56 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -28,6 +28,9 @@ replacement for any requirement in `implementation-plan.md`.
 - Engine branch IDs are journaled before dispatch. Administrative recovery can
   operate after a worker restart, with PID/start-tick/boot-ID checks and matching
   engine identity. Unit tests pass; live crash fault injection remains pending.
+- Per-worker startup revalidates persisted active versions. Concurrent local
+  bootstrap runs a canary on every worker; an unprepared worker rejects traffic
+  for a newly active version. Coordinated multi-replica rollout remains incomplete.
 
 ## Required evidence still outstanding
 

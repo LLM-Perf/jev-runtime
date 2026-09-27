@@ -45,13 +45,30 @@ class Runtime:
         self._management_lock = asyncio.Lock()
         self._active: dict[str, asyncio.Task] = {}
         self._tenants: dict[str, str] = {}
+        self._prepared: set[str] = set()
 
     async def start(self) -> None:
+        self._prepared.clear()
         self.capabilities = await self.backend.probe()
         if not self.capabilities.selected_logprobs or not self.capabilities.raw_logprobs:
             raise JevError(
                 "unsupported_engine", "Engine must return complete raw selected logprobs", 503
             )
+        listing = self.registry.list()
+        active = {route["ref"] for route in listing["routes"] if route["ref"]}
+        for bundle in listing["bundles"]:
+            if bundle["ref"] in active and bundle["backend"] == self.backend_identity:
+                await self.prepare(bundle["ref"])
+
+    def is_prepared(self, reference: str) -> bool:
+        return reference in self._prepared
+
+    def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
+        if not self.is_prepared(reference):
+            raise JevError(
+                "replica_not_ready", "Prepare this version on this API worker first", 503
+            )
+        return self.registry.activate(alias, reference, expected_generation)
 
     async def close(self) -> None:
         tasks = list(self._active.values())
@@ -81,11 +98,19 @@ class Runtime:
 
     async def prepare(self, reference: str) -> dict:
         async with self._management_lock:
-            bundle = self.registry.begin_prepare(reference, self.backend_identity)
             request_id = "prepare-" + uuid.uuid4().hex
-            lease_id = self.registry.pin_preparation(reference, request_id, self.backend_identity)
+            fresh = self.registry.inspect(reference)["state"] in {"VALIDATED", "FAILED", "RETIRED"}
+            if fresh:
+                bundle, lease_id = self.registry.begin_prepare(
+                    reference, self.backend_identity, request_id
+                )
+            else:
+                bundle, lease_id = self.registry.pin_revalidation(
+                    reference, request_id, self.backend_identity
+                )
             self._active[request_id] = asyncio.current_task()
             unconfirmed: set[str] = set()
+            error = None
             try:
                 self._validate_bundle(bundle)
                 questions = bundle.questions or (
@@ -107,16 +132,18 @@ class Runtime:
                         ]
                         assemble(compiled, results, bundle)
             except BaseException as exc:
-                message = exc.message if isinstance(exc, JevError) else type(exc).__name__
-                self.registry.finish_prepare(reference, message)
+                error = exc.message if isinstance(exc, JevError) else type(exc).__name__
+                self._prepared.discard(reference)
                 raise
             finally:
-                if unconfirmed:
+                if fresh:
+                    self.registry.finish_prepare(reference, lease_id, error, unconfirmed)
+                elif unconfirmed:
                     self.registry.mark_abort_pending(lease_id, unconfirmed)
                 else:
                     self.registry.release(lease_id)
                 self._active.pop(request_id, None)
-            self.registry.finish_prepare(reference)
+            self._prepared.add(reference)
             return self.registry.inspect(reference)
 
     def _validate_sequences(self, sequences: tuple[ScoreInput, ...], bundle: Bundle) -> int:
@@ -204,6 +231,12 @@ class Runtime:
                     request.model, rid, request.bundle, self.backend_identity
                 )
                 bundle = snapshot.bundle
+                if not self.is_prepared(bundle.reference):
+                    raise JevError(
+                        "replica_not_ready",
+                        "This API worker has not validated the active version",
+                        503,
+                    )
                 self._validate_bundle(bundle)
                 questions = request.questions or bundle.questions
                 if bundle.candidate_policy == "fixed" and questions != bundle.questions:
