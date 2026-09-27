@@ -1,0 +1,59 @@
+{
+  "source_commit": "0c1e38dcf966c5c080d7ae6aa641ca34c327a9e7",
+  "run_id": 36318099621,
+  "url": "https://github.com/LLM-Perf/jev-runtime/actions/runs/36318099621",
+  "executed_steps": 0,
+  "jobs": [
+    {
+      "id": 108616533813,
+      "name": "contracts (3.11)",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [],
+      "runner_id": 0
+    },
+    {
+      "id": 108616534011,
+      "name": "typescript",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [],
+      "runner_id": 0
+    },
+    {
+      "id": 108616534021,
+      "name": "contracts (3.12)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "steps": [],
+      "runner_id": 0
+    }
+  ],
+  "annotations": [
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/LLM-Perf/jev-runtime/blob/0c1e38dcf966c5c080d7ae6aa641ca34c327a9e7/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "failure",
+      "title": "",
+      "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+      "raw_details": ""
+    },
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/LLM-Perf/jev-runtime/blob/0c1e38dcf966c5c080d7ae6aa641ca34c327a9e7/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "notice",
+      "title": "",
+      "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+      "raw_details": ""
+    }
+  ],
+  "qualification": "Hosted jobs did not start because account billing/spending eligibility rejected execution. This is not a test assertion failure or a CI pass; local and DSW evidence remain separate."
+}

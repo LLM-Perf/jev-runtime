@@ -202,3 +202,7 @@ GPU reports retain the exact runtime commit rather than claiming a later source 
 Hosted CI run `36315081675` at `ad9b417` again had zero executed steps because
 organization billing/spending eligibility rejected job startup. This is separate
 from the passing local and DSW checks; see `evidence/hosted-ci-ad9b417.json`.
+
+Hosted CI run `36318099621` at `0c1e38d` again executed zero steps: account
+billing/spending eligibility rejected job startup. See
+`evidence/hosted-ci-0c1e38d.json`; local and DSW checks are separate evidence.
