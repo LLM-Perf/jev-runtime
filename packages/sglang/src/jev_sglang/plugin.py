@@ -92,6 +92,28 @@ def _after_lora_update(result, *args, **kwargs):
     return result
 
 
+class _HostLogprobRow(list):
+    """Preserve SGLang's documented host-list rows at its tensor-only boundary."""
+
+    def tolist(self):
+        return list(self)
+
+
+def _before_logprob_rows(*args, **kwargs):
+    # SGLang 0.5.19 get_token_ids_logprobs_raw returns [] for a request
+    # without selected IDs. Mixed decode/prefill normalization still calls
+    # .tolist() on every row. Keep tensor rows and their device copies intact;
+    # host rows need no tensor allocation, precision change or fabricated score.
+    if not kwargs["batch"].return_logprob:
+        return
+    output = kwargs["logits_output"]
+    rows = output.next_token_token_ids_logprobs_val
+    if rows:
+        for index, row in enumerate(rows):
+            if type(row) is list:
+                rows[index] = _HostLogprobRow(row)
+
+
 def register():
     global _registered
     if _registered:
@@ -107,6 +129,13 @@ def register():
         _check_granian_workers,
         HookType.BEFORE,
     )
+    if version("sglang").split("+")[0] == "0.5.19":
+        target = (
+            "sglang.srt.managers.scheduler_components.batch_result_processor."
+            "SchedulerBatchResultProcessor."
+        )
+        for method in ("move_logprobs_to_cpu", "_normalize_decode_outputs"):
+            HookRegistry.register(target + method, _before_logprob_rows, HookType.BEFORE)
     path = os.environ.get("JEV_CONFIG")
     if path and load_settings(path).adapters.enabled:
         target = "sglang.srt.managers.scheduler.Scheduler."
