@@ -21,6 +21,23 @@ class CompiledQuestion:
     sequences: tuple[ScoreInput, ...]
 
 
+def supports_backend_ids_only(tokenizer) -> bool:
+    encode = getattr(tokenizer, "encode", None)
+    encode_plus = getattr(tokenizer, "_encode_plus", None)
+    backend = getattr(tokenizer, "backend_tokenizer", None)
+    # Only this inspected HF implementation forwards ordinary string input
+    # directly to the configured Rust backend. Custom encode overrides keep
+    # their wrapper path. The base encode below first sets the same default
+    # no-padding/no-truncation and special-token splitting configuration.
+    return (
+        getattr(encode, "__module__", None) == "transformers.tokenization_utils_base"
+        and getattr(encode, "__qualname__", None) == "PreTrainedTokenizerBase.encode"
+        and getattr(encode_plus, "__module__", None) == "transformers.tokenization_utils_tokenizers"
+        and getattr(encode_plus, "__qualname__", None) == "TokenizersBackend._encode_plus"
+        and callable(getattr(backend, "encode_batch_fast", None))
+    )
+
+
 class Compiler:
     def __init__(self, tokenizer: Any, cache_tokens: int = 262144, cache_entries: int = 256):
         if cache_tokens < 0 or cache_entries < 0:
@@ -31,21 +48,8 @@ class Compiler:
         self._cached_tokens = 0
         self._encoding_cache: OrderedDict = OrderedDict()
         self._cache_lock = threading.Lock()
-        encode = getattr(tokenizer, "encode", None)
-        encode_plus = getattr(tokenizer, "_encode_plus", None)
-        backend = getattr(tokenizer, "backend_tokenizer", None)
-        # Only this inspected HF implementation forwards ordinary string input
-        # directly to the configured Rust backend. Custom encode overrides keep
-        # their wrapper path. The base encode below first sets the same default
-        # no-padding/no-truncation and special-token splitting configuration.
-        self._fast_ids = (
-            getattr(encode, "__module__", None) == "transformers.tokenization_utils_base"
-            and getattr(encode, "__qualname__", None) == "PreTrainedTokenizerBase.encode"
-            and getattr(encode_plus, "__module__", None)
-            == "transformers.tokenization_utils_tokenizers"
-            and getattr(encode_plus, "__qualname__", None) == "TokenizersBackend._encode_plus"
-            and callable(getattr(backend, "encode_batch_fast", None))
-        )
+        self._fast_ids = supports_backend_ids_only(tokenizer)
+        self.copied_from_host_pool = False
         if not getattr(tokenizer, "chat_template", None):
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
         self.template_digest = content_digest(tokenizer.chat_template)
@@ -71,6 +75,7 @@ class Compiler:
 
         return {
             "tokenizer_class": implementation(type(self.tokenizer)),
+            "copied_from_host_pool": self.copied_from_host_pool,
             "encode_implementation": implementation(self.tokenizer.encode),
             "encode_plus_implementation": implementation(
                 getattr(self.tokenizer, "_encode_plus", None)
