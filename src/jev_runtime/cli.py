@@ -22,6 +22,66 @@ adapter_app = typer.Typer(help="Register, load, drain and unload immutable local
 app.add_typer(adapter_app, name="adapter")
 tokenizer_app = typer.Typer(help="Prepare immutable tokenizer profiles from local checkpoint data")
 app.add_typer(tokenizer_app, name="tokenizer")
+rollout_app = typer.Typer(help="Qualify and switch local gateway slots through HAProxy")
+app.add_typer(rollout_app, name="rollout")
+
+
+def rollout_controller(directory: Path):
+    from jev_runtime.rollout import GatewayProbe, Rollout
+
+    return Rollout(
+        directory,
+        GatewayProbe(os.environ.get("JEV_API_KEY", ""), os.environ.get("JEV_ADMIN_KEY", "")),
+    )
+
+
+@rollout_app.command("init")
+def rollout_init(directory: Path, blue_port: int, green_port: int, frontend_port: int):
+    """Qualify blue and create a new private proxy directory; start HAProxy separately."""
+    output(rollout_controller(directory).initialize(blue_port, green_port, frontend_port))
+
+
+@rollout_app.command("status")
+def rollout_status(directory: Path):
+    output(rollout_controller(directory).status())
+
+
+@rollout_app.command("switch")
+def rollout_switch(
+    directory: Path,
+    target: str,
+    expected_generation: int,
+    operation_id: str,
+    deployment_id: str,
+    release_id: str,
+    canary: Path,
+):
+    """Qualify all candidate workers and canary, then persist one CAS transition."""
+    output(
+        rollout_controller(directory).switch(
+            target,
+            expected_generation,
+            operation_id,
+            deployment_id,
+            release_id,
+            json.loads(canary.read_text()),
+        )
+    )
+
+
+@rollout_app.command("reconcile")
+def rollout_reconcile(directory: Path):
+    """Resolve an interrupted operation from observed traffic selection without replay."""
+    output(rollout_controller(directory).reconcile())
+
+
+@rollout_app.command("drain")
+def rollout_drain(directory: Path, operation_id: str, timeout: float = 60):
+    """Wait for old HTTP streams and durable leases; never kill an old gateway."""
+    result = rollout_controller(directory).drain(operation_id, timeout)
+    output(result)
+    if not result["drained"]:
+        raise typer.Exit(1)
 
 
 @tokenizer_app.command("convert-glm4")

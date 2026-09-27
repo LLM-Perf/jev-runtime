@@ -70,6 +70,11 @@ class Registry:
                     ref TEXT NOT NULL REFERENCES bundles(ref), digest TEXT NOT NULL,
                     PRIMARY KEY(owner, ref)
                 );
+                CREATE TABLE IF NOT EXISTS worker_deployments (
+                    owner TEXT PRIMARY KEY REFERENCES owners(owner),
+                    deployment TEXT NOT NULL, release TEXT NOT NULL,
+                    expected_workers INTEGER NOT NULL
+                );
                 CREATE TABLE IF NOT EXISTS lease_work (
                     lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
                     branches TEXT NOT NULL, phase TEXT NOT NULL
@@ -447,6 +452,47 @@ class Registry:
             }
             for row in rows
         ]
+
+    def tag_deployment(self, deployment: str, release: str, expected_workers: int) -> None:
+        """Bind the process to one rollout slot incarnation before it starts serving."""
+        with self._transaction() as db:
+            db.execute(
+                "INSERT INTO worker_deployments VALUES(?,?,?,?)",
+                (self.owner, deployment, release, expected_workers),
+            )
+
+    def deployment_profile(self) -> dict | None:
+        with self._connection() as db:
+            own = db.execute(
+                "SELECT * FROM worker_deployments WHERE owner=?", (self.owner,)
+            ).fetchone()
+            if own is None:
+                return None
+            rows = db.execute(
+                "SELECT d.*,o.identity,w.state,w.backend FROM worker_deployments d "
+                "JOIN owners o ON o.owner=d.owner LEFT JOIN workers w ON w.owner=d.owner "
+                "WHERE d.deployment=? ORDER BY d.owner",
+                (own["deployment"],),
+            ).fetchall()
+        stat = self.path.stat()
+        return {
+            "protocol": 1,
+            "id": own["deployment"],
+            "release": own["release"],
+            "expected_workers": own["expected_workers"],
+            "registry": {"host": socket.gethostname(), "device": stat.st_dev, "inode": stat.st_ino},
+            "workers": [
+                {
+                    "id": row["owner"],
+                    "release": row["release"],
+                    "expected_workers": row["expected_workers"],
+                    "state": row["state"],
+                    "backend": row["backend"],
+                    "owner_status": self._owner_status(json.loads(row["identity"])),
+                }
+                for row in rows
+            ],
+        }
 
     def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
         with self._transaction() as db:

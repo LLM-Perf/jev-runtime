@@ -62,6 +62,8 @@ class Settings(Contract):
     host: str = "127.0.0.1"
     port: int = Field(default=8795, ge=1, le=65535)
     workers: int = Field(default=1, ge=1, le=128)
+    deployment_id: str | None = Field(default=None, pattern=r"^[a-zA-Z0-9_-]{1,64}$")
+    release_id: str | None = Field(default=None, pattern=r"^[a-zA-Z0-9_.-]{1,128}$")
     compiler_cache_tokens: int = Field(default=262144, ge=0)
     compiler_cache_entries: int = Field(default=256, ge=0)
     api_key_env: str = "JEV_API_KEY"
@@ -186,6 +188,10 @@ async def build_runtime(
         )
         backend.managed_lora = True
     registry = Registry(settings.registry_path)
+    if settings.deployment_id is not None:
+        if settings.release_id is None:
+            raise ValueError("A deployment_id requires an immutable release_id")
+        registry.tag_deployment(settings.deployment_id, settings.release_id, settings.workers)
     return Runtime(
         backend,
         compiler,

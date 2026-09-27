@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import hmac
+import json
 import os
 import uuid
 from contextlib import asynccontextmanager
@@ -78,6 +79,13 @@ def install_routes(
         if api_key in identities.values():
             raise ValueError("Default and tenant API keys must be distinct")
         identities["default"] = api_key
+    auth_policy = (
+        hmac.new(
+            admin_key.encode(), json.dumps(identities, sort_keys=True).encode(), "sha256"
+        ).hexdigest()
+        if admin_key
+        else None
+    )
 
     async def authorize(request: Request, authorization: str | None = Header(default=None)):
         if not identities:
@@ -308,6 +316,9 @@ def install_routes(
         return {
             "worker_id": instance.registry.owner,
             "model": instance.expected_model,
+            "deployment": instance.registry.deployment_profile(),
+            "auth_policy": auth_policy,
+            "control_healthy": instance.control_healthy,
             "tokenizer_implementation_verified": (
                 instance.compiler.tokenizer_implementation_digest is not None
             ),
