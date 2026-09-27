@@ -44,7 +44,11 @@ or silently ignored templates cause validation failure.
 
 Before publishing, the command checks the entire loaded backend representation
 against the serialized reference: normalization, splitting, vocabulary/merges,
-added-token flags and IDs, prefix/post-processing and decoding must be identical.
+added-token flags and IDs, prefixes and decoding must agree. One explicit exception
+is a standard loader inserting an exact single-sequence identity post-processor
+where the serialized backend has none: it forwards sequence A with type ID 0 and
+adds no tokens. This representational change is recorded in the manifest; all
+other backend fields must match exactly. Its text-pair type IDs are not covered.
 It also checks fixed Unicode/number/whitespace/special-token/boundary samples and
 rendered default/named chat prompts, with special-token insertion both enabled
 and disabled. Decoding is compared with and without skipping special tokens.

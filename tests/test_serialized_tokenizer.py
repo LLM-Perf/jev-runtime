@@ -220,3 +220,31 @@ def test_interrupted_publication_cannot_load_as_an_ordinary_checkpoint(tmp_path,
     )
     with pytest.raises(JevError, match="publication is incomplete"):
         load_compiler(settings(destination))
+
+
+def test_absent_processor_allows_only_the_exact_single_text_identity(tmp_path, monkeypatch):
+    source = checkpoint(tmp_path / "source")
+    raw = Tokenizer.from_file(str(source / "tokenizer.json"))
+    raw.post_processor = None
+    raw.save(str(source / "tokenizer.json"))
+    result = preserve_fast_tokenizer(source, tmp_path / "profile")
+    assert result["validation"]["single_text_backend_equivalent"]
+    loaded = load_compiler(settings(tmp_path / "profile")).tokenizer
+    for add in (False, True):
+        assert (
+            loaded.encode("Hello", add_special_tokens=add)
+            == raw.encode("Hello", add_special_tokens=add).ids
+        )
+    original = AutoTokenizer.from_pretrained
+
+    def adds_prefix(*args, **kwargs):
+        tokenizer = original(*args, **kwargs)
+        tokenizer.backend_tokenizer.post_processor = processors.TemplateProcessing(
+            single="<s> $A", special_tokens=[("<s>", 0)]
+        )
+        return tokenizer
+
+    monkeypatch.setattr(AutoTokenizer, "from_pretrained", adds_prefix)
+    with pytest.raises(ValueError, match="changed the serialized"):
+        preserve_fast_tokenizer(source, tmp_path / "bad")
+    assert not (tmp_path / "bad").exists()

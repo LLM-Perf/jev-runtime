@@ -361,7 +361,27 @@ def preserve_fast_tokenizer(
         loaded = AutoTokenizer.from_pretrained(
             staging, trust_remote_code=False, local_files_only=True
         )
-        if json.loads(loaded.backend_tokenizer.to_str()) != raw_backend:
+        actual_backend = json.loads(loaded.backend_tokenizer.to_str())
+        # Transformers can insert this exact identity when no post-processor
+        # exists. It forwards the single sequence unchanged, adds no tokens and
+        # keeps type ID 0. Pair type IDs differ, so pairs remain outside scope.
+        identity_processor = {
+            "type": "TemplateProcessing",
+            "single": [{"Sequence": {"id": "A", "type_id": 0}}],
+            "pair": [
+                {"Sequence": {"id": "A", "type_id": 0}},
+                {"Sequence": {"id": "B", "type_id": 1}},
+            ],
+            "special_tokens": {},
+        }
+        identity_inserted = (
+            raw_backend["post_processor"] is None
+            and actual_backend["post_processor"] == identity_processor
+        )
+        expected_backend = dict(raw_backend)
+        if identity_inserted:
+            expected_backend["post_processor"] = identity_processor
+        if actual_backend != expected_backend:
             raise ValueError("Standard fast loader changed the serialized tokenizer pipeline")
         from jev_runtime.compiler import Compiler
 
@@ -423,7 +443,7 @@ def preserve_fast_tokenizer(
                     ) != reference.decode(expected, skip_special_tokens=skip):
                         raise ValueError("Fast profile failed serialized decoding validation")
                 ledger.append((sha256(text.encode()), add, expected))
-        if json.loads(loaded.backend_tokenizer.to_str()) != raw_backend:
+        if json.loads(loaded.backend_tokenizer.to_str()) != expected_backend:
             raise ValueError("Validation mutated the serialized tokenizer pipeline")
         manifest = {
             "schema_version": 1,
@@ -448,7 +468,9 @@ def preserve_fast_tokenizer(
                 "cases": len(ledger),
                 "decode_checks": len(ledger) * 2,
                 "template_renders": len(rendered),
-                "full_backend_equal": True,
+                "full_backend_equal": not identity_inserted,
+                "single_text_backend_equivalent": True,
+                "identity_post_processor_inserted": identity_inserted,
                 "ledger_sha256": sha256(json.dumps(ledger).encode()),
                 "render_ledger_sha256": sha256(json.dumps(rendered).encode()),
             },
