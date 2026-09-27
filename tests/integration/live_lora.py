@@ -25,6 +25,7 @@ async def run(args):
     base = f"http://127.0.0.1:{process['port']}/plugins/jev-runtime"
     report = {
         "source_commit": args.source_commit,
+        "runtime_commit": args.runtime_commit or args.source_commit,
         "started_at": time.time(),
         "qualification": "colocated BF16 TP1 single-frontend untrained-LoRA functional evidence",
         "process": process,
@@ -172,17 +173,29 @@ async def run(args):
                 difference(expected[i], expected[j]) > 1e-3 for i, j in ((0, 1), (0, 2), (1, 2))
             ), expected
             checks["distinct_nonzero_adapter_outputs"] = expected
-            errors = []
+            errors, cache_observations = [], []
             for iteration in range(24):
                 index = iteration % 3
                 await activate(index)
                 response = await decide()
                 assert response.bundle == bundles[index].reference
                 errors.append(difference(probabilities(response), expected[index]))
+                cache_observations.append(
+                    {
+                        "bundle": response.bundle,
+                        "cached_prompt_tokens": response.usage.cached_prompt_tokens,
+                        "logical_prompt_tokens": response.usage.logical_prompt_tokens,
+                    }
+                )
             assert max(errors) <= report["probability_tolerance"], errors
+            assert all(
+                row["cached_prompt_tokens"] is not None and row["cached_prompt_tokens"] > 0
+                for row in cache_observations
+            ), cache_observations
             checks["alternating_cache_isolation"] = {
                 "switches": 24,
                 "max_probability_error": max(errors),
+                "cache_observations": cache_observations,
             }
 
             await activate(1)
@@ -282,5 +295,6 @@ if __name__ == "__main__":
     parser.add_argument("--fixtures", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--runtime-commit")
     arguments = parser.parse_args()
     asyncio.run(run(arguments))
