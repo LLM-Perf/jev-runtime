@@ -410,6 +410,7 @@ class Runtime:
                 "generation": snapshot.generation,
                 "logical_prompt_tokens": total_tokens,
                 "tokenizer_implementation_digest": self.compiler.tokenizer_implementation_digest,
+                "compiler_profile": self.compiler.profile(),
                 "sequences": prompts,
                 "input_digest": content_digest(prompts),
                 "questions": [

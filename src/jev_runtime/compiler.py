@@ -31,6 +31,7 @@ class Compiler:
         self._cached_tokens = 0
         self._encoding_cache: OrderedDict = OrderedDict()
         self._cache_lock = threading.Lock()
+        self._batch_encoding = bool(getattr(tokenizer, "is_fast", False)) and callable(tokenizer)
         if not getattr(tokenizer, "chat_template", None):
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
         self.template_digest = content_digest(tokenizer.chat_template)
@@ -47,6 +48,40 @@ class Compiler:
                 "special_tokens": tokenizer.special_tokens_map,
             }
         )
+
+    def profile(self) -> dict:
+        return {
+            "cache_token_limit": self._cache_tokens,
+            "cache_entry_limit": self._cache_entries,
+            "fast_batch_continuations": self._batch_encoding,
+            "batch_size_limit": 32,
+            "contract": "full prompt plus each label; exact prefix and one-token checks",
+        }
+
+    def _continuations(self, prompt: str, labels: list[str]):
+        # Keep the complete context for every candidate. Fast-tokenizer batching
+        # removes repeated wrapper setup without assuming a stable suffix or
+        # skipping normalization/BPE. Chunking bounds temporary prompt copies.
+        for start in range(0, len(labels), 32):
+            texts = [prompt + label for label in labels[start : start + 32]]
+            if self._batch_encoding:
+                try:
+                    encoded = self.tokenizer(
+                        texts,
+                        add_special_tokens=False,
+                        return_attention_mask=False,
+                        return_token_type_ids=False,
+                    )["input_ids"]
+                except (TypeError, AttributeError, NotImplementedError):
+                    # Some custom fast wrappers expose encode but no standard
+                    # batch-call interface. Preserve the existing exact path.
+                    encoded = [self.tokenizer.encode(t, add_special_tokens=False) for t in texts]
+                if len(encoded) != len(texts):
+                    raise JevError("tokenizer_contract", "Tokenizer omitted a continuation", 409)
+                yield from encoded
+            else:
+                for text in texts:
+                    yield self.tokenizer.encode(text, add_special_tokens=False)
 
     def verify_bundle(self, bundle: Bundle) -> None:
         if bundle.model.tokenizer_digest != self.tokenizer_digest:
@@ -106,8 +141,7 @@ class Compiler:
         if len(ids) > max_input_tokens:
             raise JevError("context_budget", "Compiled prompt exceeds context budget", 413)
         label_ids = []
-        for label in labels:
-            extended = self.tokenizer.encode(prompt + label, add_special_tokens=False)
+        for extended in self._continuations(prompt, labels):
             if len(extended) != len(ids) + 1 or extended[:-1] != ids:
                 raise JevError("label_encoding", "Answer labels are not single-token continuations")
             label_ids.append(extended[-1])

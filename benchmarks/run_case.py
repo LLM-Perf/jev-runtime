@@ -318,6 +318,7 @@ async def run(args):
             report["sequence_lengths"] = fixture["sequence_lengths"]
             report["bundle_digest"] = bundle.digest
             report["tokenizer_implementation_digest"] = fixture["tokenizer_implementation_digest"]
+            report["compiler_profile"] = fixture.get("compiler_profile")
             positions = {"native": 0, "typed": 0}
 
             def next_fixture(method):

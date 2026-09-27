@@ -309,6 +309,7 @@ def install_routes(
             ),
             "engine_identity_verified": instance.capabilities.verified,
             "capabilities": instance.capabilities,
+            "compiler": instance.compiler.profile(),
         }
 
     @management.post("/compile")

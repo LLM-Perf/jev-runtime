@@ -104,3 +104,58 @@ def test_old_manifest_digests_survive_optional_identity_extension(bundle):
     loaded = Bundle.model_validate(legacy)
     assert loaded.digest == content_digest(legacy)
     assert loaded.model_dump(mode="json") == legacy
+
+
+def test_fast_batch_encodes_full_context_with_bounded_chunks():
+    from tests.conftest import CharacterTokenizer
+
+    class FastTokenizer(CharacterTokenizer):
+        is_fast = True
+
+        def __init__(self):
+            self.batches = []
+
+        def __call__(self, texts, **kwargs):
+            assert kwargs == {
+                "add_special_tokens": False,
+                "return_attention_mask": False,
+                "return_token_type_ids": False,
+            }
+            self.batches.append(texts)
+            return {"input_ids": [self.encode(text) for text in texts]}
+
+    tokenizer = FastTokenizer()
+    fast = Compiler(tokenizer, cache_entries=0)
+    slow = Compiler(CharacterTokenizer(), cache_entries=0)
+    labels = [chr(i) for i in range(33, 103)]
+    assert fast._encode("context ", labels, 100) == slow._encode("context ", labels, 100)
+    assert [len(batch) for batch in tokenizer.batches] == [32, 32, 6]
+    assert all(text.startswith("context ") for batch in tokenizer.batches for text in batch)
+
+
+@pytest.mark.parametrize("broken", ["retokenize", "drop", "unsupported"])
+def test_fast_batch_never_skips_continuation_checks_or_breaks_custom_fallback(broken):
+    from tests.conftest import CharacterTokenizer
+
+    class FastTokenizer(CharacterTokenizer):
+        is_fast = True
+
+        def __call__(self, texts, **kwargs):
+            if broken == "unsupported":
+                raise NotImplementedError("custom tokenizer exposes only encode")
+            results = [self.encode(text) for text in texts]
+            if broken == "retokenize":
+                results[0][0] += 1
+            else:
+                results.pop()
+            return {"input_ids": results}
+
+    compiler = Compiler(FastTokenizer(), cache_entries=0)
+    if broken == "unsupported":
+        assert compiler._encode("abc", ["A", "B"], 100) == ((97, 98, 99), (65, 66))
+    else:
+        with pytest.raises(JevError) as error:
+            compiler._encode("abc", ["A", "B"], 100)
+        assert error.value.code == (
+            "label_encoding" if broken == "retokenize" else "tokenizer_contract"
+        )
