@@ -6,9 +6,10 @@ tokenizer. It reads local data and uses the installed Transformers converter;
 checkpoint Python is never imported or copied. Source model weights/configuration
 remain unchanged. This extends the typed text-serving path to this tokenizer
 format without enabling arbitrary repository code in the serving tokenizer loader.
+Install from this private repository checkout; no public package release is assumed.
 
 ```sh
-python -m pip install 'jev-runtime-core[tokenizer-conversion]'
+python -m pip install '.[tokenizer-conversion]'
 jevctl tokenizer convert-glm4 \
   /models/glm-4-9b-chat \
   /tokenizers/glm4-fast-v1
