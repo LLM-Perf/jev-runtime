@@ -6,18 +6,42 @@ from jev_runtime.errors import JevError
 from jev_runtime.schema import DecisionRequest, DecisionResponse
 
 
-def _decode(response: httpx.Response) -> DecisionResponse:
+def _payload(response: httpx.Response):
     if response.is_error:
         try:
-            error = response.json().get("error", {})
+            body = response.json()
+            error = body.get("error", {}) if isinstance(body, dict) else {}
         except ValueError:
             error = {}
+        if not isinstance(error, dict):
+            error = {}
         raise JevError(
-            error.get("code", "http_error"),
-            error.get("message", "Decision service returned an error"),
+            error["code"] if isinstance(error.get("code"), str) and error["code"] else "http_error",
+            error["message"]
+            if isinstance(error.get("message"), str) and error["message"]
+            else "Decision service returned an error",
             response.status_code,
         )
-    return DecisionResponse.model_validate(response.json())
+    try:
+        return response.json()
+    except ValueError as exc:
+        raise JevError("invalid_response", "Decision service response is not JSON", 502) from exc
+
+
+def _decode(response: httpx.Response) -> DecisionResponse:
+    try:
+        return DecisionResponse.model_validate(_payload(response))
+    except ValueError as exc:
+        raise JevError(
+            "invalid_response", "Decision service violated its typed response contract", 502
+        ) from exc
+
+
+def _cancelled(response: httpx.Response) -> bool:
+    value = _payload(response)
+    if not isinstance(value, dict) or type(value.get("cancelled")) is not bool:
+        raise JevError("invalid_response", "Cancellation response is not boolean", 502)
+    return value["cancelled"]
 
 
 class JevClient:
@@ -44,11 +68,7 @@ class JevClient:
         from urllib.parse import quote
 
         response = self.http.post(f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15)
-        response.raise_for_status()
-        value = response.json()["cancelled"]
-        if not isinstance(value, bool):
-            raise JevError("invalid_response", "Cancellation response is not boolean", 502)
-        return value
+        return _cancelled(response)
 
     def __enter__(self):
         return self
@@ -83,11 +103,7 @@ class AsyncJevClient:
         response = await self.http.post(
             f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15
         )
-        response.raise_for_status()
-        value = response.json()["cancelled"]
-        if not isinstance(value, bool):
-            raise JevError("invalid_response", "Cancellation response is not boolean", 502)
-        return value
+        return _cancelled(response)
 
     async def __aenter__(self):
         return self

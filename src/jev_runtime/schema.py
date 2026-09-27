@@ -2,9 +2,19 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictFloat,
+    StrictStr,
+    model_serializer,
+    model_validator,
+)
 
 
 def content_digest(value: BaseModel | dict | list | str) -> str:
@@ -189,41 +199,134 @@ class Bundle(Contract):
 class Answer(Contract):
     type: Literal["choice", "boolean", "score", "rank"]
     status: Literal["answered", "abstained", "failed"]
-    value: str | bool | float | tuple[str, ...] | None = None
-    probabilities: dict[str, float] | None = None
-    probability_semantics: str | None = None
-    support: dict[str, float] | None = None
-    label_mass: float | None = None
+    value: StrictStr | StrictBool | StrictFloat | tuple[StrictStr, ...] | None = None
+    probabilities: dict[str, Annotated[float, Field(strict=True, ge=0, le=1)]] | None = None
+    probability_semantics: (
+        Literal["conditional_label_distribution", "normalized_support"] | None
+    ) = None
+    support: dict[str, Annotated[float, Field(strict=True, ge=0, le=1)]] | None = None
+    label_mass: Annotated[float, Field(strict=True, ge=0, le=1.0001)] | None = None
     calibration_status: Literal["uncalibrated", "calibrated"] = "uncalibrated"
-    abstained: bool = False
+    abstained: StrictBool = False
     reason: str | None = None
-    levels: dict[str, float] | None = None
+    levels: dict[str, StrictFloat] | None = None
     error: dict[str, str] | None = None
+
+    @model_validator(mode="after")
+    def validate_answer(self):
+        if self.status == "failed":
+            if not self.error or not self.error.get("code") or not self.error.get("message"):
+                raise ValueError("Failed answers require a nonempty error code and message")
+            if (
+                self.abstained
+                or self.reason is not None
+                or any(
+                    value is not None
+                    for value in (
+                        self.value,
+                        self.probabilities,
+                        self.probability_semantics,
+                        self.support,
+                        self.label_mass,
+                        self.levels,
+                    )
+                )
+            ):
+                raise ValueError("Failed answers cannot contain successful scoring values")
+            return self
+        if self.error is not None:
+            raise ValueError("Successful answers cannot contain an error")
+        if not self.probabilities or len(self.probabilities) < 2:
+            raise ValueError("Scored answers require at least two probabilities")
+        if not math.isclose(math.fsum(self.probabilities.values()), 1, rel_tol=0, abs_tol=1e-4):
+            raise ValueError("Answer probabilities must sum to one")
+        keys = set(self.probabilities)
+        if self.type == "boolean" and keys != {"true", "false"}:
+            raise ValueError("Boolean answers require the true/false distribution")
+        if self.probability_semantics == "normalized_support":
+            if self.support is None or set(self.support) != keys or self.label_mass is not None:
+                raise ValueError(
+                    "Normalized support must match the candidate keys and has no label mass"
+                )
+            total = math.fsum(self.support.values())
+            if total <= 0 or any(
+                not math.isclose(
+                    self.probabilities[key], self.support[key] / total, rel_tol=1e-6, abs_tol=1e-6
+                )
+                for key in keys
+            ):
+                raise ValueError("Probabilities disagree with independent support")
+        elif (
+            self.probability_semantics != "conditional_label_distribution"
+            or self.support is not None
+        ):
+            raise ValueError("Conditional label distributions cannot include independent support")
+        if self.levels is not None and (self.type != "score" or set(self.levels) != keys):
+            raise ValueError("Numeric score levels must match all candidate keys")
+        if self.status == "abstained":
+            if not self.abstained or not self.reason or self.value is not None:
+                raise ValueError("Abstained answers require a reason and no selected value")
+            return self
+        if self.abstained or self.reason is not None:
+            raise ValueError("Answered values cannot be marked as abstained")
+        if self.type == "boolean":
+            if type(self.value) is not bool:
+                raise ValueError("Boolean answers require an actual boolean value")
+            selected = "true" if self.value else "false"
+        elif self.type == "rank":
+            if (
+                not isinstance(self.value, tuple)
+                or len(self.value) != len(keys)
+                or set(self.value) != keys
+            ):
+                raise ValueError("Rank answers must contain every candidate exactly once")
+            if any(
+                self.probabilities[left] < self.probabilities[right] - 1e-12
+                for left, right in zip(self.value[:-1], self.value[1:], strict=True)
+            ):
+                raise ValueError("Rank answers must follow descending probability")
+            return self
+        elif self.type == "score" and self.levels is not None:
+            expected = math.fsum(self.probabilities[key] * self.levels[key] for key in keys)
+            if type(self.value) not in (float, int) or not math.isclose(
+                self.value, expected, rel_tol=1e-6, abs_tol=1e-6
+            ):
+                raise ValueError("Numeric score must equal the explicit level expectation")
+            return self
+        else:
+            if not isinstance(self.value, str) or self.value not in keys:
+                raise ValueError("Choice and categorical score values must name a candidate")
+            selected = self.value
+        if self.probabilities[selected] < max(self.probabilities.values()) - 1e-12:
+            raise ValueError("Selected answer must have maximal probability")
+        return self
 
 
 class Usage(Contract):
-    questions: int = Field(ge=1)
-    successful_questions: int = Field(ge=0)
-    scoring_sequences: int = Field(ge=0)
-    logical_prompt_tokens: int = Field(ge=0)
-    engine_prompt_tokens: int | None = Field(ge=0)
-    engine_completion_tokens: int | None = Field(ge=0)
-    cached_prompt_tokens: int | None = Field(ge=0)
+    questions: int = Field(ge=1, strict=True)
+    successful_questions: int = Field(ge=0, strict=True)
+    scoring_sequences: int = Field(ge=0, strict=True)
+    logical_prompt_tokens: int = Field(ge=0, strict=True)
+    engine_prompt_tokens: int | None = Field(ge=0, strict=True)
+    engine_completion_tokens: int | None = Field(ge=0, strict=True)
+    cached_prompt_tokens: int | None = Field(ge=0, strict=True)
 
 
 class DecisionResponse(Contract):
-    request_id: str
+    request_id: str = Field(min_length=1)
     status: Literal["completed", "partial", "failed"]
-    bundle: str
-    bundle_digest: str
-    generation: int
+    bundle: str = Field(min_length=1)
+    bundle_digest: str = Field(pattern=r"^sha256:[a-f0-9]{64}$")
+    generation: int = Field(ge=1, strict=True)
     engine: dict[str, str]
     answers: dict[str, Answer]
     usage: Usage
-    latency_ms: float = Field(ge=0)
+    latency_ms: float = Field(ge=0, strict=True)
 
     @model_validator(mode="after")
     def verify_outcomes(self):
+        if not self.engine.get("name") or not self.engine.get("version"):
+            raise ValueError("Engine name and version are required")
         successful = sum(answer.status != "failed" for answer in self.answers.values())
         count = len(self.answers)
         if count != self.usage.questions or successful != self.usage.successful_questions:

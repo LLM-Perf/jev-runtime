@@ -6,7 +6,7 @@ const answer = { type: "boolean", status: "answered", value: true,
   probabilities: {true: 0.8, false: 0.2}, probability_semantics: "conditional_label_distribution",
   support: null, label_mass: 0.9, calibration_status: "uncalibrated", abstained: false,
   reason: null, levels: null, error: null };
-const valid = { request_id: "test", status: "completed", bundle: "task@1", bundle_digest: "sha256:abc",
+const valid = { request_id: "test", status: "completed", bundle: "task@1", bundle_digest: "sha256:" + "a".repeat(64),
   generation: 1, engine: {name: "fixture", version: "0"}, answers: {q: answer},
   usage: {questions: 1, successful_questions: 1, scoring_sequences: 1, logical_prompt_tokens: 10,
     engine_prompt_tokens: 10, engine_completion_tokens: 0, cached_prompt_tokens: null}, latency_ms: 1 };

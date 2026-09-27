@@ -9,7 +9,10 @@ engine's lifetime. Do not use a plugin update to restart an unrelated service.
 DSW functional checks cover Qwen3-0.6B and SmolLM2-1.7B on SGLang 0.5.19 and vLLM
 0.30.0 with CUDA 12.9, BF16, TP=1 and eager execution. Check the evidence files for
 the exact source commit: these are development snapshots, not a certification of
-every later commit. Config switches have been tested; LoRA weight swaps have not.
+every later commit. Config switches have been tested. Managed LoRA swaps also
+passed a scoped, frozen SmolLM2 BF16 TP1/API1 profile on both native engines at
+`febb5d8`; see [adapter operations and limits](adapters.md). Other checkpoints and
+parallel configurations are not certified for managed LoRA.
 
 For the R550 test host, `deployment/install_sglang_cu129.sh` uses the official
 0.5.19 CUDA 12 dependency substitutions and records the source revision and patch.

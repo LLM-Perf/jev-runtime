@@ -184,11 +184,15 @@
       "actual_deliverables": [
         "src/jev_runtime/schema.py",
         "src/jev_runtime/scoring.py",
-        "tests/test_scoring.py"
+        "tests/test_scoring.py",
+        "tests/test_sdk.py",
+        "tests/fixtures/decision-responses.json",
+        "packages/typescript/test/contract.test.mjs",
+        "tests/integration/replay_saved_responses.py"
       ],
       "progress_notes": [
         "Four result types, calibration status, abstention and partial failures are implemented.",
-        "Further malformed-response validation in the Python SDK remains to harden."
+        "Python and TypeScript validate answer semantics using the same 10 valid and 47 malformed payload cases; cancellation error contracts are checked in both clients."
       ],
       "acceptance_complete": false
     },

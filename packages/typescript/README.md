@@ -26,7 +26,14 @@ disconnect cancellation to engine scoring. No automatic retries are made.
 
 Inspect `status`, `calibration_status`, and `probability_semantics`; a typed answer
 does not imply calibrated confidence. Partial/failing responses retain their status.
-The client validates core success counts, answer types and probability ranges.
+Both SDKs reject malformed HTTP-200 decisions with `invalid_response` (502),
+including inconsistent status/counts, non-normalized distributions, invalid selected
+IDs, duplicate or unordered rankings, and numeric scores that disagree with the
+probability-weighted explicit levels. Boolean values must be actual booleans.
+Independent support must normalize to the returned probabilities; abstentions must
+have a reason and no selected value. This validates the response contract, not the
+model's real-world accuracy. `cancel()` accepts only an actual boolean response and
+preserves the service's status/code on errors, including non-JSON gateway errors.
 
 The opt-in `test/live.mjs` checks all four answer types, authentication errors and
 unknown-request cancellation against a real service. Build first, then set

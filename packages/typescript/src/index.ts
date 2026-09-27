@@ -26,7 +26,7 @@ export interface Answer {
   status: "answered" | "abstained" | "failed";
   value: string | boolean | number | readonly string[] | null;
   probabilities: Record<string, number> | null;
-  probability_semantics: string | null;
+  probability_semantics: "conditional_label_distribution" | "normalized_support" | null;
   support: Record<string, number> | null;
   label_mass: number | null;
   calibration_status: "uncalibrated" | "calibrated";
@@ -75,58 +75,140 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function probabilities(value: unknown, normalized = true): boolean {
-  return isRecord(value) && Object.keys(value).length > 0 && Object.values(value).every(
-    (p) => typeof p === "number" && Number.isFinite(p) && p >= 0 && p <= 1,
-  ) && (!normalized || Math.abs(Object.values(value).reduce<number>((sum, p) => sum + (p as number), 0) - 1) < 1e-4);
+function invalid(message: string): never {
+  throw new JevAPIError(502, "invalid_response", message);
+}
+
+function finite(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function numericRecord(value: unknown): value is Record<string, number> {
+  return isRecord(value) && Object.values(value).every(finite);
+}
+
+function sameKeys(left: Record<string, unknown>, right: Record<string, unknown>): boolean {
+  return Object.keys(left).length === Object.keys(right).length &&
+    Object.keys(left).every((key) => Object.hasOwn(right, key));
+}
+
+function close(left: number, right: number): boolean {
+  return Math.abs(left - right) <= Math.max(1e-6, 1e-6 * Math.max(Math.abs(left), Math.abs(right)));
+}
+
+function validateAnswer(answer: unknown): boolean {
+  if (!isRecord(answer) || !["choice", "boolean", "score", "rank"].includes(String(answer.type)) ||
+      !["answered", "abstained", "failed"].includes(String(answer.status)) ||
+      !["calibrated", "uncalibrated"].includes(String(answer.calibration_status)) ||
+      typeof answer.abstained !== "boolean") {
+    invalid("Invalid typed answer");
+  }
+  if (answer.status === "failed") {
+    if (!isRecord(answer.error) || typeof answer.error.code !== "string" || !answer.error.code ||
+        typeof answer.error.message !== "string" || !answer.error.message || answer.abstained ||
+        [answer.value, answer.probabilities, answer.probability_semantics, answer.support,
+          answer.label_mass, answer.levels, answer.reason].some((item) => item !== null)) {
+      invalid("Failed answer requires an error and cannot contain scoring values");
+    }
+    return false;
+  }
+  const probs = answer.probabilities;
+  if (answer.error !== null || !numericRecord(probs) || Object.keys(probs).length < 2 ||
+      Object.values(probs).some((p) => p < 0 || p > 1) ||
+      Math.abs(Object.values(probs).reduce((sum, p) => sum + p, 0) - 1) > 1e-4) {
+    invalid("Answer probabilities are missing or invalid");
+  }
+  if (answer.label_mass !== null &&
+      (!finite(answer.label_mass) || answer.label_mass < 0 || answer.label_mass > 1.0001)) {
+    invalid("Label mass is invalid");
+  }
+  if (answer.type === "boolean" && !sameKeys(probs, {true: 0, false: 0})) {
+    invalid("Boolean answer requires the true/false distribution");
+  }
+  if (answer.probability_semantics === "normalized_support") {
+    const support = answer.support;
+    if (!numericRecord(support) || !sameKeys(probs, support) || answer.label_mass !== null ||
+        Object.values(support).some((p) => p < 0 || p > 1)) {
+      invalid("Independent support must match all candidates and has no label mass");
+    }
+    const total = Object.values(support).reduce((sum, p) => sum + p, 0);
+    if (total <= 0 || Object.entries(probs).some(([key, p]) => !close(p, support[key]! / total))) {
+      invalid("Probabilities disagree with independent support");
+    }
+  } else if (answer.probability_semantics !== "conditional_label_distribution" || answer.support !== null) {
+    invalid("Conditional label distributions cannot include independent support");
+  }
+  const levels = answer.levels;
+  if (levels !== null && (answer.type !== "score" || !numericRecord(levels) || !sameKeys(probs, levels))) {
+    invalid("Numeric score levels must match all candidates");
+  }
+  if (answer.status === "abstained") {
+    if (!answer.abstained || typeof answer.reason !== "string" || !answer.reason || answer.value !== null) {
+      invalid("Abstained answers require a reason and no selected value");
+    }
+    return true;
+  }
+  if (answer.abstained || answer.reason !== null) invalid("Answered values cannot be marked as abstained");
+  let selected: string;
+  if (answer.type === "boolean") {
+    if (typeof answer.value !== "boolean") invalid("Boolean value has the wrong type");
+    selected = answer.value ? "true" : "false";
+  } else if (answer.type === "rank") {
+    const order = answer.value;
+    if (!Array.isArray(order) || order.length !== Object.keys(probs).length ||
+        new Set(order).size !== order.length ||
+        order.some((key) => typeof key !== "string" || !Object.hasOwn(probs, key))) {
+      invalid("Rank must include every candidate exactly once");
+    }
+    if (order.some((key, index) => index > 0 && probs[order[index - 1]]! < probs[key]! - 1e-12)) {
+      invalid("Rank must follow descending probability");
+    }
+    return true;
+  } else if (answer.type === "score" && levels !== null) {
+    // The check above establishes a finite numeric record with matching keys.
+    const expected = Object.entries(probs).reduce((sum, [key, p]) => sum + p * (levels as Record<string, number>)[key]!, 0);
+    if (!finite(answer.value) || !finite(expected) || !close(answer.value, expected)) {
+      invalid("Numeric score must equal the explicit level expectation");
+    }
+    return true;
+  } else {
+    if (typeof answer.value !== "string" || !Object.hasOwn(probs, answer.value)) {
+      invalid("Choice and categorical scores must name a candidate");
+    }
+    selected = answer.value;
+  }
+  if (probs[selected]! < Math.max(...Object.values(probs)) - 1e-12) {
+    invalid("Selected answer must have maximal probability");
+  }
+  return true;
 }
 
 /** Reject malformed successful responses instead of fabricating typed defaults. */
 export function parseDecision(value: unknown): DecisionResponse {
   if (!isRecord(value) || typeof value.request_id !== "string" || !value.request_id ||
       !["completed", "partial", "failed"].includes(String(value.status)) ||
-      typeof value.bundle !== "string" || typeof value.bundle_digest !== "string" ||
-      !Number.isInteger(value.generation) || !isRecord(value.answers) ||
+      typeof value.bundle !== "string" || !value.bundle || typeof value.bundle_digest !== "string" ||
+      !/^sha256:[a-f0-9]{64}$/.test(value.bundle_digest) ||
+      !Number.isInteger(value.generation) || (value.generation as number) < 1 || !isRecord(value.answers) ||
       !isRecord(value.usage) || !isRecord(value.engine) ||
-      typeof value.engine.name !== "string" || typeof value.engine.version !== "string" ||
-      typeof value.latency_ms !== "number" || !Number.isFinite(value.latency_ms)) {
-    throw new JevAPIError(502, "invalid_response", "Server returned an invalid decision contract");
+      typeof value.engine.name !== "string" || !value.engine.name ||
+      typeof value.engine.version !== "string" || !value.engine.version ||
+      !finite(value.latency_ms) || value.latency_ms < 0) {
+    invalid("Server returned an invalid decision contract");
+  }
+  for (const key of ["questions", "successful_questions", "scoring_sequences", "logical_prompt_tokens",
+    "engine_prompt_tokens", "engine_completion_tokens", "cached_prompt_tokens"]) {
+    const count = value.usage[key];
+    if (count === null && ["engine_prompt_tokens", "engine_completion_tokens", "cached_prompt_tokens"].includes(key)) continue;
+    if (!Number.isInteger(count) || (count as number) < (key === "questions" ? 1 : 0)) {
+      invalid("Usage counts must be nonnegative integers or explicitly unknown");
+    }
   }
   const answers = Object.values(value.answers);
-  let successful = 0;
-  for (const answer of answers) {
-    if (!isRecord(answer) || !["choice", "boolean", "score", "rank"].includes(String(answer.type)) ||
-        !["answered", "abstained", "failed"].includes(String(answer.status)) ||
-        !["calibrated", "uncalibrated"].includes(String(answer.calibration_status))) {
-      throw new JevAPIError(502, "invalid_response", "Invalid typed answer");
-    }
-    if (answer.status === "failed") {
-      if (!isRecord(answer.error) || typeof answer.error.code !== "string") {
-        throw new JevAPIError(502, "invalid_response", "Failed answer has no error");
-      }
-      continue;
-    }
-    successful += 1;
-    if (!probabilities(answer.probabilities)) {
-      throw new JevAPIError(502, "invalid_response", "Answer probabilities are missing or invalid");
-    }
-    if (answer.support !== null && !probabilities(answer.support, false)) {
-      throw new JevAPIError(502, "invalid_response", "Independent support values are invalid");
-    }
-    if (answer.status === "answered") {
-      const v = answer.value;
-      const valid = answer.type === "boolean" ? typeof v === "boolean" :
-        answer.type === "rank" ? Array.isArray(v) && v.every((item) => typeof item === "string") :
-        answer.type === "score" ? typeof v === "string" || (typeof v === "number" && Number.isFinite(v)) :
-        typeof v === "string";
-      if (!valid) throw new JevAPIError(502, "invalid_response", "Answer value has the wrong type");
-    }
-  }
-  if (answers.length !== value.usage.questions || successful !== value.usage.successful_questions ||
-      (value.status === "completed" && successful !== answers.length) ||
-      (value.status === "failed" && successful !== 0) ||
-      (value.status === "partial" && (successful === 0 || successful === answers.length))) {
-    throw new JevAPIError(502, "invalid_response", "Decision status and success counts disagree");
+  const successful = answers.filter(validateAnswer).length;
+  const expected = successful === answers.length ? "completed" : successful === 0 ? "failed" : "partial";
+  if (answers.length !== value.usage.questions || successful !== value.usage.successful_questions || value.status !== expected) {
+    invalid("Decision status and success counts disagree");
   }
   return value as unknown as DecisionResponse;
 }
@@ -161,12 +243,15 @@ export class JevClient {
       });
       let payload: unknown;
       try { payload = await response.json(); }
-      catch { throw new JevAPIError(response.status, "invalid_response", "Server response is not JSON"); }
+      catch {
+        if (!response.ok) throw new JevAPIError(response.status, "http_error", `Jev request failed (${response.status})`);
+        invalid("Server response is not JSON");
+      }
       if (!response.ok) {
         const error = isRecord(payload) && isRecord(payload.error) ? payload.error : {};
         throw new JevAPIError(response.status,
-          typeof error.code === "string" ? error.code : "http_error",
-          typeof error.message === "string" ? error.message : `Jev request failed (${response.status})`);
+          typeof error.code === "string" && error.code ? error.code : "http_error",
+          typeof error.message === "string" && error.message ? error.message : `Jev request failed (${response.status})`);
       }
       return payload;
     } finally {

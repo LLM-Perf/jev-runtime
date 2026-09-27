@@ -15,8 +15,12 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 91 Python tests and Ruff passed; TypeScript SDK build and
-  four client tests passed. All three Python distributions built successfully.
+- Local response-contract checkpoint: 163 Python tests and 62 TypeScript tests
+  passed, including shared valid/malformed answer cases and cancellation errors.
+  Both SDKs enforce values, rankings, explicit score expectations, abstention,
+  probability semantics and consistent success accounting. Saved DSW payload replay
+  is distinct from new GPU execution. All three Python distributions were built at
+  the earlier `febb5d8` checkpoint; final-source packaging remains a release check.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, request/token quotas and cancellation
@@ -85,7 +89,7 @@ replacement for any requirement in `implementation-plan.md`.
   The corrected vLLM run at `500b197` passed 24 alternating switches, an old
   128-question request across publication, blocked premature unload, cancellation
   and six reload/rollback cycles. Output differences were zero against each warm
-  baseline. A stricter rerun will also require per-adapter cache-hit observations.
+  baseline. The later `febb5d8` rerun below also requires per-adapter cache-hit observations.
   SGLang's first run hit its reserved base-model pool-slot constraint on the second
   pinned adapter; its report/cleanup are preserved. The launcher now reserves four
   slots and the adapter checks pinned capacity before dispatch. At `c36d65d`,

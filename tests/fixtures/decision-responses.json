@@ -1,0 +1,1138 @@
+{
+  "valid": {
+    "boolean": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.8,
+            "false": 0.2
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "choice": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "choice",
+          "status": "answered",
+          "value": "yes",
+          "probabilities": {
+            "yes": 0.8,
+            "no": 0.2
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "categorical_score": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "score",
+          "status": "answered",
+          "value": "good",
+          "probabilities": {
+            "good": 0.8,
+            "bad": 0.2
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "numeric_score": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "score",
+          "status": "answered",
+          "value": 8,
+          "probabilities": {
+            "good": 0.8,
+            "bad": 0.2
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "bad": 0,
+            "good": 10
+          },
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "rank": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "probabilities": {
+            "low": 0.1,
+            "medium": 0.3,
+            "high": 0.6
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "rank_tie": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "right",
+            "left"
+          ],
+          "probabilities": {
+            "left": 0.5,
+            "right": 0.5
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "abstention": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "boolean",
+          "status": "abstained",
+          "value": null,
+          "probabilities": {
+            "true": 0.5,
+            "false": 0.5
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": true,
+          "reason": "tie",
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "independent_support": {
+      "request_id": "contract-fixture",
+      "status": "completed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "choice",
+          "status": "answered",
+          "value": "yes",
+          "probabilities": {
+            "yes": 0.8,
+            "no": 0.2
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "yes": 0.008,
+            "no": 0.002
+          },
+          "label_mass": null,
+          "calibration_status": "calibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "all_failed": {
+      "request_id": "contract-fixture",
+      "status": "failed",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "boolean",
+          "status": "failed",
+          "value": null,
+          "probabilities": null,
+          "probability_semantics": null,
+          "support": null,
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": {
+            "code": "score_failed",
+            "message": "Scoring failed"
+          }
+        }
+      },
+      "usage": {
+        "questions": 1,
+        "successful_questions": 0,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    },
+    "partial": {
+      "request_id": "contract-fixture",
+      "status": "partial",
+      "bundle": "fixture@1",
+      "bundle_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "generation": 1,
+      "engine": {
+        "name": "fixture",
+        "version": "0"
+      },
+      "answers": {
+        "q": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.8,
+            "false": 0.2
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "failed": {
+          "type": "boolean",
+          "status": "failed",
+          "value": null,
+          "probabilities": null,
+          "probability_semantics": null,
+          "support": null,
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": {
+            "code": "score_failed",
+            "message": "Scoring failed"
+          }
+        }
+      },
+      "usage": {
+        "questions": 2,
+        "successful_questions": 1,
+        "scoring_sequences": 2,
+        "logical_prompt_tokens": 10,
+        "engine_prompt_tokens": 10,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": null
+      },
+      "latency_ms": 1
+    }
+  },
+  "invalid": [
+    {
+      "name": "string_boolean",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "name": "numeric_boolean",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "reversed_boolean",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "wrong_boolean_labels",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "yes": 0.8,
+            "no": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "name": "string_probability",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "true": "0.8",
+            "false": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "name": "boolean_probability",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "true": true,
+            "false": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "negative_probability",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "true": 1.1,
+            "false": -0.1
+          }
+        }
+      ]
+    },
+    {
+      "name": "unnormalized",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "true": 0.8,
+            "false": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing_probabilities",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "name": "unknown_semantics",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probability_semantics"
+          ],
+          "value": "confidence"
+        }
+      ]
+    },
+    {
+      "name": "mixed_support",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "support"
+          ],
+          "value": {
+            "true": 0.8,
+            "false": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "name": "label_mass_overflow",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "label_mass"
+          ],
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "name": "invented_choice",
+      "template": "choice",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": "invented"
+        }
+      ]
+    },
+    {
+      "name": "nonmaximal_choice",
+      "template": "choice",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": "no"
+        }
+      ]
+    },
+    {
+      "name": "numeric_choice",
+      "template": "choice",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": 3
+        }
+      ]
+    },
+    {
+      "name": "duplicate_rank",
+      "template": "rank",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": [
+            "high",
+            "high",
+            "low"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "incomplete_rank",
+      "template": "rank",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": [
+            "high",
+            "low"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unordered_rank",
+      "template": "rank",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": [
+            "low",
+            "medium",
+            "high"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "invented_rank",
+      "template": "rank",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": [
+            "high",
+            "medium",
+            "unknown"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrong_expectation",
+      "template": "numeric_score",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": 10
+        }
+      ]
+    },
+    {
+      "name": "boolean_score",
+      "template": "numeric_score",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "missing_level",
+      "template": "numeric_score",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "levels"
+          ],
+          "value": {
+            "good": 10
+          }
+        }
+      ]
+    },
+    {
+      "name": "string_level",
+      "template": "numeric_score",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "levels"
+          ],
+          "value": {
+            "good": "10",
+            "bad": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "categorical_numeric_value",
+      "template": "categorical_score",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": 8
+        }
+      ]
+    },
+    {
+      "name": "levels_on_choice",
+      "template": "choice",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "levels"
+          ],
+          "value": {
+            "yes": 1,
+            "no": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "support_mismatch",
+      "template": "independent_support",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "support"
+          ],
+          "value": {
+            "yes": 0.002,
+            "no": 0.008
+          }
+        }
+      ]
+    },
+    {
+      "name": "zero_support",
+      "template": "independent_support",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "support"
+          ],
+          "value": {
+            "yes": 0,
+            "no": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "support_wrong_keys",
+      "template": "independent_support",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "support"
+          ],
+          "value": {
+            "yes": 0.008,
+            "maybe": 0.002
+          }
+        }
+      ]
+    },
+    {
+      "name": "support_with_label_mass",
+      "template": "independent_support",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "label_mass"
+          ],
+          "value": 0.9
+        }
+      ]
+    },
+    {
+      "name": "abstention_value",
+      "template": "abstention",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "abstention_without_reason",
+      "template": "abstention",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "reason"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "name": "abstention_false_flag",
+      "template": "abstention",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "abstained"
+          ],
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "answered_abstention",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "abstained"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "answered_error",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "error"
+          ],
+          "value": {
+            "code": "bad",
+            "message": "bad"
+          }
+        }
+      ]
+    },
+    {
+      "name": "failed_error_missing_message",
+      "template": "all_failed",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "error"
+          ],
+          "value": {
+            "code": "bad"
+          }
+        }
+      ]
+    },
+    {
+      "name": "failed_value",
+      "template": "all_failed",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "value"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "failed_probabilities",
+      "template": "all_failed",
+      "changes": [
+        {
+          "path": [
+            "answers",
+            "q",
+            "probabilities"
+          ],
+          "value": {
+            "true": 0.8,
+            "false": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "name": "false_success_count",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "usage",
+            "successful_questions"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "false_completion",
+      "template": "partial",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "completed"
+        }
+      ]
+    },
+    {
+      "name": "zero_generation",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "generation"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "boolean_generation",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "generation"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "invalid_digest",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "bundle_digest"
+          ],
+          "value": "sha256:abc"
+        }
+      ]
+    },
+    {
+      "name": "negative_latency",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "latency_ms"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "name": "string_usage",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "usage",
+            "questions"
+          ],
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "name": "boolean_usage",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "usage",
+            "questions"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "negative_cache_count",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "usage",
+            "cached_prompt_tokens"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "name": "missing_engine",
+      "template": "boolean",
+      "changes": [
+        {
+          "path": [
+            "engine",
+            "version"
+          ],
+          "value": ""
+        }
+      ]
+    }
+  ]
+}
