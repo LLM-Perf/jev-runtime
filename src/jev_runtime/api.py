@@ -256,16 +256,17 @@ def install_routes(
         instance = runtime(request)
         if not instance.control_healthy:
             raise JevError("control_unavailable", "Worker cancellation control is unhealthy", 503)
-        routes = instance.registry.list()["routes"]
-        prepared = [
-            route["ref"] for route in routes if route["ref"] and instance.is_prepared(route["ref"])
-        ]
-        if not prepared:
+        profile = instance.health_profile()
+        if not profile["bundles"]:
             raise JevError("no_active_bundle", "No decision bundle is active", 503)
+        if not profile["monitor_running"] or any(
+            not bundle["ready"] or not bundle["prepared"] for bundle in profile["bundles"].values()
+        ):
+            raise JevError("engine_unavailable", "Active bundles lack current engine canaries", 503)
         return {
             "ready": True,
             "engine": instance.capabilities.engine,
-            "prepared_bundles": sorted(set(prepared)),
+            "prepared_bundles": sorted(profile["bundles"]),
             "worker_id": instance.registry.owner,
         }
 
@@ -314,6 +315,7 @@ def install_routes(
             "capabilities": instance.capabilities,
             "compiler": instance.compiler.profile(),
             "admission": instance.admission.snapshot(),
+            "health": instance.health_profile(),
         }
 
     @management.post("/compile")

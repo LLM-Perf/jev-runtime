@@ -13,6 +13,7 @@ from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.compiler import Compiler
 from jev_runtime.errors import JevError
+from jev_runtime.health import HealthSettings
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, ModelIdentity
@@ -61,6 +62,7 @@ class Settings(Contract):
     tenant_key_envs: dict[str, str] = Field(default_factory=dict)
     admission: AdmissionSettings = Field(default_factory=AdmissionSettings)
     adapters: AdapterSettings = Field(default_factory=AdapterSettings)
+    health: HealthSettings = Field(default_factory=HealthSettings)
 
 
 def tenant_keys(settings: Settings) -> dict[str, str]:
@@ -142,6 +144,7 @@ async def build_runtime(
         expected_model=model_identity(settings, compiler),
         adapter_store=store,
         adapter_timeout=settings.adapters.operation_timeout_seconds,
+        health_settings=settings.health,
     )
 
 

@@ -97,6 +97,12 @@ def launch(args):
         config["admission"] = AdmissionSettings.model_validate_json(
             args.admission_config.read_text()
         ).model_dump()
+    if args.health_config:
+        from jev_runtime.health import HealthSettings
+
+        config["health"] = HealthSettings.model_validate_json(
+            args.health_config.read_text()
+        ).model_dump()
     config["tenant_key_envs"] = {
         tenant: f"JEV_TEST_TENANT_{index}" for index, tenant in enumerate(args.tenant)
     }
@@ -307,6 +313,7 @@ def main():
     parser.add_argument("--api-workers", type=int, default=1)
     parser.add_argument("--adapters-root", type=Path)
     parser.add_argument("--admission-config", type=Path)
+    parser.add_argument("--health-config", type=Path)
     parser.add_argument("--tenant", action="append", default=[])
     args = parser.parse_args()
     if args.action == "launch":

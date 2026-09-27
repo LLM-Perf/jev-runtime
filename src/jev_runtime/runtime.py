@@ -13,6 +13,7 @@ from jev_runtime.admission import Admission
 from jev_runtime.backends.base import Capabilities, EngineAdapter, ScoreInput, ScoreResult
 from jev_runtime.compiler import CompiledQuestion, Compiler
 from jev_runtime.errors import JevError
+from jev_runtime.health import HealthSettings, ServingHealth
 from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.registry import Registry
 from jev_runtime.schema import (
@@ -44,6 +45,7 @@ class Runtime:
         expected_model: ModelIdentity | None = None,
         adapter_store: AdapterStore | None = None,
         adapter_timeout: int = 120,
+        health_settings: HealthSettings | None = None,
     ):
         self.backend, self.compiler, self.registry = backend, compiler, registry
         self.backend_identity, self.model_id = backend_identity, model_id
@@ -60,6 +62,10 @@ class Runtime:
         self._control_task: asyncio.Task | None = None
         self._cancel_jobs: set[asyncio.Task] = set()
         self.control_healthy = False
+        self.health = ServingHealth(health_settings or HealthSettings())
+        self._health_task: asyncio.Task | None = None
+        self._health_lock = asyncio.Lock()
+        self._health_pending: dict[str, str] = {}
 
     async def start(self) -> None:
         if self._control_task is not None and not self._control_task.done():
@@ -93,6 +99,52 @@ class Runtime:
                     break
         self.control_healthy = True
         self._control_task = asyncio.create_task(self._watch_cancellations())
+        self._health_task = asyncio.create_task(self._watch_health())
+
+    def active_references(self) -> list[str]:
+        listing = self.registry.list()
+        active = {route["ref"] for route in listing["routes"] if route["ref"]}
+        return sorted(
+            bundle["ref"]
+            for bundle in listing["bundles"]
+            if bundle["ref"] in active and bundle["backend"] == self.backend_identity
+        )
+
+    def health_profile(self) -> dict:
+        return {
+            "scope": "local_api_worker",
+            "settings": self.health.settings.model_dump(),
+            "monitor_running": self._health_task is not None and not self._health_task.done(),
+            "bundles": {
+                ref: {**self.health.status(ref), "prepared": self.is_prepared(ref)}
+                for ref in self.active_references()
+            },
+        }
+
+    async def check_health(self) -> None:
+        async with self._health_lock:
+            for reference in self.active_references():
+                try:
+                    await self.prepare(
+                        reference,
+                        monitoring=True,
+                        timeout_seconds=self.health.settings.timeout_seconds,
+                    )
+                except Exception as exc:
+                    self.health.failed(
+                        reference, exc.code if isinstance(exc, JevError) else type(exc).__name__
+                    )
+                    self.registry.forget_worker_prepared(reference)
+                    logger.warning("Jev engine canary failed for bundle %s", reference)
+
+    async def _watch_health(self) -> None:
+        while True:
+            await asyncio.sleep(self.health.settings.interval_seconds)
+            try:
+                await self.check_health()
+            except Exception:
+                # Expiring canary evidence fails closed even if registry access fails.
+                logger.exception("Jev engine health polling failed")
 
     async def _watch_cancellations(self) -> None:
         while True:
@@ -139,6 +191,7 @@ class Runtime:
             raise JevError(
                 "replica_not_ready", "Prepare this version on this API worker first", 503
             )
+        self.health.require(reference)
         return self.registry.activate(alias, reference, expected_generation)
 
     async def close(self) -> None:
@@ -147,6 +200,8 @@ class Runtime:
         tasks = [*self._active.values(), *self._cancel_jobs, *self._adapter_tasks]
         if self._control_task is not None:
             tasks.append(self._control_task)
+        if self._health_task is not None:
+            tasks.append(self._health_task)
         try:
             await cancel_and_drain(tasks)
         finally:
@@ -245,8 +300,30 @@ class Runtime:
         finally:
             self._adapter_tasks.discard(task)
 
-    async def prepare(self, reference: str) -> dict:
+    async def prepare(
+        self, reference: str, *, monitoring: bool = False, timeout_seconds: float = 120
+    ) -> dict:
+        async with asyncio.timeout(timeout_seconds):
+            return await self._prepare(reference, monitoring=monitoring)
+
+    async def _prepare(self, reference: str, *, monitoring: bool) -> dict:
         async with self._management_lock:
+            pending = self._health_pending.get(reference)
+            if pending and self.registry.has_lease(pending):
+                raise JevError(
+                    "health_cleanup_pending", "Recover the prior canary before probing again", 503
+                )
+            self._health_pending.pop(reference, None)
+            if monitoring and await self.backend.probe() != self.capabilities:
+                raise JevError(
+                    "engine_profile_changed",
+                    "Engine capabilities changed; restart and validate the configured profile",
+                    503,
+                )
+            generation = self.health.generation(reference)
+            # Only an already fully validated immutable bundle gets a minimal
+            # periodic canary. New worker/version preparation still checks all tasks.
+            minimal = monitoring and self.is_prepared(reference)
             request_id = "prepare-" + uuid.uuid4().hex
             fresh = self.registry.inspect(reference)["state"] in {"VALIDATED", "FAILED", "RETIRED"}
             if fresh:
@@ -269,6 +346,8 @@ class Runtime:
                         instruction="Does the data contain the word ready?",
                     ),
                 )
+                if minimal:
+                    questions = questions[:1]
                 async with asyncio.timeout(120):
                     for question in questions:
                         compiled = self.compiler.compile("ready", question, bundle, request_id)
@@ -282,19 +361,31 @@ class Runtime:
                         assemble(compiled, results, bundle)
             except BaseException as exc:
                 error = exc.message if isinstance(exc, JevError) else type(exc).__name__
-                self._prepared.discard(reference)
+                self.health.failed(
+                    reference, exc.code if isinstance(exc, JevError) else type(exc).__name__
+                )
+                if not monitoring:
+                    self._prepared.discard(reference)
                 self.registry.forget_worker_prepared(reference)
                 raise
             finally:
-                if fresh:
-                    self.registry.finish_prepare(reference, lease_id, error, unconfirmed)
-                elif unconfirmed:
-                    self.registry.mark_abort_pending(lease_id, unconfirmed)
-                else:
-                    self.registry.release(lease_id)
-                self._active.pop(request_id, None)
+                try:
+                    if fresh:
+                        self.registry.finish_prepare(reference, lease_id, error, unconfirmed)
+                    elif unconfirmed:
+                        self.registry.mark_abort_pending(lease_id, unconfirmed)
+                    else:
+                        self.registry.release(lease_id)
+                finally:
+                    self._active.pop(request_id, None)
+                    if self.registry.has_lease(lease_id):
+                        self._health_pending[reference] = lease_id
+            if self.health.generation(reference) == generation:
+                self.registry.record_worker_prepared(reference)
+                self.health.passed(reference, generation)
+            else:
+                self.registry.forget_worker_prepared(reference)
             self._prepared.add(reference)
-            self.registry.record_worker_prepared(reference)
             return {**self.registry.inspect(reference), "worker_id": self.registry.owner}
 
     def _validate_sequences(self, sequences: tuple[ScoreInput, ...], bundle: Bundle) -> int:
@@ -361,6 +452,11 @@ class Runtime:
                 await semaphore.acquire()
             try:
                 return await self._score(seq, unconfirmed, trace)
+            except Exception as exc:
+                if not isinstance(exc, JevError) or exc.status_code >= 500:
+                    self.health.failed(bundle.reference, "engine_score_failed")
+                    self.registry.forget_worker_prepared(bundle.reference)
+                raise
             finally:
                 semaphore.release()
 
@@ -368,7 +464,13 @@ class Runtime:
         try:
             results = await asyncio.gather(*tasks)
             with trace.measure_work("assembly"):
-                return assemble(compiled, results, bundle), results
+                try:
+                    return assemble(compiled, results, bundle), results
+                except JevError as exc:
+                    if exc.status_code >= 500:
+                        self.health.failed(bundle.reference, "engine_score_contract")
+                        self.registry.forget_worker_prepared(bundle.reference)
+                    raise
         finally:
             await cancel_and_drain(tasks)
 
@@ -377,6 +479,7 @@ class Runtime:
             raise JevError(
                 "replica_not_ready", "This API worker has not validated the active version", 503
             )
+        self.health.require(bundle.reference)
         self._validate_bundle(bundle)
         questions = request.questions or bundle.questions
         if bundle.candidate_policy == "fixed" and questions != bundle.questions:
@@ -482,6 +585,7 @@ class Runtime:
                     # asyncio's timeout callback may not run until we next yield.
                     if time.monotonic() - started >= request.execution.timeout_ms / 1000:
                         raise TimeoutError("Deadline expired before engine dispatch")
+                    self.health.require(bundle.reference)
                     trace.switch("execute")
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     tasks = [
