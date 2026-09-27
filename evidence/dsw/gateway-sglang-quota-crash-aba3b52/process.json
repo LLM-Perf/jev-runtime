@@ -1,0 +1,24 @@
+{
+  "identity": {
+    "pid": 2615217,
+    "start_ticks": "427315502",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "engine": "sglang",
+  "mode": "gateway",
+  "command": [
+    "/root/jev-runtime/envs/sglang/bin/jevctl",
+    "serve",
+    "/root/jev-runtime/runs/gateway-sglang-quota-crash-aba3b52/config.json"
+  ],
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "gpu_before": null,
+  "created": 1790517615.6870208,
+  "port": 18804,
+  "qualification": "colocated-functional-test",
+  "memory_budget_denominator": null
+}

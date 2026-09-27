@@ -201,6 +201,25 @@ replacement for any requirement in `implementation-plan.md`.
   not recertify LoRA, the full functional/quality matrix, 1,000 hot switches at
   this new source, database-failure recovery or GPU crash/restart quota retention.
 
+- Durable quota recovery passed four real DSW fault cases: SGLang/vLLM standalone
+  gateways at `aba3b52`, and both native API/GPU process groups at `0df49a1`.
+  Every case retained one admitted request (128 branches / 134,290 expanded tokens)
+  and one queued request after SIGKILL and restart with identical settings and
+  credential bytes. The original dead owner was verified. New work could not use
+  the retained capacity; recovering the queued request preserved the admitted
+  reservation, then explicit recovery drained both journal and quota tables.
+  Typed decisions and native chat resumed. Native checks also verified full old
+  process-group exit and GPU memory returning to the baseline before restarting
+  the same engine command. Final task-owned groups exited; GPU7 returned to
+  11,990 MiB free. Core/package/deployment files are unchanged from `4944efd`;
+  these commits extend the real fault harness. Its lint/format/compilation passed;
+  the prior 220 CPU tests and wheel builds remain source-identical checkpoints,
+  not newly rerun tests. Remote SHA256 checks cover 50 files at both revisions.
+  See [the scoped fault report](fault-recovery.md) and
+  `evidence/dsw/quota-crash-validation-0df49a1.json`. This does not cover hardware
+  faults, database I/O failure, managed-LoRA restart, multi-node failover, a 24h soak
+  or a performance gate. The distinct model/engine denominator remains 6/40.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
@@ -214,10 +233,10 @@ replacement for any requirement in `implementation-plan.md`.
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
-| 24h soak and fault injection | Gateway crash recovery passed on both engines; soak not run | Remaining faults and complete 24h evidence |
+| 24h soak and fault injection | Gateway and native API/GPU process-group quota recovery passed on both engines; soak not run | Database/LoRA/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 profile | GPU crash/restart checks; further profiles require separate evidence |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
-| Resource fairness/multiple tenants | Durable same-host budgets and targeted real two-worker/two-tenant load pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
+| Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
 

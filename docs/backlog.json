@@ -475,12 +475,14 @@
         "src/jev_runtime/shared_admission.py",
         "tests/test_shared_admission.py",
         "tests/integration/live_shared_admission.py",
-        "evidence/dsw/shared-admission-validation-4944efd.json"
+        "evidence/dsw/shared-admission-validation-4944efd.json",
+        "evidence/dsw/quota-crash-validation-0df49a1.json"
       ],
       "progress_notes": [
         "Pre-dispatch branch/token budgets and per-tenant fairness are implemented. Default runtimes, gateways and plugins now share durable request/token/expanded-branch and queue budgets across same-host workers using one exact engine identity and local registry.",
         "Uncertain aborts and failed durable cleanup retain capacity until confirmed recovery. Policy changes require stopped workers and drained leases. Three actual Python processes passed an atomic branch-reservation race locally.",
-        "At 4944efd both native engines passed targeted real two-worker/two-tenant shared quota, queue-full, eligible-tenant progress, queued deadline/cancel and peer-owner cancellation checks; lease/ticket tables drained. Controlled representative mixed-load performance, GPU crash/restart quota retention and multi-node quotas remain."
+        "At 4944efd both native engines passed targeted real two-worker/two-tenant shared quota, queue-full, eligible-tenant progress, queued deadline/cancel and peer-owner cancellation checks; lease/ticket tables drained. Controlled representative mixed-load performance, hardware/LoRA/database fault profiles and multi-node quotas remain.",
+        "Four DSW cases passed durable admission and queued-ticket retention across SIGKILL/restart: gateways on both engines at aba3b52 and native API/GPU process groups at 0df49a1. Original settings/credentials, withheld capacity, ordered explicit recovery and final drain were verified; native groups exited and GPU memory returned before same-command restart. This is a single-worker SmolLM2 profile, not a broad fault certification."
       ],
       "acceptance_complete": false
     },
@@ -757,11 +759,14 @@
       "original_status": "planned",
       "actual_deliverables": [
         "tests/integration/live_crash_recovery.py",
-        "profiles/certification-matrix.json"
+        "profiles/certification-matrix.json",
+        "docs/fault-recovery.md",
+        "evidence/dsw/quota-crash-validation-0df49a1.json"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
-        "The controlled 24-hour soak is not run."
+        "The controlled 24-hour soak is not run.",
+        "Both engines passed gateway and native API/GPU process-group crash/restart with durable shared quotas; all owned groups exited and GPU7 returned to 11,990 MiB free. This does not certify hardware errors, managed-LoRA restart, database I/O failures, multi-node recovery or the 24-hour soak."
       ],
       "acceptance_complete": false
     },

@@ -526,6 +526,17 @@
         "timing_evidence": "evidence/dsw/sglang-shared-admission-perf-4944efd/report.json",
         "release_gate_passed": false,
         "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
+      },
+      "development_quota_crash_recovery": {
+        "status": "passed_scoped_gateway_and_native_process_group_checks",
+        "release_gate_passed": false,
+        "gateway_source_commit": "aba3b52467cc1e287ba123801bc373b82d06564c",
+        "native_source_commit": "0df49a132e4a14bb993ab99c0bb063dec5890248",
+        "gateway_evidence": "evidence/dsw/gateway-sglang-quota-crash-aba3b52/quota-crash.json",
+        "native_evidence": "evidence/dsw/sglang-native-quota-crash-0df49a1/quota-crash.json",
+        "native_cleanup_evidence": "evidence/dsw/sglang-native-quota-crash-0df49a1/cleanup.json",
+        "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
+        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
       }
     },
     {
@@ -598,6 +609,17 @@
         "timing_evidence": "evidence/dsw/vllm-shared-admission-perf-4944efd/report.json",
         "release_gate_passed": false,
         "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
+      },
+      "development_quota_crash_recovery": {
+        "status": "passed_scoped_gateway_and_native_process_group_checks",
+        "release_gate_passed": false,
+        "gateway_source_commit": "aba3b52467cc1e287ba123801bc373b82d06564c",
+        "native_source_commit": "0df49a132e4a14bb993ab99c0bb063dec5890248",
+        "gateway_evidence": "evidence/dsw/gateway-vllm-quota-crash-aba3b52/quota-crash.json",
+        "native_evidence": "evidence/dsw/vllm-native-quota-crash-0df49a1/quota-crash.json",
+        "native_cleanup_evidence": "evidence/dsw/vllm-native-quota-crash-0df49a1/cleanup.json",
+        "validation_evidence": "evidence/dsw/quota-crash-validation-0df49a1.json",
+        "scope": "BF16 TP1 API1 same-host shared registry; SIGKILL and explicit recovery of admitted/queued requests; not hardware, LoRA, database failure, multi-node, soak or performance certification"
       }
     }
   ],

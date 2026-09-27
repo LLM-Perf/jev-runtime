@@ -206,6 +206,15 @@ SGLang and vLLM gateway SIGKILL/restart tests and SGLang offline CLI recovery pa
 see `evidence/dsw/gateway-sglang-crash-7eee70e.json` and
 `evidence/dsw/gateway-vllm-crash-7eee70e.json`. Each engine survived throughout,
 but this does not establish multi-node recovery or a GPU unload barrier.
+The shared-admission release also passed explicit quota-retention fault checks on
+both gateways (`aba3b52`) and both native API/GPU process groups (`0df49a1`).
+Restart preserved an admitted 128-branch request and a queued request; no automatic
+capacity reset occurred. Native tests waited for the old group to exit and GPU
+memory to return before loading the same checkpoint and engine configuration.
+See [fault scenarios, commands and boundaries](fault-recovery.md). Killing and
+restarting a process group does not certify GPU hardware faults, a managed-LoRA
+restart or database I/O failure.
+
 Unattended recovery is not certified.
 
 ## Health, metrics and evidence
