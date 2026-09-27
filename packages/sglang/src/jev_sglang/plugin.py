@@ -53,6 +53,22 @@ def _after_global_state(result, *args, **kwargs):
     configure_http_app()
 
 
+def _configure_uvicorn_workers(*args, **kwargs):
+    """SGLang 0.5.19 imports the bare ASGI app in spawned tokenizer workers."""
+    target = args[0] if args else kwargs.get("app")
+    if target != "sglang.srt.entrypoints.http_server:app" or kwargs.get("workers", 1) <= 1:
+        return None
+    target = "jev_sglang.worker:app"
+    if args:
+        return (target, *args[1:]), kwargs
+    return args, {**kwargs, "app": target}
+
+
+def _check_granian_workers(*args, **kwargs):
+    if kwargs.get("tokenizer_worker_num", 1) > 1:
+        raise ValueError("Jev multi-tokenizer integration currently requires the Uvicorn HTTP path")
+
+
 def register():
     global _registered
     if _registered:
@@ -61,5 +77,11 @@ def register():
 
     HookRegistry.register(
         "sglang.srt.entrypoints.http_server.set_global_state", _after_global_state, HookType.AFTER
+    )
+    HookRegistry.register("uvicorn.run", _configure_uvicorn_workers, HookType.BEFORE)
+    HookRegistry.register(
+        "sglang.srt.entrypoints.http_server._run_granian_server",
+        _check_granian_workers,
+        HookType.BEFORE,
     )
     _registered = True

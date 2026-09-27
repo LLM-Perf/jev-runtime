@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 63 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 65 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -33,8 +33,10 @@ replacement for any requirement in `implementation-plan.md`.
   also passed for SGLang. The initial launcher TIME_WAIT failure is retained with its fix.
 - Per-worker startup revalidates persisted active versions. Concurrent local
   bootstrap runs a canary on every worker. A local activation barrier requires all
-  serving workers to prepare the target digest. Unit tests pass; real multi-process
-  GPU checks and multi-node rollout remain incomplete.
+  serving workers to prepare the target digest. vLLM with two API workers passed
+  its barrier, 1,000 switches and K=32/64 scoring at `a283bd5`. SGLang's first
+  two-worker attempt exposed missing plugin routes; its worker-target fix is
+  awaiting real retest. Multi-node rollout remains incomplete.
 - Real-tokenizer checks of all 20 pinned entries at `53d8185`: 11 passed all 16
   combinations, Phi-3 passed 14/16 (joint K=64 unsupported; independent works), six
   gated repositories were inaccessible, and Mistral Small/GLM require specific
@@ -47,7 +49,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
 | SGLang real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
 | vLLM real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| Native plugin lifecycle | Not run | Multi-process startup/shutdown and unchanged engine routes |
+| Native plugin lifecycle | vLLM two-worker check passed; SGLang worker import failure fixed locally | SGLang two-worker retest and final-source checks |
 | GPU hot-switch and drain | Four combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
 | 20-model/40-combination matrix | 2/20 functional checks per engine | Remaining 36 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |

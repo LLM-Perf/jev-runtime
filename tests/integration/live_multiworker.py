@@ -70,10 +70,18 @@ async def run(args):
 
         try:
             seen_ready = {}
+            readiness_statuses = {}
+            checks["readiness_http_statuses"] = readiness_statuses
             async with asyncio.timeout(240):
                 while len(seen_ready) < args.workers:
                     try:
                         response = await data.get(prefix + "/ready")
+                        status_key = str(response.status_code)
+                        readiness_statuses[status_key] = readiness_statuses.get(status_key, 0) + 1
+                        if readiness_statuses.get("404", 0) >= 10:
+                            raise AssertionError(
+                                "Live engine workers did not register plugin routes"
+                            )
                         if response.status_code == 200:
                             result = response.json()
                             seen_ready[result["worker_id"]] = result

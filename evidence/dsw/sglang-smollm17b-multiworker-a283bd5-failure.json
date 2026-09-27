@@ -1,0 +1,15 @@
+{
+  "source_commit": "a283bd52b0467fbbad56d4cc458d6df4fd8090d6",
+  "engine": "sglang",
+  "mode": "native-plugin",
+  "started_at": 1790498421.3497508,
+  "qualification": "co-located multi-process functional test; not throughput certification",
+  "expected_workers": 2,
+  "checks": {},
+  "passed": false,
+  "failure": {
+    "type": "TimeoutError",
+    "message": ""
+  },
+  "finished_at": 1790498661.407385
+}

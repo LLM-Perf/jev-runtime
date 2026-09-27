@@ -36,6 +36,10 @@ engine. The endpoint prefix is `/plugins/jev-runtime`. Complete raw-label scores
 are exposed under `/v1/scores`, and typed decisions under `/v1/decisions` beneath
 that prefix. Without `JEV_CONFIG`, only the raw scoring contract is initialized.
 `JEV_API_KEY` is mandatory for loading the plugin routes.
+The native typed endpoints passed a two-API-worker DSW check with SmolLM2 at
+`a283bd5`, including the publication barrier, 1,000 switches, K=32/64 and native
+chat. The separate HTTP gateway currently requires one engine API worker so that
+upstream external-request-ID cancellation reaches its owning OutputProcessor.
 
 ## SGLang native plugin
 
@@ -52,9 +56,17 @@ the existing API lifespan. The separate `jev-sglang` launcher offers a startup
 integration path that installs the routes before invoking the upstream launcher.
 Neither path replaces a scheduler or modifies installed engine source files.
 
+For SGLang 0.5.19 with multiple tokenizer workers, the parent plugin rewrites only
+the matching Uvicorn ASGI import target to `jev_sglang.worker:app` using a registered
+BEFORE hook. This installs the wrapper in every spawned worker before the host
+lifespan initializes its tokenizer manager. Unrelated Uvicorn apps are unchanged.
+The initial parent-only hook failed with missing plugin routes at `a283bd5`;
+the new worker target is awaiting real DSW recertification. Multi-tokenizer HTTP/2
+through Granian is explicitly rejected until its worker integration is validated.
+
 Real startup, scoring and native chat coexistence passed on both engines with two
-small text models. This does not certify multi-tokenizer/multi-process deployments,
-all model architectures, LoRA or tensor-parallel configurations.
+small text models. Beyond the specific vLLM two-worker check above, this does not
+certify all multi-process configurations, architectures, LoRA or tensor parallelism.
 
 ## Bundle updates
 
