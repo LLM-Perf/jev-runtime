@@ -44,7 +44,7 @@ async def test_timeout_cancels_branches_and_releases_lease(runtime, question):
     assert error.value.code == "deadline_exceeded"
     assert len(runtime.backend.cancelled) == 1
     assert runtime.registry.list()["leases"] == []
-    assert runtime.admission.tokens == 0
+    assert runtime.admission.snapshot()["expanded_tokens"] == 0
 
 
 async def test_failed_abort_keeps_lease_until_confirmed(runtime, question):

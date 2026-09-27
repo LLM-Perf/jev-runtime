@@ -147,7 +147,7 @@ async def test_restart_pauses_routes_preserves_leases_and_requires_canary(runtim
     runtime.activate("adapter", item.reference, 0)
     snapshot = runtime.registry.acquire("adapter", "unfinished", None, runtime.backend_identity)
     peer = Registry(runtime.registry.path)
-    peer.start_worker(runtime.backend_identity)
+    peer.start_worker(runtime.backend_identity, runtime.admission.snapshot()["limits"])
     try:
         with pytest.raises(JevError) as error:
             peer.start_adapter_session(runtime.backend_identity)

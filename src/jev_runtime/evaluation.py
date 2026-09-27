@@ -76,7 +76,12 @@ async def collect_scores(
                 runtime.registry.record_branches(
                     lease, [sequence.request_id for sequence in sequences]
                 )
-                async with asyncio.timeout(120), runtime.admission.acquire(total_tokens):
+                async with (
+                    asyncio.timeout(120),
+                    runtime.admission.acquire(
+                        total_tokens, branches=len(sequences), lease_id=lease
+                    ),
+                ):
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     for item, target in zip(compiled, targets, strict=True):
                         _, scored = await runtime._question(item, bundle, semaphore, unconfirmed)

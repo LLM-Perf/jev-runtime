@@ -8,6 +8,7 @@ from jev_runtime.compiler import Compiler
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, ModelIdentity, Option, Question
+from jev_runtime.shared_admission import SharedAdmission
 
 
 class CharacterTokenizer:
@@ -93,9 +94,17 @@ def question():
 
 
 @pytest.fixture
-async def runtime(tmp_path, compiler, bundle):
+async def runtime(tmp_path, compiler, bundle, request):
     engine = ControlledEngine()
-    instance = Runtime(engine, compiler, Registry(tmp_path / "registry.db"), "fixture:0", "fixture")
+    registry = Registry(tmp_path / "registry.db")
+    instance = Runtime(
+        engine,
+        compiler,
+        registry,
+        "fixture:0",
+        "fixture",
+        admission=SharedAdmission(registry, "fixture:0", **getattr(request, "param", {})),
+    )
     await instance.start()
     instance.registry.upload(bundle)
     await instance.prepare(bundle.reference)

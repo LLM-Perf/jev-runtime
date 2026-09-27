@@ -104,7 +104,7 @@ async def test_success_and_pre_dispatch_error_have_bounded_observations(runtime,
             metric(text, "jev_token_observations_total", {"quantity": "engine_completion_tokens"})
             == 2
         )
-        assert metric(text, "jev_admission", {"quantity": "requests"}) == 0
+        assert metric(text, "jev_shared_admission", {"quantity": "requests"}) == 0
 
 
 async def test_partial_metrics_preserve_unknown_usage(runtime, question):
@@ -125,8 +125,8 @@ async def test_partial_metrics_preserve_unknown_usage(runtime, question):
         assert metric(text, "jev_branch_work_seconds_count", {"kind": "abort"}) == 1
 
 
+@pytest.mark.parametrize("runtime", [{"max_requests": 1}], indirect=True)
 async def test_cancellation_while_queued_has_no_engine_time(runtime, question):
-    runtime.admission.max_requests = 1
     runtime.backend.gate.clear()
     request = DecisionRequest.model_validate(body(question))
     first = asyncio.create_task(runtime.decide(request, "first"))
@@ -134,14 +134,15 @@ async def test_cancellation_while_queued_has_no_engine_time(runtime, question):
     trace = DecisionTrace()
     second = asyncio.create_task(runtime.decide(request, "second", trace=trace))
     async with asyncio.timeout(2):
-        async with runtime.admission._condition:
-            await runtime.admission._condition.wait_for(lambda: runtime.admission.queued == 1)
+        while runtime.admission.snapshot()["queued_requests"] != 1:  # noqa: ASYNC110 - shared DB
+            await asyncio.sleep(0.001)
         assert await runtime.cancel("second")
     with pytest.raises(JevError, match="cancelled"):
         await second
     assert set(trace.seconds) == {"pin", "compile", "journal", "queue", "release", "total"}
     assert trace.work == {}
-    assert runtime.admission.queued == 0 and len(runtime.registry.list()["leases"]) == 1
+    assert runtime.admission.snapshot()["queued_requests"] == 0
+    assert len(runtime.registry.list()["leases"]) == 1
     runtime.backend.gate.set()
     await first
     assert not runtime.registry.list()["leases"]

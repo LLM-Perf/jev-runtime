@@ -36,14 +36,45 @@ admission:
   max_tenant_requests: 16
   max_tenant_tokens: 262144
   max_tenant_queue: 64
+  max_branches: 1024
+  max_tenant_branches: 256
 ```
 
 The server derives the tenant from the credential; clients cannot choose an
 arbitrary tenant name in request bodies. Queues use FIFO within a tenant and
 round-robin admission between eligible tenants. Fairness is by admitted request,
-not GPU execution time. Tokens count every expanded scoring sequence. These
-limits are per API process; deployment-wide quota enforcement is not yet provided.
-The raw scoring bridge is restricted to the separate `JEV_API_KEY` service key.
+not GPU execution time. Tokens and branches count every expanded scoring sequence,
+including branches not yet dispatched within an admitted request. This conservative
+reservation lasts until the request lease is safely released. Unknown cache hits
+do not discount token demand.
+
+Runtime, gateway and native plugins default to one admission pool per exact engine
+identity in a shared local registry. API workers atomically reserve the same global
+and tenant budgets; worker count does not multiply limits. Every worker must use
+identical limits. `/admin/profile` reports scope, limits and current occupancy.
+This covers typed decisions, System One requests and leased score collection.
+Privileged preparation canaries, the service-key-only raw scoring bridge and
+native chat are outside this pool. Use a separate decision engine when isolation
+from native chat is required. Separate registry files or differently named engine
+identities are separate pools. Multi-node/replica-wide quotas are not implemented;
+never place the SQLite database on a network filesystem.
+
+An admitted ticket is deleted in the same transaction as its request lease.
+Unconfirmed aborts, failed durable cleanup and dead owners retain their entire
+reservation until explicit recovery confirms cancellation. Queued cancellations
+and deadlines remove never-dispatched tickets. A verified dead queued owner is
+skipped when considering other tenants, but its queue slot and lease still need
+recovery. No elapsed-time TTL reclaims potentially live GPU work. Under contention,
+workers poll the shared queue every 20 ms; this is not a GPU scheduler or a claim
+of latency certification.
+
+Migration from a process-local release requires stopping all old API workers and
+draining/recovering their leases before starting the shared-admission release.
+New workers reject incompatible live/unknown workers or retained work with
+`admission_policy_conflict`. Limit changes likewise require all workers to stop
+and all leases to drain. Bundle hot publication is unaffected. The explicit
+in-memory `Admission` class remains available for isolated embedding/tests; it is
+not the deployment default and cannot join a shared-policy worker group.
 
 ## Publication, rollback and removal
 
@@ -214,12 +245,16 @@ authentication, body-schema validation, management endpoints or native engine AP
   summed known usage and the matching response observation counts. A known zero
   contributes an observation; unavailable usage contributes neither. These are
   response-level counters, not inference of work discarded by a failed request.
-- `jev_admission{quantity}`: current admitted requests, expanded tokens and queued
-  requests for the responding API process.
+- `jev_shared_admission{quantity}`: admitted requests, reserved expanded tokens and
+  branches, and queued requests across this engine's shared registry. Every API
+  worker reads the same pool; **do not sum these gauges across workers**. Retained
+  uncertain work remains included. The explicit process-local implementation uses
+  `jev_admission{quantity}` instead.
 
 No prompt, request ID, arbitrary task ID or tenant name is used as a metric label.
-Multiple API workers do not share counters: load-balanced scrapes are not a complete
-service aggregate. Use explicit per-worker collection before reporting global
+Multiple API workers do not share the request counters or histograms:
+load-balanced scrapes are not a complete service aggregate. Use explicit
+per-worker collection before reporting global
 rates; automatic multi-worker Prometheus aggregation remains outstanding. Use
 `X-Jev-Timing: 1` for a request-bound phase header when profiling through a shared
 HTTP endpoint. It changes no decision JSON or scoring behavior. See performance

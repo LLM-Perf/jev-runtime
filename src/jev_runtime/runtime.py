@@ -26,6 +26,7 @@ from jev_runtime.schema import (
     content_digest,
 )
 from jev_runtime.scoring import assemble
+from jev_runtime.shared_admission import SharedAdmission
 from jev_runtime.telemetry import DecisionTrace
 
 logger = logging.getLogger(__name__)
@@ -39,7 +40,7 @@ class Runtime:
         registry: Registry,
         backend_identity: str,
         model_id: str,
-        admission: Admission | None = None,
+        admission: Admission | SharedAdmission | None = None,
         expected_model: ModelIdentity | None = None,
         adapter_store: AdapterStore | None = None,
         adapter_timeout: int = 120,
@@ -49,7 +50,7 @@ class Runtime:
         self.expected_model = expected_model
         self.adapter_store, self.adapter_timeout = adapter_store, adapter_timeout
         self._adapter_tasks: set[asyncio.Task] = set()
-        self.admission = admission or Admission()
+        self.admission = admission or SharedAdmission(registry, backend_identity)
         self.capabilities: Capabilities | None = None
         self._management_lock = asyncio.Lock()
         self._active: dict[str, asyncio.Task] = {}
@@ -64,7 +65,7 @@ class Runtime:
         if self._control_task is not None and not self._control_task.done():
             raise RuntimeError("Runtime is already started")
         self._prepared.clear()
-        self.registry.start_worker(self.backend_identity)
+        self.admission.start(self.registry, self.backend_identity)
         self.capabilities = await self.backend.probe()
         if self.adapter_store is not None:
             if not self.capabilities.lora:
@@ -474,7 +475,13 @@ class Runtime:
                     ),
                 )
                 trace.switch("queue")
-                async with self.admission.acquire(total_tokens, tenant):
+                async with self.admission.acquire(
+                    total_tokens, tenant, branches=len(sequences), lease_id=snapshot.lease_id
+                ):
+                    # Compilation and durable admission contain synchronous work.
+                    # asyncio's timeout callback may not run until we next yield.
+                    if time.monotonic() - started >= request.execution.timeout_ms / 1000:
+                        raise TimeoutError("Deadline expired before engine dispatch")
                     trace.switch("execute")
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     tasks = [

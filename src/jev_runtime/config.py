@@ -9,7 +9,6 @@ import yaml
 from pydantic import Field
 
 from jev_runtime.adapters import AdapterStore, validate_lora_base
-from jev_runtime.admission import Admission
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.compiler import Compiler
@@ -17,6 +16,7 @@ from jev_runtime.errors import JevError
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, ModelIdentity
+from jev_runtime.shared_admission import SharedAdmission
 
 
 class AdmissionSettings(Contract):
@@ -26,6 +26,8 @@ class AdmissionSettings(Contract):
     max_tenant_requests: int = Field(default=16, gt=0)
     max_tenant_tokens: int = Field(default=262_144, gt=0)
     max_tenant_queue: int = Field(default=64, gt=0)
+    max_branches: int = Field(default=1024, gt=0)
+    max_tenant_branches: int = Field(default=256, gt=0)
 
 
 class AdapterSettings(Contract):
@@ -129,13 +131,14 @@ async def build_runtime(
             settings.adapters.max_bytes,
         )
         backend.managed_lora = True
+    registry = Registry(settings.registry_path)
     return Runtime(
         backend,
         compiler,
-        Registry(settings.registry_path),
+        registry,
         identity,
         settings.model_id,
-        admission=Admission(**settings.admission.model_dump()),
+        admission=SharedAdmission(registry, identity, **settings.admission.model_dump()),
         expected_model=model_identity(settings, compiler),
         adapter_store=store,
         adapter_timeout=settings.adapters.operation_timeout_seconds,

@@ -163,6 +163,12 @@ def install_routes(
         ["quantity"],
         registry=metrics_registry,
     )
+    shared_admission = Gauge(
+        "jev_shared_admission",
+        "Registry-wide engine admission; do not sum across workers",
+        ["quantity"],
+        registry=metrics_registry,
+    )
 
     def observe(trace, outcome, response):
         count.labels(outcome).inc()
@@ -265,13 +271,10 @@ def install_routes(
 
     @router.get("/metrics")
     async def metrics(request: Request):
-        current = runtime(request).admission
-        for quantity, value in (
-            ("requests", current.requests),
-            ("expanded_tokens", current.tokens),
-            ("queued_requests", current.queued),
-        ):
-            admission.labels(quantity).set(value)
+        current = runtime(request).admission.snapshot()
+        metric = shared_admission if current["scope"] == "shared_registry_engine" else admission
+        for quantity in ("requests", "expanded_tokens", "expanded_branches", "queued_requests"):
+            metric.labels(quantity).set(current[quantity])
         return Response(generate_latest(metrics_registry), media_type="text/plain; version=0.0.4")
 
     @management.get("/bundles")
@@ -310,6 +313,7 @@ def install_routes(
             "engine_identity_verified": instance.capabilities.verified,
             "capabilities": instance.capabilities,
             "compiler": instance.compiler.profile(),
+            "admission": instance.admission.snapshot(),
         }
 
     @management.post("/compile")

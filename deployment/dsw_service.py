@@ -91,6 +91,15 @@ def launch(args):
         "port": args.port,
         "workers": args.api_workers,
     }
+    if args.admission_config:
+        from jev_runtime.config import AdmissionSettings
+
+        config["admission"] = AdmissionSettings.model_validate_json(
+            args.admission_config.read_text()
+        ).model_dump()
+    config["tenant_key_envs"] = {
+        tenant: f"JEV_TEST_TENANT_{index}" for index, tenant in enumerate(args.tenant)
+    }
     if args.adapters_root:
         config["adapters"] = {
             "enabled": True,
@@ -102,8 +111,19 @@ def launch(args):
     if not keys.exists():
         descriptor = os.open(keys, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         with os.fdopen(descriptor, "w") as file:
-            json.dump({"api": secrets.token_urlsafe(32), "admin": secrets.token_urlsafe(32)}, file)
+            json.dump(
+                {
+                    "api": secrets.token_urlsafe(32),
+                    "admin": secrets.token_urlsafe(32),
+                    "tenants": {tenant: secrets.token_urlsafe(32) for tenant in args.tenant},
+                },
+                file,
+            )
     credentials = json.loads(keys.read_text())
+    if set(credentials.get("tenants", {})) != set(args.tenant):
+        raise SystemExit(
+            "Existing credentials have a different tenant set; use a new run directory"
+        )
     env = dict(os.environ)
     env.update(
         {
@@ -113,6 +133,8 @@ def launch(args):
             "JEV_CONFIG": str(root / "config.json"),
         }
     )
+    for tenant, env_name in config["tenant_key_envs"].items():
+        env[env_name] = credentials["tenants"][tenant]
     if args.engine_run_dir:
         engine_record = json.loads((args.engine_run_dir / "process.json").read_text())
         expected_url = f"http://127.0.0.1:{engine_record['port']}"
@@ -284,6 +306,8 @@ def main():
     parser.add_argument("--engine-run-dir", type=Path)
     parser.add_argument("--api-workers", type=int, default=1)
     parser.add_argument("--adapters-root", type=Path)
+    parser.add_argument("--admission-config", type=Path)
+    parser.add_argument("--tenant", action="append", default=[])
     args = parser.parse_args()
     if args.action == "launch":
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
@@ -296,6 +320,10 @@ def main():
             parser.error("api-workers must be between 1 and 128")
         if args.adapters_root and (args.gateway or args.api_workers != 1):
             parser.error("managed adapters require the native single-worker profile")
+        if len(set(args.tenant)) != len(args.tenant) or any(
+            not name or name == "default" for name in args.tenant
+        ):
+            parser.error("tenant names must be distinct, non-empty and non-default")
     {"launch": launch, "status": status, "stop": stop}[args.action](args)
 
 

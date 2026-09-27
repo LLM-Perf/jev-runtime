@@ -78,6 +78,26 @@ class Registry:
                     lease_id TEXT PRIMARY KEY REFERENCES leases(id) ON DELETE CASCADE,
                     tenant TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS admission_policies (
+                    backend TEXT PRIMARY KEY, policy TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS worker_admission (
+                    owner TEXT PRIMARY KEY REFERENCES workers(owner), policy TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS admission_tenants (
+                    backend TEXT NOT NULL, tenant TEXT NOT NULL, turn INTEGER NOT NULL,
+                    PRIMARY KEY(backend,tenant)
+                );
+                CREATE TABLE IF NOT EXISTS admission_tickets (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    lease_id TEXT NOT NULL UNIQUE REFERENCES leases(id) ON DELETE CASCADE,
+                    backend TEXT NOT NULL, tenant TEXT NOT NULL,
+                    tokens INTEGER NOT NULL CHECK(tokens>0),
+                    branches INTEGER NOT NULL CHECK(branches>0),
+                    state TEXT NOT NULL CHECK(state IN ('QUEUED','ADMITTED'))
+                );
+                CREATE INDEX IF NOT EXISTS admission_by_backend
+                    ON admission_tickets(backend,state,tenant);
                 CREATE TABLE IF NOT EXISTS cancel_commands (
                     id TEXT PRIMARY KEY, lease_id TEXT NOT NULL UNIQUE,
                     owner TEXT NOT NULL, request_id TEXT NOT NULL,
@@ -320,14 +340,54 @@ class Registry:
             raise JevError("bundle_not_found", f"Unknown bundle {reference}", 404)
         return row
 
-    def start_worker(self, backend: str) -> None:
+    def start_worker(self, backend: str, admission_limits: dict | None = None) -> None:
         with self._transaction() as db:
+            policy = json.dumps(admission_limits, sort_keys=True)
+            current = db.execute(
+                "SELECT policy FROM admission_policies WHERE backend=?", (backend,)
+            ).fetchone()
+            if (current is None or current["policy"] != policy) and db.execute(
+                "SELECT 1 FROM leases l JOIN bundles b ON b.ref=l.ref WHERE b.backend=?",
+                (backend,),
+            ).fetchone():
+                raise JevError(
+                    "admission_policy_conflict",
+                    "Drain admission leases before changing limits",
+                    409,
+                )
+            for worker in db.execute(
+                "SELECT w.owner,o.identity,a.policy FROM workers w "
+                "JOIN owners o ON o.owner=w.owner "
+                "LEFT JOIN worker_admission a ON a.owner=w.owner "
+                "WHERE w.backend=? AND w.state!='STOPPED'",
+                (backend,),
+            ).fetchall():
+                if (
+                    worker["policy"] != policy
+                    and self._owner_status(json.loads(worker["identity"])) != "dead"
+                ):
+                    raise JevError(
+                        "admission_policy_conflict",
+                        "All workers must share admission limits; "
+                        "stop legacy workers before migration",
+                        409,
+                    )
+            db.execute(
+                "INSERT INTO admission_policies VALUES(?,?) "
+                "ON CONFLICT(backend) DO UPDATE SET policy=excluded.policy",
+                (backend, policy),
+            )
             db.execute(
                 "INSERT INTO workers VALUES(?,?,'STARTING') ON CONFLICT(owner) DO UPDATE SET "
                 "backend=excluded.backend,state='STARTING'",
                 (self.owner, backend),
             )
             db.execute("DELETE FROM worker_bundles WHERE owner=?", (self.owner,))
+            db.execute(
+                "INSERT INTO worker_admission VALUES(?,?) "
+                "ON CONFLICT(owner) DO UPDATE SET policy=excluded.policy",
+                (self.owner, policy),
+            )
 
     def record_worker_prepared(self, reference: str) -> None:
         with self._transaction() as db:
