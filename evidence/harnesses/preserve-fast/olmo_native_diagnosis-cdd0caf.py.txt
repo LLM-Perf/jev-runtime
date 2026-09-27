@@ -1,0 +1,18 @@
+import hashlib,json,sys
+from pathlib import Path
+ROOT=Path('/root/jev-runtime')
+from tokenizers import Tokenizer
+from sglang.srt.utils.hf_transformers_utils import get_tokenizer
+sys.path.insert(0,str(ROOT/'releases/cdd0caf330a645f15279cd346f2ffa8ba62190f9/src'))
+from jev_runtime.compiler import Compiler
+model=ROOT/'models/OLMo-2-1124-7B-Instruct';tok=get_tokenizer(str(model),trust_remote_code=False);raw=Tokenizer.from_file(str(model/'tokenizer.json'))
+texts=[r['text'] for r in json.loads((ROOT/'release-packaging-861ed3a/smol-explicit-profile.json').read_text())['checks']]
+count=0;examples=[]
+for text in texts:
+ expected=raw.encode(text,add_special_tokens=False).ids;actual=tok.encode(text,add_special_tokens=False)
+ if actual!=expected:
+  count+=1
+  if len(examples)<8:examples.append({'text':text,'checkpoint_ids':expected,'native_getter_ids':actual})
+profile=Compiler(tok)
+r={'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'model_id':'allenai/OLMo-2-1124-7B-Instruct','inputs':len(texts),'mismatches':count,'examples':examples,'native_tokenizer_digest':profile.tokenizer_digest,'native_implementation_digest':profile.tokenizer_implementation_digest,'historical_implementation_digest':'sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31','scope':'Current SGLang native tokenizer getter without GPU execution; compared against serialized checkpoint data and previous native profile fingerprint'}
+out=ROOT/'preserve-fast-olmo-native-diagnosis-cdd0caf.json';assert not out.exists();out.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:v for k,v in r.items() if k!='examples'}))

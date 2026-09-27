@@ -1,0 +1,29 @@
+{
+  "integrity_and_accounting_passed": true,
+  "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+  "release_gate_passed": false,
+  "profiles_verified_at_final_source": 22,
+  "independent_corpus_checks": 22110,
+  "compiler_passes": 348,
+  "compiler_attempts": 352,
+  "native_rows": [
+    {
+      "engine": "vllm",
+      "switches": 1000,
+      "strict_success_requests": 479,
+      "max_absolute_logprob_error": 0.00021123886108398438,
+      "single_position_passed": true,
+      "full_numerical_gate_passed": false
+    },
+    {
+      "engine": "sglang",
+      "switches": 1000,
+      "strict_success_requests": 537,
+      "max_absolute_logprob_error": 0.08662056922912598,
+      "single_position_passed": true,
+      "full_numerical_gate_passed": false
+    }
+  ],
+  "functional_model_engine_denominator_unchanged": 40,
+  "owned_records_checked": 110
+}

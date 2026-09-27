@@ -1,0 +1,62 @@
+"""Run the shipped CLI and compiler matrix against the frozen local inventory."""
+import hashlib,json,os,subprocess,sys,time,traceback
+from pathlib import Path
+SOURCE='cdd0caf330a645f15279cd346f2ffa8ba62190f9'
+ROOT=Path('/root/jev-runtime');release=ROOT/'releases'/SOURCE
+sys.path[:0]=[str(release),str(release/'src')]
+from tests.integration.tokenizer_contract import probe
+from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+from jev_runtime.config import Settings,load_compiler
+from transformers import AutoTokenizer
+from tokenizers import Tokenizer
+engine=sys.argv[1];out=ROOT/f'preserve-fast-{engine}-cdd0caf.json';assert not out.exists()
+report={'source_commit':SOURCE,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'engine_environment':engine,'started_at':time.time(),'qualification':'CPU tokenizer/profile/compiler checks; no GPU model certification','models':[]}
+items=json.loads((release/'profiles/model-inventory.json').read_text())['models']
+texts=[row['text'] for row in json.loads((ROOT/'release-packaging-861ed3a/smol-explicit-profile.json').read_text())['checks']]
+assert len(texts)==1005
+
+def save():out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+for item in items:
+ row={'model_id':item['id'],'revision':item['revision'],'gated':item['gated']};report['models'].append(row);save()
+ model=ROOT/'models'/item['id'].rsplit('/',1)[-1]
+ if not model.exists():row['status']='local_checkpoint_unavailable';save();continue
+ ident=json.loads((model/'jev-source.json').read_text());assert (ident['model_id'],ident['revision'])==(item['id'],item['revision'])
+ target=ROOT/'tokenizers'/f"{model.name}-preserved-{engine}-cdd0caf";assert not target.exists()
+ env={k:v for k,v in os.environ.items() if not k.startswith('PYTHON')}
+ env.update(PYTHONPATH=str(release/'src'),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',CUDA_VISIBLE_DEVICES='')
+ proc=subprocess.run([sys.executable,'-c','from jev_runtime.cli import app; app()','tokenizer','preserve-fast',str(model),str(target)],capture_output=True,text=True,env=env,timeout=120)
+ row['cli_returncode']=proc.returncode;row['stderr']=proc.stderr[-5000:]
+ if proc.returncode:
+  row['status']='profile_rejected';row['output_created']=target.exists();save();print(json.dumps({'engine':engine,'model':model.name,'status':row['status']}),flush=True);continue
+ row['profile']=json.loads(proc.stdout);row['profile_manifest_sha256']=hashlib.sha256((target/'jev-tokenizer-profile.json').read_bytes()).hexdigest()
+ try:
+  compiler=load_compiler(Settings(backend=engine,model_id=item['id'],model_revision=item['revision'],tokenizer=str(target)))
+  verify_tokenizer_profile(target,compiler)
+  reference=Tokenizer.from_file(str(model/'tokenizer.json'))
+  expected_backend=json.loads(reference.to_str());actual_backend=json.loads(compiler.tokenizer.backend_tokenizer.to_str())
+  if row['profile']['validation']['identity_post_processor_inserted']:
+   assert expected_backend['post_processor'] is None
+   expected_backend['post_processor']={'type':'TemplateProcessing','single':[{'Sequence':{'id':'A','type_id':0}}],'pair':[{'Sequence':{'id':'A','type_id':0}},{'Sequence':{'id':'B','type_id':1}}],'special_tokens':{}}
+  assert actual_backend==expected_backend
+  ledger=[]
+  for text in texts:
+   expected=reference.encode(text,add_special_tokens=False).ids;actual=compiler.tokenizer.encode(text,add_special_tokens=False)
+   assert actual==expected
+   ledger.append([hashlib.sha256(text.encode()).hexdigest(),actual])
+  row['independent_corpus']={'inputs':len(ledger),'all_equal':True,'ledger_sha256':hashlib.sha256(json.dumps(ledger).encode()).hexdigest()}
+  try:
+   default=AutoTokenizer.from_pretrained(model,trust_remote_code=False,local_files_only=True)
+   diffs=[];total=0
+   for text in texts:
+    expected=reference.encode(text,add_special_tokens=False).ids;actual=default.encode(text,add_special_tokens=False)
+    if actual!=expected:
+     total+=1
+     if len(diffs)<8:diffs.append({'text':text,'checkpoint_ids':expected,'default_ids':actual})
+   row['default_auto_diagnostic']={'inputs':len(texts),'mismatches':total,'examples':diffs,'qualification':'serialized checkpoint reference, not custom-wrapper equivalence'}
+  except Exception as exc:row['default_auto_diagnostic']={'error':{'type':type(exc).__name__,'message':str(exc)}}
+  row['compiler']=probe(item,str(target));row['status']='profile_verified'
+ except Exception as exc:
+  row['status']='profile_check_failed';row['failure']={'type':type(exc).__name__,'message':str(exc),'traceback':traceback.format_exc()}
+ save();print(json.dumps({'engine':engine,'model':model.name,'status':row['status'],'compiler_cases':sum(c['passed'] for c in row.get('compiler',{}).get('cases',[])),'default_mismatches':row.get('default_auto_diagnostic',{}).get('mismatches')}),flush=True)
+report['completed']=True;report['finished_at']=time.time();save()

@@ -31,7 +31,8 @@ The completed directory contains `tokenizer.json`, `tokenizer_config.json` and
 conversion library versions, vocabulary and tokenizer-implementation fingerprints,
 template identity and the validation ledger hash. Existing outputs are never
 overwritten. A publication I/O failure can leave an incomplete directory; only a
-successful command with its final manifest qualifies the artifact.
+successful command with its final manifest qualifies the artifact. The pending
+publication marker causes startup rejection if output writing was interrupted.
 
 This is the **GLM4 single text / rendered chat prompt profile**. It does not claim
 equivalence for arbitrary custom Python tokenizer behavior, text pairs, generated

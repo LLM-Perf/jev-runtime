@@ -1,0 +1,126 @@
+{
+  "script_sha256": "76b053a4fb724530244a43db52b31d1d7b235f22d5cebe88841a8a1d475399f7",
+  "rows": [
+    {
+      "model": "Phi-4-mini-instruct",
+      "files": [
+        "added_tokens.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "differences": [
+        {
+          "path": "/post_processor",
+          "checkpoint": null,
+          "loaded": {
+            "type": "TemplateProcessing",
+            "single": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              }
+            ],
+            "pair": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              },
+              {
+                "Sequence": {
+                  "id": "B",
+                  "type_id": 1
+                }
+              }
+            ],
+            "special_tokens": {}
+          }
+        }
+      ]
+    },
+    {
+      "model": "OLMo-2-1124-7B-Instruct",
+      "files": [
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "differences": [
+        {
+          "path": "/post_processor",
+          "checkpoint": null,
+          "loaded": {
+            "type": "TemplateProcessing",
+            "single": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              }
+            ],
+            "pair": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              },
+              {
+                "Sequence": {
+                  "id": "B",
+                  "type_id": 1
+                }
+              }
+            ],
+            "special_tokens": {}
+          }
+        }
+      ]
+    },
+    {
+      "model": "SmolLM2-1.7B-Instruct",
+      "files": [
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "differences": [
+        {
+          "path": "/post_processor",
+          "checkpoint": null,
+          "loaded": {
+            "type": "TemplateProcessing",
+            "single": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              }
+            ],
+            "pair": [
+              {
+                "Sequence": {
+                  "id": "A",
+                  "type_id": 0
+                }
+              },
+              {
+                "Sequence": {
+                  "id": "B",
+                  "type_id": 1
+                }
+              }
+            ],
+            "special_tokens": {}
+          }
+        }
+      ]
+    }
+  ]
+}

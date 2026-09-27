@@ -400,6 +400,25 @@ replacement for any requirement in `implementation-plan.md`.
   wheels are byte-identical to the tested candidate. P18/P24 remain partial. See
   [installed-wheel rollout validation](release-rollout-validation.md).
 
+- At `cdd0caf`, the product `preserve-fast` CLI creates bound, checkpoint-preserving
+  JSON tokenizer profiles. Both isolated engine environments verify all 11 eligible
+  local checkpoints: 22,110 independent encodings and 348/352 compiler cases pass;
+  Phi-3 joint K=64 still fails. GLM4 format rejection and eight absent checkpoints
+  remain in each 20-model inventory. Initial identity-postprocessor rejections are
+  preserved; only the exact single-text identity representation is now accepted.
+  A separate OLMo SGLang native-getter check has zero corpus differences and matches
+  its historical native fingerprint, despite default AutoTokenizer differences.
+  Generated Smol profiles pass native four-type/precision checks and 1,000 switches
+  per engine (479 vLLM / 537 SGLang strict requests, zero mixed versions). One CPU
+  BF16 reference position passes each unchanged 0.15 tolerance (0.000211239 /
+  0.086620569). This is partial numerical evidence, not the full gate. An initial
+  missing-Hatchling installation failure occurs before any server starts and is
+  retained. All 110 historical owned records are terminal; GPU7 returns to 11,990
+  MiB free and six model files rehash against fixed Hub metadata. Local 332 tests
+  and three source-matched wheels pass. Functional coverage stays 24/40; the other
+  ten new tokenizer profiles have CPU checks only. See
+  [serialized tokenizer validation](preserve-fast-validation.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |

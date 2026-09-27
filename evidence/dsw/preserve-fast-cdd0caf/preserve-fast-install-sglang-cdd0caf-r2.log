@@ -1,0 +1,44 @@
+Obtaining file:///root/jev-runtime/releases/cdd0caf330a645f15279cd346f2ffa8ba62190f9
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Obtaining file:///root/jev-runtime/releases/cdd0caf330a645f15279cd346f2ffa8ba62190f9/packages/sglang
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: jev-runtime-core, jev-sglang
+  Building editable for jev-runtime-core (pyproject.toml): started
+  Building editable for jev-runtime-core (pyproject.toml): finished with status 'done'
+  Created wheel for jev-runtime-core: filename=jev_runtime_core-0.1.0a1-py3-none-any.whl size=1738 sha256=2a94e5d914dd3922b046603b4188b9b727d0a92f643013976a83b0b570a363eb
+  Stored in directory: /tmp/pip-ephem-wheel-cache-iz3wohhh/wheels/9a/f8/8e/af564e80142b8f578918d5a71a8bb383a0848444ae1ce0ddc2
+  Building editable for jev-sglang (pyproject.toml): started
+  Building editable for jev-sglang (pyproject.toml): finished with status 'done'
+  Created wheel for jev-sglang: filename=jev_sglang-0.1.0a1-py3-none-any.whl size=1370 sha256=ae52488aade85900c4af59102f832c12d39c9500255aba73d12bdfd28c967a66
+  Stored in directory: /tmp/pip-ephem-wheel-cache-iz3wohhh/wheels/77/7b/d5/0716063127d1652f54420b84bb3db3ece26b034b528f327bfc
+Successfully built jev-runtime-core jev-sglang
+Installing collected packages: jev-sglang, jev-runtime-core
+  Attempting uninstall: jev-sglang
+    Found existing installation: jev-sglang 0.1.0a1
+    Uninstalling jev-sglang-0.1.0a1:
+      Successfully uninstalled jev-sglang-0.1.0a1
+  Attempting uninstall: jev-runtime-core
+    Found existing installation: jev-runtime-core 0.1.0a1
+    Uninstalling jev-runtime-core-0.1.0a1:
+      Successfully uninstalled jev-runtime-core-0.1.0a1
+
+Successfully installed jev-runtime-core-0.1.0a1 jev-sglang-0.1.0a1
+No broken requirements found.

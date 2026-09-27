@@ -1,0 +1,14 @@
+{
+  "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+  "pytest": {
+    "passed": 332,
+    "result": "332 passed in 21.56s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "102 project Python files already formatted; standalone evidence verifier checked separately",
+  "pip_check": "No broken requirements found",
+  "wheel_build": "All three source-matched wheels built from immutable Git snapshot",
+  "build_evidence": "evidence/dsw/preserve-fast-cdd0caf/local-build.json",
+  "typescript": "Unchanged; not rerun",
+  "gpu_qualification": "Separate colocated native/editable DSW campaign; not a new installed-wheel rollout"
+}

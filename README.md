@@ -36,6 +36,7 @@ See [engine setup](docs/engine-integration.md), [operations](docs/operations.md)
 [Qwen2.5/R1 Llama validation and tokenizer profiles](docs/public-model-pair-validation.md),
 [GLM4 tokenizer conversion](docs/tokenizer-profiles.md),
 [automatic serialized tokenizer preservation](docs/preserve-fast-tokenizers.md),
+[11-model profile and native Smol validation](docs/preserve-fast-validation.md),
 [GLM4/R1 Qwen GPU validation](docs/glm-r1-model-validation.md),
 [CPU/GPU numerical reference diagnosis](docs/numerical-reference-diagnostics.md),
 [reproducible native validation](docs/native-validation-runner.md),

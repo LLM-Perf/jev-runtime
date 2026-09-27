@@ -1,0 +1,44 @@
+Obtaining file:///root/jev-runtime/releases/cdd0caf330a645f15279cd346f2ffa8ba62190f9
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Obtaining file:///root/jev-runtime/releases/cdd0caf330a645f15279cd346f2ffa8ba62190f9/packages/vllm
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: jev-runtime-core, jev-vllm
+  Building editable for jev-runtime-core (pyproject.toml): started
+  Building editable for jev-runtime-core (pyproject.toml): finished with status 'done'
+  Created wheel for jev-runtime-core: filename=jev_runtime_core-0.1.0a1-py3-none-any.whl size=1738 sha256=2a94e5d914dd3922b046603b4188b9b727d0a92f643013976a83b0b570a363eb
+  Stored in directory: /tmp/pip-ephem-wheel-cache-i90l8j5z/wheels/9a/f8/8e/af564e80142b8f578918d5a71a8bb383a0848444ae1ce0ddc2
+  Building editable for jev-vllm (pyproject.toml): started
+  Building editable for jev-vllm (pyproject.toml): finished with status 'done'
+  Created wheel for jev-vllm: filename=jev_vllm-0.1.0a1-py3-none-any.whl size=1315 sha256=164ad5524973ceb5df221cc7b47eff0ab8c786d78741c12a45ba527acfb00f0f
+  Stored in directory: /tmp/pip-ephem-wheel-cache-i90l8j5z/wheels/cf/18/46/624389bb18020bafeea96f224a5b1c278b5c684784d05fe339
+Successfully built jev-runtime-core jev-vllm
+Installing collected packages: jev-vllm, jev-runtime-core
+  Attempting uninstall: jev-vllm
+    Found existing installation: jev-vllm 0.1.0a1
+    Uninstalling jev-vllm-0.1.0a1:
+      Successfully uninstalled jev-vllm-0.1.0a1
+  Attempting uninstall: jev-runtime-core
+    Found existing installation: jev-runtime-core 0.1.0a1
+    Uninstalling jev-runtime-core-0.1.0a1:
+      Successfully uninstalled jev-runtime-core-0.1.0a1
+
+Successfully installed jev-runtime-core-0.1.0a1 jev-vllm-0.1.0a1
+No broken requirements found.

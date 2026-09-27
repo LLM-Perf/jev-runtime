@@ -1,0 +1,11 @@
+{
+  "script_sha256": "a7609f131b1221c153e60703d0f0663351ccbf5e18ffa3195df3419015dd7376",
+  "model_id": "allenai/OLMo-2-1124-7B-Instruct",
+  "inputs": 1005,
+  "mismatches": 0,
+  "examples": [],
+  "native_tokenizer_digest": "sha256:eae32c5126cca496a57bf86b3cbb4be23f12edadc76cbd7a59416947697810cb",
+  "native_implementation_digest": "sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31",
+  "historical_implementation_digest": "sha256:0531ad81428fbe70cd06e48243d0f00dcf7d8303c60432634e1d4d9a67725c31",
+  "scope": "Current SGLang native tokenizer getter without GPU execution; compared against serialized checkpoint data and previous native profile fingerprint"
+}

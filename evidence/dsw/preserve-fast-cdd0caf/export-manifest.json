@@ -1,0 +1,133 @@
+{
+  "script_sha256": "774067a9706cf59fac58a34cdda09bc863201296ff6c2ab4c4f01cdd21eab56b",
+  "artifacts": {
+    "preserve-fast-audit-cdd0caf.json": {
+      "sha256": "c10d292213107a5a4ea000256b03d80df58956227b3ee052de0244fadf589352",
+      "size_bytes": 68199
+    },
+    "preserve-fast-backend-diagnosis-fbd5b36.json": {
+      "sha256": "a034d3d329b0915541c3f695b9324a1a64b3081abbe226cd261bdac37ac38069",
+      "size_bytes": 2823
+    },
+    "preserve-fast-install-sglang-cdd0caf-r2.log": {
+      "sha256": "a32d985e4b910a0d0830fe692bae2f85a48900fd380675b12db27b70bbd3e96c",
+      "size_bytes": 2914
+    },
+    "preserve-fast-install-vllm-cdd0caf-r2.log": {
+      "sha256": "8b02f227f39b4020118a98ef7f4e0d5c098e82c52cd6c1e8ef012d6544951980",
+      "size_bytes": 2888
+    },
+    "preserve-fast-install-vllm-cdd0caf.log": {
+      "sha256": "338b649ceb34beb1a5d20e46d11fcc8eaf0ab45acc875187bac7f7f2f2d78792",
+      "size_bytes": 4776
+    },
+    "preserve-fast-native-cdd0caf-r2.json": {
+      "sha256": "1571b86544bc745a118d1c42d0a763e3731e1c4cf6f4518297f308ab306c0f1d",
+      "size_bytes": 15542
+    },
+    "preserve-fast-native-cdd0caf.json": {
+      "sha256": "19b13b36c0b4e7a2b07c86d53edd01aefd9bb7a206d3b7e0a678775139cbcdd0",
+      "size_bytes": 11035
+    },
+    "preserve-fast-olmo-native-diagnosis-cdd0caf.json": {
+      "sha256": "42ae5e4af98f964a25a74883efb6c2721e24d42ea07edf48377edcd2129cb55d",
+      "size_bytes": 680
+    },
+    "preserve-fast-sglang-cdd0caf.json": {
+      "sha256": "189db7fbcaa8fd203469d2d6643ac6064314c5c234142758f6f8f00182f75449",
+      "size_bytes": 179843
+    },
+    "preserve-fast-sglang-fbd5b36.json": {
+      "sha256": "99a71c11c9bf7817ac52f113142498c8c29081d33a1defb4f3ccf403e6dd5b5b",
+      "size_bytes": 125814
+    },
+    "preserve-fast-vllm-cdd0caf.json": {
+      "sha256": "548dc3f7f2d0e30bbd32a279d22e9d1335bddd97867786673f8be173478f4153",
+      "size_bytes": 172603
+    },
+    "preserve-fast-vllm-fbd5b36.json": {
+      "sha256": "8d17cbd7d17ea4dd38aeaf942036d311a7f731e933eb531fbd906c681fa137d8",
+      "size_bytes": 125797
+    },
+    "runs/sglang-smol-preserved-cdd0caf/cleanup.json": {
+      "sha256": "c4053212ff0eda95cdae929ff130b35bfe8c0827303574785b3a490098420bfc",
+      "size_bytes": 2442
+    },
+    "runs/sglang-smol-preserved-cdd0caf/contract.json": {
+      "sha256": "b27e9514703edc08d677bebd9709d899eaaf6ac4cc4788b42e6c56e463493770",
+      "size_bytes": 16302
+    },
+    "runs/sglang-smol-preserved-cdd0caf/environment.json": {
+      "sha256": "03e8ec449781c01c99e352ad98519c3823573251c5758bd997b1e3d7e979e4a0",
+      "size_bytes": 640
+    },
+    "runs/sglang-smol-preserved-cdd0caf/postcheck.json": {
+      "sha256": "57fa3e183fb00a618706a0b11c0cc1571ae7fa3a15445de240dbc9a823f4b799",
+      "size_bytes": 302
+    },
+    "runs/sglang-smol-preserved-cdd0caf/precision-binding.json": {
+      "sha256": "04a19d3f3de0cba0ba5c3d72af97411aca323a7f91bb1d0763e9ed7d78f27fe1",
+      "size_bytes": 2199
+    },
+    "runs/sglang-smol-preserved-cdd0caf/process.json": {
+      "sha256": "837f7efd3f3db3492125fe25fb35024f21aabf166201b5a9fbbcd781d4a59e16",
+      "size_bytes": 1905
+    },
+    "runs/sglang-smol-preserved-cdd0caf/profile.json": {
+      "sha256": "0f3d117b60d2044374e085ed29b2669384463bfc01bf69d91c2fc67600359acc",
+      "size_bytes": 2638
+    },
+    "runs/sglang-smol-preserved-cdd0caf/reference-cpu.json": {
+      "sha256": "6f9d42fee3f18eb4879abcadd728867fed3930b740ad5c97a54a612aeece696a",
+      "size_bytes": 1456
+    },
+    "runs/sglang-smol-preserved-cdd0caf/topology.json": {
+      "sha256": "34fa9ad1c9d049f497bdb08d5a5f3a8a7972744ae6c0294db68c65b47a2650f5",
+      "size_bytes": 605
+    },
+    "runs/sglang-smol-preserved-cdd0caf/validation.json": {
+      "sha256": "7bfb7dc7828b87e563f394f40ea74e390bbcc30bf33939bb0189e0956faf97a3",
+      "size_bytes": 898
+    },
+    "runs/vllm-smol-preserved-cdd0caf/cleanup.json": {
+      "sha256": "66967ad5e0bc719e67700c0545be94e1fb4637c94fb992f9a1d04ce5ac4f023b",
+      "size_bytes": 2322
+    },
+    "runs/vllm-smol-preserved-cdd0caf/contract.json": {
+      "sha256": "572340b4589696f7461ddad2b54c3a03e6698f82a8c490803a8c8c3f054b6bc7",
+      "size_bytes": 16332
+    },
+    "runs/vllm-smol-preserved-cdd0caf/environment.json": {
+      "sha256": "a2905f063fc7913b462442ff09f2bf47811026750c09d2cc7c1900e91179a85f",
+      "size_bytes": 638
+    },
+    "runs/vllm-smol-preserved-cdd0caf/postcheck.json": {
+      "sha256": "087d504357fc34201f40c6a893ed8fce56dc430f899d008453fd5dd2d7043113",
+      "size_bytes": 302
+    },
+    "runs/vllm-smol-preserved-cdd0caf/precision-binding.json": {
+      "sha256": "05c63692b09c41c34a838081b74c77a5bd2fb344173fba7922d25094397f0bd7",
+      "size_bytes": 2201
+    },
+    "runs/vllm-smol-preserved-cdd0caf/process.json": {
+      "sha256": "5691ed3a8f9e18a8b6f79d62ae2ef9e5f31c0a35b86fba2598bb2b2ae88983fa",
+      "size_bytes": 1793
+    },
+    "runs/vllm-smol-preserved-cdd0caf/profile.json": {
+      "sha256": "355486cc9a1258342647553458ec7c2dc2b2d7052942aa8bf8d15ee0112caa75",
+      "size_bytes": 2642
+    },
+    "runs/vllm-smol-preserved-cdd0caf/reference-cpu.json": {
+      "sha256": "295946684544f396fd1acfb8f7f8e813c849bf4719ee436eba4dc7b00389f229",
+      "size_bytes": 1462
+    },
+    "runs/vllm-smol-preserved-cdd0caf/topology.json": {
+      "sha256": "a0adbde4ae8c6d8fac84fd52094e9e4e08918fb3694a4b177b7525ba089464d2",
+      "size_bytes": 469
+    },
+    "runs/vllm-smol-preserved-cdd0caf/validation.json": {
+      "sha256": "c1d0614086425976d6d356bad6172c75373979f039eb4ce0aa8532c9da1a2201",
+      "size_bytes": 901
+    }
+  }
+}

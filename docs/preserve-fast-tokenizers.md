@@ -88,3 +88,7 @@ The loader and special-token/template interfaces follow the
 [Transformers tokenizer API](https://huggingface.co/docs/transformers/main_classes/tokenizer).
 Actual profile validation, rather than a library version alone, determines
 whether the installed loader preserved this checkpoint's serialized behavior.
+
+The [real-model/DSW validation report](preserve-fast-validation.md) records the
+11-checkpoint CPU inventory, native Smol checks, preserved failures and exact
+remaining qualification limits.

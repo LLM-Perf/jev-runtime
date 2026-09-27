@@ -1,0 +1,33 @@
+import json,hashlib,sys,tempfile
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='fbd5b361a561bd951a4e5295885de30b2618e972';release=ROOT/'releases'/SOURCE
+sys.path.insert(0,str(release/'src'))
+from jev_runtime.tokenizer_profiles import fast_source_files
+from tokenizers import Tokenizer
+from transformers import AutoTokenizer
+report={'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'rows':[]}
+def diff(a,b,path=''):
+ if type(a)!=type(b):return [{'path':path,'checkpoint':a,'loaded':b}]
+ if isinstance(a,dict):
+  out=[]
+  for k in sorted(set(a)|set(b)):
+   if k not in a or k not in b:out.append({'path':path+'/'+k,'checkpoint':a.get(k),'loaded':b.get(k)})
+   else:out+=diff(a[k],b[k],path+'/'+k)
+  return out
+ if isinstance(a,list):
+  if len(a)!=len(b):return [{'path':path,'checkpoint_length':len(a),'loaded_length':len(b)}]
+  out=[]
+  for i,(x,y) in enumerate(zip(a,b)):out+=diff(x,y,path+'/'+str(i))
+  return out
+ return [] if a==b else [{'path':path,'checkpoint':a,'loaded':b}]
+for name in ['Phi-4-mini-instruct','OLMo-2-1124-7B-Instruct','SmolLM2-1.7B-Instruct']:
+ model=ROOT/'models'/name;files=fast_source_files(model);cfg=json.loads(files['tokenizer_config.json']);cfg.pop('auto_map',None);cfg['tokenizer_class']='PreTrainedTokenizerFast';files['tokenizer_config.json']=(json.dumps(cfg,ensure_ascii=False,indent=2)+'\n').encode()
+ with tempfile.TemporaryDirectory() as t:
+  dest=Path(t)
+  for n,b in files.items():
+   p=dest/n;p.parent.mkdir(exist_ok=True,parents=True);p.write_bytes(b)
+  tok=AutoTokenizer.from_pretrained(dest,trust_remote_code=False,local_files_only=True)
+  raw=Tokenizer.from_file(str(model/'tokenizer.json'))
+  differences=diff(json.loads(raw.to_str()),json.loads(tok.backend_tokenizer.to_str()))
+  row={'model':name,'files':list(files),'differences':differences};report['rows'].append(row);print(json.dumps(row,ensure_ascii=False),flush=True)
+out=ROOT/'preserve-fast-backend-diagnosis-fbd5b36.json';assert not out.exists();out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

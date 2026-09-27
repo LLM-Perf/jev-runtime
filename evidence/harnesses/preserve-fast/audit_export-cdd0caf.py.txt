@@ -1,0 +1,59 @@
+"""Audit exact source/profile inputs, historical owned processes and public weights."""
+import hashlib,json,subprocess,sys,tarfile,time
+from pathlib import Path
+from huggingface_hub import HfApi
+ROOT=Path('/root/jev-runtime');SOURCE='cdd0caf330a645f15279cd346f2ffa8ba62190f9';release=ROOT/'releases'/SOURCE
+sys.path[:0]=[str(release),str(release/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import group_members
+from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+campaign=read(ROOT/'preserve-fast-native-cdd0caf-r2.json');assert campaign['completed'] and len(campaign['attempts'])==2
+assert all(a['validation']['cleanup_passed'] for a in campaign['attempts'])
+records=[]
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ identity=read(p).get('identity')
+ if identity:records.append({'record':str(p),'identity':identity,'matching_live_process':process_identity(identity['pid'])==identity,'live_group':group_members(identity['pid'])})
+assert all(not r['matching_live_process'] and not r['live_group'] for r in records)
+gpu=get_gpu(7);assert gpu['uuid']=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(gpu['free_mib'])==11990
+profiles=[];files={}
+for tag in ['fbd5b36','cdd0caf']:
+ for engine in ['vllm','sglang']:
+  p=ROOT/f'preserve-fast-{engine}-{tag}.json';r=read(p);assert r['completed'] and len(r['models'])==20;files[p.name]=p
+  for row in r['models']:
+   if row.get('status')!='profile_verified':continue
+   dest=Path(row['profile']['path']);manifest=verify_tokenizer_profile(dest);assert sha(dest/'jev-tokenizer-profile.json')==row['profile_manifest_sha256']
+   src=Path(manifest['source_path']);assert all(sha(src/n)==v['sha256'] and (src/n).stat().st_size==v['size_bytes'] for n,v in manifest['source_files'].items())
+   profiles.append({'path':str(dest),'manifest_sha256':row['profile_manifest_sha256'],'source_unchanged':True,'payload_verified':True})
+model=ROOT/'models/SmolLM2-1.7B-Instruct';identity=read(model/'jev-source.json')
+info=HfApi().model_info(identity['model_id'],revision=identity['revision'],files_metadata=True,token=False);assert info.sha==identity['revision'];remote={s.rfilename:s for s in info.siblings}
+model_files=[]
+for p in sorted(list(model.glob('*.safetensors'))+[model/n for n in ['config.json','generation_config.json','tokenizer.json','tokenizer_config.json','special_tokens_map.json'] if (model/n).exists()]):
+ before=p.stat();digest=sha(p);after=p.stat();r=remote[p.name];assert before.st_mtime_ns==after.st_mtime_ns and before.st_size==after.st_size==r.size
+ if r.lfs is not None:assert digest==r.lfs.sha256;kind='lfs_sha256';remote_digest=r.lfs.sha256
+ else:
+  remote_digest=hashlib.sha1(b'blob '+str(after.st_size).encode()+b'\0'+p.read_bytes()).hexdigest();assert remote_digest==r.blob_id;kind='git_blob_sha1'
+ model_files.append({'name':p.name,'sha256':digest,'size_bytes':after.st_size,'remote_digest_kind':kind,'remote_digest':remote_digest})
+envs={}
+for e in ['vllm','sglang']:
+ code="import json,importlib,importlib.metadata as m;print(json.dumps({'versions':{n:m.version(n) for n in ['"+e+"','torch','transformers','tokenizers']},'imports':{n:importlib.import_module(n).__file__ for n in ['jev_runtime','jev_runtime.tokenizer_profiles','jev_"+e+"']}}))"
+ envs[e]=json.loads(subprocess.check_output([str(ROOT/'envs'/e/'bin/python'),'-c',code],text=True));assert all('/releases/'+SOURCE+'/' in s for s in envs[e]['imports'].values())
+source_files={c:{str(p.relative_to(ROOT/'releases'/c)):sha(p) for p in (ROOT/'releases'/c).rglob('*.py')} for c in ['fbd5b361a561bd951a4e5295885de30b2618e972',SOURCE]}
+audit={'source_commit':SOURCE,'script_sha256':sha(Path(__file__)),'passed':True,'checked_at':time.time(),'records':records,'owned_records_checked':len(records),'gpu7':gpu,'profiles':profiles,'model':identity,'model_files':model_files,'environments':envs,'source_files':source_files}
+audit_path=ROOT/'preserve-fast-audit-cdd0caf.json';assert not audit_path.exists();audit_path.write_text(json.dumps(audit,indent=2)+'\n');files[audit_path.name]=audit_path
+for name in ['preserve-fast-native-cdd0caf.json','preserve-fast-native-cdd0caf-r2.json','preserve-fast-backend-diagnosis-fbd5b36.json','preserve-fast-olmo-native-diagnosis-cdd0caf.json','preserve-fast-install-vllm-cdd0caf.log','preserve-fast-install-vllm-cdd0caf-r2.log','preserve-fast-install-sglang-cdd0caf-r2.log']:
+ files[name]=ROOT/name
+for engine in ['vllm','sglang']:
+ run=ROOT/'runs'/f'{engine}-smol-preserved-cdd0caf'
+ for name in ['process.json','validation.json','contract.json','precision-binding.json','profile.json','topology.json','environment.json','postcheck.json','reference-cpu.json','cleanup.json']:
+  p=run/name
+  if p.exists():files['runs/'+run.name+'/'+name]=p
+manifest={'script_sha256':sha(Path(__file__)),'artifacts':{name:{'sha256':sha(p),'size_bytes':p.stat().st_size} for name,p in sorted(files.items())}}
+mp=ROOT/'preserve-fast-export-cdd0caf.json';assert not mp.exists();mp.write_text(json.dumps(manifest,indent=2)+'\n');files['export-manifest.json']=mp
+archive=ROOT/'preserve-fast-evidence-cdd0caf.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for name,p in sorted(files.items()):tar.add(p,arcname=name,recursive=False)
+print(json.dumps({'archive':str(archive),'sha256':sha(archive),'size_bytes':archive.stat().st_size,'artifacts':len(files),'owned_records_checked':len(records),'profiles_verified':len(profiles),'native_functional':[a['validation'].get('functional_passed') for a in campaign['attempts']],'native_numerical':[a['validation'].get('numerical_position_passed') for a in campaign['attempts']]}))

@@ -1,0 +1,42 @@
+"""Requalify generated Smol profiles on owned native engines and retain references."""
+import hashlib,json,os,subprocess,time
+from pathlib import Path
+ROOT=Path('/root/jev-runtime');SOURCE='cdd0caf330a645f15279cd346f2ffa8ba62190f9';release=ROOT/'releases'/SOURCE
+out=ROOT/'preserve-fast-native-cdd0caf.json';assert not out.exists()
+report={'source_commit':SOURCE,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'started_at':time.time(),
+        'source_files':{str(p.relative_to(release)):hashlib.sha256(p.read_bytes()).hexdigest() for p in release.rglob('*.py')},
+        'qualification':'Two colocated native Smol functional runs and single-position CPU references; no quality or performance certification','attempts':[]}
+def save():out.write_text(json.dumps(report,indent=2)+'\n')
+try:
+ for engine in ['vllm','sglang']:
+  cpu=json.loads((ROOT/f'preserve-fast-{engine}-cdd0caf.json').read_text());assert cpu['completed'] and len(cpu['models'])==20
+  row=next(r for r in cpu['models'] if r['model_id']=='HuggingFaceTB/SmolLM2-1.7B-Instruct');assert row['status']=='profile_verified' and row['compiler']['passed']
+  profile=Path(row['profile']['path']);assert hashlib.sha256((profile/'jev-tokenizer-profile.json').read_bytes()).hexdigest()==row['profile_manifest_sha256']
+  python=ROOT/'envs'/engine/'bin/python';run=ROOT/'runs'/f'{engine}-smol-preserved-cdd0caf';assert not run.exists()
+  # No earlier task-owned servers may be live while changing our isolated environment.
+  live=[]
+  for proc in Path('/proc').iterdir():
+   if not proc.name.isdigit():continue
+   try:args=(proc/'cmdline').read_bytes().split(b'\0')
+   except (FileNotFoundError,PermissionError,ProcessLookupError):continue
+   if any(b in [b'sglang.launch_server',b'vllm.entrypoints.openai.api_server'] for b in args) and str(python).encode() in args:live.append(int(proc.name))
+  assert not live,live
+  with (ROOT/f'preserve-fast-install-{engine}-cdd0caf.log').open('x') as stream:
+   subprocess.run([str(python),'-m','pip','install','--no-deps','--no-build-isolation','-e',str(release),'-e',str(release/'packages'/engine)],stdout=stream,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(python),'-m','pip','check'],stdout=stream,stderr=subprocess.STDOUT,check=True)
+  cmd=[str(python),str(release/'tests/integration/run_native_validation.py'),'--run-dir',str(run),'--engine',engine,
+       '--model-path',str(ROOT/'models/SmolLM2-1.7B-Instruct'),'--tokenizer-path',str(profile),'--gpus','7',
+       '--port','18795' if engine=='vllm' else '18794','--memory-fraction','.07' if engine=='vllm' else '.5','--reserve-mib','3072',
+       '--switches','1000','--startup-timeout','300','--check-timeout','300','--reference-timeout','300','--reference-atol','.15',
+       '--source-commit',SOURCE,'--runtime-source-commit',SOURCE]
+  attempt={'engine':engine,'run':str(run),'command':cmd,'started_at':time.time(),'profile_manifest_sha256':row['profile_manifest_sha256']}
+  report['attempts'].append(attempt);save()
+  env={k:v for k,v in os.environ.items() if not k.startswith('PYTHON')};env.update(HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
+  with (ROOT/f'preserve-fast-native-{engine}-cdd0caf.log').open('x') as stream:proc=subprocess.run(cmd,env=env,stdout=stream,stderr=subprocess.STDOUT)
+  attempt['returncode']=proc.returncode;attempt['validation']=json.loads((run/'validation.json').read_text());save()
+  v=attempt['validation'];assert v['cleanup_passed'];assert proc.returncode==(0 if v['passed'] else 1)
+  print(json.dumps({'engine':engine,'functional':v.get('functional_passed'),'numerical':v.get('numerical_position_passed'),'cleanup':v.get('cleanup_passed'),'failure':v.get('failure')}),flush=True)
+ report['completed']=True
+except BaseException as exc:
+ report['completed']=False;report['failure']={'type':type(exc).__name__,'message':str(exc)};raise
+finally:report['finished_at']=time.time();save()

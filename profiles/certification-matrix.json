@@ -23,7 +23,19 @@
         "evidence/dsw/sglang-qwen06b-contract.json",
         "evidence/dsw/sglang-qwen06b-reference-cpu.json"
       ],
-      "source_commit": "a90e002"
+      "source_commit": "a90e002",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "af1e4680e4cc6a9bba23843ac332eaeb01175c6c645d3e2421c3ba2072abff06",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "Qwen/Qwen3-0.6B",
@@ -39,7 +51,19 @@
         "evidence/dsw/vllm-qwen06b-reference-cpu.json",
         "evidence/dsw/vllm-qwen06b-reference-gpu.json"
       ],
-      "source_commit": "4359927bf4705413a3a7434b3a4f3959cf89e182"
+      "source_commit": "4359927bf4705413a3a7434b3a4f3959cf89e182",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "aeddd3faccdf086d6f3e88ef63a63c6009e5d0e4adbc5e74e60b0a8a9b5ebc1b",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "Qwen/Qwen3-8B",
@@ -73,7 +97,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/sglang-qwen8b-tp4-b8742bd/reference-cpu.json"
       },
-      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "308244565e789df971fde020dee66b04f316a4c565816bfb1db03dacaa3b96f9",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "Qwen/Qwen3-8B",
@@ -107,7 +143,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/vllm-qwen8b-tp4-b8742bd/reference-cpu.json"
       },
-      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "0c3e2a1ed1fc6520f5c919e4f72af04d3e97c2f87e21548dba6e250fb56240e5",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "Qwen/Qwen3-30B-A3B",
@@ -118,7 +166,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "Qwen/Qwen3-30B-A3B",
@@ -129,7 +184,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "Qwen/Qwen2.5-7B-Instruct",
@@ -188,6 +250,18 @@
         "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "d3d96a3c5316af2a46e3da38ca38aa1e7c69282010ae7330cd54972afd9fccf0",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -247,6 +321,18 @@
         "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "e8482cc0dd2cfeaf9d5aadaffc25c7586965c2c8be48682b7e63e6a1f11ba1f1",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -258,7 +344,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.2-1B-Instruct",
@@ -269,7 +362,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.2-3B-Instruct",
@@ -280,7 +380,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.2-3B-Instruct",
@@ -291,7 +398,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.1-8B-Instruct",
@@ -302,7 +416,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "meta-llama/Llama-3.1-8B-Instruct",
@@ -313,7 +434,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-1b-it",
@@ -324,7 +452,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-1b-it",
@@ -335,7 +470,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-4b-it",
@@ -346,7 +488,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-4b-it",
@@ -357,7 +506,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-12b-it",
@@ -368,7 +524,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "google/gemma-3-12b-it",
@@ -379,7 +542,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
@@ -411,7 +581,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/sglang-mistral7b-template-e17918e/reference-cpu.json"
       },
-      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification"
+      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "bafb827e7e43e05d0edb1cdae727a8afda13c5480c27ca6b38b5de207d71bc25",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
@@ -443,7 +625,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/vllm-mistral7b-template-e17918e/reference-cpu.json"
       },
-      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification"
+      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "48cb344a08dd12482c4db7efaa55a874caec2e4a0755a1cbe874f5534d0ae011",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
@@ -467,6 +661,13 @@
         "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-sglang-75649bf.json",
         "scope": "Real tokenizer compilation only; not native GPU or quality certification",
         "full_gate_passed": false
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
       }
     },
     {
@@ -491,6 +692,13 @@
         "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-vllm-75649bf.json",
         "scope": "Real tokenizer compilation only; not native GPU or quality certification",
         "full_gate_passed": false
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "local_checkpoint_unavailable",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
       }
     },
     {
@@ -520,7 +728,19 @@
         "full_gate_passed": false
       },
       "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
-      "preserved_failure": "evidence/dsw/sglang-phi3-tp2-737d814/startup-failure.json"
+      "preserved_failure": "evidence/dsw/sglang-phi3-tp2-737d814/startup-failure.json",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 14,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "29a954ea0533a9729db9105c3a565ff865b2cc3634f72fbf729ba3c7f9d50eed",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "microsoft/Phi-3-mini-4k-instruct",
@@ -549,7 +769,19 @@
         "full_gate_passed": false
       },
       "notes": "Independent numerical result is separate from native/attach parity; no business-quality or performance certification. See docs/phi-tp2-validation.md for failed attempts and tokenizer/TP restrictions.",
-      "preserved_failure": "evidence/dsw/vllm-phi3-tp2-737d814/contract.json"
+      "preserved_failure": "evidence/dsw/vllm-phi3-tp2-737d814/contract.json",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 14,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "b142fdbfafa1c5f645b7b156c900290e0633f6ba73f1fcdfe44771c1b51d1e56",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "microsoft/Phi-4-mini-instruct",
@@ -592,6 +824,18 @@
         "reference_max_absolute_logprob_error": 0.04965496063232422,
         "release_gate_passed": false,
         "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "ca4343d10ca3d57e09866ede5cb5d46f2bcfc84a5d6d18b7edd46f0381e2a82a",
+        "identity_post_processor_inserted": true
       }
     },
     {
@@ -635,6 +879,18 @@
         "reference_max_absolute_logprob_error": 0.08994007110595703,
         "release_gate_passed": false,
         "scope": "BF16 backbone, one API worker, eager; one saved CPU reference position at atol=0.15, not full numerical, quality or performance certification"
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "44b6783c9e364ce0ae3482f88e63898a8afbafa8b1492513151c8d66aa5a4278",
+        "identity_post_processor_inserted": true
       }
     },
     {
@@ -655,7 +911,19 @@
       ],
       "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
       "harness_source_commit": "b8fadbf25a63b8f8455cd0c73c04f917c09bf1d2",
-      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained."
+      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained.",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "07e7dc0ffc800aee28b66cb91b05697256461f0757b491002cd180131683137a",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
@@ -676,7 +944,19 @@
       ],
       "source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
       "harness_source_commit": "5c29bcb86229cdd69aff59c91519d69e296ac720",
-      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained."
+      "notes": "Default-policy abstentions remain valid and recorded; explicit tie=first also checked. Low label mass is not task quality certification. Failure-inclusive tokenizer/harness corrections retained.",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "1ba6cccd9ba24d03602866175121361157febc68e03bf7c5bba66332baded666",
+        "identity_post_processor_inserted": false
+      }
     },
     {
       "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
@@ -711,6 +991,18 @@
         "top_label_equal": true,
         "full_gate_passed": false,
         "evidence": "evidence/dsw/sglang-r1-qwen7b-tp4-d1ef50e/reference-cpu.json"
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "e4cb576fcbc9ace6e3de27db045662336c8396c477c94f6233a41ce45da5e443",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -746,6 +1038,18 @@
         "top_label_equal": true,
         "full_gate_passed": false,
         "evidence": "evidence/dsw/vllm-r1-qwen7b-tp4-d1ef50e/reference-cpu.json"
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "161a194e6774683c9d0bc2125b29123ea852b6998e755f89b9cfca9f35a333d4",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -796,6 +1100,18 @@
         "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "bdd5d1fd92749e52e0a94a34f20d97ef3f6d104edb686aea50c66f5d61732bbd",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -846,6 +1162,18 @@
         "evidence": "evidence/dsw/reference-diagnostics-5730449.json",
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "d412378f0fcaa9b00006c11ca13ca36c7b0329be610ab62971f2595be8f316cf",
+        "identity_post_processor_inserted": false
       }
     },
     {
@@ -903,7 +1231,14 @@
           "scope": "Default load rejection rechecked in the vLLM Python environment; no native GPU attempt or custom-code execution",
           "full_gate_passed": false
         }
-      ]
+      ],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_rejected",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "zai-org/glm-4-9b-chat",
@@ -960,7 +1295,14 @@
           "scope": "Default load rejection rechecked in the vLLM Python environment; no native GPU attempt or custom-code execution",
           "full_gate_passed": false
         }
-      ]
+      ],
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_rejected",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below."
+      }
     },
     {
       "model_id": "allenai/OLMo-2-1124-7B-Instruct",
@@ -994,7 +1336,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/sglang-olmo7b-tp4-b8742bd/reference-cpu.json"
       },
-      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "cbec64534b355f114a5d6f9cafe980c5914135dfbaf0c52357df6b2771b2cd16",
+        "identity_post_processor_inserted": true
+      }
     },
     {
       "model_id": "allenai/OLMo-2-1124-7B-Instruct",
@@ -1028,7 +1382,19 @@
         "full_gate_passed": false,
         "evidence": "evidence/dsw/vllm-olmo7b-tp4-b8742bd/reference-cpu.json"
       },
-      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification"
+      "profile_scope": "BF16 backbone/readout, native TP4, one API worker, eager, context 2048; no other topology, LoRA, quality or performance certification",
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU CLI/profile/compiler validation only; original native profile remains authoritative unless separately requalified below.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "123f2f30638ff6a4be4ca573f52cf41f87683dd784f4ce9248d44a5ce5969b89",
+        "identity_post_processor_inserted": true
+      }
     },
     {
       "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
@@ -1036,7 +1402,7 @@
       "engine": "sglang",
       "gated": false,
       "functional": "passed",
-      "numerical": "not_run",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
@@ -1044,9 +1410,12 @@
         "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-contract.json",
         "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-precision.json",
         "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/cleanup.json",
-        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/contract.json",
+        "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/reference-cpu.json",
+        "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json"
       ],
-      "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+      "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
       "public_quality": {
         "status": "completed_development_evaluation",
         "release_gate_passed": false,
@@ -1102,6 +1471,14 @@
           "evidence": "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/native-contract.json",
           "cleanup_evidence": "evidence/dsw/release-packaging-4e49524/runs/sglang-release-wheels-explicit-4e49524/cleanup.json",
           "scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile."
+        },
+        {
+          "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+          "harness_source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+          "status": "passed",
+          "evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/contract.json",
+          "cleanup_evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager context 2048; CLI-generated serialized-fast-v1 checkpoint profile; native runtime/plugins/harness cdd0caf. One CPU reference answer position only; no new quality, performance, LoRA or installed-wheel rollout qualification."
         }
       ],
       "development_generation_comparison": {
@@ -1210,28 +1587,30 @@
         "qualification": "Historical tokenizer profile; not transferred to the explicit checkpoint-preserving profile tested in the wheel rollout."
       },
       "numerical_detail": {
-        "scope": "Explicit checkpoint-preserving Smol tokenizer profile: independent numerical reference not run. Previous targeted results remain under historical_numerical.",
-        "full_gate_passed": false
+        "scope": "One saved CPU BF16 eager position with the CLI-generated checkpoint-preserving tokenizer; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.08662056922912598,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/reference-cpu.json"
       },
       "historical_source_commit": "a90e002",
-      "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
-      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile.",
+      "harness_source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048; CLI-generated serialized-fast-v1 checkpoint profile; native runtime/plugins/harness cdd0caf. One CPU reference answer position only; no new quality, performance, LoRA or installed-wheel rollout qualification.",
       "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
       "tokenizer_artifact_fidelity": {
-        "status": "passed_1005_checkpoint_comparisons_and_live_input_parity",
+        "status": "passed_1005_checkpoint_comparisons_and_native_fingerprint",
         "evidence": [
-          "evidence/dsw/release-packaging-4e49524/smol-explicit-profile.json",
-          "evidence/dsw/release-packaging-4e49524/smol-explicit-native-equality.json",
-          "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json"
+          "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+          "evidence/dsw/preserve-fast-cdd0caf/runs/sglang-smol-preserved-cdd0caf/profile.json",
+          "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json"
         ],
         "default_auto_mismatches": 232,
         "attempted_inputs": 1005,
         "source_tokenizer_sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
-        "profile_files": {
-          "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
-          "tokenizer_config.json": "10e1a7f285ffe48c95225828556cb756c81fae5233869dcc9f4e9ff267fa19b9"
-        },
-        "qualification": "Default AutoTokenizer reconstructs a different pre-tokenizer; the explicit profile is required for this functional qualification. Finite corpus equality is not universal equivalence."
+        "profile_manifest_sha256": "f83a1bf7a56e58f40dd25f57574a6d9d4558f6043d2deb7c2ec08fe78423572a",
+        "qualification": "CLI-generated serialized-fast-v1. Full backend equality except the recorded exact single-text identity postprocessor; original input data copied byte-for-byte. Finite corpus equality is not universal/custom-wrapper equivalence."
       },
       "development_installed_wheel_rollout": {
         "status": "passed_scoped_maintenance_upgrade_and_rollback",
@@ -1241,6 +1620,18 @@
         "validation_evidence": "evidence/dsw/release-packaging-4e49524/verified-summary.json",
         "zero_downtime_certified": false,
         "release_gate_passed": false
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-sglang-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU validation plus a separate native Smol cdd0caf functional/precision/1000-switch recheck and one CPU reference position; no full release certification.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "f83a1bf7a56e58f40dd25f57574a6d9d4558f6043d2deb7c2ec08fe78423572a",
+        "identity_post_processor_inserted": true
       }
     },
     {
@@ -1249,7 +1640,7 @@
       "engine": "vllm",
       "gated": false,
       "functional": "passed",
-      "numerical": "not_run",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
       "evidence": [
@@ -1257,9 +1648,12 @@
         "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-contract.json",
         "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-precision.json",
         "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/cleanup.json",
-        "evidence/dsw/release-packaging-4e49524/verified-summary.json"
+        "evidence/dsw/release-packaging-4e49524/verified-summary.json",
+        "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/contract.json",
+        "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/reference-cpu.json",
+        "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json"
       ],
-      "source_commit": "c48f18dfc9715dae09588e0c592c38e25c9e4b80",
+      "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
       "public_quality": {
         "status": "completed_development_evaluation",
         "release_gate_passed": false,
@@ -1315,6 +1709,14 @@
           "evidence": "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/native-contract.json",
           "cleanup_evidence": "evidence/dsw/release-packaging-4e49524/runs/vllm-release-wheels-explicit-4e49524/cleanup.json",
           "scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile."
+        },
+        {
+          "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+          "harness_source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+          "status": "passed",
+          "evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/contract.json",
+          "cleanup_evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/cleanup.json",
+          "scope": "BF16 backbone/readout TP1 API1 eager context 2048; CLI-generated serialized-fast-v1 checkpoint profile; native runtime/plugins/harness cdd0caf. One CPU reference answer position only; no new quality, performance, LoRA or installed-wheel rollout qualification."
         }
       ],
       "development_generation_comparison": {
@@ -1408,28 +1810,30 @@
         "qualification": "Historical tokenizer profile; not transferred to the explicit checkpoint-preserving profile tested in the wheel rollout."
       },
       "numerical_detail": {
-        "scope": "Explicit checkpoint-preserving Smol tokenizer profile: independent numerical reference not run. Previous targeted results remain under historical_numerical.",
-        "full_gate_passed": false
+        "scope": "One saved CPU BF16 eager position with the CLI-generated checkpoint-preserving tokenizer; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.00021123886108398438,
+        "single_position_passed": true,
+        "top_label_equal": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/reference-cpu.json"
       },
       "historical_source_commit": "a90e002",
-      "harness_source_commit": "861ed3ad99df9028ef5d3df2d1dfc4127ab0a946",
-      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048, explicit checkpoint-preserving tokenizer; native core/plugins c48f18d; gateway wheel transition 3377c95 -> 861ed3a -> 3377c95. No numerical/quality/performance/LoRA qualification for the new profile.",
+      "harness_source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+      "profile_scope": "BF16 backbone/readout TP1 API1 eager context 2048; CLI-generated serialized-fast-v1 checkpoint profile; native runtime/plugins/harness cdd0caf. One CPU reference answer position only; no new quality, performance, LoRA or installed-wheel rollout qualification.",
       "tokenizer_implementation_digest": "sha256:08e96741a4f1c7a56136f9400ddf6d8f4f0e50fd09743f83579328e76e6cb6ef",
       "tokenizer_artifact_fidelity": {
-        "status": "passed_1005_checkpoint_comparisons_and_live_input_parity",
+        "status": "passed_1005_checkpoint_comparisons_and_native_fingerprint",
         "evidence": [
-          "evidence/dsw/release-packaging-4e49524/smol-explicit-profile.json",
-          "evidence/dsw/release-packaging-4e49524/smol-explicit-native-equality.json",
-          "evidence/dsw/release-packaging-4e49524/rollout-campaign-explicit-profile.json"
+          "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+          "evidence/dsw/preserve-fast-cdd0caf/runs/vllm-smol-preserved-cdd0caf/profile.json",
+          "evidence/dsw/preserve-fast-cdd0caf/verified-summary.json"
         ],
         "default_auto_mismatches": 232,
         "attempted_inputs": 1005,
         "source_tokenizer_sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
-        "profile_files": {
-          "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
-          "tokenizer_config.json": "10e1a7f285ffe48c95225828556cb756c81fae5233869dcc9f4e9ff267fa19b9"
-        },
-        "qualification": "Default AutoTokenizer reconstructs a different pre-tokenizer; the explicit profile is required for this functional qualification. Finite corpus equality is not universal equivalence."
+        "profile_manifest_sha256": "9aabab2f6709782520356600ffc4f3e53d301ec8e3ba907615255809d63860fd",
+        "qualification": "CLI-generated serialized-fast-v1. Full backend equality except the recorded exact single-text identity postprocessor; original input data copied byte-for-byte. Finite corpus equality is not universal/custom-wrapper equivalence."
       },
       "development_installed_wheel_rollout": {
         "status": "passed_scoped_maintenance_upgrade_and_rollback",
@@ -1439,6 +1843,18 @@
         "validation_evidence": "evidence/dsw/release-packaging-4e49524/verified-summary.json",
         "zero_downtime_certified": false,
         "release_gate_passed": false
+      },
+      "development_serialized_tokenizer": {
+        "source_commit": "cdd0caf330a645f15279cd346f2ffa8ba62190f9",
+        "status": "profile_verified",
+        "evidence": "evidence/dsw/preserve-fast-cdd0caf/preserve-fast-vllm-cdd0caf.json",
+        "release_gate_passed": false,
+        "scope": "CPU validation plus a separate native Smol cdd0caf functional/precision/1000-switch recheck and one CPU reference position; no full release certification.",
+        "independent_encoding_checks": 1005,
+        "compiler_cases_passed": 16,
+        "compiler_cases_attempted": 16,
+        "profile_manifest_sha256": "9aabab2f6709782520356600ffc4f3e53d301ec8e3ba907615255809d63860fd",
+        "identity_post_processor_inserted": true
       }
     }
   ],
