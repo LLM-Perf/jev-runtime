@@ -63,18 +63,20 @@ def launch(args):
             raise SystemExit("The recorded engine is still alive; refusing a duplicate launch")
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", args.port))
-    gpu = get_gpu(args.gpu)
+    gpu = None if args.gateway else get_gpu(args.gpu)
     # vLLM 0.30 uses total device memory. SGLang 0.5.19's configurator uses
     # pre-load available memory, which matters on shared devices.
-    denominator = "total_mib" if args.engine == "vllm" else "free_mib"
-    budget = float(gpu[denominator]) * args.memory_fraction
-    if budget + args.reserve_mib > float(gpu["free_mib"]):
-        raise SystemExit("Insufficient free GPU memory for the explicit budget and reserve")
+    denominator = None
+    if gpu is not None:
+        denominator = "total_mib" if args.engine == "vllm" else "free_mib"
+        budget = float(gpu[denominator]) * args.memory_fraction
+        if budget + args.reserve_mib > float(gpu["free_mib"]):
+            raise SystemExit("Insufficient free GPU memory for the explicit budget and reserve")
     model = args.model_path.resolve()
     source = json.loads((model / "jev-source.json").read_text())
     config = {
         "backend": args.engine,
-        "engine_url": f"http://127.0.0.1:{args.port}",
+        "engine_url": args.engine_url or f"http://127.0.0.1:{args.port}",
         "model_id": source["model_id"],
         "model_revision": source["revision"],
         "tokenizer": str(model),
@@ -82,6 +84,8 @@ def launch(args):
         "registry_path": str(root / "registry.db"),
         "bootstrap_alias": "decision-model",
         "bootstrap_bundle_id": "default",
+        "host": "127.0.0.1",
+        "port": args.port,
     }
     (root / "config.json").write_text(json.dumps(config, indent=2) + "\n")
     keys = root / "keys.json"
@@ -99,7 +103,13 @@ def launch(args):
             "JEV_CONFIG": str(root / "config.json"),
         }
     )
-    if args.engine == "vllm":
+    if args.gateway:
+        command = [
+            str(Path(sys.executable).with_name("jevctl")),
+            "serve",
+            str(root / "config.json"),
+        ]
+    elif args.engine == "vllm":
         env["VLLM_PLUGINS"] = "jev_runtime_api"
         command = [
             str(Path(sys.executable).with_name("vllm")),
@@ -163,6 +173,7 @@ def launch(args):
     manifest = {
         "identity": identity,
         "engine": args.engine,
+        "mode": "gateway" if args.gateway else "native-plugin",
         "command": command,
         "model": source,
         "gpu_before": gpu,
@@ -212,10 +223,14 @@ def main():
     parser.add_argument("--port", type=int, default=18795)
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
+    parser.add_argument("--gateway", action="store_true")
+    parser.add_argument("--engine-url")
     args = parser.parse_args()
     if args.action == "launch":
         if not args.engine or args.model_path is None or not 0 < args.memory_fraction < 1:
             parser.error("launch requires engine, model path and a valid memory fraction")
+        if args.gateway and not args.engine_url:
+            parser.error("gateway requires an explicit existing engine URL")
     {"launch": launch, "status": status, "stop": stop}[args.action](args)
 
 

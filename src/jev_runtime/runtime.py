@@ -175,6 +175,10 @@ class Runtime:
         current = asyncio.current_task()
         self._active[rid] = current
         self._tenants[rid] = tenant
+        # Engine IDs must not inherit caller-controlled prefixes: SGLang's abort
+        # matches prefixes, so a caller ID must never overlap another request's
+        # scoring branch namespace.
+        engine_rid = "jev-" + uuid.uuid4().hex
         started = time.monotonic()
         snapshot = None
         unconfirmed: set[str] = set()
@@ -197,7 +201,8 @@ class Runtime:
                         413,
                     )
                 compiled = [
-                    self.compiler.compile(request.input.text, q, bundle, rid) for q in questions
+                    self.compiler.compile(request.input.text, q, bundle, engine_rid)
+                    for q in questions
                 ]
                 sequences = tuple(s for q in compiled for s in q.sequences)
                 total_tokens = self._validate_sequences(sequences, bundle)

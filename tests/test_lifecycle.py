@@ -167,6 +167,7 @@ async def test_caller_id_cancellation_confirms_abort_and_prevents_cross_worker_d
     assert error.value.code == "request_cancelled"
     assert not runtime.registry.list()["leases"]
     assert runtime.backend.cancelled
+    assert all(not branch.startswith("client-selected-id") for branch in runtime.backend.cancelled)
 
 
 async def test_caller_cancellation_does_not_claim_confirmed_on_failed_abort(runtime, question):
