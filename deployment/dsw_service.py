@@ -103,13 +103,16 @@ def launch(args):
     if gpu is not None:
         denominator = "total_mib" if args.engine == "vllm" else "free_mib"
     model = args.model_path.resolve()
+    tokenizer = args.tokenizer_path.resolve(strict=True) if args.tokenizer_path else model
+    if not tokenizer.is_dir():
+        raise ValueError("Tokenizer path must be a local directory")
     source = json.loads((model / "jev-source.json").read_text())
     config = {
         "backend": args.engine,
         "engine_url": args.engine_url or f"http://127.0.0.1:{args.port}",
         "model_id": source["model_id"],
         "model_revision": source["revision"],
-        "tokenizer": str(model),
+        "tokenizer": str(tokenizer),
         "dtype": "bfloat16",
         "readout_dtype": "float32" if args.readout_dtype == "float32" else "bfloat16",
         "registry_path": str(root / "registry.db"),
@@ -305,6 +308,9 @@ def launch(args):
             )
     if template_source is not None and not args.gateway:
         command.extend(["--chat-template", config["chat_template"]["path"]])
+    if args.tokenizer_path and not args.gateway:
+        flag = "--tokenizer" if args.engine == "vllm" else "--tokenizer-path"
+        command.extend([flag, str(tokenizer)])
     with (root / "engine.log").open("ab") as log:
         child = subprocess.Popen(command, env=env, stdout=log, stderr=log, start_new_session=True)
     identity = process_identity(child.pid)
@@ -316,6 +322,7 @@ def launch(args):
         "mode": "gateway" if args.gateway else "native-plugin",
         "command": command,
         "model": source,
+        "tokenizer_path": str(tokenizer),
         "gpu_before": gpu,
         "gpus_before": gpus,
         "tensor_parallel_size": len(indices) if gpus else None,
@@ -364,6 +371,7 @@ def main():
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--engine", choices=["sglang", "vllm"])
     parser.add_argument("--model-path", type=Path)
+    parser.add_argument("--tokenizer-path", type=Path, help="Explicit local tokenizer profile")
     parser.add_argument("--gpu", type=int, default=7)
     parser.add_argument(
         "--gpus", help="Explicit CUDA device indices; count sets native tensor parallelism"

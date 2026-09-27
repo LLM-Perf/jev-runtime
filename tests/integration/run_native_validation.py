@@ -246,6 +246,8 @@ def validate(args) -> dict:
             "--readout-dtype",
             args.readout_dtype,
         ]
+        if args.tokenizer_path:
+            launch.extend(["--tokenizer-path", args.tokenizer_path])
         if args.chat_template_path:
             launch.extend(
                 [
@@ -361,6 +363,7 @@ def main():
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--engine", choices=["sglang", "vllm"], required=True)
     parser.add_argument("--model-path", type=Path, required=True)
+    parser.add_argument("--tokenizer-path", type=Path)
     parser.add_argument("--gpus", required=True)
     parser.add_argument("--port", type=int, required=True)
     parser.add_argument("--memory-fraction", type=float, required=True)

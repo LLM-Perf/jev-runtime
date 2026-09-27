@@ -44,8 +44,9 @@ def test_budget_uses_each_device_memory_denominator_and_records_mapping(monkeypa
 )
 @pytest.mark.parametrize("readout", ["model", "float32"])
 @pytest.mark.parametrize("explicit_template", [False, True])
+@pytest.mark.parametrize("explicit_tokenizer", [False, True])
 def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
-    engine, flag, readout, explicit_template, monkeypatch, tmp_path
+    engine, flag, readout, explicit_template, explicit_tokenizer, monkeypatch, tmp_path
 ):
     import hashlib
     import json
@@ -59,6 +60,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     args = SimpleNamespace(
         run_dir=tmp_path / "run",
         model_path=model,
+        tokenizer_path=None,
         gpu=7,
         gpus="6,7",
         engine=engine,
@@ -83,6 +85,9 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         raw = json.dumps({"chat_template": "{{ messages[0].content }}"}).encode()
         args.chat_template_path.write_bytes(raw)
         args.chat_template_sha256 = hashlib.sha256(raw).hexdigest()
+    if explicit_tokenizer:
+        args.tokenizer_path = tmp_path / "tokenizer-profile"
+        args.tokenizer_path.mkdir()
     monkeypatch.setattr(
         dsw_service,
         "get_gpu",
@@ -111,6 +116,13 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     assert record["gpu_before"]["uuid"] == "gpu-6"
     expected = "bfloat16" if readout == "model" else readout
     assert record["readout_dtype"] == expected
+    tokenizer = args.tokenizer_path if explicit_tokenizer else model
+    assert record["tokenizer_path"] == str(tokenizer)
+    assert json.loads((args.run_dir / "config.json").read_text())["tokenizer"] == str(tokenizer)
+    tokenizer_flag = "--tokenizer" if engine == "vllm" else "--tokenizer-path"
+    assert (tokenizer_flag in command) == explicit_tokenizer
+    if explicit_tokenizer:
+        assert command[command.index(tokenizer_flag) + 1] == str(tokenizer)
     assert json.loads((args.run_dir / "config.json").read_text())["readout_dtype"] == expected
     assert ("--chat-template" in command) == explicit_template
     if explicit_template:
