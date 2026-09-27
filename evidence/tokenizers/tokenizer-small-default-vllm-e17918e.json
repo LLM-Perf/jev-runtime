@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "qualification": "real tokenizer compilation only; no GPU or quality certification",
+  "selected_count": 1,
+  "transformers_version": "5.17.0",
+  "models": [
+    {
+      "model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "started_at": 1790528366.1241465,
+      "cases": [],
+      "passed": false,
+      "explicit_chat_template": null,
+      "error": {
+        "type": "JevError",
+        "message": "The tokenizer needs an explicit chat template"
+      },
+      "finished_at": 1790528375.3930156
+    }
+  ],
+  "complete": true,
+  "passed_models": 0,
+  "models_with_deployable_profile": 0
+}

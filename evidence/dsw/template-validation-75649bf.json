@@ -1,0 +1,176 @@
+{
+  "current_runtime_source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "native_runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "combination_denominator": 40,
+  "distinct_functional_combinations": 16,
+  "release_gate_passed": false,
+  "native_profiles": [
+    {
+      "engine": "sglang",
+      "engine_version": "0.5.19",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "harness_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "run": "evidence/dsw/sglang-mistral7b-template-e17918e",
+      "functional_passed": true,
+      "tensor_parallel_size": 4,
+      "api_workers": 1,
+      "readout_dtype": "bfloat16",
+      "explicit_template": true,
+      "switches": 1000,
+      "strict_success_requests": 229,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.14843368530273438,
+      "reference_atol": 0.15,
+      "full_numerical_gate_passed": false,
+      "cleanup_passed": true
+    },
+    {
+      "engine": "vllm",
+      "engine_version": "0.30.0+cu129",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "harness_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "run": "evidence/dsw/vllm-mistral7b-template-e17918e",
+      "functional_passed": true,
+      "tensor_parallel_size": 4,
+      "api_workers": 1,
+      "readout_dtype": "bfloat16",
+      "explicit_template": true,
+      "switches": 1000,
+      "strict_success_requests": 423,
+      "mixed_versions": 0,
+      "native_attach_max_logprob_error": 0,
+      "reference_cpu_single_position_passed": true,
+      "reference_cpu_max_logprob_error": 0.09374618530273438,
+      "reference_atol": 0.15,
+      "full_numerical_gate_passed": false,
+      "cleanup_passed": true
+    }
+  ],
+  "tokenizer_profiles": [
+    {
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "environment": "sglang",
+      "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+      "transformers_version": "5.12.1",
+      "cases_passed": 16,
+      "cases_total": 16,
+      "template_file_sha256": "d4b1a286509cd7a45186c5a149200a61405eaee8fb4c2863a90d43ff6151775f",
+      "tokenizer_options": {
+        "fix_mistral_regex": true
+      },
+      "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-sglang-75649bf.json",
+      "qualification": "Real tokenizer compilation only; not native GPU or quality certification"
+    },
+    {
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "environment": "vllm",
+      "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+      "transformers_version": "5.17.0",
+      "cases_passed": 16,
+      "cases_total": 16,
+      "template_file_sha256": "d4b1a286509cd7a45186c5a149200a61405eaee8fb4c2863a90d43ff6151775f",
+      "tokenizer_options": {
+        "fix_mistral_regex": true
+      },
+      "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-vllm-75649bf.json",
+      "qualification": "Real tokenizer compilation only; not native GPU or quality certification"
+    }
+  ],
+  "real_tokenizer_rejections": [
+    {
+      "environment": "sglang",
+      "evidence": "evidence/tokenizers/real-tokenizer-binding-sglang-75649bf.json",
+      "passed": true,
+      "qualification": "Real tokenizer assets and runtime startup boundary; no engine/GPU scoring is performed"
+    },
+    {
+      "environment": "vllm",
+      "evidence": "evidence/tokenizers/real-tokenizer-binding-vllm-75649bf.json",
+      "passed": true,
+      "qualification": "Real tokenizer assets and runtime startup boundary; no engine/GPU scoring is performed"
+    }
+  ],
+  "retained_failures": [
+    {
+      "evidence": "evidence/tokenizers/tokenizer-small-default-vllm-e17918e.json",
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "error": {
+        "type": "JevError",
+        "message": "The tokenizer needs an explicit chat template"
+      }
+    },
+    {
+      "evidence": "evidence/tokenizers/tokenizer-small-explicit-vllm-e17918e.json",
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "error": {
+        "type": "JevError",
+        "message": "Explicit templates require the standard Transformers chat renderer"
+      }
+    },
+    {
+      "evidence": "evidence/tokenizers/tokenizer-small-explicit-sglang-e17918e.json",
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "error": {
+        "type": "JevError",
+        "message": "Explicit templates require the standard Transformers chat renderer"
+      }
+    },
+    {
+      "evidence": "evidence/tokenizers/tokenizer-glm-default-75649bf.json",
+      "model_id": "zai-org/glm-4-9b-chat",
+      "error": {
+        "type": "ValueError",
+        "message": "The repository zai-org/glm-4-9b-chat contains custom code which must be executed to correctly load the model. You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat .\n You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat.\nPlease pass the argument `trust_remote_code=True` to allow custom code to be run."
+      }
+    }
+  ],
+  "final_process_records_checked": 72,
+  "owned_alive": 0,
+  "qualification": "Native Mistral7B evidence at e17918e, follow-up real-tokenizer/profile checks at 75649bf. No broad final-source GPU, full numerical, quality, performance, LoRA or soak certification.",
+  "evidence_sha256": {
+    "evidence/dsw/source-identity-e17918e.json": "b05c3b7acedf82b023380fdee577c6388dff6fdcbb4947b9c5614027e4a7238b",
+    "evidence/dsw/template-install-e17918e.json": "9b838c9199c6bd144c457c22b1a9c48bd8c63ab5f7c0a4fc4aead544808b8385",
+    "evidence/package-check-e17918e.json": "86668b4232383bbee46bf9df18e75d612a0c9026c7cf97a4fda0b2ba139b45b0",
+    "evidence/dsw/source-identity-75649bf.json": "9327a408e4de9470019f96b0b8fe30309840a58d876c8ba4156026c43c40c823",
+    "evidence/dsw/template-install-75649bf.json": "a13bd025d06c672cd510b0a568ae7dd62e8709b26fa1908f5a561f9a71cbe4b2",
+    "evidence/package-check-75649bf.json": "70358827d7df683b3d094376f935be8789b65fd8d8f3feec97f0592c698081cb",
+    "evidence/dsw/model-mistral7b-source.json": "0643572e9781ded50f0e7df07fb83eaac6a8d76af8098380c9754e7f25fdec98",
+    "evidence/dsw/template-snapshot-verification-e17918e.json": "e90fcc992fb2585eb7b1f794f121974960ed831959d4ff8bb2b17c8239db5450",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/validation.json": "176917d07777e8a5dac2e0c47fa1732a0d9a7f9a90987e4bd8505642850a905f",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/contract.json": "feb615d24c947955d27a7bac1c6c1bbe619c898774c376563a426bcfaf6278f8",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/precision-binding.json": "b0c0c30e8adb45588d821a3f189eef493df3bc94a6aa020468aac9e11db2fc7e",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/profile.json": "41bb3a9d179dd246a7fe70513d963643863972ce2928bc2c2cd5a348324f4be9",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/postcheck.json": "88b2a3c217a903feaae41785e40643fa1e58ab08fed7f794d9787d84d18a0801",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/topology.json": "dec47911133d104727a63e60ef90c340b4afadd256b72b547e8034479da13de8",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/environment.json": "3d89797d6b3ba082c522da0ae2ed47deb9a72d3ec58d3022c5ae4d4acedb31ee",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/reference-cpu.json": "651490cf9c3c35be4b938d2a1991ec74a5f61d3374cf40b79ba1d0eefd853b10",
+    "evidence/dsw/sglang-mistral7b-template-e17918e/cleanup.json": "d481d0c8e42ee4e882cedfb44a03c7b7a94427c2e383720945ceee83b7f7c394",
+    "evidence/tokenizers/tokenizer-small-explicit-regex-sglang-75649bf.json": "fa1143a4ff82026346a5de6a8adb317a62c8b76f6cce2fc6da7ec9761f173027",
+    "evidence/tokenizers/real-tokenizer-binding-sglang-75649bf.json": "af1732147a979fdcb30142dc61b03b28d94109262371c0853a4f1bdd07a9b285",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/validation.json": "1bc08e7d24845d5b0c34a868511a9e24ba039fd862563ea446e9999577a5628a",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/contract.json": "2b2a55e45a38a128d837853094b2e7e3ceeea50822bf78fc8fea020cdaaea68d",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/precision-binding.json": "0ad988dc35dfd413fb00de6dbdbbd7b6fa3a6e853fd674ccdf6e132cd7e2c896",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/profile.json": "836d12238ba110e1c0a8f21e1863f54c5f39cf3be3790a12a45dd8e19e98945b",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/postcheck.json": "8ed4a383f9997384cf75900fef828cbc008e35128c41114376a5a27089ab6466",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/topology.json": "03f2d75c2b9ae01fd523f08b4935e4d191a7272f1a311e10b43ad2d1b5c94fd9",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/environment.json": "0bf64fef7fa94c16066769ea4df6ecf56729706ad46bafb8266154a87ab90fce",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/reference-cpu.json": "0910d4e278e147d98eb82e65abf369c9576d50e7324901ed54b10b3b83d08db9",
+    "evidence/dsw/vllm-mistral7b-template-e17918e/cleanup.json": "04d34966a9202eece7f0ea2df744b991d7c849e3e0411b8b2f0ad639f6f69cb0",
+    "evidence/tokenizers/tokenizer-small-explicit-regex-vllm-75649bf.json": "2a6b0ac3106984b469a2251659a10a7e5d67faf4f90bd0bb49da50fdb41d2db8",
+    "evidence/tokenizers/real-tokenizer-binding-vllm-75649bf.json": "52af1ea35f300cca49e3ad53385a3df4ae6d5851033ddf806f118770a42d54a3",
+    "evidence/tokenizers/tokenizer-small-default-vllm-e17918e.json": "22205e1c336a0971b7c520a349683c45387dbeb7468e8d3473ae48bd03f1603d",
+    "evidence/tokenizers/tokenizer-small-explicit-vllm-e17918e.json": "19117927620cbf752053851cb956d0f075f838efa2baa5cc3bd8a2533b13a1d4",
+    "evidence/tokenizers/tokenizer-small-explicit-sglang-e17918e.json": "5787b97b694632401c2c10c783314ff75e94c723b66cd821038c9a0d57985592",
+    "evidence/tokenizers/tokenizer-glm-default-75649bf.json": "33079378180c1c58ed6cc631dcffc1dfa6bd339e3715c2188a098977cf6fe95c",
+    "evidence/dsw/final-preflight-75649bf.json": "9e0a566f22ea659a6843f3cb57676899332c303d8f9853f6d58538111117cad2",
+    "evidence/harnesses/real_tokenizer_binding_75649bf.py": "8a4897c39e380332e7b10dfacccc82ee65205f754505df8a084515bc3df1c632"
+  }
+}

@@ -155,11 +155,14 @@
       "original_status": "planned",
       "actual_deliverables": [
         "src/jev_runtime/compiler.py",
-        "tests/integration/tokenizer_contract.py"
+        "tests/integration/tokenizer_contract.py",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "Frozen continuation and implementation fingerprints are enforced.",
-        "The 20-checkpoint tokenizer inventory retains inaccessible and unsupported entries."
+        "The 20-checkpoint tokenizer inventory retains inaccessible and unsupported entries.",
+        "At e17918e, explicit local Jinja/JSON templates require a SHA256 match and a standard HF renderer; plugin compilation does not mutate the host tokenizer. Effective template digests remain bound to bundles/calibration. At 75649bf, explicit regex options are checked against actual host vocabulary and implementation fingerprints before serving."
       ],
       "acceptance_complete": false
     },
@@ -294,14 +297,17 @@
         "docs/phi-tp2-validation.md",
         "docs/readout-precision.md",
         "docs/tp4-model-validation.md",
-        "docs/native-validation-runner.md"
+        "docs/native-validation-runner.md",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "Reference tooling exists; frozen BF16 tolerance failures remain unresolved.",
         "Top-label agreement is not a numerical-gate pass.",
         "At 737d814, four CPU BF16 selected-position checks were retained: both Phi-3 engines and vLLM Phi-4 exceed atol=0.15; SGLang Phi-4 passes one position only. No tolerance was relaxed or full numerical gate accepted.",
         "At f6bda1a, Phi-4 BF16-backbone/FP32-readout TP2 and default BF16 SmolLM2 TP1 pass one saved CPU reference position per engine at the existing development atol=0.15. FP32 max errors are 0.049655 SGLang / 0.089940 vLLM. Original BF16 failures remain; full profile-specific numerical budgets and multi-example/tie/cache-state certification remain incomplete.",
-        "Qwen3-8B/OLMo-2 BF16 TP4 CPU single-position checks at runtime f6bda1a: Qwen/vLLM fails 0.25 > 0.15; Qwen/SGLang passes 0.125 and both OLMo positions pass ~0.062. Full numerical budgets remain open; identical per-model input/label IDs permit a limited cross-engine diagnostic, not accuracy certification."
+        "Qwen3-8B/OLMo-2 BF16 TP4 CPU single-position checks at runtime f6bda1a: Qwen/vLLM fails 0.25 > 0.15; Qwen/SGLang passes 0.125 and both OLMo positions pass ~0.062. Full numerical budgets remain open; identical per-model input/label IDs permit a limited cross-engine diagnostic, not accuracy certification.",
+        "Mistral7B BF16 TP4 one-position CPU checks pass at unchanged 0.15 development tolerance (SGLang 0.148433685, vLLM 0.093746185) with top-label agreement. This is not a completed per-profile numerical budget; prior Qwen/Phi failures remain."
       ],
       "acceptance_complete": false
     },
@@ -458,7 +464,9 @@
         "docs/phi-tp2-validation.md",
         "docs/readout-precision.md",
         "docs/tp4-model-validation.md",
-        "docs/native-validation-runner.md"
+        "docs/native-validation-runner.md",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "10/40 engine/checkpoint functional combinations have development GPU evidence (5/20 per engine).",
@@ -467,7 +475,8 @@
         "DeepSeek-R1-Distill-Qwen-1.5B passed both native engines at runtime ad9b417, with 1,000 switches per engine; initial harness abstention and local-tokenizer mismatch failures remain recorded.",
         "Phi-3 mini and Phi-4 mini passed both native engines in BF16 TP2/API1 at 737d814; first pre-ready vLLM harness failure and SGLang memory-balance startup failure are retained. See docs/phi-tp2-validation.md.",
         "Precision profiles are tracked separately from base combinations. Four f6bda1a functional/binding checks do not change 10/40 model-engine coverage. Legacy Phi-4 BF16 failure/partial columns are preserved; SmolLM2 now has partial targeted numerical evidence.",
-        "Harness b8742bd adds reusable isolated launch/readiness/topology/contract/precision/reference/cleanup orchestration, with fresh directories and retained failures. Qwen3-8B and OLMo-2 pass both native engines at BF16 TP4, raising fixed coverage to 14/40 (7/20 per engine); required 18/20 per engine and denominator 20 remain unchanged."
+        "Harness b8742bd adds reusable isolated launch/readiness/topology/contract/precision/reference/cleanup orchestration, with fresh directories and retained failures. Qwen3-8B and OLMo-2 pass both native engines at BF16 TP4, raising fixed coverage to 14/40 (7/20 per engine); required 18/20 per engine and denominator 20 remain unchanged.",
+        "Mistral7B adds two native functional passes: fixed coverage is 16/40 (8/20 each), still requiring 18/20 each. Mistral Small passes 16/16 explicit-HF tokenizer cases per environment at 75649bf but remains GPU-not-run. Missing-template/common-renderer failures and GLM custom-loader rejection remain recorded; no model was removed or replaced."
       ],
       "acceptance_complete": false
     },
@@ -727,7 +736,9 @@
         "docs/serving-health.md",
         "docs/readout-precision.md",
         "docs/tp4-model-validation.md",
-        "docs/native-validation-runner.md"
+        "docs/native-validation-runner.md",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
@@ -735,7 +746,8 @@
         "Registry-wide admission gauges and the admin profile expose shared occupancy and limits. These gauges must not be summed across workers; request counters and histograms remain process-local.",
         "At 40b78c2, periodic engine canaries, per-bundle stale/error circuits, all-active readiness and admin health state are implemented. Queued requests recheck before GPU dispatch; unconfirmed probes retain a journaled lease and suppress repeat probing until explicit recovery. DSW gateway pause/resume passes on both engines; compatible-replica routing/failover and multi-worker metrics aggregation remain.",
         "docs/readout-precision.md documents explicit engine flags, reporting limits, opt-in FP32 and migration using a fresh registry/endpoint. Active unbound manifests require new versions; no silent digest or calibration rewrite.",
-        "docs/native-validation-runner.md documents fixed source identity, live rank/topology checks, failure-inclusive reports, owned-group cleanup and export allowlists. Unidentified orphans and missing launch identities fail cleanup certification instead of being killed or silently retried."
+        "docs/native-validation-runner.md documents fixed source identity, live rank/topology checks, failure-inclusive reports, owned-group cleanup and export allowlists. Unidentified orphans and missing launch identities fail cleanup certification instead of being killed or silently retried.",
+        "docs/explicit-chat-templates.md documents file/snapshot hashes, startup-only renderer configuration, default behavior, standard-HF-only override support and native host profile matching. It distinguishes Jev configuration from the host engine tokenizer/chat endpoint configuration."
       ],
       "acceptance_complete": false
     },
@@ -770,7 +782,9 @@
         "docs/phi-tp2-validation.md",
         "docs/readout-precision.md",
         "docs/tp4-model-validation.md",
-        "docs/native-validation-runner.md"
+        "docs/native-validation-runner.md",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "Native plugins and standalone gateways have real serving evidence.",
@@ -779,7 +793,8 @@
         "At runtime 40b78c2, both engines passed native four-type/parity checks and another 1,000 switches after health changes. Both gateways passed real engine pause/resume. SGLang first failed a comparison with a partially cached baseline; direct native cache-state replay and revised warm-state comparison are separately retained. This does not certify numerical invariance, controlled performance, LoRA or multi-worker profiles at this source.",
         "At 737d814, both Phi checkpoints passed native TP2/API1 scoring, native chat/parity and 1,000 switches per engine. Live topology, zero final admission/leases and every selected GPU cleanup were verified. This does not certify LoRA TP2, multi-worker TP2, mixed-load performance or TP crash recovery.",
         "At f6bda1a, both engines pass Phi-4 FP32-readout TP2 and SmolLM2 default-BF16 TP1 native suites and 1000 switches each. Harness 5aa59d6 verifies legacy/wrong bundle and mismatched attached-runtime rejection. All four owned groups exited and selected GPUs returned to baseline; managed-LoRA/multi-worker/performance profiles were not recertified.",
-        "Four new TP4 native suites pass at runtime f6bda1a/harness b8742bd: Qwen3-8B and OLMo-2 on both engines, four output types/native parity/lifecycle/precision guards. All owned groups exited and all four GPU UUID/free-memory snapshots returned to baseline; no dependency/core upgrade or broader LoRA/performance certification."
+        "Four new TP4 native suites pass at runtime f6bda1a/harness b8742bd: Qwen3-8B and OLMo-2 on both engines, four output types/native parity/lifecycle/precision guards. All owned groups exited and all four GPU UUID/free-memory snapshots returned to baseline; no dependency/core upgrade or broader LoRA/performance certification.",
+        "Mistral7B native BF16 TP4/API1/eager runs at e17918e pass four types, native parity, precision guards and lifecycle. Each verifies its official template snapshot and live topology; both groups exit and all selected GPUs return to baseline. Later 75649bf tokenizer work has CPU/real-tokenizer evidence, not broad final-source GPU recertification."
       ],
       "acceptance_complete": false
     },
@@ -818,7 +833,9 @@
         "docs/phi-tp2-validation.md",
         "docs/readout-precision.md",
         "docs/tp4-model-validation.md",
-        "docs/native-validation-runner.md"
+        "docs/native-validation-runner.md",
+        "docs/explicit-chat-templates.md",
+        "docs/mistral-validation.md"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
@@ -828,7 +845,8 @@
         "Targeted SIGSTOP/SIGCONT checks at 40b78c2 verify per-worker readiness withdrawal, 10/10 gateway rejections and resumed serving on both engines. All four owned groups exited; GPU7 returned to 11,990 MiB free. Both native engines passed 1,000 further switches with vLLM 453 / SGLang 510 successful traffic requests and zero mixed versions. Replica failover and the 24-hour soak remain unrun.",
         "The distinct functional set now has ten combinations, each with 1,000 route switches. Four new Phi TP2 runs at 737d814 had 244/448 (Phi-3 SGLang/vLLM) and 184/317 (Phi-4 SGLang/vLLM) strict successful traffic requests with zero mixed versions. All five owned groups, including a failed SGLang launch, exited; all selected GPUs returned to baseline. Controlled 24-hour soak remains unrun.",
         "Four further 1000-switch runs passed at f6bda1a (Phi-4 SGLang/vLLM 182/318 strict traffic successes; SmolLM2 493/441), with zero mixed versions and zero final leases/admission. The controlled 24-hour soak remains unrun.",
-        "Qwen3-8B and OLMo-2 each passed 1000 switches per engine with zero mixed responses. Strict traffic successes were Qwen 206/362 and OLMo 154/215 (SGLang/vLLM). This does not replace the controlled 24-hour soak."
+        "Qwen3-8B and OLMo-2 each passed 1000 switches per engine with zero mixed responses. Strict traffic successes were Qwen 206/362 and OLMo 154/215 (SGLang/vLLM). This does not replace the controlled 24-hour soak.",
+        "Two Mistral7B native 1000-switch runs have zero mixed versions, with 229 SGLang / 423 vLLM strict traffic successes. The controlled 24h soak and expanded fault profiles remain unrun."
       ],
       "acceptance_complete": false
     },

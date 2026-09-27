@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "qualification": "real tokenizer compilation only; no GPU or quality certification",
+  "selected_count": 1,
+  "transformers_version": "5.17.0",
+  "models": [
+    {
+      "model": "zai-org/glm-4-9b-chat",
+      "revision": "bd8234fe5e0c09c48637a92abb0c797cb5fa0e73",
+      "started_at": 1790528930.4419966,
+      "cases": [],
+      "passed": false,
+      "explicit_chat_template": null,
+      "tokenizer_options": {},
+      "error": {
+        "type": "ValueError",
+        "message": "The repository zai-org/glm-4-9b-chat contains custom code which must be executed to correctly load the model. You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat .\n You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat.\nPlease pass the argument `trust_remote_code=True` to allow custom code to be run."
+      },
+      "finished_at": 1790528935.794125
+    }
+  ],
+  "complete": true,
+  "passed_models": 0,
+  "models_with_deployable_profile": 0
+}

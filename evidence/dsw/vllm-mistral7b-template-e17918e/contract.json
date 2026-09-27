@@ -1,0 +1,585 @@
+{
+  "schema_version": 1,
+  "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "started_at": 1790528441.6578717,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "configured_model": {
+    "id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "vllm",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "aceb3276ca94416da71b5967fa3b271c"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-7f892594f28e4019bd8c40cc4835e147",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:a2b5bacbd6dd177a4638cc03bdefc91835de09f4cab058edb1f78715fe535727",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999931328619408,
+            "technical": 6.695543423963198e-06,
+            "other": 1.7159463525099814e-07
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.069059879591325e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999942193571,
+            "false": 5.780642741719527e-09
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.00013036674647931543,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.000027366407429,
+          "probabilities": {
+            "low": 1.2029417061396917e-05,
+            "medium": 0.9999704678843914,
+            "high": 1.7502698547194226e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 4.0055515764321194e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.999997851468425,
+            "engineering": 1.852041799245118e-06,
+            "sales": 2.964897757593638e-07
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.010022064644855e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 354,
+        "engine_prompt_tokens": 354,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 64
+      },
+      "latency_ms": 97.56312239915133
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 7,
+        "total_tokens": 15,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "four_types_explicit_first_policy": {
+      "request_id": "dec-f26c3ff61eda48c09ba5270870b54dad",
+      "status": "completed",
+      "bundle": "cert-28c00229ff3b@1",
+      "bundle_digest": "sha256:f1fb31f9759e96dca386a1a3a6cfc71f14556b0bca7db989456ef6db8b912c7e",
+      "generation": 1,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9999930247343103,
+            "technical": 6.80096918342241e-06,
+            "other": 1.742965062710139e-07
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.0042927554755408e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999948985958,
+            "false": 5.101404183056501e-09
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.00014772107325465345,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.000032063382906,
+          "probabilities": {
+            "low": 1.2218860012994012e-05,
+            "medium": 0.999969149603393,
+            "high": 1.8631536594088307e-05
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 4.263876813766673e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9999977331356612,
+            "engineering": 1.956145758355773e-06,
+            "sales": 3.107185804174706e-07
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 1.0101069521557965e-05,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 354,
+        "engine_prompt_tokens": 354,
+        "engine_completion_tokens": 4,
+        "cached_prompt_tokens": 336
+      },
+      "latency_ms": 97.05764427781105
+    },
+    "independent_candidate": {
+      "request_id": "dec-25678ca3f93047a19bb0745ce88ba086",
+      "status": "completed",
+      "bundle": "cert-28c00229ff3b@2",
+      "bundle_digest": "sha256:1334c5219308c6d83188680d821c62c14b31f33ef616bfc5b5761e1bfe6e9e3e",
+      "generation": 2,
+      "engine": {
+        "name": "vllm",
+        "version": "0.30.0+cu129"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.33349073560807585,
+            "technical": 0.3330203942786033,
+            "other": 0.3334888701133209
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.9999999995104332,
+            "technical": 0.9985896415033819,
+            "other": 0.9999944056676218
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.9999999942193571,
+            "false": 5.780642741719527e-09
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.00013036674647931543,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 5.000000058235516,
+          "probabilities": {
+            "low": 0.33333332616257044,
+            "medium": 0.33333333602775606,
+            "high": 0.33333333780967356
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.9999999643463763,
+            "medium": 0.9999999939419326,
+            "high": 0.9999999992876851
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.4887718331270209,
+            "engineering": 0.3640775932465311,
+            "sales": 0.1471505736264481
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.8933094060543487,
+            "engineering": 0.665410558746814,
+            "sales": 0.2689414213699951
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 897,
+        "engine_prompt_tokens": 897,
+        "engine_completion_tokens": 10,
+        "cached_prompt_tokens": 528
+      },
+      "latency_ms": 189.6977135911584
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 423,
+      "versions_seen": [
+        "cert-28c00229ff3b@1",
+        "cert-28c00229ff3b@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "vllm",
+    "version": "0.30.0+cu129",
+    "model_id": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": 1,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "serving_profile": {
+    "worker_id": "aceb3276ca94416da71b5967fa3b271c",
+    "model": {
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "tokenizer_digest": "sha256:8be2a249f4c16e061f4e04b0dcf813e833fef2574dc2a5b67b0069a7458b5ebf",
+      "tokenizer_implementation_digest": "sha256:f0cbfe48e26abe95dce73bcd9d51a27a16bab8ce39418482f164fbf8a2fca9c7",
+      "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "vllm",
+      "version": "0.30.0+cu129",
+      "model_id": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": 1,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16"
+    },
+    "compiler": {
+      "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+      "copied_from_host_pool": true,
+      "chat_template_source": "explicit",
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": true,
+      "bundles": {
+        "default@1": {
+          "ready": true,
+          "last_success_age_seconds": 1.59644191339612,
+          "error": null,
+          "prepared": true
+        }
+      }
+    }
+  },
+  "model": {
+    "id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+    "tokenizer_digest": "sha256:8be2a249f4c16e061f4e04b0dcf813e833fef2574dc2a5b67b0069a7458b5ebf",
+    "tokenizer_implementation_digest": "sha256:f0cbfe48e26abe95dce73bcd9d51a27a16bab8ce39418482f164fbf8a2fca9c7",
+    "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "reference_logits": {
+    "input_ids": [
+      1,
+      3,
+      24991,
+      12699,
+      1040,
+      17352,
+      1946,
+      2603,
+      1040,
+      4406,
+      29491,
+      6052,
+      1117,
+      6334,
+      29493,
+      1227,
+      12150,
+      29491,
+      5339,
+      5436,
+      1040,
+      12707,
+      5140,
+      4638,
+      29491,
+      781,
+      781,
+      5586,
+      29515,
+      781,
+      8232,
+      1040,
+      7114,
+      29510,
+      29481,
+      7026,
+      9052,
+      29491,
+      781,
+      781,
+      2101,
+      1093,
+      9206,
+      2191,
+      2097,
+      781,
+      29507,
+      29505,
+      1171,
+      11994,
+      9428,
+      1072,
+      1450,
+      1505,
+      1032,
+      20874,
+      1379,
+      781,
+      781,
+      3588,
+      2384,
+      1172,
+      29515,
+      781,
+      29509,
+      29515,
+      10028,
+      2107,
+      29493,
+      11808,
+      29493,
+      1210,
+      20874,
+      29481,
+      781,
+      29528,
+      29515,
+      1098,
+      10835,
+      10451,
+      1065,
+      1040,
+      2861,
+      781,
+      29511,
+      29515,
+      1098,
+      2349,
+      9835,
+      781,
+      6936,
+      5436,
+      1392,
+      5140,
+      4638,
+      29491,
+      4
+    ],
+    "label_ids": [
+      29509,
+      29528,
+      29511
+    ],
+    "logprobs": [
+      -11.508648872375488,
+      -23.407087326049805,
+      -27.071149826049805
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790528451.178787
+}

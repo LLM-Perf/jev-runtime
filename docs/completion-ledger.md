@@ -22,7 +22,7 @@ replacement for any requirement in `implementation-plan.md`.
   is distinct from new GPU execution: both clients accepted all 26 complete payloads
   in 17 retained DSW reports at `fe71bb3`. All three Python distributions built at
   that source; see `evidence/package-check-fe71bb3.json`.
-- Fourteen real GPU combinations (seven models per engine) each passed 1,000 bundle
+- Sixteen real GPU combinations (eight models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
 - Tenant credentials select per-tenant queues, quotas and cancellation ownership.
   Shared same-host quotas are now implemented and checked at `4944efd` below;
@@ -309,16 +309,32 @@ replacement for any requirement in `implementation-plan.md`.
   verified. See [TP4 model validation](tp4-model-validation.md). Original release
   gates and failed numerical evidence remain unchanged.
 
+
+- At `e17918e`, hash-bound local Jinja/JSON templates are supported by both
+  native plugins and the gateway compiler, with unchanged default behavior and
+  rejection of renderers that can ignore the override. Mistral7B passes both
+  native BF16 TP4 suites and 1,000 switches each using its official template,
+  raising coverage to 16/40 (8/20 per engine). At `75649bf`, explicit tokenizer
+  regex profiles are checked against native host vocabulary/backend fingerprints.
+  Mistral Small's explicit HF profile passes 16/16 tokenizer compilation cases in
+  each environment; this adds no GPU/model-quality pass. Initial missing-template
+  and renderer-rejection attempts remain, as does GLM's custom-loader rejection.
+  The real-tokenizer mismatch guard passes in both environments. All owned GPU
+  groups exited; local checks passed 277 tests and three verified wheel builds.
+  GPU evidence remains at `e17918e`, separate from later CPU/tokenizer checks.
+  See [Mistral validation](mistral-validation.md) and
+  [explicit template configuration](explicit-chat-templates.md).
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
-| SGLang real serving | Seven checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2 TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| vLLM real serving | Seven checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2 TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| SGLang real serving | Eight checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2/Mistral7B TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
+| vLLM real serving | Eight checkpoints pass; Phi TP2 and Qwen3-8B/OLMo-2/Mistral7B TP4 coverage | Remaining matrix; cross-implementation BF16 numerical differences remain |
 | Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
-| GPU hot-switch and drain | Fourteen combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
-| 20-model/40-combination matrix | 7/20 functional checks per engine | Remaining 26 combinations and numerical/quality/performance gates |
+| GPU hot-switch and drain | Sixteen combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
+| 20-model/40-combination matrix | 8/20 functional checks per engine | Remaining 24 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |

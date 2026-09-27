@@ -1,0 +1,23 @@
+{
+  "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "installed": [
+    {
+      "engine": "vllm",
+      "paths": {
+        "core": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/src/jev_runtime/__init__.py",
+        "templates": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/src/jev_runtime/templates.py",
+        "plugin": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/packages/vllm/src/jev_vllm/__init__.py"
+      }
+    },
+    {
+      "engine": "sglang",
+      "paths": {
+        "core": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/src/jev_runtime/__init__.py",
+        "templates": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/src/jev_runtime/templates.py",
+        "plugin": "/root/jev-runtime/releases/e17918e79d587f5fabe6ec65740492cf8f37fcef/packages/sglang/src/jev_sglang/__init__.py"
+      }
+    }
+  ],
+  "finished_at": 1790528328.311854,
+  "dependencies_upgraded": false
+}

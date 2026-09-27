@@ -1,0 +1,63 @@
+{
+  "harness_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "started_at": 1790528607.1320884,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-d8f9b4a644124d4f9b0a84f89fc8b2bf@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-ab5e517798b6468f99df1c125dfd7b14@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=float32 differs from engine report bfloat16; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+    "tokenizer_digest": "sha256:8be2a249f4c16e061f4e04b0dcf813e833fef2574dc2a5b67b0069a7458b5ebf",
+    "tokenizer_implementation_digest": "sha256:f9973db313beed727e25af4f9d9a7895c49232dbdcb0d023466182b0123d9fc7",
+    "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "passed": true,
+  "finished_at": 1790528612.7340152
+}

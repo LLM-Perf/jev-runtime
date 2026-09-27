@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "qualification": "real tokenizer compilation only; no GPU or quality certification",
+  "selected_count": 1,
+  "transformers_version": "5.17.0",
+  "models": [
+    {
+      "model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "started_at": 1790528377.3213701,
+      "cases": [],
+      "passed": false,
+      "explicit_chat_template": {
+        "path": "/root/.cache/huggingface/hub/models--mistralai--Mistral-Small-3.1-24B-Instruct-2503/blobs/d55f535097412122ac3724c76c903294da3c1152",
+        "sha256": "d4b1a286509cd7a45186c5a149200a61405eaee8fb4c2863a90d43ff6151775f",
+        "format": "json"
+      },
+      "error": {
+        "type": "JevError",
+        "message": "Explicit templates require the standard Transformers chat renderer"
+      },
+      "finished_at": 1790528384.5108995
+    }
+  ],
+  "complete": true,
+  "passed_models": 0,
+  "models_with_deployable_profile": 0
+}

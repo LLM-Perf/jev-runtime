@@ -1,0 +1,30 @@
+{
+  "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+  "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "readout_dtype": "bfloat16",
+  "observed_readout_dtype": "bfloat16",
+  "contract_report": "/root/jev-runtime/runs/sglang-mistral7b-template-e17918e/contract.json",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "engine_logprobs": [
+    -11.508650779724121,
+    -23.461774826049805,
+    -27.086774826049805
+  ],
+  "reference_logprobs": [
+    -11.50865364074707,
+    -23.31334114074707,
+    -26.97740364074707
+  ],
+  "absolute_errors": [
+    2.86102294921875e-06,
+    0.14843368530273438,
+    0.10937118530273438
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": true,
+  "started_at": 1790528617.277443,
+  "finished_at": 1790528624.300201
+}

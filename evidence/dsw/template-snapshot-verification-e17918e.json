@@ -1,0 +1,24 @@
+{
+  "native_runtime_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+  "verifier_runtime_source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "rows": [
+    {
+      "engine": "sglang",
+      "source_sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2",
+      "snapshot_sha256": "e16746b40344d6c5b5265988e0328a0bf7277be86f1c335156eae07e29c82826",
+      "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+      "source_template_equals_snapshot": true,
+      "engine_and_plugin_snapshot_path": "/root/jev-runtime/runs/sglang-mistral7b-template-e17918e/chat_template.jinja",
+      "profile_uses_explicit_template": true
+    },
+    {
+      "engine": "vllm",
+      "source_sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2",
+      "snapshot_sha256": "e16746b40344d6c5b5265988e0328a0bf7277be86f1c335156eae07e29c82826",
+      "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+      "source_template_equals_snapshot": true,
+      "engine_and_plugin_snapshot_path": "/root/jev-runtime/runs/vllm-mistral7b-template-e17918e/chat_template.jinja",
+      "profile_uses_explicit_template": true
+    }
+  ]
+}

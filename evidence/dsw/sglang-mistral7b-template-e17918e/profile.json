@@ -1,0 +1,81 @@
+{
+  "worker_id": "1943c04d0d29414b86d109d8bcb3fecf",
+  "model": {
+    "id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+    "tokenizer_digest": "sha256:8be2a249f4c16e061f4e04b0dcf813e833fef2574dc2a5b67b0069a7458b5ebf",
+    "tokenizer_implementation_digest": "sha256:f9973db313beed727e25af4f9d9a7895c49232dbdcb0d023466182b0123d9fc7",
+    "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "tokenizer_implementation_verified": true,
+  "engine_identity_verified": false,
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16"
+  },
+  "compiler": {
+    "tokenizer_class": "transformers.models.llama.tokenization_llama.LlamaTokenizer",
+    "copied_from_host_pool": false,
+    "chat_template_source": "explicit",
+    "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+    "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+    "backend_class": "tokenizers.Tokenizer",
+    "cache_token_limit": 262144,
+    "cache_entry_limit": 256,
+    "continuation_encoder": "backend-ids-only",
+    "backend_ids_only_eligible": true,
+    "batch_size_limit": 32,
+    "contract": "full prompt plus each label; exact prefix and one-token checks"
+  },
+  "admission": {
+    "scope": "shared_registry_engine",
+    "limits": {
+      "max_requests": 64,
+      "max_tokens": 1048576,
+      "max_queue": 256,
+      "max_tenant_requests": 16,
+      "max_tenant_tokens": 262144,
+      "max_tenant_queue": 64,
+      "max_branches": 1024,
+      "max_tenant_branches": 256
+    },
+    "requests": 0,
+    "expanded_tokens": 0,
+    "expanded_branches": 0,
+    "queued_requests": 0
+  },
+  "health": {
+    "scope": "local_api_worker",
+    "settings": {
+      "interval_seconds": 30,
+      "timeout_seconds": 10,
+      "max_age_seconds": 90
+    },
+    "monitor_running": true,
+    "bundles": {
+      "default@1": {
+        "ready": true,
+        "last_success_age_seconds": 18.251534423790872,
+        "error": null,
+        "prepared": true
+      }
+    }
+  }
+}

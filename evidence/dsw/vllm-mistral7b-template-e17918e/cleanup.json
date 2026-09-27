@@ -1,0 +1,217 @@
+{
+  "process_record": {
+    "identity": {
+      "pid": 2643156,
+      "start_ticks": "428390441",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "vllm",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/vllm/bin/vllm",
+      "serve",
+      "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+      "--served-model-name",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "2048",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "512",
+      "--max-logprobs",
+      "128",
+      "--gpu-memory-utilization",
+      "0.065",
+      "--enforce-eager",
+      "--tensor-parallel-size",
+      "4",
+      "--chat-template",
+      "/root/jev-runtime/runs/vllm-mistral7b-template-e17918e/chat_template.jinja"
+    ],
+    "model": {
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "path": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3",
+      "license": "apache-2.0",
+      "gated": false,
+      "verification": {
+        "repo_id": "mistralai/Mistral-7B-Instruct-v0.3",
+        "repo_type": "model",
+        "checked": 13,
+        "path": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3"
+      },
+      "files": {
+        "README.md": {
+          "bytes": 7893,
+          "sha256": "3166974023134d972368b585d730fa5f70100873684f90a10a773b20e80b30ba"
+        },
+        "config.json": {
+          "bytes": 601,
+          "sha256": "affafc6478ec0fd07a32f0ca57aa2fc57743f4d17d6730f86a96ac24d1507f99"
+        },
+        "consolidated.safetensors": {
+          "bytes": 14496078512,
+          "sha256": "76d5729be995fb6510c7f103c5b8825d3d82f8126ac949db6be367a638694d1f"
+        },
+        "generation_config.json": {
+          "bytes": 116,
+          "sha256": "b4669f1b8f4185324bd9b12a69e85a1ad2289bc48111ef739cfaaea3bba6b0a9"
+        },
+        "model-00001-of-00003.safetensors": {
+          "bytes": 4949453792,
+          "sha256": "ce6fb6f6f4d0183f4813cbf4ece24109da629a08d4210da46f77e1d8b0bd5c19"
+        },
+        "model-00002-of-00003.safetensors": {
+          "bytes": 4999819336,
+          "sha256": "8c0e72f148366b6a3709e002a98706a33d31aec8515090c856c95b2044f92ae0"
+        },
+        "model-00003-of-00003.safetensors": {
+          "bytes": 4546807800,
+          "sha256": "905dd405363e43d95779c1c1155a2dbfd36155914ae95dbd934e12e490cfb4ca"
+        },
+        "model.safetensors.index.json": {
+          "bytes": 23950,
+          "sha256": "e489ba553b87cde188d921b1a8283c2e0b9d33d635b88147d96ff0fcd6250016"
+        },
+        "params.json": {
+          "bytes": 202,
+          "sha256": "8a64b8657de37af1f828eef1517dc186247938d66e7fea2c78c31d5b9071efe6"
+        },
+        "special_tokens_map.json": {
+          "bytes": 414,
+          "sha256": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0"
+        },
+        "tokenizer.json": {
+          "bytes": 1961548,
+          "sha256": "e553af6fff7d7ad76e830608b218c5c0b0822998d5a1a96099a74cd3c1cb1a49"
+        },
+        "tokenizer.model": {
+          "bytes": 587404,
+          "sha256": "37f00374dea48658ee8f5d0f21895b9bc55cb0103939607c8185bfd1c6ca1f89"
+        },
+        "tokenizer_config.json": {
+          "bytes": 140874,
+          "sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2"
+        }
+      },
+      "weight_shards": [
+        "model-00001-of-00003.safetensors",
+        "model-00002-of-00003.safetensors",
+        "model-00003-of-00003.safetensors"
+      ],
+      "indexed_weight_bytes": 14496047104,
+      "hashed_at": 1790527963.0151873
+    },
+    "gpu_before": {
+      "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "gpus_before": [
+      {
+        "index": 3,
+        "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 4,
+        "uuid": "GPU-3da7ba65-db60-947b-5477-1743e56b1f86",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 5,
+        "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      {
+        "index": 6,
+        "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10792",
+        "driver": "550.127.08",
+        "utilization": "0"
+      }
+    ],
+    "tensor_parallel_size": 4,
+    "readout_dtype": "bfloat16",
+    "chat_template_source": {
+      "path": "/root/jev-runtime/models/Mistral-7B-Instruct-v0.3/tokenizer_config.json",
+      "sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2",
+      "format": "json"
+    },
+    "chat_template_snapshot": {
+      "path": "/root/jev-runtime/runs/vllm-mistral7b-template-e17918e/chat_template.jinja",
+      "sha256": "e16746b40344d6c5b5265988e0328a0bf7277be86f1c335156eae07e29c82826",
+      "format": "jinja"
+    },
+    "created": 1790528365.078878,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "total_mib"
+  },
+  "checked_at": 1790528469.9356828,
+  "remaining_process_group_members": [],
+  "gpus_after": [
+    {
+      "index": 3,
+      "uuid": "GPU-a57b8726-192e-6f29-7dd2-1b65f59b58e9",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "2"
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-3da7ba65-db60-947b-5477-1743e56b1f86",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-8e41fade-5347-a642-ed43-0129afc7bec6",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10792",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "gpu_uuids_match": true,
+  "passed": true
+}

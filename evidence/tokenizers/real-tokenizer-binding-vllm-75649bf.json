@@ -1,0 +1,22 @@
+{
+  "runtime_source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "harness_sha256": "8a4897c39e380332e7b10dfacccc82ee65205f754505df8a084515bc3df1c632",
+  "engine_environment": "vllm",
+  "transformers_version": "5.17.0",
+  "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+  "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+  "qualification": "Real tokenizer assets and runtime startup boundary; no engine/GPU scoring is performed",
+  "started_at": 1790529093.9380817,
+  "vocabulary_equal": true,
+  "implementation_equal": false,
+  "actual_implementation_digest": "sha256:8b860200a8af1fe4a14a697ec97a54eb7fe478f2c08e9079e08acee1f532591e",
+  "expected_implementation_digest": "sha256:74db8029258affc49dc2a898df55bdeeaac58a17868d1827f09e38b2d0671356",
+  "rejection": {
+    "code": "tokenizer_implementation_mismatch",
+    "message": "Host tokenizer differs from the explicitly configured tokenizer profile"
+  },
+  "runtime_path": "/root/jev-runtime/releases/75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5/src/jev_runtime/config.py",
+  "registry_created": false,
+  "passed": true,
+  "finished_at": 1790529102.7989476
+}

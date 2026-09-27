@@ -1,0 +1,30 @@
+{
+  "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+  "pytest": {
+    "passed": 277,
+    "result": "277 passed in 8.54s"
+  },
+  "ruff_check": "passed",
+  "ruff_format": "111 files already formatted",
+  "git_diff_check": "passed",
+  "wheel_builds": [
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "0ebaf934ef98bae20d47dcb8ddf84f61d0802f7ed5638ab27bb246585d893ecb",
+      "python_files_verified": 4
+    },
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "f6d938b55ca03093e6263db642d664e3d8d5fee7e28c2bd587eb9a1a5ff4253a",
+      "python_files_verified": 28
+    }
+  ],
+  "typescript_tests_rerun": false,
+  "typescript_unchanged_prior_passing_tests": 62,
+  "qualification": "Local CPU/package checks. Native GPU reports retain runtime e17918e; standalone real-tokenizer checks use this later source. No final-source broad GPU recertification is claimed."
+}

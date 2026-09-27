@@ -4,8 +4,8 @@
   "model_denominator": 20,
   "combination_denominator": 40,
   "functional_passes": {
-    "sglang": 7,
-    "vllm": 7
+    "sglang": 8,
+    "vllm": 8
   },
   "required_functional_passes_per_engine": 18,
   "release_gate_passed": false,
@@ -290,22 +290,64 @@
       "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
       "engine": "sglang",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/sglang-mistral7b-template-e17918e/contract.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/precision-binding.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/reference-cpu.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/profile.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/topology.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/cleanup.json",
+        "evidence/dsw/sglang-mistral7b-template-e17918e/validation.json",
+        "evidence/dsw/template-validation-75649bf.json"
+      ],
+      "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "harness_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.14843368530273438,
+        "single_position_passed": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/sglang-mistral7b-template-e17918e/reference-cpu.json"
+      },
+      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification"
     },
     {
       "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
       "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
       "engine": "vllm",
       "gated": false,
-      "functional": "not_run",
-      "numerical": "not_run",
+      "functional": "passed",
+      "numerical": "partial",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [
+        "evidence/dsw/vllm-mistral7b-template-e17918e/contract.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/precision-binding.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/reference-cpu.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/profile.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/topology.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/cleanup.json",
+        "evidence/dsw/vllm-mistral7b-template-e17918e/validation.json",
+        "evidence/dsw/template-validation-75649bf.json"
+      ],
+      "source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "harness_source_commit": "e17918e79d587f5fabe6ec65740492cf8f37fcef",
+      "tensor_parallel_size": 4,
+      "numerical_detail": {
+        "scope": "One saved CPU BF16 eager answer position; full numerical gate remains incomplete",
+        "atol": 0.15,
+        "max_absolute_logprob_error": 0.09374618530273438,
+        "single_position_passed": true,
+        "full_gate_passed": false,
+        "evidence": "evidence/dsw/vllm-mistral7b-template-e17918e/reference-cpu.json"
+      },
+      "profile_scope": "BF16 native TP4/API1/eager with an explicit snapshot of the checkpoint official template; no broader topology/quality/performance/LoRA certification"
     },
     {
       "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
@@ -316,7 +358,20 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "tokenizer_profile": {
+        "status": "passed_explicit_hf_profile_only",
+        "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+        "cases_passed": 16,
+        "cases_total": 16,
+        "explicit_template_sha256": "d4b1a286509cd7a45186c5a149200a61405eaee8fb4c2863a90d43ff6151775f",
+        "tokenizer_options": {
+          "fix_mistral_regex": true
+        },
+        "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-sglang-75649bf.json",
+        "scope": "Real tokenizer compilation only; not native GPU or quality certification",
+        "full_gate_passed": false
+      }
     },
     {
       "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
@@ -327,7 +382,20 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "tokenizer_profile": {
+        "status": "passed_explicit_hf_profile_only",
+        "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+        "cases_passed": 16,
+        "cases_total": 16,
+        "explicit_template_sha256": "d4b1a286509cd7a45186c5a149200a61405eaee8fb4c2863a90d43ff6151775f",
+        "tokenizer_options": {
+          "fix_mistral_regex": true
+        },
+        "evidence": "evidence/tokenizers/tokenizer-small-explicit-regex-vllm-75649bf.json",
+        "scope": "Real tokenizer compilation only; not native GPU or quality certification",
+        "full_gate_passed": false
+      }
     },
     {
       "model_id": "microsoft/Phi-3-mini-4k-instruct",
@@ -567,7 +635,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "tokenizer_profile": {
+        "status": "custom_loader_required",
+        "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+        "evidence": "evidence/tokenizers/tokenizer-glm-default-75649bf.json",
+        "scope": "Default load rejection rechecked in the vLLM Python environment; no native GPU attempt or custom-code execution",
+        "full_gate_passed": false
+      }
     },
     {
       "model_id": "zai-org/glm-4-9b-chat",
@@ -578,7 +653,14 @@
       "numerical": "not_run",
       "quality": "not_run",
       "performance": "not_run",
-      "evidence": []
+      "evidence": [],
+      "tokenizer_profile": {
+        "status": "custom_loader_required",
+        "source_commit": "75649bfb633ab5d6219e4b1c6bc4d7e9b9780bd5",
+        "evidence": "evidence/tokenizers/tokenizer-glm-default-75649bf.json",
+        "scope": "Default load rejection rechecked in the vLLM Python environment; no native GPU attempt or custom-code execution",
+        "full_gate_passed": false
+      }
     },
     {
       "model_id": "allenai/OLMo-2-1124-7B-Instruct",
