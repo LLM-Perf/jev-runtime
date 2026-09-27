@@ -5,6 +5,7 @@ import json
 import logging
 import time
 import uuid
+from contextlib import nullcontext
 from dataclasses import asdict
 
 from jev_runtime.adapters import AdapterStore
@@ -25,6 +26,7 @@ from jev_runtime.schema import (
     content_digest,
 )
 from jev_runtime.scoring import assemble
+from jev_runtime.telemetry import DecisionTrace
 
 logger = logging.getLogger(__name__)
 
@@ -312,14 +314,18 @@ class Runtime:
             )
         return total
 
-    async def _score(self, seq: ScoreInput, unconfirmed: set[str]) -> ScoreResult:
+    async def _score(
+        self, seq: ScoreInput, unconfirmed: set[str], trace: DecisionTrace | None = None
+    ) -> ScoreResult:
         try:
-            return await self.backend.score(seq)
+            with trace.measure_work("engine_call") if trace else nullcontext():
+                return await self.backend.score(seq)
         except BaseException:
 
             async def abort():
-                async with asyncio.timeout(5):
-                    await self.backend.cancel(seq.request_id)
+                with trace.measure_work("abort") if trace else nullcontext():
+                    async with asyncio.timeout(5):
+                        await self.backend.cancel(seq.request_id)
 
             cleanup = asyncio.create_task(abort())
             try:
@@ -345,15 +351,23 @@ class Runtime:
         bundle: Bundle,
         semaphore: asyncio.Semaphore,
         unconfirmed: set[str],
+        trace: DecisionTrace | None = None,
     ) -> tuple[Answer, list[ScoreResult]]:
+        trace = trace or DecisionTrace()
+
         async def score(seq: ScoreInput) -> ScoreResult:
-            async with semaphore:
-                return await self._score(seq, unconfirmed)
+            with trace.measure_work("branch_queue"):
+                await semaphore.acquire()
+            try:
+                return await self._score(seq, unconfirmed, trace)
+            finally:
+                semaphore.release()
 
         tasks = [asyncio.create_task(score(seq)) for seq in compiled.sequences]
         try:
             results = await asyncio.gather(*tasks)
-            return assemble(compiled, results, bundle), results
+            with trace.measure_work("assembly"):
+                return assemble(compiled, results, bundle), results
         finally:
             await cancel_and_drain(tasks)
 
@@ -407,7 +421,12 @@ class Runtime:
             self.registry.release(snapshot.lease_id)
 
     async def decide(
-        self, request: DecisionRequest, request_id: str | None = None, tenant: str = "default"
+        self,
+        request: DecisionRequest,
+        request_id: str | None = None,
+        tenant: str = "default",
+        *,
+        trace: DecisionTrace | None = None,
     ) -> DecisionResponse:
         rid = request_id or request.request_id or "dec-" + uuid.uuid4().hex
         if rid in self._active:
@@ -422,6 +441,8 @@ class Runtime:
         started = time.monotonic()
         snapshot = None
         unconfirmed: set[str] = set()
+        trace = trace or DecisionTrace()
+        trace.switch("pin")
         try:
             async with asyncio.timeout(request.execution.timeout_ms / 1000):
                 snapshot = self.registry.acquire(
@@ -429,10 +450,12 @@ class Runtime:
                 )
                 self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
+                trace.switch("compile")
                 compiled, sequences, total_tokens = self._compile_request(
                     request, bundle, engine_rid
                 )
                 questions = tuple(item.question for item in compiled)
+                trace.switch("journal")
                 self.registry.record_branches(
                     snapshot.lease_id, [seq.request_id for seq in sequences]
                 )
@@ -449,10 +472,14 @@ class Runtime:
                         }
                     ),
                 )
+                trace.switch("queue")
                 async with self.admission.acquire(total_tokens, tenant):
+                    trace.switch("execute")
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     tasks = [
-                        asyncio.create_task(self._question(q, bundle, semaphore, unconfirmed))
+                        asyncio.create_task(
+                            self._question(q, bundle, semaphore, unconfirmed, trace)
+                        )
                         for q in compiled
                     ]
                     try:
@@ -461,6 +488,7 @@ class Runtime:
                         )
                     finally:
                         await cancel_and_drain(tasks)
+                trace.switch("finalize")
                 answers, results = {}, []
                 failed = 0
                 for question, outcome in zip(questions, outcomes, strict=True):
@@ -513,14 +541,18 @@ class Runtime:
         except asyncio.CancelledError as exc:
             raise JevError("request_cancelled", "Decision request was cancelled", 499) from exc
         finally:
-            if snapshot is not None:
-                if unconfirmed:
-                    self.registry.mark_abort_pending(snapshot.lease_id, unconfirmed)
-                else:
-                    self.registry.release(snapshot.lease_id)
-            self._active.pop(rid, None)
-            self._tenants.pop(rid, None)
-            self._active_leases.pop(rid, None)
+            trace.switch("release")
+            try:
+                if snapshot is not None:
+                    if unconfirmed:
+                        self.registry.mark_abort_pending(snapshot.lease_id, unconfirmed)
+                    else:
+                        self.registry.release(snapshot.lease_id)
+            finally:
+                self._active.pop(rid, None)
+                self._tenants.pop(rid, None)
+                self._active_leases.pop(rid, None)
+                trace.finish()
 
     async def recover_cancelled(self, request_id: str) -> bool:
         snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)

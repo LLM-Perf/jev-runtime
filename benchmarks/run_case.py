@@ -37,6 +37,7 @@ from jev_runtime.schema import (
     content_digest,
 )
 from jev_runtime.scoring import assemble
+from jev_runtime.telemetry import parse_timing_header
 
 
 def parse_native(engine: str, response: httpx.Response, item: ScoreInput) -> dict:
@@ -141,6 +142,7 @@ async def run(args):
             "cache": args.cache,
             "scoring_mode": args.scoring_mode,
             "structured_generation": args.structured_generation,
+            "runtime_timing": args.runtime_timing,
         },
         "model": {"id": settings.model_id, "revision": settings.model_revision},
         "duration_seconds": args.duration,
@@ -351,9 +353,22 @@ async def run(args):
 
             async def typed_call(request_id):
                 response = await typed.post(
-                    prefix + "/v1/decisions", json={**body, "request_id": request_id}
+                    prefix + "/v1/decisions",
+                    json={**body, "request_id": request_id},
+                    headers={"X-Jev-Timing": "1"} if args.runtime_timing else {},
                 )
-                response.raise_for_status()
+                observed = {}
+                if args.runtime_timing:
+                    try:
+                        observed["runtime_timings_ms"] = parse_timing_header(
+                            response.headers.get("Server-Timing")
+                        )
+                    except ValueError as exc:
+                        raise InvalidBenchmarkResponse(
+                            response.status_code, "runtime_timing_invalid"
+                        ) from exc
+                if response.status_code != 200:
+                    raise InvalidBenchmarkResponse(response.status_code, "http_error", observed)
                 try:
                     result = DecisionResponse.model_validate(response.json())
                     assert result.bundle_digest == bundle.digest and result.generation == 1
@@ -363,9 +378,12 @@ async def run(args):
                     assert all(0 <= value <= 1 for value in probabilities.values())
                     assert abs(math.fsum(probabilities.values()) - 1) < 1e-6
                 except (ValueError, AssertionError, KeyError) as exc:
-                    raise InvalidBenchmarkResponse(response.status_code) from exc
+                    raise InvalidBenchmarkResponse(
+                        response.status_code, observations=observed
+                    ) from exc
                 answer = result.answers["category"]
                 return {
+                    **observed,
                     "outcome": result.status,
                     "successful_questions": result.usage.successful_questions,
                     "http_status": response.status_code,
@@ -609,6 +627,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--scoring-mode", choices=("joint-label", "independent-candidate"), default="joint-label"
     )
+    parser.add_argument("--runtime-timing", action="store_true")
     parser.add_argument("--duration", type=float, default=180)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--warmup", type=int, default=32)

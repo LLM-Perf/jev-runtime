@@ -193,3 +193,32 @@ cross-implementation numerical differences and preserves failures.
 The DSW launcher captures PID, Linux start ticks and boot ID before signaling any
 test process. A PID mismatch refuses a stop. Confirm both process exit and released
 GPU memory before launching a replacement. Existing services are not stopped.
+
+
+## Runtime metrics
+
+Authenticated `/metrics` exposes process-local observations for both decision and
+System One requests after they enter the runtime route. It does not count rejected
+authentication, body-schema validation, management endpoints or native engine APIs.
+
+- `jev_runtime_stage_seconds{stage,outcome}`: seven serial phases and inclusive
+  `total`; includes durable lease release and failure/cancellation cleanup.
+- `jev_branch_work_seconds{kind}`: individual branch queue, engine call, assembly
+  and abort durations. Concurrent samples overlap; these are not GPU kernel times.
+- `jev_questions_total{outcome}`: returned per-question states, including failed
+  questions in a partial response.
+- `jev_request_errors_total{category}`: five bounded runtime failure categories.
+- `jev_observed_tokens_total{quantity}` and `jev_token_observations_total{quantity}`:
+  summed known usage and the matching response observation counts. A known zero
+  contributes an observation; unavailable usage contributes neither. These are
+  response-level counters, not inference of work discarded by a failed request.
+- `jev_admission{quantity}`: current admitted requests, expanded tokens and queued
+  requests for the responding API process.
+
+No prompt, request ID, arbitrary task ID or tenant name is used as a metric label.
+Multiple API workers do not share counters: load-balanced scrapes are not a complete
+service aggregate. Use explicit per-worker collection before reporting global
+rates; automatic multi-worker Prometheus aggregation remains outstanding. Use
+`X-Jev-Timing: 1` for a request-bound phase header when profiling through a shared
+HTTP endpoint. It changes no decision JSON or scoring behavior. See performance
+for the exact timing boundaries and missing-observation rules.

@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, Depends, FastAPI, Header, Request
 from fastapi.responses import JSONResponse, Response
-from prometheus_client import CollectorRegistry, Counter, Histogram, generate_latest
+from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram, generate_latest
 from pydantic import Field
 
 from jev_runtime.config import Settings, bootstrap, build_runtime, load_settings, tenant_keys
@@ -17,6 +17,7 @@ from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, DecisionRequest, Identifier
 from jev_runtime.systemone import SystemOneRequest, from_decision
+from jev_runtime.telemetry import DecisionTrace
 
 
 class Activation(Contract):
@@ -100,7 +101,13 @@ def install_routes(
 
     @app.exception_handler(JevError)
     async def jev_error_handler(request: Request, exc: JevError):
-        return JSONResponse(status_code=exc.status_code, content={"error": exc.as_dict()})
+        trace = getattr(request.state, "jev_trace", None)
+        headers = {}
+        if trace and request.headers.get("X-Jev-Timing") == "1" and trace.seconds:
+            headers["Server-Timing"] = trace.header()
+        return JSONResponse(
+            status_code=exc.status_code, content={"error": exc.as_dict()}, headers=headers
+        )
 
     metrics_registry = CollectorRegistry()
     count = Counter(
@@ -115,28 +122,109 @@ def install_routes(
     router = APIRouter(prefix=prefix, dependencies=[Depends(authorize)])
     management = APIRouter(prefix=prefix + "/admin", dependencies=[Depends(admin)])
 
-    @router.post("/v1/decisions")
-    async def decisions(body: DecisionRequest, request: Request, http_response: Response):
-        http_response.headers["X-Jev-Worker"] = runtime(request).registry.owner
+    stages = Histogram(
+        "jev_runtime_stage_seconds",
+        "Serial runtime phases; total includes durable lease cleanup, excludes HTTP serialization",
+        ["stage", "outcome"],
+        registry=metrics_registry,
+        buckets=(0.0001, 0.0005, 0.001, 0.0025, 0.005, 0.01, 0.025, 0.1, 0.5, 1, 5, 30, 120),
+    )
+    work = Histogram(
+        "jev_branch_work_seconds",
+        "Individual branch operations; concurrent samples overlap and are not wall-time phases",
+        ["kind"],
+        registry=metrics_registry,
+        buckets=(0.0001, 0.0005, 0.001, 0.005, 0.025, 0.1, 0.5, 1, 5, 30, 120),
+    )
+    errors = Counter(
+        "jev_request_errors_total",
+        "Runtime failures by bounded category",
+        ["category"],
+        registry=metrics_registry,
+    )
+    questions = Counter(
+        "jev_questions_total", "Returned question outcomes", ["outcome"], registry=metrics_registry
+    )
+    tokens = Counter(
+        "jev_observed_tokens_total",
+        "Known usage values only; no estimates for missing values",
+        ["quantity"],
+        registry=metrics_registry,
+    )
+    token_observations = Counter(
+        "jev_token_observations_total",
+        "Responses with a known usage value",
+        ["quantity"],
+        registry=metrics_registry,
+    )
+    admission = Gauge(
+        "jev_admission",
+        "Current API-process admission occupancy",
+        ["quantity"],
+        registry=metrics_registry,
+    )
+
+    def observe(trace, outcome, response):
+        count.labels(outcome).inc()
+        for stage, seconds in trace.seconds.items():
+            stages.labels(stage, outcome).observe(seconds)
+        for kind, samples in trace.work.items():
+            for seconds in samples:
+                work.labels(kind).observe(seconds)
+        if response is not None:
+            for answer in response.answers.values():
+                questions.labels(answer.status).inc()
+            for quantity in (
+                "logical_prompt_tokens",
+                "engine_prompt_tokens",
+                "engine_completion_tokens",
+                "cached_prompt_tokens",
+            ):
+                value = getattr(response.usage, quantity)
+                if value is not None:
+                    tokens.labels(quantity).inc(value)
+                    token_observations.labels(quantity).inc()
+
+    async def execute(body, request, http_response):
+        instance = runtime(request)
+        http_response.headers["X-Jev-Worker"] = instance.registry.owner
+        trace = DecisionTrace()
+        request.state.jev_trace = trace
+        response, outcome = None, "error"
         with latency.time():
             try:
                 response = await disconnect_guard(
-                    request, runtime(request).decide(body, tenant=request.state.jev_tenant)
+                    request, instance.decide(body, tenant=request.state.jev_tenant, trace=trace)
                 )
-                count.labels(response.status).inc()
+                outcome = response.status
+                if request.headers.get("X-Jev-Timing") == "1":
+                    http_response.headers["Server-Timing"] = trace.header()
                 return response
-            except BaseException:
-                count.labels("error").inc()
+            except BaseException as exc:
+                status = exc.status_code if isinstance(exc, JevError) else 500
+                category = (
+                    "cancelled"
+                    if status == 499
+                    else "deadline"
+                    if status == 504
+                    else "budget"
+                    if status in {413, 429}
+                    else "validation"
+                    if 400 <= status < 500
+                    else "engine_or_internal"
+                )
+                errors.labels(category).inc()
                 raise
+            finally:
+                observe(trace, outcome, response)
+
+    @router.post("/v1/decisions")
+    async def decisions(body: DecisionRequest, request: Request, http_response: Response):
+        return await execute(body, request, http_response)
 
     @router.post("/v1/systemone")
-    async def systemone(body: SystemOneRequest, request: Request):
-        return from_decision(
-            await disconnect_guard(
-                request,
-                runtime(request).decide(body.to_decision(), tenant=request.state.jev_tenant),
-            )
-        )
+    async def systemone(body: SystemOneRequest, request: Request, http_response: Response):
+        return from_decision(await execute(body.to_decision(), request, http_response))
 
     @router.get("/v1/capabilities")
     async def capabilities(request: Request):
@@ -176,7 +264,14 @@ def install_routes(
         }
 
     @router.get("/metrics")
-    async def metrics():
+    async def metrics(request: Request):
+        current = runtime(request).admission
+        for quantity, value in (
+            ("requests", current.requests),
+            ("expanded_tokens", current.tokens),
+            ("queued_requests", current.queued),
+        ):
+            admission.labels(quantity).set(value)
         return Response(generate_latest(metrics_registry), media_type="text/plain; version=0.0.4")
 
     @management.get("/bundles")

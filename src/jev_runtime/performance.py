@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Literal
+from typing import Annotated, Literal
 
 import numpy as np
 from pydantic import Field, model_validator
 
 from jev_runtime.schema import Contract
+from jev_runtime.telemetry import STAGES, Stage
 
 
 class Measurement(Contract):
@@ -28,6 +29,9 @@ class Measurement(Contract):
     selected_candidate: str | None = Field(default=None, min_length=1, max_length=128)
     abstained: bool | None = Field(default=None, strict=True)
     selected_candidate_matches_reference: bool | None = Field(default=None, strict=True)
+    runtime_timings_ms: dict[Stage, Annotated[float, Field(ge=0, allow_inf_nan=False)]] | None = (
+        None
+    )
     error_code: str | None = None
     http_status: int | None = None
 
@@ -86,6 +90,32 @@ def _generation_cost(rows: list[Measurement]) -> dict:
     }
 
 
+def _runtime_timings(rows: list[Measurement]) -> dict:
+    stages = {}
+    for stage in STAGES:
+        values = [
+            row.runtime_timings_ms[stage]
+            for row in rows
+            if row.runtime_timings_ms is not None and stage in row.runtime_timings_ms
+        ]
+        stages[stage] = {
+            "observed_requests": len(values),
+            "mean_ms": float(np.mean(values)) if values else None,
+            "p50_ms": float(np.percentile(values, 50)) if values else None,
+            "p95_ms": float(np.percentile(values, 95)) if values else None,
+            "p99_ms": float(np.percentile(values, 99)) if len(values) >= 10000 else None,
+        }
+    return {
+        "request_denominator": len(rows),
+        "stages": stages,
+        "qualification": (
+            "Server-observed runtime wall time; excludes HTTP parsing/serialization/network. "
+            "Serial phases partition each observed total; percentiles must not be added. "
+            "Missing phases/headers remain unobserved."
+        ),
+    }
+
+
 def summarize_cohort(
     rows: list[Measurement], window_seconds: float, makespan_seconds: float
 ) -> dict:
@@ -130,6 +160,10 @@ def summarize_cohort(
             Counter(row.error_code or "unspecified" for row in rows if row.outcome != "completed")
         ),
         "http_statuses": dict(Counter(str(row.http_status) for row in rows)),
+        "runtime_timings": {
+            "all_attempts": _runtime_timings(rows),
+            "strict_successes": _runtime_timings(completed),
+        },
         "output_cost": {
             "all_attempts": _generation_cost(rows),
             "strict_successes": _generation_cost(completed),

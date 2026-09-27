@@ -164,3 +164,34 @@ Evidence: [SGLang](../evidence/dsw/sglang-generation-444fd1b/report.json),
 [truncation negative check](../evidence/dsw/sglang-generation-truncated-444fd1b/report.json).
 The native candidate/other Jev baselines, controlled matrix, varying-input workloads
 and business-quality equivalence remain outstanding.
+
+## Runtime phase profiling
+
+Use `--runtime-timing` to request per-response `Server-Timing` observations. The
+seven serial phases partition the runtime's `total`, including durable cleanup:
+
+| Phase | Measured boundary |
+|---|---|
+| pin | Resolve route and acquire the persisted bundle lease |
+| compile | Validate bundle/request and render/tokenize/validate scoring sequences |
+| journal | Persist branch IDs before dispatch and emit the correlation log |
+| queue | Wait for per-process admission |
+| execute | Schedule branches, await engine results, assemble answers and drain child tasks |
+| finalize | Aggregate question outcomes/usage and construct the response contract |
+| release | Persist lease completion or uncertain-abort state and clear local ownership |
+
+`total` excludes HTTP body parsing, authorization, response serialization, network
+transport and metrics publication. Client end-to-end latency remains the throughput
+and overhead comparison boundary. `execute` is engine queue/compute/adapter wall
+time plus local scheduling/assembly, not a GPU kernel timer. Separate Prometheus
+branch-operation samples cover semaphore waits, engine calls, answer assembly and
+abort; samples can overlap and cannot be summed into wall time.
+
+The header is opt-in (`X-Jev-Timing: 1`) and adds no response JSON fields. Handled
+runtime errors include timings for phases actually reached. Authentication/schema
+rejections before runtime have no runtime observation. The benchmark rejects a
+missing/invalid requested header rather than inventing zero. Each attempt retains
+its observed stages; summary statistics expose stage-specific observation counts
+for all attempts and strict successes separately. Stage percentiles are descriptive
+and must not be added. Independent-candidate work may have overlapping branches;
+its serial runtime phases still partition the request's observed total.
