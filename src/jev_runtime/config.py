@@ -1,0 +1,101 @@
+from __future__ import annotations
+
+import asyncio
+import os
+from pathlib import Path
+from typing import Literal
+
+import yaml
+from pydantic import Field
+
+from jev_runtime.backends.sglang import SGLangHTTP
+from jev_runtime.backends.vllm import VLLMHTTP
+from jev_runtime.compiler import Compiler
+from jev_runtime.registry import Registry
+from jev_runtime.runtime import Runtime
+from jev_runtime.schema import Bundle, Contract, ModelIdentity
+
+
+class Settings(Contract):
+    backend: Literal["sglang", "vllm"]
+    engine_url: str = "http://127.0.0.1:30000"
+    model_id: str
+    model_revision: str = Field(pattern=r"^(?:[a-fA-F0-9]{40,64}|local-sha256:[a-fA-F0-9]{64})$")
+    tokenizer: str | None = None
+    tokenizer_revision: str | None = None
+    dtype: str = "bfloat16"
+    quantization: str | None = None
+    registry_path: str = ".jev/registry.db"
+    host: str = "127.0.0.1"
+    port: int = Field(default=8795, ge=1, le=65535)
+    api_key_env: str = "JEV_API_KEY"
+    admin_key_env: str = "JEV_ADMIN_KEY"
+    engine_key_env: str = "JEV_ENGINE_API_KEY"
+    bootstrap_alias: str | None = None
+    bootstrap_bundle_id: str = "default"
+
+
+def load_settings(path: str | Path) -> Settings:
+    with Path(path).open() as file:
+        return Settings.model_validate(yaml.safe_load(file))
+
+
+def load_compiler(settings: Settings) -> Compiler:
+    from transformers import AutoTokenizer
+
+    kwargs = {"trust_remote_code": False}
+    revision = settings.tokenizer_revision or settings.model_revision
+    if not Path(settings.tokenizer or settings.model_id).is_dir():
+        kwargs["revision"] = revision
+    tokenizer = AutoTokenizer.from_pretrained(settings.tokenizer or settings.model_id, **kwargs)
+    return Compiler(tokenizer)
+
+
+def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
+    return ModelIdentity(
+        id=settings.model_id,
+        revision=settings.model_revision,
+        tokenizer_digest=compiler.tokenizer_digest,
+        template_digest=compiler.template_digest,
+        dtype=settings.dtype,
+        quantization=settings.quantization,
+    )
+
+
+async def build_runtime(
+    settings: Settings, native_backend=None, compiler: Compiler | None = None
+) -> Runtime:
+    compiler = compiler or await asyncio.to_thread(load_compiler, settings)
+    if native_backend is not None:
+        backend = native_backend
+    elif settings.backend == "sglang":
+        backend = SGLangHTTP(
+            settings.engine_url, settings.model_id, os.environ.get(settings.engine_key_env)
+        )
+    else:
+        backend = VLLMHTTP(settings.engine_url, os.environ.get(settings.engine_key_env))
+    identity = (
+        f"{settings.backend}:{settings.engine_url}:{settings.model_id}:{settings.model_revision}"
+    )
+    return Runtime(
+        backend,
+        compiler,
+        Registry(settings.registry_path),
+        identity,
+        settings.model_id,
+        expected_model=model_identity(settings, compiler),
+    )
+
+
+async def bootstrap(runtime: Runtime, settings: Settings) -> None:
+    if settings.bootstrap_alias is None:
+        return
+    bundle = Bundle(
+        id=settings.bootstrap_bundle_id, version=1, model=model_identity(settings, runtime.compiler)
+    )
+    state = runtime.registry.upload(bundle)
+    if state["state"] in {"VALIDATED", "FAILED", "RETIRED"}:
+        await runtime.prepare(bundle.reference)
+    routes = {route["alias"]: route for route in runtime.registry.list()["routes"]}
+    if settings.bootstrap_alias not in routes:
+        runtime.registry.activate(settings.bootstrap_alias, bundle.reference, 0)

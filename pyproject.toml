@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jev-runtime-core"
+version = "0.1.0a1"
+description = "Versioned typed decisions for SGLang and vLLM"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.10,<3", "httpx>=0.28,<1", "fastapi>=0.115,<1",
+  "uvicorn>=0.32,<1", "typer>=0.15,<1", "PyYAML>=6,<7",
+  "numpy>=1.26,<3", "prometheus-client>=0.21,<1",
+]
+
+[project.optional-dependencies]
+tokenizers = ["transformers>=4.51,<6", "safetensors>=0.5,<1"]
+reference = ["torch>=2.6", "transformers>=4.51,<6", "safetensors>=0.5,<1"]
+dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.9,<1", "build>=1.2"]
+
+[project.scripts]
+jevctl = "jev_runtime.cli:app"
+jev-gateway = "jev_runtime.cli:serve_entrypoint"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jev_runtime"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["gpu: requires an explicitly configured GPU engine"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]

@@ -1,0 +1,22 @@
+{
+  "model": "decision-model",
+  "input": {"text": "I was charged twice and would like a refund."},
+  "questions": [
+    {
+      "id": "intent",
+      "type": "choice",
+      "instruction": "Select the customer's primary intent.",
+      "options": [
+        {"id": "billing", "description": "Payments, charges, or refunds"},
+        {"id": "technical", "description": "A technical fault in the product"},
+        {"id": "other", "description": "A different topic"}
+      ]
+    },
+    {
+      "id": "refund_requested",
+      "type": "boolean",
+      "instruction": "Does the customer explicitly request a refund?"
+    }
+  ],
+  "execution": {"timeout_ms": 30000, "allow_partial": false}
+}

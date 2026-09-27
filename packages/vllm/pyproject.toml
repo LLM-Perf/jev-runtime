@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jev-vllm"
+version = "0.1.0a1"
+requires-python = ">=3.11"
+dependencies = ["jev-runtime-core==0.1.0a1"]
+
+[project.entry-points."vllm.endpoint_plugins"]
+jev_runtime_api = "jev_vllm.endpoint:JevEndpointPlugin"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jev_vllm"]

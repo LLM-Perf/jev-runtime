@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "project_working_name": "Jev Runtime",
+  "plan_date": "2026-09-27",
+  "status": "planning_only_not_implemented",
+  "assumptions": {
+    "core_engineers": 3,
+    "weeks": 12,
+    "working_days_per_week": 5,
+    "first_release_modality": "text",
+    "candidate_engine_versions": {
+      "sglang": "0.5.20",
+      "vllm": "0.30.0"
+    },
+    "engine_versions_certified": false,
+    "prototype_work_may_precede_completion_dependencies": true
+  },
+  "capacity": {
+    "total_person_days": 180,
+    "estimated_person_days": 134,
+    "reserve_person_days": 46,
+    "by_role": {
+      "C": 47,
+      "A": 45,
+      "B": 42
+    }
+  },
+  "milestones": [
+    {
+      "id": "M1",
+      "weeks": [
+        1,
+        2
+      ],
+      "name": "双引擎可行性门槛"
+    },
+    {
+      "id": "M2",
+      "weeks": [
+        3,
+        4
+      ],
+      "name": "Alpha"
+    },
+    {
+      "id": "M3",
+      "weeks": [
+        5,
+        6
+      ],
+      "name": "运行时热切换"
+    },
+    {
+      "id": "M4",
+      "weeks": [
+        7,
+        8
+      ],
+      "name": "Beta"
+    },
+    {
+      "id": "M5",
+      "weeks": [
+        9,
+        10
+      ],
+      "name": "Release Candidate"
+    },
+    {
+      "id": "M6",
+      "weeks": [
+        11,
+        12
+      ],
+      "name": "v0.1正式版验收"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "P01",
+      "title": "范围、模型清单与版本合同",
+      "owner_role": "C",
+      "estimated_person_days": 3,
+      "target_week_window": [
+        1,
+        1
+      ],
+      "completion_dependencies": [],
+      "acceptance": [
+        "冻结20个具体checkpoint和revision",
+        "列出40个引擎模型组合及业务验收标准"
+      ],
+      "deliverable": "scope-and-compatibility-contract.md",
+      "status": "planned"
+    },
+    {
+      "id": "P02",
+      "title": "引擎能力探测与启动验证",
+      "owner_role": "A",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        1,
+        2
+      ],
+      "completion_dependencies": [
+        "P01"
+      ],
+      "acceptance": [
+        "每引擎至少2个模型真实评分",
+        "探测标签位置、usage、插件生命周期和能力边界"
+      ],
+      "deliverable": "capability-probe-and-spike-report",
+      "status": "planned"
+    },
+    {
+      "id": "P03",
+      "title": "模板编译和标签合同",
+      "owner_role": "C",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        1,
+        2
+      ],
+      "completion_dependencies": [
+        "P01"
+      ],
+      "acceptance": [
+        "检查真实答案位置的单token追加与唯一性",
+        "思考前缀、空格、特殊token和多语言fixture通过"
+      ],
+      "deliverable": "template-compiler-and-label-contract",
+      "status": "planned"
+    },
+    {
+      "id": "P04",
+      "title": "Core协议与结果语义",
+      "owner_role": "C",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        2,
+        3
+      ],
+      "completion_dependencies": [
+        "P01",
+        "P03"
+      ],
+      "acceptance": [
+        "Choice Boolean Score Rank的schema冻结",
+        "概率语义、partial、tie和错误合同可验证"
+      ],
+      "deliverable": "jev-core-and-openapi",
+      "status": "planned"
+    },
+    {
+      "id": "P05",
+      "title": "SGLang评分适配",
+      "owner_role": "A",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        2,
+        3
+      ],
+      "completion_dependencies": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "acceptance": [
+        "固定tag返回完整指定标签分数",
+        "真实请求的token位置与零输出计数得到验证"
+      ],
+      "deliverable": "jev-sglang-score-adapter",
+      "status": "planned"
+    },
+    {
+      "id": "P06",
+      "title": "vLLM评分适配",
+      "owner_role": "B",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        1,
+        3
+      ],
+      "completion_dependencies": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "acceptance": [
+        "EngineClient一次返回指定标签完整分布",
+        "不把首标签score端点当成完整多分类返回"
+      ],
+      "deliverable": "jev-vllm-score-adapter",
+      "status": "planned"
+    },
+    {
+      "id": "P07",
+      "title": "参考scorer与数值对照",
+      "owner_role": "C",
+      "estimated_person_days": 4,
+      "target_week_window": [
+        3,
+        4
+      ],
+      "completion_dependencies": [
+        "P03",
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "acceptance": [
+        "相同token IDs和模型指纹逐样本对照",
+        "按精度冻结数值误差预算并单列近并列样本"
+      ],
+      "deliverable": "reference-scorer-and-parity-report",
+      "status": "planned"
+    },
+    {
+      "id": "P08",
+      "title": "SGLang插件或launcher接入",
+      "owner_role": "A",
+      "estimated_person_days": 6,
+      "target_week_window": [
+        4,
+        5
+      ],
+      "completion_dependencies": [
+        "P02",
+        "P05"
+      ],
+      "acceptance": [
+        "无需修改已安装引擎源文件即可安装运行",
+        "独立路由、幂等注册、多进程只在前端创建服务"
+      ],
+      "deliverable": "jev-sglang-package",
+      "status": "planned"
+    },
+    {
+      "id": "P09",
+      "title": "vLLM endpoint plugin接入",
+      "owner_role": "B",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        4,
+        4
+      ],
+      "completion_dependencies": [
+        "P02",
+        "P06"
+      ],
+      "acceptance": [
+        "显式allowlist及required_tasks通过",
+        "attach_router/init_state生命周期与关闭行为通过"
+      ],
+      "deliverable": "jev-vllm-package",
+      "status": "planned"
+    },
+    {
+      "id": "P10",
+      "title": "注册表、热切换与回退",
+      "owner_role": "C",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        4,
+        6
+      ],
+      "completion_dependencies": [
+        "P04",
+        "P08",
+        "P09"
+      ],
+      "acceptance": [
+        "不可变包、预热、CAS激活与在途版本固定",
+        "加载失败保留旧版本、排空后卸载、控制面失联继续服务"
+      ],
+      "deliverable": "bundle-registry-and-lifecycle-controller",
+      "status": "planned"
+    },
+    {
+      "id": "P11",
+      "title": "校准、拒答与任务评测工具",
+      "owner_role": "B",
+      "estimated_person_days": 7,
+      "target_week_window": [
+        5,
+        6
+      ],
+      "completion_dependencies": [
+        "P04",
+        "P07"
+      ],
+      "acceptance": [
+        "明确未校准状态与产物指纹绑定",
+        "独立数据集的质量、校准与风险覆盖报告"
+      ],
+      "deliverable": "calibration-and-quality-eval",
+      "status": "planned"
+    },
+    {
+      "id": "P12",
+      "title": "模型矩阵与认证自动化",
+      "owner_role": "C",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        7,
+        9
+      ],
+      "completion_dependencies": [
+        "P07",
+        "P08",
+        "P09",
+        "P11"
+      ],
+      "acceptance": [
+        "每引擎至少18/20基础组合通过且失败不移出分母",
+        "功能、数值、业务质量、性能四列分别记录"
+      ],
+      "deliverable": "model-certification-matrix",
+      "status": "planned"
+    },
+    {
+      "id": "P13",
+      "title": "预算、批处理与候选编排",
+      "owner_role": "A",
+      "estimated_person_days": 6,
+      "target_week_window": [
+        6,
+        7
+      ],
+      "completion_dependencies": [
+        "P05",
+        "P06",
+        "P10"
+      ],
+      "acceptance": [
+        "问题/候选/branch/token预算在提交前生效",
+        "有限并发及等价评分语义内的候选编排"
+      ],
+      "deliverable": "admission-and-batch-planner",
+      "status": "planned"
+    },
+    {
+      "id": "P14",
+      "title": "取消、超时与异常回收",
+      "owner_role": "A",
+      "estimated_person_days": 4,
+      "target_week_window": [
+        7,
+        8
+      ],
+      "completion_dependencies": [
+        "P10",
+        "P13"
+      ],
+      "acceptance": [
+        "取消传播到全部引擎子请求",
+        "无引用泄漏、partial与数值错误不伪装成功"
+      ],
+      "deliverable": "cancellation-and-failure-tests",
+      "status": "planned"
+    },
+    {
+      "id": "P15",
+      "title": "性能基准与证据产物",
+      "owner_role": "B",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        7,
+        7
+      ],
+      "completion_dependencies": [
+        "P05",
+        "P06",
+        "P07"
+      ],
+      "acceptance": [
+        "144个核心场景配置可枚举",
+        "原生评分、结构化生成、候选基线边界与分母一致"
+      ],
+      "deliverable": "performance-harness-and-workload-manifest",
+      "status": "planned"
+    },
+    {
+      "id": "P16",
+      "title": "profiling与缓存/读出优化",
+      "owner_role": "B",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        8,
+        9
+      ],
+      "completion_dependencies": [
+        "P13",
+        "P15"
+      ],
+      "acceptance": [
+        "给出真实瓶颈分解",
+        "达到原生评分90%吞吐等必须门槛；额外收益按实测报告"
+      ],
+      "deliverable": "optimization-patches-and-ablation-report",
+      "status": "planned"
+    },
+    {
+      "id": "P17",
+      "title": "LoRA生命周期认证",
+      "owner_role": "A",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        9,
+        9
+      ],
+      "completion_dependencies": [
+        "P08",
+        "P09",
+        "P10",
+        "P14"
+      ],
+      "acceptance": [
+        "仅开放认证模型/精度/并行组合",
+        "在途旧adapter排空后卸载且cache身份隔离"
+      ],
+      "deliverable": "lora-compatibility-profile",
+      "status": "planned"
+    },
+    {
+      "id": "P18",
+      "title": "SDK部署示例与CLI",
+      "owner_role": "C",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        10,
+        10
+      ],
+      "completion_dependencies": [
+        "P04",
+        "P08",
+        "P09",
+        "P10"
+      ],
+      "acceptance": [
+        "Python SDK及API示例可运行",
+        "独立引擎环境、镜像与发布回退命令齐全"
+      ],
+      "deliverable": "sdk-cli-and-deployment-examples",
+      "status": "planned"
+    },
+    {
+      "id": "P19",
+      "title": "监控管理接口与运行手册",
+      "owner_role": "C",
+      "estimated_person_days": 4,
+      "target_week_window": [
+        10,
+        11
+      ],
+      "completion_dependencies": [
+        "P10",
+        "P13",
+        "P14"
+      ],
+      "acceptance": [
+        "请求关联全部子请求和版本",
+        "指标分母清楚、管理面隔离、readiness执行canary"
+      ],
+      "deliverable": "metrics-and-runbooks",
+      "status": "planned"
+    },
+    {
+      "id": "P20",
+      "title": "双引擎集成和混合流量验证",
+      "owner_role": "A",
+      "estimated_person_days": 8,
+      "target_week_window": [
+        10,
+        11
+      ],
+      "completion_dependencies": [
+        "P12",
+        "P14",
+        "P17",
+        "P18"
+      ],
+      "acceptance": [
+        "两种部署方式和原引擎行为回归",
+        "混合长短/聊天流量与TP代表组合报告"
+      ],
+      "deliverable": "integration-and-coexistence-report",
+      "status": "planned"
+    },
+    {
+      "id": "P21",
+      "title": "长稳故障注入与热切换压力",
+      "owner_role": "B",
+      "estimated_person_days": 6,
+      "target_week_window": [
+        10,
+        11
+      ],
+      "completion_dependencies": [
+        "P10",
+        "P14",
+        "P16",
+        "P17"
+      ],
+      "acceptance": [
+        "24小时规定负载长稳",
+        "1000次配置发布回退，无版本混用和引用泄漏"
+      ],
+      "deliverable": "soak-and-failure-injection-report",
+      "status": "planned"
+    },
+    {
+      "id": "P22",
+      "title": "发布矩阵业务试点与验收",
+      "owner_role": "C",
+      "estimated_person_days": 5,
+      "target_week_window": [
+        11,
+        12
+      ],
+      "completion_dependencies": [
+        "P12",
+        "P18",
+        "P19",
+        "P20",
+        "P21"
+      ],
+      "acceptance": [
+        "至少2个真实任务有业务owner验收",
+        "正式支持范围、失败项和质量证据公开"
+      ],
+      "deliverable": "release-acceptance-report",
+      "status": "planned"
+    },
+    {
+      "id": "P23",
+      "title": "性能质量报告和示例",
+      "owner_role": "B",
+      "estimated_person_days": 3,
+      "target_week_window": [
+        12,
+        12
+      ],
+      "completion_dependencies": [
+        "P11",
+        "P15",
+        "P16",
+        "P20",
+        "P21"
+      ],
+      "acceptance": [
+        "质量与性能配对，保留原始运行manifest",
+        "快速开始、限制和示例由其他人复现"
+      ],
+      "deliverable": "release-documentation",
+      "status": "planned"
+    },
+    {
+      "id": "P24",
+      "title": "发布回退演练与移交",
+      "owner_role": "A",
+      "estimated_person_days": 3,
+      "target_week_window": [
+        12,
+        12
+      ],
+      "completion_dependencies": [
+        "P22",
+        "P23"
+      ],
+      "acceptance": [
+        "版本产物和依赖锁定",
+        "灰度、回退、值守与移交演练通过"
+      ],
+      "deliverable": "v0.1-release-candidate",
+      "status": "planned"
+    }
+  ]
+}

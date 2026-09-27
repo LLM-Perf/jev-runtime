@@ -1,0 +1,194 @@
+{
+  "checked_on": "2026-09-27",
+  "method": "Official public documentation, pinned release code, main code; static inspection only. No GPU model runs.",
+  "source_snapshot_count": 28,
+  "releases": [
+    {
+      "repo": "sgl-project/sglang",
+      "tag": "v0.5.20",
+      "published_at": "2026-09-18T22:41:33Z",
+      "url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.20"
+    },
+    {
+      "repo": "vllm-project/vllm",
+      "tag": "v0.30.0",
+      "published_at": "2026-09-22T05:20:54Z",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0"
+    }
+  ],
+  "observed_main_heads": {
+    "sgl-project/sglang": "c73f7077eb051ceeaadfa8819b20ed6d4912e8de",
+    "vllm-project/vllm": "379e9a1ea8a5995464d9bf775bcd36bb03a0995f"
+  },
+  "main_snapshot_note": "Files read via main are mutable URLs; recorded hashes identify retrieved contents. Do not assume the observed main HEAD pins every separately fetched file.",
+  "sources": [
+    {
+      "snapshot_name": "sglang-decisions.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/entrypoints/openai/serving_decisions.py",
+      "sha256": "156204223f138ff9d18a97c66671f9a77c4b3005d851621001132e8d594dcef7",
+      "bytes": 21559
+    },
+    {
+      "snapshot_name": "sglang-head-http.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/c73f7077eb051ceeaadfa8819b20ed6d4912e8de/python/sglang/srt/entrypoints/http_server.py",
+      "sha256": "1fbb46671e86d0ebf23046efa09e8e03d251754e681ba03b818dbb7a75c79c55",
+      "bytes": 110232
+    },
+    {
+      "snapshot_name": "sglang-hooks.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/plugins/hook_registry.py",
+      "sha256": "0144d8c3e5ee294322894f88b8ad3bd49edad15c124650e4e834d0366815dc7d",
+      "bytes": 16254
+    },
+    {
+      "snapshot_name": "sglang-http.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/entrypoints/http_server.py",
+      "sha256": "1fbb46671e86d0ebf23046efa09e8e03d251754e681ba03b818dbb7a75c79c55",
+      "bytes": 110232
+    },
+    {
+      "snapshot_name": "sglang-lora.mdx",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/docs/docs/advanced_features/lora.mdx",
+      "sha256": "5cc4526d9a877e4ad2609bb5cd8564fe9d99a4b7167d30b7836a5d728a6ed155",
+      "bytes": 21731
+    },
+    {
+      "snapshot_name": "sglang-plugins.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/plugins/__init__.py",
+      "sha256": "3a975a73f1a7887e68c81ea7a2530250597ac8ae978efc0b0f70f038a99a3164",
+      "bytes": 5037
+    },
+    {
+      "snapshot_name": "sglang-protocol.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/entrypoints/openai/protocol.py",
+      "sha256": "c59fda1238546fb2945d7bbb79466a66344dc054b262aecd85fb2659072aea88",
+      "bytes": 81989
+    },
+    {
+      "snapshot_name": "sglang-release-http.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/python/sglang/srt/entrypoints/http_server.py",
+      "sha256": "26b2357b12e382997e7ac3c475505147e2433974bc229c540b31291d6f872ad7",
+      "bytes": 107757
+    },
+    {
+      "snapshot_name": "sglang-release-lora.mdx",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/docs/docs/advanced_features/lora.mdx",
+      "sha256": "4007f2686e485f31b45d8bbcc78d95a104a7672ef39f5adfc8a88023508c2651",
+      "bytes": 20073
+    },
+    {
+      "snapshot_name": "sglang-release-plugins.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/python/sglang/srt/plugins/__init__.py",
+      "sha256": "3a975a73f1a7887e68c81ea7a2530250597ac8ae978efc0b0f70f038a99a3164",
+      "bytes": 5037
+    },
+    {
+      "snapshot_name": "sglang-release-protocol.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/python/sglang/srt/entrypoints/openai/protocol.py",
+      "sha256": "9125d49034cc3c5650bed2bb046b1bfaee2591478d689a7b35724dff92335971",
+      "bytes": 76365
+    },
+    {
+      "snapshot_name": "sglang-release-score.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/python/sglang/srt/entrypoints/openai/serving_score.py",
+      "sha256": "203748c564cd979d03d54dee44140c63caef59490d1ca508ccb1aca3f69ffccd",
+      "bytes": 3650
+    },
+    {
+      "snapshot_name": "sglang-release-scoring-mixin.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/v0.5.20/python/sglang/srt/managers/tokenizer_manager_score_mixin.py",
+      "sha256": "97af24bfbac2943b8887c60856297064dd0cfd6c7f4d67bc0a3db8e391768fb8",
+      "bytes": 27963
+    },
+    {
+      "snapshot_name": "sglang-score.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/entrypoints/openai/serving_score.py",
+      "sha256": "f46a89c18beb6d0de224043c1411cb8a74e288064a7c5d3e79b51c81cc388bd7",
+      "bytes": 4617
+    },
+    {
+      "snapshot_name": "sglang-scoring-mixin.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/c73f7077eb051ceeaadfa8819b20ed6d4912e8de/python/sglang/srt/managers/tokenizer_manager_score_mixin.py",
+      "sha256": "37610e02eb53d5775a35f5eabd44011b3f2efe58b4a37d3cfb93561e7c7f0717",
+      "bytes": 51580
+    },
+    {
+      "snapshot_name": "sglang-tokenizer-manager.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/managers/tokenizer_manager.py",
+      "sha256": "6318b01f055f100937fe7270c2ad7b715f726bb1183dccacf01ecf5b8dcebd30",
+      "bytes": 166307
+    },
+    {
+      "snapshot_name": "vllm-endpoint-interface.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/vllm/plugins/endpoint_plugins/interface.py",
+      "sha256": "9293616ccd3cdf725fa087d3f76a518dba871ef2c796446990fa2a0a5fc159ee",
+      "bytes": 5339
+    },
+    {
+      "snapshot_name": "vllm-endpoint-plugins.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/docs/design/endpoint_plugins.md",
+      "sha256": "69f6b0303345b8c693f5d8c665fdf9da694f113bad20dd8694134c22020ba4dc",
+      "bytes": 8383
+    },
+    {
+      "snapshot_name": "vllm-generative-scoring.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/docs/serving/online_serving/generative_scoring.md",
+      "sha256": "7f90d859b0a5b2b730dafdbb82cc2604a43b08c5a582f8cbb264bba57d7bd6bf",
+      "bytes": 3030
+    },
+    {
+      "snapshot_name": "vllm-generative-serving.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/vllm/entrypoints/generate/generative_scoring/serving.py",
+      "sha256": "5ba87c15f12a4b7a5e5065fda776075916326371e7dd97fd0a55fb7a877412b2",
+      "bytes": 18211
+    },
+    {
+      "snapshot_name": "vllm-jev-readme.md",
+      "url": "https://raw.githubusercontent.com/mode-io/vllm-jev/main/README.md",
+      "sha256": "7acae1b5b76dba1bd401dff2e322a8ccfa08bf5082fbe5ac9ea1e7688cf0ece9",
+      "bytes": 9589
+    },
+    {
+      "snapshot_name": "vllm-lora.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/docs/features/lora.md",
+      "sha256": "c94583fe2dd319e249bc097b50b2c336539695061d8a163554410384a928a608",
+      "bytes": 20538
+    },
+    {
+      "snapshot_name": "vllm-plugins.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/docs/design/plugin_system.md",
+      "sha256": "d1e80796c029bfaf337f620c047a7c9fab55b59b4c097d240a45cf1b0b794cea",
+      "bytes": 12132
+    },
+    {
+      "snapshot_name": "vllm-plugins.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/vllm/plugins/__init__.py",
+      "sha256": "06942d64e526c2c7407265e1903d625c4d2118d8d7fc39c616b1cc6aa6fc2c8f",
+      "bytes": 5944
+    },
+    {
+      "snapshot_name": "vllm-release-endpoints.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/v0.30.0/docs/design/endpoint_plugins.md",
+      "sha256": "69f6b0303345b8c693f5d8c665fdf9da694f113bad20dd8694134c22020ba4dc",
+      "bytes": 8383
+    },
+    {
+      "snapshot_name": "vllm-release-generative.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/v0.30.0/vllm/entrypoints/generate/generative_scoring/serving.py",
+      "sha256": "117de8c541d6d9f3f49325d0bb9078305dc74e28af74d6dea6075d3f7f36b7a2",
+      "bytes": 18205
+    },
+    {
+      "snapshot_name": "vllm-release-plugins.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/v0.30.0/vllm/plugins/__init__.py",
+      "sha256": "fb6e6ee432c5a4ae207aaffe4b546aca9381f56ee8498b0a3e0d9af2d289d023",
+      "bytes": 5943
+    },
+    {
+      "snapshot_name": "vllm-sampling.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/main/vllm/sampling_params.py",
+      "sha256": "74fdf4970656d3fd6cb8c49aa6776ffa9819c7d779161872a5aa4e25560437ef",
+      "bytes": 57736
+    }
+  ]
+}

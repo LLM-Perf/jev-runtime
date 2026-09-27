@@ -1,0 +1,11 @@
+backend: sglang
+engine_url: http://127.0.0.1:30000
+model_id: Qwen/Qwen3-0.6B
+# Replace with the exact loaded model revision before preparation/validation.
+model_revision: REPLACE_WITH_MODEL_COMMIT
+tokenizer: Qwen/Qwen3-0.6B
+dtype: bfloat16
+registry_path: .jev/sglang-registry.db
+host: 127.0.0.1
+port: 8795
+bootstrap_alias: decision-model

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jev-sglang"
+version = "0.1.0a1"
+requires-python = ">=3.11"
+dependencies = ["jev-runtime-core==0.1.0a1"]
+
+[project.scripts]
+jev-sglang = "jev_sglang.launcher:main"
+
+[project.entry-points."sglang.srt.plugins"]
+jev_runtime = "jev_sglang.plugin:register"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jev_sglang"]
