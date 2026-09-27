@@ -1,0 +1,733 @@
+{
+  "source_commit": "c36d65d",
+  "runtime_commit": "c36d65d",
+  "started_at": 1790505707.9894028,
+  "qualification": "colocated BF16 TP1 single-frontend untrained-LoRA functional evidence",
+  "process": {
+    "identity": {
+      "pid": 2594973,
+      "start_ticks": "426119886",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "engine": "sglang",
+    "mode": "native-plugin",
+    "command": [
+      "/root/jev-runtime/envs/sglang/bin/python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "--served-model-name",
+      "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18795",
+      "--dtype",
+      "bfloat16",
+      "--context-length",
+      "2048",
+      "--max-running-requests",
+      "4",
+      "--chunked-prefill-size",
+      "512",
+      "--max-total-tokens",
+      "2048",
+      "--mem-fraction-static",
+      "0.65",
+      "--disable-cuda-graph",
+      "--attention-backend",
+      "triton",
+      "--enable-lora",
+      "--max-lora-rank",
+      "64",
+      "--max-loaded-loras",
+      "4",
+      "--max-loras-per-batch",
+      "4",
+      "--lora-target-modules",
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "gpu_before": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "created": 1790505659.5264428,
+    "port": 18795,
+    "qualification": "colocated-functional-test",
+    "memory_budget_denominator": "free_mib"
+  },
+  "fixture": {
+    "qualification": "untrained nonzero lifecycle fixtures; not task-quality models",
+    "base_model": {
+      "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+    },
+    "seed": 20260927,
+    "artifacts": {
+      "positive": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+      },
+      "negative": {
+        "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+        "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+      }
+    }
+  },
+  "probability_tolerance": 0.0001,
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "e0810123396348dab6c6f8c0d73ff245"
+    },
+    "immutable_bindings": [
+      {
+        "reference": "lora-caf28fd7233c-negative@sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+        "state": "READY",
+        "backend": "sglang:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-caf28fd7233c-negative",
+            "revision": "sha256:66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/sglang-smollm17b-lora-c36d65d/adapters/66968451a159110fcfedd0f411c5a7fbdf4c16768789c526fa367b3b2310fc89",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:f9d067b46ba896626e5a18f112203e7449c7d1d817ee41c63c78f5926f8d660d"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-720ba8921a4b46f5a1b0e78d7b5aebbd",
+          "engine_id": 1513632326
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      },
+      {
+        "reference": "lora-caf28fd7233c-positive@sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+        "state": "READY",
+        "backend": "sglang:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "binding": {
+          "artifact": {
+            "id": "lora-caf28fd7233c-positive",
+            "revision": "sha256:b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "base_model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "base_model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/runs/sglang-smollm17b-lora-c36d65d/adapters/b68d10462810676a05ac6e8664e49317114e714a490a2e2ebdc57638361134cd",
+            "rank": 8,
+            "targets": [
+              "o_proj"
+            ],
+            "files": {
+              "adapter_config.json": "sha256:c2693454e639d30071ca0a0f31c4714aef5a26647ed73aeb6a95d71db33412ee",
+              "adapter_model.safetensors": "sha256:64fb3eb22c526542687820355c1633d864971aea5ac9665b10dff4b2396836b7"
+            },
+            "bytes": 3152318
+          },
+          "engine_name": "jev-lora-79d8c7f064c34d5a81c5b56e889eb453",
+          "engine_id": 1676602300
+        },
+        "operation": null,
+        "owner": null,
+        "error": null,
+        "bundles": []
+      }
+    ],
+    "distinct_nonzero_adapter_outputs": [
+      {
+        "true": 0.679178699175393,
+        "false": 0.32082130082460697
+      },
+      {
+        "true": 0.5312093733737563,
+        "false": 0.46879062662624377
+      },
+      {
+        "true": 0.40733341443526055,
+        "false": 0.5926665855647394
+      }
+    ],
+    "alternating_cache_isolation": {
+      "switches": 24,
+      "max_probability_error": 0.0,
+      "cache_observations": [
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@1",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@2",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        },
+        {
+          "bundle": "lora-caf28fd7233c@3",
+          "cached_prompt_tokens": 90,
+          "logical_prompt_tokens": 91
+        }
+      ]
+    },
+    "old_request_journal": {
+      "lease_id": "db44196727b7467f8e7667f408f89687",
+      "branches": 128
+    },
+    "inflight_switch_and_drain": {
+      "old_bundle": "lora-caf28fd7233c@2",
+      "questions": 128,
+      "new_bundle": "lora-caf28fd7233c@3",
+      "premature_unload_status": 409
+    },
+    "cancel_journal": {
+      "lease_id": "38e6cfc79b4147f3b620d048807125a9",
+      "branches": 128
+    }
+  },
+  "attempts": [
+    {
+      "path": "ready",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/profile",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/register",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/load",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/prepare",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "path": "v1/decisions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/activate",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "v1/requests/lora-inflight-d3470b0a578c401393b4b8fee5edd6e3/cancel",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 503,
+      "expected": 200
+    },
+    {
+      "path": "admin/bundles/disable",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "admin/adapters/unload",
+      "status": 503,
+      "expected": 200
+    }
+  ],
+  "passed": false,
+  "failure": {
+    "type": "AssertionError",
+    "message": "('admin/adapters/unload', 503, '{\"error\":{\"code\":\"adapter_operation_failed\",\"message\":\"Adapter operation could not be confirmed; reconcile before reuse\"}}')"
+  },
+  "cleanup_error": "('admin/adapters/unload', 503, '{\"error\":{\"code\":\"adapter_restart_required\",\"message\":\"An uncertain SGLang load/unload requires a full engine restart\"}}')",
+  "finished_at": 1790505833.9787364
+}

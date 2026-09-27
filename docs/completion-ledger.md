@@ -87,7 +87,12 @@ replacement for any requirement in `implementation-plan.md`.
   baseline. A stricter rerun will also require per-adapter cache-hit observations.
   SGLang's first run hit its reserved base-model pool-slot constraint on the second
   pinned adapter; its report/cleanup are preserved. The launcher now reserves four
-  slots and the adapter checks pinned capacity before dispatch. Its rerun is pending.
+  slots and the adapter checks pinned capacity before dispatch. At `c36d65d`,
+  SGLang passed nonzero output separation, cache-hit-observed alternating switches
+  and the in-flight old-version drain check, then failed unload after cancellation.
+  Its native generator had discarded request state before abort, leaving a LoRA
+  usage count unreleased. The receiver now remains shielded through a bounded
+  terminal-response wait; the failing run and cleanup are retained for retest.
 
 ## Required evidence still outstanding
 

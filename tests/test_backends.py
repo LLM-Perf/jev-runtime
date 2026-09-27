@@ -1,4 +1,6 @@
-from types import SimpleNamespace
+import asyncio
+import sys
+from types import ModuleType, SimpleNamespace
 
 import httpx
 import pytest
@@ -130,3 +132,39 @@ def test_sglang_capacity_reserves_base_model_slot_before_dispatch():
     assert error.value.code == "adapter_capacity"
     args.max_loras_per_batch = 3
     backend._check_adapter_capacity()
+
+
+async def test_sglang_native_cancel_retains_receiver_until_terminal_output(monkeypatch):
+    module = ModuleType("sglang.srt.managers.io_struct")
+    module.GenerateReqInput = lambda **kwargs: SimpleNamespace(**kwargs)
+    monkeypatch.setitem(sys.modules, module.__name__, module)
+    dispatched, terminal, closed = asyncio.Event(), asyncio.Event(), asyncio.Event()
+    states = set()
+
+    async def generate(request, unused):
+        states.add(request.rid)
+        dispatched.set()
+        try:
+            await terminal.wait()
+            yield {"meta_info": {"finish_reason": {"type": "abort"}, "completion_tokens": 0}}
+        finally:
+            states.discard(request.rid)
+            closed.set()
+
+    def abort(rid, abort_all):
+        assert rid in states and not closed.is_set()
+        assert not abort_all
+        terminal.set()
+
+    manager = SimpleNamespace(generate_request=generate, abort_request=abort)
+    backend = SGLangNative(manager, "0.5.19")
+    parent = asyncio.create_task(backend.score(scoring_request()))
+    await dispatched.wait()
+    parent.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await parent
+    assert not closed.is_set() and "r" in states
+    await backend.cancel("r")
+    assert closed.is_set() and not states
+    await asyncio.sleep(0)
+    assert not backend._scoring

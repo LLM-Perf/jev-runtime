@@ -89,6 +89,11 @@ isolated engine, then reconcile. Do not restart only its frontend. The `--recove
 CLI flag can take over an in-progress operation only from a verified dead owner;
 it cannot override active routes, leases or a live coordinator.
 
+Native SGLang scoring keeps its response receiver alive when the client cancels.
+It sends abort and waits up to 4.5 seconds for terminal output before confirming
+drain. Closing the generator first would discard upstream request state and lose
+the LoRA usage-counter release. A timeout retains the runtime's recovery lease.
+
 ## Validation
 
 `tests/integration/lora_fixture.py` creates two deterministic nonzero, untrained

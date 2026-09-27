@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import inspect
 from typing import Any
 
@@ -121,6 +122,13 @@ class SGLangNative:
         self.managed_lora = False
         self._adapter_bindings: dict[str, AdapterBinding] = {}
         self._adapter_attempts: set[str] = set()
+        self._scoring: dict[str, asyncio.Task] = {}
+
+    def _score_done(self, request_id: str, task: asyncio.Task) -> None:
+        if self._scoring.get(request_id) is task:
+            self._scoring.pop(request_id)
+        if not task.cancelled():
+            task.exception()
 
     def _lora_profile(self) -> bool:
         args = self.manager.server_args
@@ -234,17 +242,39 @@ class SGLangNative:
                     "adapter_not_ready", "Adapter has not been loaded by this worker", 503
                 )
             payload["lora_path"] = binding.engine_name
-        generator = self.manager.generate_request(GenerateReqInput(**payload), None)
-        try:
-            result = await anext(generator)
-            return parse_sglang(result, request)
-        finally:
-            await generator.aclose()
+
+        async def receive():
+            generator = self.manager.generate_request(GenerateReqInput(**payload), None)
+            try:
+                result = await anext(generator)
+                return parse_sglang(result, request)
+            finally:
+                await generator.aclose()
+
+        # SGLang 0.5.19 discards rid_to_state if its generator is cancelled.
+        # Cancelling it before sending abort loses both scheduler routing and
+        # the LoRA usage-counter release on the eventual output. Keep the
+        # receiver alive until cancel() observes its terminal response.
+        if request.request_id in self._scoring:
+            raise JevError("duplicate_request", "Native scoring ID is already active", 409)
+        task = asyncio.create_task(receive())
+        self._scoring[request.request_id] = task
+        task.add_done_callback(lambda done: self._score_done(request.request_id, done))
+        return await asyncio.shield(task)
 
     async def cancel(self, request_id: str) -> None:
         result = self.manager.abort_request(rid=request_id, abort_all=False)
         if inspect.isawaitable(result):
             await result
+        task = self._scoring.get(request_id)
+        if task is not None:
+            async with asyncio.timeout(4.5):
+                try:
+                    await asyncio.shield(task)
+                except Exception:
+                    # An engine abort is a scoring error, but its terminal response
+                    # still confirms drain. Parent cancellation/timeouts propagate.
+                    pass
 
     async def close(self) -> None:
         # The host engine owns its manager and worker lifecycle.

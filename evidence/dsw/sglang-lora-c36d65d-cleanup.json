@@ -1,0 +1,15 @@
+{
+  "source_commit": "c36d65d",
+  "process_identity": {
+    "pid": 2594973,
+    "start_ticks": "426119886",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "non_zombie_group_members": [],
+  "gpu_free_mib": 11990,
+  "timestamp": 1790505940.4343636,
+  "source_diagnosis": "TokenizerManager.generate_request catches BaseException and discards request state before the later Runtime abort, so the terminal response cannot release the acquired LoRA counter. Receiver must remain alive through abort acknowledgement.",
+  "late_output_excerpt": [
+    "[2026-09-27 10:41:53] Received output for rid='jev-10d2773cb3b14845a603f0456dd9758c.q0.0' but the state was deleted in TokenizerManager."
+  ]
+}
