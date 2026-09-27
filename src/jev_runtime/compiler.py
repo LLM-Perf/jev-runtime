@@ -31,7 +31,21 @@ class Compiler:
         self._cached_tokens = 0
         self._encoding_cache: OrderedDict = OrderedDict()
         self._cache_lock = threading.Lock()
-        self._batch_encoding = bool(getattr(tokenizer, "is_fast", False)) and callable(tokenizer)
+        encode = getattr(tokenizer, "encode", None)
+        encode_plus = getattr(tokenizer, "_encode_plus", None)
+        backend = getattr(tokenizer, "backend_tokenizer", None)
+        # Only this inspected HF implementation forwards ordinary string input
+        # directly to the configured Rust backend. Custom encode overrides keep
+        # their wrapper path. The base encode below first sets the same default
+        # no-padding/no-truncation and special-token splitting configuration.
+        self._fast_ids = (
+            getattr(encode, "__module__", None) == "transformers.tokenization_utils_base"
+            and getattr(encode, "__qualname__", None) == "PreTrainedTokenizerBase.encode"
+            and getattr(encode_plus, "__module__", None)
+            == "transformers.tokenization_utils_tokenizers"
+            and getattr(encode_plus, "__qualname__", None) == "TokenizersBackend._encode_plus"
+            and callable(getattr(backend, "encode_batch_fast", None))
+        )
         if not getattr(tokenizer, "chat_template", None):
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
         self.template_digest = content_digest(tokenizer.chat_template)
@@ -53,7 +67,8 @@ class Compiler:
         return {
             "cache_token_limit": self._cache_tokens,
             "cache_entry_limit": self._cache_entries,
-            "fast_batch_continuations": self._batch_encoding,
+            "continuation_encoder": "backend-ids-only" if self._fast_ids else "serial-wrapper",
+            "backend_ids_only_eligible": self._fast_ids,
             "batch_size_limit": 32,
             "contract": "full prompt plus each label; exact prefix and one-token checks",
         }
@@ -64,18 +79,19 @@ class Compiler:
         # skipping normalization/BPE. Chunking bounds temporary prompt copies.
         for start in range(0, len(labels), 32):
             texts = [prompt + label for label in labels[start : start + 32]]
-            if self._batch_encoding:
-                try:
-                    encoded = self.tokenizer(
-                        texts,
-                        add_special_tokens=False,
-                        return_attention_mask=False,
-                        return_token_type_ids=False,
-                    )["input_ids"]
-                except (TypeError, AttributeError, NotImplementedError):
-                    # Some custom fast wrappers expose encode but no standard
-                    # batch-call interface. Preserve the existing exact path.
-                    encoded = [self.tokenizer.encode(t, add_special_tokens=False) for t in texts]
+            backend = getattr(self.tokenizer, "backend_tokenizer", None)
+            if (
+                self._fast_ids
+                and backend.truncation is None
+                and backend.padding is None
+                and backend.encode_special_tokens == self.tokenizer.split_special_tokens
+            ):
+                # Only IDs are consumed. encode_batch_fast omits offset mapping;
+                # normalization, pretokenization, BPE and full-prefix checks stay.
+                encoded = [
+                    result.ids
+                    for result in backend.encode_batch_fast(texts, add_special_tokens=False)
+                ]
                 if len(encoded) != len(texts):
                     raise JevError("tokenizer_contract", "Tokenizer omitted a continuation", 409)
                 yield from encoded

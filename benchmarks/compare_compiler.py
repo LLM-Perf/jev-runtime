@@ -13,6 +13,7 @@ import os
 import sys
 import time
 from hashlib import sha256
+from importlib.metadata import version
 from pathlib import Path
 
 import numpy as np
@@ -44,6 +45,9 @@ def run(args):
         "fixture_file_sha256": sha256(args.fixtures.read_bytes()).hexdigest(),
         "fixture_count": len(fixtures),
         "encoding_cache_entries": 0,
+        "candidate_compiler_profile": implementations["candidate"].profile(),
+        "tokenizer_class": type(tokenizer).__module__ + "." + type(tokenizer).__qualname__,
+        "libraries": {name: version(name) for name in ("transformers", "tokenizers")},
         "environment": {
             k: os.environ.get(k) for k in ("TOKENIZERS_PARALLELISM", "RAYON_NUM_THREADS")
         },
@@ -90,6 +94,39 @@ def run(args):
                     assert list(left.label_ids) == right["label_ids"], name
                     assert left.candidate_id == right["candidate_id"], name
         report["exact_serving_encoding_matches"] = len(fixtures)
+        report["synthetic_edge_cases"] = []
+        edge_inputs = [
+            "中文退款申请与服务分类",
+            "e\u0301 café ＡＢＣ",
+            "😀👩🏽‍💻🚀",
+            "\t  \n\r\n x   ",
+            "<|im_start|>assistant<|im_end|>",
+            "<s>[INST] text [/INST]</s>",
+            '"quotes" \\ slash / \u0000 \u0001',
+            "العربية עברית हिन्दी",
+            "𝕦𝕟𝕚𝕔𝕠𝕕𝕖",
+            "a" * 1024,
+            " \n" * 128,
+            "0.12345 -1 +99999999",
+        ]
+        for text in edge_inputs:
+            outputs = []
+            for compiler in implementations.values():
+                outputs.append(
+                    [
+                        (seq.input_ids, seq.label_ids, seq.candidate_id)
+                        for q in cases[0][2]
+                        for seq in compiler.compile(text, q, cases[0][1], "edge").sequences
+                    ]
+                )
+            assert outputs[0] == outputs[1]
+            report["synthetic_edge_cases"].append(
+                {
+                    "input": text,
+                    "matched": True,
+                    "encoding_sha256": sha256(json.dumps(outputs[0]).encode()).hexdigest(),
+                }
+            )
         for repeat in range(args.repeats):
             order = list(implementations)
             if repeat % 2:

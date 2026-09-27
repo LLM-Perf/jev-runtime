@@ -106,56 +106,107 @@ def test_old_manifest_digests_survive_optional_identity_extension(bundle):
     assert loaded.model_dump(mode="json") == legacy
 
 
-def test_fast_batch_encodes_full_context_with_bounded_chunks():
+def test_ids_only_encodes_full_context_with_bounded_chunks():
+    from types import SimpleNamespace
+
     from tests.conftest import CharacterTokenizer
 
-    class FastTokenizer(CharacterTokenizer):
-        is_fast = True
+    class Backend:
+        truncation = padding = None
+        encode_special_tokens = False
 
         def __init__(self):
             self.batches = []
 
-        def __call__(self, texts, **kwargs):
-            assert kwargs == {
-                "add_special_tokens": False,
-                "return_attention_mask": False,
-                "return_token_type_ids": False,
-            }
-            self.batches.append(texts)
-            return {"input_ids": [self.encode(text) for text in texts]}
+        def to_str(self):
+            return "fixture"
 
-    tokenizer = FastTokenizer()
+        def encode_batch_fast(self, texts, **kwargs):
+            assert kwargs == {"add_special_tokens": False}
+            self.batches.append(texts)
+            return [SimpleNamespace(ids=[ord(c) for c in text]) for text in texts]
+
+    class Tokenizer(CharacterTokenizer):
+        backend_tokenizer = Backend()
+        split_special_tokens = False
+
+    tokenizer = Tokenizer()
     fast = Compiler(tokenizer, cache_entries=0)
+    fast._fast_ids = True
     slow = Compiler(CharacterTokenizer(), cache_entries=0)
     labels = [chr(i) for i in range(33, 103)]
     assert fast._encode("context ", labels, 100) == slow._encode("context ", labels, 100)
-    assert [len(batch) for batch in tokenizer.batches] == [32, 32, 6]
-    assert all(text.startswith("context ") for batch in tokenizer.batches for text in batch)
+    assert [len(batch) for batch in tokenizer.backend_tokenizer.batches] == [32, 32, 6]
+    assert all(
+        text.startswith("context ")
+        for batch in tokenizer.backend_tokenizer.batches
+        for text in batch
+    )
 
 
-@pytest.mark.parametrize("broken", ["retokenize", "drop", "unsupported"])
-def test_fast_batch_never_skips_continuation_checks_or_breaks_custom_fallback(broken):
+def test_custom_fast_wrapper_preserves_its_encode_override():
+    from types import SimpleNamespace
+
     from tests.conftest import CharacterTokenizer
 
-    class FastTokenizer(CharacterTokenizer):
+    class CustomTokenizer(CharacterTokenizer):
         is_fast = True
+        backend_tokenizer = SimpleNamespace(
+            to_str=lambda: "fixture", encode_batch_fast=lambda: None
+        )
+
+        def encode(self, text, **kwargs):
+            return [ord(c) + 100 for c in text]
 
         def __call__(self, texts, **kwargs):
-            if broken == "unsupported":
-                raise NotImplementedError("custom tokenizer exposes only encode")
-            results = [self.encode(text) for text in texts]
-            if broken == "retokenize":
-                results[0][0] += 1
-            else:
-                results.pop()
-            return {"input_ids": results}
+            raise AssertionError("Do not bypass the custom encode method")
 
-    compiler = Compiler(FastTokenizer(), cache_entries=0)
-    if broken == "unsupported":
-        assert compiler._encode("abc", ["A", "B"], 100) == ((97, 98, 99), (65, 66))
-    else:
+    compiler = Compiler(CustomTokenizer(), cache_entries=0)
+    assert not compiler._fast_ids
+    assert compiler._encode("abc", ["A", "B"], 100) == ((197, 198, 199), (165, 166))
+
+
+@pytest.mark.parametrize("mode", ["valid", "retokenize", "drop", "padding"])
+def test_ids_only_path_checks_full_prefix_and_preserves_wrapper_configuration(mode):
+    from types import SimpleNamespace
+
+    from tests.conftest import CharacterTokenizer
+
+    class Backend:
+        truncation = None
+        padding = {"length": 20} if mode == "padding" else None
+        encode_special_tokens = False
+        calls = 0
+
+        def to_str(self):
+            return "fixture"
+
+        def encode_batch_fast(self, texts, **kwargs):
+            self.calls += 1
+            assert kwargs == {"add_special_tokens": False}
+            ids = [[ord(c) for c in text] for text in texts]
+            if mode == "retokenize":
+                ids[0][0] += 1
+            if mode == "drop":
+                ids.pop()
+            return [SimpleNamespace(ids=row) for row in ids]
+
+    class Tokenizer(CharacterTokenizer):
+        backend_tokenizer = Backend()
+        split_special_tokens = False
+
+    tokenizer = Tokenizer()
+    compiler = Compiler(tokenizer, cache_entries=0)
+    # A custom Python encode is never eligible automatically. Exercise the
+    # backend algorithm separately, including its live-configuration guard.
+    assert not compiler._fast_ids
+    compiler._fast_ids = True
+    if mode in {"retokenize", "drop"}:
         with pytest.raises(JevError) as error:
             compiler._encode("abc", ["A", "B"], 100)
         assert error.value.code == (
-            "label_encoding" if broken == "retokenize" else "tokenizer_contract"
+            "label_encoding" if mode == "retokenize" else "tokenizer_contract"
         )
+    else:
+        assert compiler._encode("abc", ["A", "B"], 100) == ((97, 98, 99), (65, 66))
+    assert tokenizer.backend_tokenizer.calls == (0 if mode == "padding" else 1)
