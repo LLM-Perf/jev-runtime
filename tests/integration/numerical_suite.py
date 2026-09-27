@@ -202,6 +202,7 @@ async def collect(run: Path, output: Path) -> None:
         "cases": [],
         "observations": {},
         "cache_resets": [],
+        "sglang_flush_idle_timeout_seconds": 10,
         "concurrency": 4,
         "complete": False,
     }
@@ -237,7 +238,10 @@ async def collect(run: Path, output: Path) -> None:
                 response = await (
                     client.post("/reset_prefix_cache")
                     if record["engine"] == "vllm"
-                    else client.get("/flush_cache")
+                    # A completed response can precede scheduler quiescence.
+                    # Use the engine's bounded idle barrier; never flush live
+                    # work forcibly or label a rejected reset as cold input.
+                    else client.get("/flush_cache", params={"timeout": 10})
                 )
                 response.raise_for_status()
                 if record["engine"] == "vllm" and response.json().get("success") is not True:

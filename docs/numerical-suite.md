@@ -22,6 +22,9 @@ and check whether collection spans a canary interval. The tool flushes only an
 explicitly identified, live TP1 engine created by `deployment/dsw_service.py`.
 It is intended for an isolated test service, never a shared production endpoint.
 vLLM's reset route requires its development endpoints to be enabled at startup.
+SGLang resets request its native ten-second deferred idle barrier: a completed
+HTTP response alone does not establish that the scheduler can reset its pools.
+A timeout or rejected reset still fails collection; it never becomes a cold case.
 
 After the serving engine exits, run independent Transformers reference forwards
 on the saved IDs. This initial implementation requires unquantized BF16 backbone
