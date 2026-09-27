@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "source_commit": "5c29bcb86229cdd69aff59c91519d69e296ac720",
+  "runtime_source_commit": "ad9b417747ff5f593374e14ad6aa3c8a88ff01ba",
+  "started_at": 1790508292.4455404,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "model": {
+    "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "tokenizer_digest": "sha256:b60300b296f78f2e76ee1eb8d338661b470881ceff0b6c01a3006b173c3451c1",
+    "tokenizer_implementation_digest": "sha256:a61ad4dd0ab01edc52b74dbf7dea65ff288c1df1d185daeb23f9a07bb4560316",
+    "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "sglang",
+      "prepared_bundles": [
+        "default@1"
+      ],
+      "worker_id": "1d3959cb8271462fbaf5015f0e4d2939"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-03899ec8548e4c3aa791cbe71e4abb21",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:1841c1137ccc36989261a770dce48b3ca4099ab1e9c0edde407c82fd39e94edc",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.4134102158382462,
+            "technical": 0.30245737507346543,
+            "other": 0.2841324090882884
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 4.205149734139507e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.5621765008857981,
+            "false": 0.4378234991142019
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 7.028934606568538e-06,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 3.110661610100701,
+          "probabilities": {
+            "low": 0.5977778648429376,
+            "medium": 0.1823119482939845,
+            "high": 0.21991018686307787
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 3.094433171884967e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "sales",
+            "engineering"
+          ],
+          "probabilities": {
+            "payments": 0.3985340502764177,
+            "engineering": 0.22707785691795296,
+            "sales": 0.3743880928056293
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 3.492756044672376e-07,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 301,
+        "engine_prompt_tokens": 301,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 104
+      },
+      "latency_ms": 72.92803190648556
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 8,
+        "total_tokens": 16,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "reasoning_tokens": 0
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    }
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/DeepSeek-R1-Distill-Qwen-1.5B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false
+  },
+  "reference_logits": {
+    "input_ids": [
+      151646,
+      82345,
+      279,
+      17221,
+      821,
+      2348,
+      279,
+      3383,
+      13,
+      2885,
+      374,
+      5904,
+      11,
+      537,
+      11221,
+      13,
+      3411,
+      6896,
+      279,
+      11223,
+      4226,
+      2383,
+      13,
+      151644,
+      6262,
+      510,
+      3379,
+      279,
+      6002,
+      594,
+      6028,
+      7385,
+      382,
+      1043,
+      320,
+      5370,
+      914,
+      982,
+      7044,
+      572,
+      11430,
+      10917,
+      323,
+      1035,
+      1075,
+      264,
+      20965,
+      2217,
+      47232,
+      510,
+      32,
+      25,
+      57876,
+      11,
+      10195,
+      11,
+      476,
+      72518,
+      198,
+      33,
+      25,
+      362,
+      10916,
+      14527,
+      304,
+      279,
+      1985,
+      198,
+      34,
+      25,
+      362,
+      2155,
+      8544,
+      198,
+      5598,
+      6896,
+      825,
+      4226,
+      2383,
+      13,
+      151645,
+      151648,
+      198
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      -15.627582550048828,
+      -15.940082550048828,
+      -15.940082550048828
+    ]
+  },
+  "passed": false,
+  "failure": {
+    "type": "AssertionError",
+    "message": "('/admin/bundles/prepare', 409, '{\"error\":{\"code\":\"tokenizer_implementation_mismatch\",\"message\":\"Bundle tokenizer normalization/pretokenization/BPE implementation differs\"}}')"
+  },
+  "finished_at": 1790508292.983232
+}

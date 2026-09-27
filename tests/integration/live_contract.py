@@ -18,9 +18,10 @@ from pathlib import Path
 
 import httpx
 
+from jev_runtime.backends.base import ScoreInput
 from jev_runtime.backends.vllm import VLLMHTTP
-from jev_runtime.config import load_compiler, load_settings, model_identity
-from jev_runtime.schema import Bundle, DecisionRequest, DecisionResponse, Policy, TemplateSpec
+from jev_runtime.config import load_settings
+from jev_runtime.schema import Bundle, DecisionResponse, Policy, TemplateSpec
 
 
 def verify_four_types(response: DecisionResponse, *, require_selected: bool = False) -> None:
@@ -52,7 +53,6 @@ async def certify(
         raise ValueError("Choose a new output path to retain previous attempts")
     settings = load_settings(run_dir / "config.json")
     keys = json.loads((run_dir / "keys.json").read_text())
-    compiler = await asyncio.to_thread(load_compiler, settings)
     prefix = "/plugins/jev-runtime"
     report = {
         "schema_version": 1,
@@ -60,7 +60,7 @@ async def certify(
         "runtime_source_commit": runtime_source_commit,
         "started_at": time.time(),
         "qualification": "colocated-functional-test; not a performance or quality benchmark",
-        "model": model_identity(settings, compiler).model_dump(mode="json"),
+        "configured_model": {"id": settings.model_id, "revision": settings.model_revision},
         "checks": {},
     }
     checks = report["checks"]
@@ -140,6 +140,11 @@ async def certify(
             denied = await client.get(prefix + "/admin/bundles")
             assert denied.status_code == 401
             checks["auth_separation"] = True
+            profile = await call("/admin/profile", management=True)
+            report["serving_profile"] = profile
+            assert profile["model"]["id"] == settings.model_id
+            assert profile["model"]["revision"] == settings.model_revision
+            report["model"] = profile["model"]
 
             response = DecisionResponse.model_validate(await call("/v1/decisions", payload))
             checks["four_types"] = response.model_dump(mode="json")
@@ -171,12 +176,24 @@ async def certify(
             bundle = Bundle(
                 id=case_id,
                 version=1,
-                model=model_identity(settings, compiler),
+                model=profile["model"],
                 policy=Policy(tie="first"),
             )
-            request = DecisionRequest.model_validate(payload)
-            compiled = compiler.compile(request.input.text, request.questions[0], bundle, case_id)
-            seq = compiled.sequences[0]
+            preview = await call(
+                "/admin/compile",
+                {**payload, "questions": payload["questions"][:1]},
+                management=True,
+            )
+            assert preview["bundle"]["model"] == profile["model"]
+            assert len(preview["sequences"]) == 1
+            sequence = preview["sequences"][0]
+            seq = ScoreInput(
+                **{
+                    **sequence,
+                    "input_ids": tuple(sequence["input_ids"]),
+                    "label_ids": tuple(sequence["label_ids"]),
+                }
+            )
             raw = await call("/v1/scores", asdict(seq))
             assert len(raw["logprobs"]) == len(seq.label_ids)
             if settings.backend == "vllm":
