@@ -1,5 +1,8 @@
 # Preparing GLM4 tokenizer profiles
 
+For checkpoints that already contain `tokenizer.json`, use
+[preserve-fast](preserve-fast-tokenizers.md) to keep their serialized pipeline.
+
 `jevctl tokenizer convert-glm4 MODEL_DIR DESTINATION` converts the standard GLM4
 tiktoken vocabulary, special tokens and prefix behavior into a serialized fast
 tokenizer. It reads local data and uses the installed Transformers converter;

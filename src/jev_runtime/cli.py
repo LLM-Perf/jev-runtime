@@ -32,6 +32,26 @@ def tokenizer_convert_glm4(model_dir: Path, destination: Path):
     output(convert_glm4_tokenizer(model_dir, destination))
 
 
+@tokenizer_app.command("preserve-fast")
+def tokenizer_preserve_fast(
+    model_dir: Path,
+    destination: Path,
+    chat_template: Path | None = None,
+    chat_template_sha256: str | None = None,
+):
+    """Preserve and verify tokenizer.json without model-specific reconstruction."""
+    from jev_runtime.tokenizer_profiles import preserve_fast_tokenizer
+
+    output(
+        preserve_fast_tokenizer(
+            model_dir,
+            destination,
+            chat_template=chat_template,
+            chat_template_sha256=chat_template_sha256,
+        )
+    )
+
+
 def output(value):
     if hasattr(value, "model_dump"):
         value = value.model_dump(mode="json")
