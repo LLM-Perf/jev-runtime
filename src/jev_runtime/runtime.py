@@ -42,6 +42,7 @@ class Runtime:
         self.capabilities: Capabilities | None = None
         self._management_lock = asyncio.Lock()
         self._active: dict[str, asyncio.Task] = {}
+        self._tenants: dict[str, str] = {}
         self._unconfirmed_leases: dict[str, tuple[str, set[str]]] = {}
 
     async def start(self) -> None:
@@ -166,13 +167,14 @@ class Runtime:
             await asyncio.gather(*tasks, return_exceptions=True)
 
     async def decide(
-        self, request: DecisionRequest, request_id: str | None = None
+        self, request: DecisionRequest, request_id: str | None = None, tenant: str = "default"
     ) -> DecisionResponse:
-        rid = request_id or "dec-" + uuid.uuid4().hex
+        rid = request_id or request.request_id or "dec-" + uuid.uuid4().hex
         if rid in self._active:
             raise JevError("duplicate_request", "Request ID is already in flight", 409)
         current = asyncio.current_task()
         self._active[rid] = current
+        self._tenants[rid] = tenant
         started = time.monotonic()
         snapshot = None
         unconfirmed: set[str] = set()
@@ -199,7 +201,7 @@ class Runtime:
                 ]
                 sequences = tuple(s for q in compiled for s in q.sequences)
                 total_tokens = self._validate_sequences(sequences, bundle)
-                async with self.admission.acquire(total_tokens):
+                async with self.admission.acquire(total_tokens, tenant):
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
                     tasks = [
                         asyncio.create_task(self._question(q, bundle, semaphore, unconfirmed))
@@ -263,6 +265,8 @@ class Runtime:
                 )
         except TimeoutError as exc:
             raise JevError("deadline_exceeded", "Decision deadline exceeded", 504) from exc
+        except asyncio.CancelledError as exc:
+            raise JevError("request_cancelled", "Decision request was cancelled", 499) from exc
         finally:
             if snapshot is not None:
                 if unconfirmed:
@@ -270,6 +274,7 @@ class Runtime:
                 else:
                     self.registry.release(snapshot.lease_id)
             self._active.pop(rid, None)
+            self._tenants.pop(rid, None)
 
     async def recover_cancelled(self, request_id: str) -> bool:
         pending = self._unconfirmed_leases.get(request_id)
@@ -284,9 +289,14 @@ class Runtime:
         self._unconfirmed_leases.pop(request_id, None)
         return True
 
-    async def cancel(self, request_id: str) -> bool:
+    async def cancel(self, request_id: str, tenant: str = "default") -> bool:
+        if self._tenants.get(request_id) != tenant:
+            return False
         task = self._active.get(request_id)
         if not task:
             return False
         task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
+        if request_id in self._unconfirmed_leases:
+            raise JevError("cancellation_unconfirmed", "Engine abort is not yet confirmed", 503)
         return True

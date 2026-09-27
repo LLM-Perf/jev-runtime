@@ -40,6 +40,16 @@ class JevClient:
     def close(self):
         self.http.close()
 
+    def cancel(self, request_id: str) -> bool:
+        from urllib.parse import quote
+
+        response = self.http.post(f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15)
+        response.raise_for_status()
+        value = response.json()["cancelled"]
+        if not isinstance(value, bool):
+            raise JevError("invalid_response", "Cancellation response is not boolean", 502)
+        return value
+
     def __enter__(self):
         return self
 
@@ -66,6 +76,18 @@ class AsyncJevClient:
 
     async def close(self):
         await self.http.aclose()
+
+    async def cancel(self, request_id: str) -> bool:
+        from urllib.parse import quote
+
+        response = await self.http.post(
+            f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15
+        )
+        response.raise_for_status()
+        value = response.json()["cancelled"]
+        if not isinstance(value, bool):
+            raise JevError("invalid_response", "Cancellation response is not boolean", 502)
+        return value
 
     async def __aenter__(self):
         return self

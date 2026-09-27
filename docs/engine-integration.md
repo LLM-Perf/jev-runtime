@@ -1,7 +1,8 @@
 # Engine integration and validation boundaries
 
-Target releases: SGLang 0.5.20 and vLLM 0.30.0. These are implementation targets,
-not yet a certified GPU compatibility claim. Each engine uses its own environment.
+Development checks currently use SGLang 0.5.19 and vLLM 0.30.0 on CUDA 12.9.
+SGLang 0.5.20 retired the CUDA 12 lane and remains a separate certification target.
+Each engine uses its own environment. See `evidence/dsw/` for tested source commits.
 
 ## Gateway
 
@@ -51,8 +52,9 @@ the existing API lifespan. The separate `jev-sglang` launcher offers a startup
 integration path that installs the routes before invoking the upstream launcher.
 Neither path replaces a scheduler or modifies installed engine source files.
 
-Both paths still require real GPU startup and shutdown verification for each
-supported engine version. Registration discovery alone does not prove this works.
+Real startup, scoring and native chat coexistence passed on both engines with two
+small text models. This does not certify multi-tokenizer/multi-process deployments,
+all model architectures, LoRA or tensor-parallel configurations.
 
 ## Bundle updates
 

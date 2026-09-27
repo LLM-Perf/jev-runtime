@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "started_at": 1790493728.4095035,
+  "qualification": "colocated-functional-test; not a performance or quality benchmark",
+  "model": {
+    "id": "Qwen/Qwen3-0.6B",
+    "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+    "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+    "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "checks": {
+    "ready": {
+      "ready": true,
+      "engine": "sglang"
+    },
+    "auth_separation": true,
+    "four_types": {
+      "request_id": "dec-790d22a8f8974c6c8836415e6a46d375",
+      "status": "completed",
+      "bundle": "default@1",
+      "bundle_digest": "sha256:a093b9ce8a16af6f03709025d189c80b37cb96eca03c0186a7972f98cd5ee8c3",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "billing",
+          "probabilities": {
+            "billing": 0.9998752347922161,
+            "technical": 0.00012339441960372414,
+            "other": 1.3707881802161903e-06
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9999472874939941,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.6513548646660542,
+            "false": 0.34864513533394575
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9908065353540347,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "answered",
+          "value": 0.38409211960887646,
+          "probabilities": {
+            "low": 0.9454156179912534,
+            "medium": 0.03235034009571796,
+            "high": 0.02223404191302867
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9994611782352595,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "payments",
+            "engineering",
+            "sales"
+          ],
+          "probabilities": {
+            "payments": 0.9955078557881476,
+            "engineering": 0.0027961770817719737,
+            "sales": 0.0016959671300805015
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.9962370493384802,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 4,
+        "logical_prompt_tokens": 349,
+        "engine_prompt_tokens": 349,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 128
+      },
+      "latency_ms": 1013.3661348372698
+    },
+    "native_chat_coexists": {
+      "usage": {
+        "prompt_tokens": 15,
+        "total_tokens": 23,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "reasoning_tokens": 0
+      }
+    },
+    "invalid_bundle_explicit": true,
+    "native_attach_logprob_parity": {
+      "max_abs_error": 0.0
+    },
+    "independent_candidate": {
+      "request_id": "dec-c958176d71314480b0038568bc5a84c4",
+      "status": "completed",
+      "bundle": "cert-cd30ef732d8b@2",
+      "bundle_digest": "sha256:5af9b6c275238ade6d010e085ea5ef54833ab7822d160e732b48153b4f0260a0",
+      "generation": 1,
+      "engine": {
+        "name": "sglang",
+        "version": "0.5.19"
+      },
+      "answers": {
+        "intent": {
+          "type": "choice",
+          "status": "answered",
+          "value": "technical",
+          "probabilities": {
+            "billing": 0.3332931286704888,
+            "technical": 0.3333688621123794,
+            "other": 0.3333380092171317
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "billing": 0.9995694431238925,
+            "technical": 0.9997965730219448,
+            "other": 0.9997040430275684
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "refund": {
+          "type": "boolean",
+          "status": "answered",
+          "value": true,
+          "probabilities": {
+            "true": 0.6513548782017746,
+            "false": 0.3486451217982255
+          },
+          "probability_semantics": "conditional_label_distribution",
+          "support": null,
+          "label_mass": 0.989215330697399,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        },
+        "urgency": {
+          "type": "score",
+          "status": "abstained",
+          "value": null,
+          "probabilities": {
+            "low": 0.33193919808763517,
+            "medium": 0.3340304009561824,
+            "high": 0.3340304009561824
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "low": 0.9924227569392726,
+            "medium": 0.9986749782137695,
+            "high": 0.9986749782137695
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": true,
+          "reason": "tie",
+          "levels": {
+            "low": 0.0,
+            "medium": 5.0,
+            "high": 10.0
+          },
+          "error": null
+        },
+        "routing": {
+          "type": "rank",
+          "status": "answered",
+          "value": [
+            "engineering",
+            "sales",
+            "payments"
+          ],
+          "probabilities": {
+            "payments": 0.33329152281775776,
+            "engineering": 0.3334169538239072,
+            "sales": 0.333291523358335
+          },
+          "probability_semantics": "normalized_support",
+          "support": {
+            "payments": 0.9982992767789761,
+            "engineering": 0.9986749769518038,
+            "sales": 0.9982992783981529
+          },
+          "label_mass": null,
+          "calibration_status": "uncalibrated",
+          "abstained": false,
+          "reason": null,
+          "levels": null,
+          "error": null
+        }
+      },
+      "usage": {
+        "questions": 4,
+        "successful_questions": 4,
+        "scoring_sequences": 10,
+        "logical_prompt_tokens": 890,
+        "engine_prompt_tokens": 890,
+        "engine_completion_tokens": 0,
+        "cached_prompt_tokens": 570
+      },
+      "latency_ms": 141.2921017035842
+    },
+    "hot_switch_under_traffic": {
+      "switches": 1000,
+      "strict_success_requests": 501,
+      "versions_seen": [
+        "cert-cd30ef732d8b@1",
+        "cert-cd30ef732d8b@2"
+      ],
+      "mixed_bundle_responses": 0
+    },
+    "disable_drain_retire_and_cas": true
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Qwen3-0.6B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "verified": false
+  },
+  "reference_logits": {
+    "input_ids": [
+      151644,
+      8948,
+      198,
+      82345,
+      279,
+      17221,
+      821,
+      2348,
+      279,
+      3383,
+      13,
+      2885,
+      374,
+      5904,
+      11,
+      537,
+      11221,
+      13,
+      3411,
+      6896,
+      279,
+      11223,
+      4226,
+      2383,
+      13,
+      151645,
+      198,
+      151644,
+      872,
+      198,
+      6262,
+      510,
+      3379,
+      279,
+      6002,
+      594,
+      6028,
+      7385,
+      382,
+      1043,
+      320,
+      5370,
+      914,
+      982,
+      7044,
+      572,
+      11430,
+      10917,
+      323,
+      1035,
+      1075,
+      264,
+      20965,
+      2217,
+      47232,
+      510,
+      32,
+      25,
+      57876,
+      11,
+      10195,
+      11,
+      476,
+      72518,
+      198,
+      33,
+      25,
+      362,
+      10916,
+      14527,
+      304,
+      279,
+      1985,
+      198,
+      34,
+      25,
+      362,
+      2155,
+      8544,
+      198,
+      5598,
+      6896,
+      825,
+      4226,
+      2383,
+      13,
+      151645,
+      198,
+      151644,
+      77091,
+      198,
+      151667,
+      271,
+      151668,
+      271
+    ],
+    "label_ids": [
+      32,
+      33,
+      34
+    ],
+    "logprobs": [
+      -0.0001530530134914443,
+      -9.125152587890625,
+      -13.625152587890625
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790493741.0187602
+}

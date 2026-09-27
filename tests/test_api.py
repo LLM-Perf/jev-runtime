@@ -1,6 +1,9 @@
-import httpx
+import asyncio
 
-from jev_runtime.api import create_app
+import httpx
+from fastapi import FastAPI
+
+from jev_runtime.api import create_app, install_routes
 
 
 async def test_decision_endpoint_and_separate_admin_auth(runtime, question):
@@ -71,3 +74,40 @@ async def test_unknown_bundle_is_explicit_error(runtime, question):
         )
         assert response.status_code == 409
         assert response.json()["error"]["code"] == "bundle_not_active"
+
+
+async def test_authenticated_tenant_cannot_cancel_other_tenant(runtime, question):
+    app = FastAPI()
+    app.state.jev_runtime = runtime
+    install_routes(app, tenants={"a": "key-a", "b": "key-b"})
+    runtime.backend.gate.clear()
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        work = asyncio.create_task(
+            client.post(
+                "/v1/decisions",
+                headers={"Authorization": "Bearer key-a"},
+                json={
+                    "request_id": "owned-by-a",
+                    "model": "model",
+                    "input": {"text": "refund"},
+                    "questions": [question.model_dump(mode="json")],
+                },
+            )
+        )
+        await asyncio.wait_for(runtime.backend.started.wait(), 1)
+        denied = await client.post(
+            "/v1/requests/owned-by-a/cancel", headers={"Authorization": "Bearer key-b"}
+        )
+        assert denied.json() == {"cancelled": False}
+        assert not work.done()
+        cancelled = await client.post(
+            "/v1/requests/owned-by-a/cancel", headers={"Authorization": "Bearer key-a"}
+        )
+        assert cancelled.json() == {"cancelled": True}
+        response = await work
+        assert (
+            response.status_code == 499 and response.json()["error"]["code"] == "request_cancelled"
+        )
+        assert not runtime.registry.list()["leases"]

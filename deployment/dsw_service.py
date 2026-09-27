@@ -23,6 +23,8 @@ from pathlib import Path
 def process_identity(pid: int) -> dict | None:
     try:
         stat = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        if stat[0] == "Z":
+            return None
         return {
             "pid": pid,
             "start_ticks": stat[19],
@@ -62,7 +64,10 @@ def launch(args):
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", args.port))
     gpu = get_gpu(args.gpu)
-    budget = float(gpu["total_mib"]) * args.memory_fraction
+    # vLLM 0.30 uses total device memory. SGLang 0.5.19's configurator uses
+    # pre-load available memory, which matters on shared devices.
+    denominator = "total_mib" if args.engine == "vllm" else "free_mib"
+    budget = float(gpu[denominator]) * args.memory_fraction
     if budget + args.reserve_mib > float(gpu["free_mib"]):
         raise SystemExit("Insufficient free GPU memory for the explicit budget and reserve")
     model = args.model_path.resolve()
@@ -164,6 +169,7 @@ def launch(args):
         "created": time.time(),
         "port": args.port,
         "qualification": "colocated-functional-test",
+        "memory_budget_denominator": denominator,
     }
     record.write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps({"started": identity, "port": args.port, "run_dir": str(root)}))

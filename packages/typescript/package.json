@@ -1,0 +1,12 @@
+{
+  "name": "@llm-perf/jev-runtime",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "description": "Typed client for the Jev decision runtime",
+  "type": "module",
+  "exports": {".": {"types": "./dist/index.d.ts", "import": "./dist/index.js"}},
+  "files": ["dist", "README.md"],
+  "engines": {"node": ">=20"},
+  "scripts": {"build": "tsc", "test": "npm run build && node --test test/*.test.mjs"},
+  "devDependencies": {"typescript": "~5.9.3"}
+}

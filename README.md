@@ -15,7 +15,7 @@ See [the implementation plan](docs/implementation-plan.md) and
 
 ```sh
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -e '.[dev,tokenizers]'
+.venv/bin/python -m pip install -e '.[dev,tokenizers]' -e packages/sglang -e packages/vllm
 .venv/bin/pytest
 .venv/bin/ruff check .
 ```
@@ -24,6 +24,9 @@ Engine adapters are separate distributions under `packages/` so the core does no
 install two competing GPU dependency stacks. Run each engine in its own environment.
 Model weights, credentials, private workload text, and raw service logs are excluded
 from this repository.
+
+See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
+[calibration](docs/calibration.md), and [the TypeScript SDK](packages/typescript/README.md).
 
 ## Design
 

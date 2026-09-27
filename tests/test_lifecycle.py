@@ -148,3 +148,37 @@ async def test_prepare_cancellation_pins_canary_until_abort_confirmed(runtime, b
     else:
         assert not leases and runtime.backend.cancelled
     assert runtime.registry.retire(next_bundle.reference)["state"] == "RETIRED"
+
+
+async def test_caller_id_cancellation_confirms_abort_and_prevents_cross_worker_duplicates(
+    runtime, question
+):
+    runtime.backend.gate.clear()
+    body = request(question, request_id="client-selected-id")
+    task = asyncio.create_task(runtime.decide(body))
+    await asyncio.wait_for(runtime.backend.started.wait(), 1)
+    another = Registry(runtime.registry.path)
+    with pytest.raises(JevError) as error:
+        another.acquire("model", "client-selected-id", None, runtime.backend_identity)
+    assert error.value.code == "duplicate_request"
+    assert await runtime.cancel("client-selected-id")
+    with pytest.raises(JevError) as error:
+        await task
+    assert error.value.code == "request_cancelled"
+    assert not runtime.registry.list()["leases"]
+    assert runtime.backend.cancelled
+
+
+async def test_caller_cancellation_does_not_claim_confirmed_on_failed_abort(runtime, question):
+    runtime.backend.gate.clear()
+    runtime.backend.fail_cancel = True
+    task = asyncio.create_task(runtime.decide(request(question, request_id="uncertain-abort")))
+    await asyncio.wait_for(runtime.backend.started.wait(), 1)
+    with pytest.raises(JevError) as error:
+        await runtime.cancel("uncertain-abort")
+    assert error.value.code == "cancellation_unconfirmed"
+    with pytest.raises(JevError):
+        await task
+    assert len(runtime.registry.list()["leases"]) == 1
+    runtime.backend.fail_cancel = False
+    assert await runtime.recover_cancelled("uncertain-abort")

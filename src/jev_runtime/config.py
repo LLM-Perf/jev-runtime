@@ -8,12 +8,22 @@ from typing import Literal
 import yaml
 from pydantic import Field
 
+from jev_runtime.admission import Admission
 from jev_runtime.backends.sglang import SGLangHTTP
 from jev_runtime.backends.vllm import VLLMHTTP
 from jev_runtime.compiler import Compiler
 from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, ModelIdentity
+
+
+class AdmissionSettings(Contract):
+    max_requests: int = Field(default=64, gt=0)
+    max_tokens: int = Field(default=1_048_576, gt=0)
+    max_queue: int = Field(default=256, gt=0)
+    max_tenant_requests: int = Field(default=16, gt=0)
+    max_tenant_tokens: int = Field(default=262_144, gt=0)
+    max_tenant_queue: int = Field(default=64, gt=0)
 
 
 class Settings(Contract):
@@ -33,6 +43,20 @@ class Settings(Contract):
     engine_key_env: str = "JEV_ENGINE_API_KEY"
     bootstrap_alias: str | None = None
     bootstrap_bundle_id: str = "default"
+    tenant_key_envs: dict[str, str] = Field(default_factory=dict)
+    admission: AdmissionSettings = Field(default_factory=AdmissionSettings)
+
+
+def tenant_keys(settings: Settings) -> dict[str, str]:
+    keys = {}
+    for tenant, env_name in settings.tenant_key_envs.items():
+        key = os.environ.get(env_name)
+        if not tenant or tenant == "default" or not key:
+            raise ValueError("Tenant names must be unique, non-default and have a configured key")
+        keys[tenant] = key
+    if len(set(keys.values())) != len(keys):
+        raise ValueError("Tenant API keys must be distinct")
+    return keys
 
 
 def load_settings(path: str | Path) -> Settings:
@@ -83,6 +107,7 @@ async def build_runtime(
         Registry(settings.registry_path),
         identity,
         settings.model_id,
+        admission=Admission(**settings.admission.model_dump()),
         expected_model=model_identity(settings, compiler),
     )
 

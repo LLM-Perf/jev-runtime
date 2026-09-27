@@ -3,7 +3,9 @@ WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY src ./src
 RUN pip install --no-cache-dir '.[tokenizers]' \
-    && useradd --create-home --uid 10001 jev
+    && useradd --create-home --uid 10001 jev \
+    && mkdir -p /app/.jev /data/jev \
+    && chown -R 10001:10001 /app/.jev /data/jev
 USER jev
 ENTRYPOINT ["jevctl", "serve"]
 CMD ["/config/gateway.yaml"]

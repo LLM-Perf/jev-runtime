@@ -10,6 +10,7 @@ from pydantic import Field, model_validator
 
 from jev_runtime.api import disconnect_guard, install_routes
 from jev_runtime.backends.base import ScoreInput
+from jev_runtime.config import load_settings, tenant_keys
 from jev_runtime.errors import JevError
 from jev_runtime.schema import Contract
 
@@ -44,7 +45,9 @@ def install_plugin_routes(app: FastAPI) -> None:
     if not api_key:
         raise ValueError("Set JEV_API_KEY before enabling the Jev engine plugin")
     app.state.jev_routes_installed = True
-    install_routes(app, prefix=prefix, api_key=api_key, admin_key=admin_key)
+    config_path = os.environ.get("JEV_CONFIG")
+    tenants = tenant_keys(load_settings(config_path)) if config_path else None
+    install_routes(app, prefix=prefix, api_key=api_key, admin_key=admin_key, tenants=tenants)
 
     async def authorize(authorization: str | None = Header(default=None)):
         if not api_key or not hmac.compare_digest(authorization or "", f"Bearer {api_key}"):

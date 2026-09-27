@@ -58,6 +58,7 @@ class ExecutionOptions(Contract):
 
 
 class DecisionRequest(Contract):
+    request_id: Identifier | None = None
     model: str = Field(min_length=1, max_length=256)
     bundle: str | None = Field(default=None, min_length=1, max_length=256)
     input: TextInput

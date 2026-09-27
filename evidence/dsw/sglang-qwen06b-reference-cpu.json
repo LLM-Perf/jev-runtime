@@ -1,0 +1,27 @@
+{
+  "model_id": "Qwen/Qwen3-0.6B",
+  "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "reference": "Transformers cpu BF16 eager forward; FP32 log_softmax",
+  "torch_version": "2.13.0+cu129",
+  "transformers_version": "5.12.1",
+  "engine_logprobs": [
+    -0.0001530530134914443,
+    -9.125152587890625,
+    -13.625152587890625
+  ],
+  "reference_logprobs": [
+    -0.00017391123401466757,
+    -8.875173568725586,
+    -13.375173568725586
+  ],
+  "absolute_errors": [
+    2.085822052322328e-05,
+    0.24997901916503906,
+    0.24997901916503906
+  ],
+  "atol": 0.15,
+  "top_label_equal": true,
+  "passed": false,
+  "started_at": 1790493808.843068,
+  "finished_at": 1790493812.6715055
+}

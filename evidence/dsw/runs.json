@@ -1,0 +1,31 @@
+[
+  {
+    "engine": "vllm",
+    "source_commit": "4359927bf4705413a3a7434b3a4f3959cf89e182",
+    "functional": "vllm-qwen06b-contract.json",
+    "numerical": [
+      "vllm-qwen06b-reference-cpu.json",
+      "vllm-qwen06b-reference-gpu.json"
+    ]
+  },
+  {
+    "engine": "sglang",
+    "source_commit": "a90e002",
+    "functional": "sglang-qwen06b-contract.json",
+    "numerical": [
+      "sglang-qwen06b-reference-cpu.json"
+    ]
+  },
+  {
+    "engine": "vllm",
+    "source_commit": "a90e002",
+    "functional": "vllm-smollm17b-contract.json",
+    "numerical": []
+  },
+  {
+    "engine": "sglang",
+    "source_commit": "a90e002",
+    "functional": "sglang-smollm17b-contract.json",
+    "numerical": []
+  }
+]

@@ -50,6 +50,7 @@ class Registry:
                     owner TEXT NOT NULL, request_id TEXT NOT NULL, created REAL NOT NULL
                 );
                 CREATE INDEX IF NOT EXISTS leases_by_ref ON leases(ref);
+                CREATE UNIQUE INDEX IF NOT EXISTS unique_active_request ON leases(request_id);
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL NOT NULL,
                     action TEXT NOT NULL, details TEXT NOT NULL
@@ -190,6 +191,8 @@ class Registry:
 
     def acquire(self, alias: str, request_id: str, reference: str | None, backend: str) -> Snapshot:
         with self._transaction() as db:
+            if db.execute("SELECT 1 FROM leases WHERE request_id=?", (request_id,)).fetchone():
+                raise JevError("duplicate_request", "Request ID is already in flight", 409)
             route = db.execute("SELECT * FROM routes WHERE alias=?", (alias,)).fetchone()
             if not route or not route["ref"]:
                 raise JevError(

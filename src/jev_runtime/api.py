@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse, Response
 from prometheus_client import CollectorRegistry, Counter, Histogram, generate_latest
 from pydantic import Field
 
-from jev_runtime.config import Settings, bootstrap, build_runtime
+from jev_runtime.config import Settings, bootstrap, build_runtime, tenant_keys
 from jev_runtime.errors import JevError
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, DecisionRequest
@@ -58,13 +58,28 @@ async def disconnect_guard(request: Request, coroutine):
 
 
 def install_routes(
-    app: FastAPI, *, prefix: str = "", api_key: str | None = None, admin_key: str | None = None
+    app: FastAPI,
+    *,
+    prefix: str = "",
+    api_key: str | None = None,
+    admin_key: str | None = None,
+    tenants: dict[str, str] | None = None,
 ) -> None:
-    async def authorize(authorization: str | None = Header(default=None)):
-        if api_key is not None and not hmac.compare_digest(
-            authorization or "", f"Bearer {api_key}"
-        ):
-            raise JevError("unauthorized", "A valid API key is required", 401)
+    identities = dict(tenants or {})
+    if api_key is not None:
+        if api_key in identities.values():
+            raise ValueError("Default and tenant API keys must be distinct")
+        identities["default"] = api_key
+
+    async def authorize(request: Request, authorization: str | None = Header(default=None)):
+        if not identities:
+            request.state.jev_tenant = "default"
+            return
+        for tenant, key in identities.items():
+            if hmac.compare_digest(authorization or "", f"Bearer {key}"):
+                request.state.jev_tenant = tenant
+                return
+        raise JevError("unauthorized", "A valid API key is required", 401)
 
     async def admin(authorization: str | None = Header(default=None)):
         if not admin_key or not hmac.compare_digest(authorization or "", f"Bearer {admin_key}"):
@@ -97,7 +112,9 @@ def install_routes(
     async def decisions(body: DecisionRequest, request: Request):
         with latency.time():
             try:
-                response = await disconnect_guard(request, runtime(request).decide(body))
+                response = await disconnect_guard(
+                    request, runtime(request).decide(body, tenant=request.state.jev_tenant)
+                )
                 count.labels(response.status).inc()
                 return response
             except BaseException:
@@ -107,7 +124,10 @@ def install_routes(
     @router.post("/v1/systemone")
     async def systemone(body: SystemOneRequest, request: Request):
         return from_decision(
-            await disconnect_guard(request, runtime(request).decide(body.to_decision()))
+            await disconnect_guard(
+                request,
+                runtime(request).decide(body.to_decision(), tenant=request.state.jev_tenant),
+            )
         )
 
     @router.get("/v1/capabilities")
@@ -127,7 +147,7 @@ def install_routes(
 
     @router.post("/v1/requests/{request_id}/cancel")
     async def cancel(request_id: str, request: Request):
-        return {"cancelled": await runtime(request).cancel(request_id)}
+        return {"cancelled": await runtime(request).cancel(request_id, request.state.jev_tenant)}
 
     @router.get("/ready")
     async def ready(request: Request):
@@ -180,7 +200,9 @@ def create_app(
     if settings:
         api_key = api_key if api_key is not None else os.environ.get(settings.api_key_env)
         admin_key = admin_key if admin_key is not None else os.environ.get(settings.admin_key_env)
-        if settings.host not in {"127.0.0.1", "localhost", "::1"} and not api_key:
+        if settings.host not in {"127.0.0.1", "localhost", "::1"} and not (
+            api_key or settings.tenant_key_envs
+        ):
             raise ValueError("A public bind requires an API key")
 
     @asynccontextmanager
@@ -197,5 +219,10 @@ def create_app(
 
     app = FastAPI(title="Jev Runtime", version="0.1.0a1", lifespan=lifespan)
     app.state.instance_id = uuid.uuid4().hex
-    install_routes(app, api_key=api_key, admin_key=admin_key)
+    install_routes(
+        app,
+        api_key=api_key,
+        admin_key=admin_key,
+        tenants=tenant_keys(settings) if settings else None,
+    )
     return app
