@@ -27,13 +27,22 @@ HTTP response alone does not establish that the scheduler can reset its pools.
 A timeout or rejected reset still fails collection; it never becomes a cold case.
 
 After the serving engine exits, run independent Transformers reference forwards
-on the saved IDs. This initial implementation requires unquantized BF16 backbone
-and head, one visible GPU, a resident model fitting the bounded allocator, batch
+on the saved IDs. This implementation requires an unquantized BF16 backbone and
+an explicitly declared BF16 or FP32 output projection, one visible GPU, a
+resident model fitting the bounded allocator, batch
 size one and `use_cache=False`. It retains GPU identity, package versions, math
 settings, observed head dtype and peak reserved memory. Eager and SDPA are two
 separately named reference contracts. Neither is chosen after observing which
 one agrees best. The existing single-position CPU failures remain authoritative
 for their original execution profiles.
+
+An FP32-head reference recomputes the Linear projection in FP32 at its module
+boundary. It preserves BF16 parameter objects/storage and input embeddings,
+including models with tied input/output weights. The report checks the returned
+logits dtype and records every projection's input, weight and output dtype.
+Changing precision creates a different reference/serving contract; it does not
+repair or overwrite earlier BF16-profile failures. This computation is an
+independent reference, not a benchmark of the serving engine's optimized head.
 
 ```sh
 # In the same source checkout / isolated engine environment used by the campaign:

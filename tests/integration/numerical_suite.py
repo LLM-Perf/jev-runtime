@@ -292,6 +292,21 @@ async def collect(run: Path, output: Path) -> None:
             save(output, report)
 
 
+def reference_readout(source: dict, engine: dict) -> str:
+    """Bind the reference to the saved identity before loading any model weights."""
+    model = engine["model"]
+    if (
+        not engine["complete"]
+        or source["model_id"] != model["id"]
+        or source["revision"] != model["revision"]
+        or model["dtype"] != "bfloat16"
+        or model.get("readout_dtype") not in ("bfloat16", "float32")
+        or model["quantization"] is not None
+    ):
+        raise ValueError("Expected matching unquantized BF16 backbone and explicit BF16/FP32 head")
+    return model["readout_dtype"]
+
+
 def reference(model_path: Path, engine_path: Path, output: Path, attention: str) -> None:
     import os
 
@@ -304,15 +319,7 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
         raise ValueError("Choose a fresh output to retain attempts")
     engine = json.loads(engine_path.read_text())
     source = json.loads((model_path / "jev-source.json").read_text())
-    if (
-        not engine["complete"]
-        or source["model_id"] != engine["model"]["id"]
-        or source["revision"] != engine["model"]["revision"]
-        or engine["model"]["dtype"] != "bfloat16"
-        or engine["model"]["readout_dtype"] != "bfloat16"
-        or engine["model"]["quantization"] is not None
-    ):
-        raise ValueError("Expected matching unquantized BF16 model/readout")
+    readout_dtype = reference_readout(source, engine)
     if torch.cuda.device_count() != 1:
         raise ValueError("Expose exactly one allocated GPU")
     free, total = torch.cuda.mem_get_info()
@@ -331,7 +338,12 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
         "reference_contract": {
             "device": "cuda",
             "backbone_dtype": "bfloat16",
-            "head_dtype": "bfloat16",
+            "head_dtype": readout_dtype,
+            "head_projection": (
+                "float32_linear_at_module_boundary"
+                if readout_dtype == "float32"
+                else "unchanged_model_linear"
+            ),
             "log_softmax_dtype": "float32",
             "attention": attention,
             "batch_size": 1,
@@ -369,16 +381,43 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
             .eval()
             .to("cuda")
         )
+        head, embedding = model.get_output_embeddings(), model.get_input_embeddings()
+        if not isinstance(head, torch.nn.Linear):
+            raise ValueError("Reference requires an unquantized Linear output head")
+        head_weight, embedding_weight = head.weight, embedding.weight
+        pointers = (head_weight.data_ptr(), embedding_weight.data_ptr())
+        if head_weight.dtype != torch.bfloat16 or embedding_weight.dtype != torch.bfloat16:
+            raise ValueError("Unexpected backbone/embedding parameter dtype")
         observed = []
-        hook = model.get_output_embeddings().register_forward_hook(
-            lambda module, args, output: observed.append(str(output.dtype))
-        )
+
+        def project(module, inputs, output):
+            if readout_dtype == "float32":
+                # Recompute without casting a shared Parameter: the input
+                # embedding must remain BF16 even when it is tied to the head.
+                output = torch.nn.functional.linear(
+                    inputs[0].float(),
+                    module.weight.float(),
+                    module.bias.float() if module.bias is not None else None,
+                )
+            observed.append(
+                {
+                    "input_dtype": str(inputs[0].dtype).removeprefix("torch."),
+                    "weight_dtype": str(module.weight.dtype).removeprefix("torch."),
+                    "output_dtype": str(output.dtype).removeprefix("torch."),
+                }
+            )
+            return output
+
+        hook = head.register_forward_hook(project)
         try:
             with torch.inference_mode():
                 for case in engine["cases"]:
                     sequence = case["sequence"]
                     ids = torch.tensor([sequence["input_ids"]], dtype=torch.long, device="cuda")
-                    logits = model(ids, use_cache=False).logits[0, -1].float()
+                    returned = model(ids, use_cache=False).logits
+                    if returned.dtype != getattr(torch, readout_dtype):
+                        raise ValueError("Model returned a different readout precision")
+                    logits = returned[0, -1].float()
                     values = torch.log_softmax(logits, dim=-1)[sequence["label_ids"]].tolist()
                     scores(values, len(sequence["label_ids"]))
                     report["rows"].append(
@@ -390,8 +429,29 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
                     )
         finally:
             hook.remove()
-        if observed != ["torch.bfloat16"] * len(engine["cases"]):
+        if observed != [
+            {
+                "input_dtype": "bfloat16",
+                "weight_dtype": "bfloat16",
+                "output_dtype": readout_dtype,
+            }
+        ] * len(engine["cases"]):
             raise ValueError("Observed head precision did not match")
+        if (
+            head.weight is not head_weight
+            or embedding.weight is not embedding_weight
+            or (head.weight.data_ptr(), embedding.weight.data_ptr()) != pointers
+            or head.weight.dtype != torch.bfloat16
+            or embedding.weight.dtype != torch.bfloat16
+        ):
+            raise ValueError("Reference changed the model's shared parameter identity or dtype")
+        report["readout_observations"] = observed
+        report["parameters"] = {
+            "tied_input_output_weights": pointers[0] == pointers[1],
+            "input_embedding_dtype": "bfloat16",
+            "output_weight_dtype": "bfloat16",
+            "identities_and_dtypes_preserved": True,
+        }
         torch.cuda.synchronize()
         report["cuda"]["peak_reserved_bytes"] = torch.cuda.max_memory_reserved()
         report["complete"] = True

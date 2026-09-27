@@ -4,7 +4,7 @@ import math
 import pytest
 
 from jev_runtime.schema import content_digest
-from tests.integration.numerical_suite import STATES, compare, corpus, summarize
+from tests.integration.numerical_suite import STATES, compare, corpus, reference_readout, summarize
 
 
 def fixture():
@@ -92,3 +92,37 @@ def test_one_state_failure_is_counted_and_input_is_not_mutated():
     assert result["passed_comparisons"] == 95
     assert not result["all_comparisons_passed"]
     assert engine == before
+
+
+@pytest.mark.parametrize("readout", ["bfloat16", "float32"])
+def test_reference_precision_is_bound_to_saved_model(readout):
+    source = {"model_id": "fixture", "revision": "a" * 40}
+    engine = {
+        "complete": True,
+        "model": {
+            "id": "fixture",
+            "revision": "a" * 40,
+            "dtype": "bfloat16",
+            "readout_dtype": readout,
+            "quantization": None,
+        },
+    }
+    before = copy.deepcopy(engine)
+    assert reference_readout(source, engine) == readout
+    assert engine == before
+    # A missing/unknown precision or different checkpoint is never guessed.
+    for update in (
+        {"readout_dtype": None},
+        {"readout_dtype": "float16"},
+        {"dtype": "float32"},
+        {"quantization": "awq"},
+        {"revision": "b" * 40},
+        {"id": "other"},
+    ):
+        invalid = copy.deepcopy(engine)
+        invalid["model"].update(update)
+        with pytest.raises(ValueError):
+            reference_readout(source, invalid)
+    engine["complete"] = False
+    with pytest.raises(ValueError):
+        reference_readout(source, engine)
