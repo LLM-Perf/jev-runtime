@@ -24,6 +24,13 @@ class Compiler:
         if not getattr(tokenizer, "chat_template", None):
             raise JevError("template_missing", "The tokenizer needs an explicit chat template")
         self.template_digest = content_digest(tokenizer.chat_template)
+        backend = getattr(tokenizer, "backend_tokenizer", None)
+        # Record the complete normalization/pretokenization/BPE implementation
+        # for experiment identity. This is separate from the existing bundle
+        # vocabulary fingerprint so old manifests are not silently rewritten.
+        self.tokenizer_implementation_digest = (
+            content_digest(backend.to_str()) if backend is not None else None
+        )
         self.tokenizer_digest = content_digest(
             {
                 "vocab": sorted(tokenizer.get_vocab().items()),

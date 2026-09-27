@@ -176,6 +176,10 @@ def install_routes(
     async def workers(request: Request):
         return {"workers": runtime(request).registry.worker_status()}
 
+    @management.post("/compile")
+    async def compile_preview(body: DecisionRequest, request: Request):
+        return runtime(request).compile_preview(body)
+
     @management.post("/bundles")
     async def upload(body: Bundle, request: Request):
         return runtime(request).registry.upload(body)

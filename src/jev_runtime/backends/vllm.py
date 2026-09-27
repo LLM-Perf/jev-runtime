@@ -22,12 +22,17 @@ class VLLMNative:
         self.api_workers = api_workers
 
     async def probe(self) -> Capabilities:
+        model = self.engine_client.model_config
+        configured_limit = getattr(model, "max_logprobs", 0)
+        cache = getattr(getattr(self.engine_client, "vllm_config", None), "cache_config", None)
         return Capabilities(
             engine="vllm",
             version=self.version,
             model_id=self.model_id,
             max_context_tokens=self.max_context,
-            max_label_tokens=128,
+            max_label_tokens=128 if configured_limit < 0 else min(128, configured_limit),
+            raw_logprobs=getattr(model, "logprobs_mode", None) == "raw_logprobs",
+            prefix_cache=getattr(cache, "enable_prefix_caching", None),
             api_workers=self.api_workers,
         )
 

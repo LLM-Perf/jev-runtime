@@ -1,9 +1,11 @@
+from types import SimpleNamespace
+
 import httpx
 import pytest
 
 from jev_runtime.backends.base import ScoreInput
 from jev_runtime.backends.sglang import SGLangHTTP, parse_sglang
-from jev_runtime.backends.vllm import VLLMHTTP
+from jev_runtime.backends.vllm import VLLMHTTP, VLLMNative
 from jev_runtime.errors import JevError
 
 
@@ -93,3 +95,22 @@ async def test_vllm_http_requires_safe_cancellation_routing(workers):
             assert error.value.code == "cancellation_routing_unsupported"
     finally:
         await backend.close()
+
+
+@pytest.mark.parametrize(
+    "mode,limit,expected_raw,expected_limit",
+    [
+        ("raw_logprobs", 20, True, 20),
+        ("raw_logprobs", -1, True, 128),
+        ("processed_logprobs", 64, False, 64),
+    ],
+)
+async def test_vllm_reports_configured_scoring_limits(mode, limit, expected_raw, expected_limit):
+    engine = SimpleNamespace(
+        model_config=SimpleNamespace(logprobs_mode=mode, max_logprobs=limit),
+        vllm_config=SimpleNamespace(cache_config=SimpleNamespace(enable_prefix_caching=False)),
+    )
+    capabilities = await VLLMNative(engine, "fixture", 2048, "fixture", api_workers=2).probe()
+    assert capabilities.raw_logprobs is expected_raw
+    assert capabilities.max_label_tokens == expected_limit
+    assert capabilities.prefix_cache is False and capabilities.api_workers == 2

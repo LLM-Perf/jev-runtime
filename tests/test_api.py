@@ -126,3 +126,28 @@ async def test_client_response_contract_rejects_false_success(runtime, question)
     bad["usage"]["successful_questions"] = 0
     with pytest.raises(ValidationError, match="success counts"):
         DecisionResponse.model_validate(bad)
+
+
+async def test_admin_preview_matches_dispatched_tokens_and_does_not_run_engine(runtime, question):
+    app = create_app(instance=runtime, api_key="data", admin_key="admin")
+    app.state.jev_runtime = runtime
+    body = {"model": "model", "input": {"text": "refund"}, "questions": [question.model_dump()]}
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        assert (
+            await client.post("/admin/compile", json=body, headers={"Authorization": "Bearer data"})
+        ).status_code == 401
+        response = await client.post(
+            "/admin/compile", json=body, headers={"Authorization": "Bearer admin"}
+        )
+        assert response.status_code == 200
+        preview = response.json()
+        assert not preview["engine_dispatched"] and not runtime.backend.calls
+        assert not runtime.registry.list()["leases"]
+        result = await runtime.decide(DecisionRequest.model_validate(body))
+        assert preview["bundle_digest"] == result.bundle_digest
+        assert preview["logical_prompt_tokens"] == result.usage.logical_prompt_tokens
+        for exported, actual in zip(preview["sequences"], runtime.backend.calls, strict=True):
+            assert tuple(exported["input_ids"]) == actual.input_ids
+            assert tuple(exported["label_ids"]) == actual.label_ids

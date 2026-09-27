@@ -5,6 +5,7 @@ import json
 import logging
 import time
 import uuid
+from dataclasses import asdict
 
 from jev_runtime.admission import Admission
 from jev_runtime.backends.base import Capabilities, EngineAdapter, ScoreInput, ScoreResult
@@ -20,6 +21,7 @@ from jev_runtime.schema import (
     ModelIdentity,
     Question,
     Usage,
+    content_digest,
 )
 from jev_runtime.scoring import assemble
 
@@ -220,6 +222,55 @@ class Runtime:
         finally:
             await cancel_and_drain(tasks)
 
+    def _compile_request(self, request: DecisionRequest, bundle: Bundle, engine_rid: str):
+        if not self.is_prepared(bundle.reference):
+            raise JevError(
+                "replica_not_ready", "This API worker has not validated the active version", 503
+            )
+        self._validate_bundle(bundle)
+        questions = request.questions or bundle.questions
+        if bundle.candidate_policy == "fixed" and questions != bundle.questions:
+            raise JevError(
+                "task_mismatch", "Fixed task bundle does not allow question changes", 409
+            )
+        if not questions or len(questions) > bundle.policy.max_questions:
+            raise JevError(
+                "question_budget", "Request must contain an allowed number of questions", 413
+            )
+        compiled = tuple(
+            self.compiler.compile(request.input.text, question, bundle, engine_rid)
+            for question in questions
+        )
+        sequences = tuple(sequence for question in compiled for sequence in question.sequences)
+        return compiled, sequences, self._validate_sequences(sequences, bundle)
+
+    def compile_preview(self, request: DecisionRequest) -> dict:
+        """Export the actual worker's validated scoring inputs without GPU dispatch."""
+        snapshot = self.registry.acquire(
+            request.model, "compile-" + uuid.uuid4().hex, request.bundle, self.backend_identity
+        )
+        try:
+            compiled, sequences, total_tokens = self._compile_request(
+                request, snapshot.bundle, "preview"
+            )
+            prompts = [asdict(sequence) for sequence in sequences]
+            return {
+                "worker_id": self.registry.owner,
+                "bundle": snapshot.bundle.model_dump(mode="json"),
+                "bundle_digest": snapshot.bundle.digest,
+                "generation": snapshot.generation,
+                "logical_prompt_tokens": total_tokens,
+                "tokenizer_implementation_digest": self.compiler.tokenizer_implementation_digest,
+                "sequences": prompts,
+                "input_digest": content_digest(prompts),
+                "questions": [
+                    {"id": q.question.id, "mode": q.mode, "keys": q.keys} for q in compiled
+                ],
+                "engine_dispatched": False,
+            }
+        finally:
+            self.registry.release(snapshot.lease_id)
+
     async def decide(
         self, request: DecisionRequest, request_id: str | None = None, tenant: str = "default"
     ) -> DecisionResponse:
@@ -242,30 +293,10 @@ class Runtime:
                     request.model, rid, request.bundle, self.backend_identity
                 )
                 bundle = snapshot.bundle
-                if not self.is_prepared(bundle.reference):
-                    raise JevError(
-                        "replica_not_ready",
-                        "This API worker has not validated the active version",
-                        503,
-                    )
-                self._validate_bundle(bundle)
-                questions = request.questions or bundle.questions
-                if bundle.candidate_policy == "fixed" and questions != bundle.questions:
-                    raise JevError(
-                        "task_mismatch", "Fixed task bundle does not allow question changes", 409
-                    )
-                if not questions or len(questions) > bundle.policy.max_questions:
-                    raise JevError(
-                        "question_budget",
-                        "Request must contain an allowed number of questions",
-                        413,
-                    )
-                compiled = [
-                    self.compiler.compile(request.input.text, q, bundle, engine_rid)
-                    for q in questions
-                ]
-                sequences = tuple(s for q in compiled for s in q.sequences)
-                total_tokens = self._validate_sequences(sequences, bundle)
+                compiled, sequences, total_tokens = self._compile_request(
+                    request, bundle, engine_rid
+                )
+                questions = tuple(item.question for item in compiled)
                 self.registry.record_branches(
                     snapshot.lease_id, [seq.request_id for seq in sequences]
                 )

@@ -61,7 +61,9 @@ the matching Uvicorn ASGI import target to `jev_sglang.worker:app` using a regis
 BEFORE hook. This installs the wrapper in every spawned worker before the host
 lifespan initializes its tokenizer manager. Unrelated Uvicorn apps are unchanged.
 The initial parent-only hook failed with missing plugin routes at `a283bd5`;
-the new worker target is awaiting real DSW recertification. Multi-tokenizer HTTP/2
+the new worker target passed at `c5f8867`, including two tokenizer workers,
+1,000 switches, K=32/64 and native chat. A separate two-worker gateway attached
+to that engine also passed its publication and switching checks. Multi-tokenizer HTTP/2
 through Granian is explicitly rejected until its worker integration is validated.
 
 Real startup, scoring and native chat coexistence passed on both engines with two

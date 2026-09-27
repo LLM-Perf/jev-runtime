@@ -1,0 +1,245 @@
+{
+  "source_commit": "c5f8867f39f10b191ddd7266e7a93fdc02234dd1",
+  "engine": "sglang",
+  "mode": "gateway",
+  "started_at": 1790498952.5088859,
+  "qualification": "co-located multi-process functional test; not throughput certification",
+  "expected_workers": 2,
+  "checks": {
+    "readiness_http_statuses": {
+      "200": 3
+    },
+    "workers_ready": {
+      "5d3ac1e3c7c843c9b10020c3c2d04597": {
+        "ready": true,
+        "engine": "sglang",
+        "prepared_bundles": [
+          "default@1"
+        ],
+        "worker_id": "5d3ac1e3c7c843c9b10020c3c2d04597"
+      },
+      "21b059eee06c44d8968fcdcaf4831dcf": {
+        "ready": true,
+        "engine": "sglang",
+        "prepared_bundles": [
+          "default@1"
+        ],
+        "worker_id": "21b059eee06c44d8968fcdcaf4831dcf"
+      }
+    },
+    "prepared_v1": [
+      "21b059eee06c44d8968fcdcaf4831dcf",
+      "5d3ac1e3c7c843c9b10020c3c2d04597"
+    ],
+    "partial_prepare_preserves_old_route": {
+      "prepared_worker": "21b059eee06c44d8968fcdcaf4831dcf",
+      "activation_status": 409,
+      "error_code": "replicas_not_ready",
+      "route": {
+        "alias": "mw-30301e74ef00494cbede880576f413f3",
+        "ref": "mw-30301e74ef00494cbede880576f413f3@1",
+        "generation": 1
+      }
+    },
+    "prepared_v2": [
+      "21b059eee06c44d8968fcdcaf4831dcf",
+      "5d3ac1e3c7c843c9b10020c3c2d04597"
+    ],
+    "hot_switches": {
+      "switches": 1000,
+      "strict_success_requests": 293,
+      "response_workers": [
+        "21b059eee06c44d8968fcdcaf4831dcf",
+        "5d3ac1e3c7c843c9b10020c3c2d04597"
+      ],
+      "versions": [
+        "mw-30301e74ef00494cbede880576f413f3@1",
+        "mw-30301e74ef00494cbede880576f413f3@2"
+      ],
+      "mixed_versions": 0,
+      "errors": []
+    },
+    "large_joint_readouts": [
+      {
+        "candidates": 32,
+        "response": {
+          "request_id": "dec-d19d31cc2c8943968a2d7fb0f3cc34a5",
+          "status": "completed",
+          "bundle": "mw-30301e74ef00494cbede880576f413f3@1",
+          "bundle_digest": "sha256:2e62d05df6350d3b571b4b289413540b652edb0a66b6ccbfc0af72ca0eebab13",
+          "generation": 1001,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "category": {
+              "type": "choice",
+              "status": "abstained",
+              "value": null,
+              "probabilities": {
+                "c0": 0.2734421753735464,
+                "c1": 0.2734421753735464,
+                "c2": 0.21295698030566637,
+                "c3": 0.03700637866451827,
+                "c4": 0.053843963242984266,
+                "c5": 0.008789785372153065,
+                "c6": 0.004419781648705622,
+                "c7": 0.088773687497504,
+                "c8": 0.013613885902881767,
+                "c9": 0.007756958365308466,
+                "c10": 0.0005278676413956881,
+                "c11": 0.0008175773966621791,
+                "c12": 0.013613885902881767,
+                "c13": 0.0016259468030256198,
+                "c14": 0.0008175773966621791,
+                "c15": 0.0018424391046174327,
+                "c16": 0.002680733079175211,
+                "c17": 0.0006367299167419856,
+                "c18": 0.00013346584108889063,
+                "c19": 0.0009264365622901513,
+                "c20": 3.170091589669756e-05,
+                "c21": 7.60465439407166e-05,
+                "c22": 0.00032016790877667853,
+                "c23": 0.0004658415585063307,
+                "c24": 0.0003007699157984851,
+                "c25": 6.711083947994574e-05,
+                "c26": 0.0003861962164602867,
+                "c27": 0.0002342398459481807,
+                "c28": 0.00026542851908279265,
+                "c29": 1.0291780563382395e-05,
+                "c30": 0.00014207364829393567,
+                "c31": 3.170091589669756e-05
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9726516851391914,
+              "calibration_status": "uncalibrated",
+              "abstained": true,
+              "reason": "tie",
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 282,
+            "engine_prompt_tokens": 282,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 281
+          },
+          "latency_ms": 50.85850227624178
+        }
+      },
+      {
+        "candidates": 64,
+        "response": {
+          "request_id": "dec-86552ef117db41c9aad89abcc5ff0879",
+          "status": "completed",
+          "bundle": "mw-30301e74ef00494cbede880576f413f3@1",
+          "bundle_digest": "sha256:2e62d05df6350d3b571b4b289413540b652edb0a66b6ccbfc0af72ca0eebab13",
+          "generation": 1001,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "category": {
+              "type": "choice",
+              "status": "answered",
+              "value": "c1",
+              "probabilities": {
+                "c0": 0.23385778642757843,
+                "c1": 0.26499558892804276,
+                "c2": 0.2063787721676278,
+                "c3": 0.03586324880879699,
+                "c4": 0.0759224983240077,
+                "c5": 0.008518268232489672,
+                "c6": 0.008518268232489672,
+                "c7": 0.09748641754645836,
+                "c8": 0.011643092213262339,
+                "c9": 0.007061892401205031,
+                "c10": 0.0006992220361419156,
+                "c11": 0.0014802530621283836,
+                "c12": 0.024648426408899273,
+                "c13": 0.003550942499558923,
+                "c14": 0.0012271728907801312,
+                "c15": 0.0040237450003044435,
+                "c16": 0.0054998073320244815,
+                "c17": 0.0024405247095500644,
+                "c18": 0.00016607979075402183,
+                "c19": 0.0008434227710561089,
+                "c20": 5.065147441111496e-05,
+                "c21": 0.00012150657056783034,
+                "c22": 0.0006992220361419156,
+                "c23": 0.0007923223686044482,
+                "c24": 0.0006170612811141345,
+                "c25": 0.0002914791101898379,
+                "c26": 0.0006170612811141345,
+                "c27": 0.0004240996028667669,
+                "c28": 0.00045145167728093805,
+                "c29": 2.7111780549886477e-05,
+                "c30": 0.00017679101699589377,
+                "c31": 6.92323570015056e-05,
+                "c32": 2.5469160804695673e-05,
+                "c33": 0.00035159091978529376,
+                "c34": 2.3926062358828094e-05,
+                "c35": 2.2476455521572915e-05,
+                "c36": 1.6798732431555314e-06,
+                "c37": 1.0617125812562142e-05,
+                "c38": 6.109734061245963e-05,
+                "c39": 2.2476455521572915e-05,
+                "c40": 2.4442011464381324e-06,
+                "c41": 2.7111780549886477e-05,
+                "c42": 1.9835402378868522e-05,
+                "c43": 3.5562916836674473e-06,
+                "c44": 8.18704832526679e-07,
+                "c45": 2.8575606464494706e-06,
+                "c46": 1.3926638334280792e-06,
+                "c47": 9.875465343408182e-07,
+                "c48": 1.844979820558435e-06,
+                "c49": 9.369580643937047e-06,
+                "c50": 8.268625896791023e-06,
+                "c51": 2.769642748070533e-06,
+                "c52": 0.00012934307109156728,
+                "c53": 5.7395639874508856e-05,
+                "c54": 1.7504681160870584e-05,
+                "c55": 6.854931635780283e-06,
+                "c56": 3.905822310772257e-06,
+                "c57": 5.015175120097624e-06,
+                "c58": 3.905822310772257e-06,
+                "c59": 1.788215759023437e-06,
+                "c60": 1.268034850255504e-06,
+                "c61": 2.684429799056353e-06,
+                "c62": 5.015175120097624e-06,
+                "c63": 1.3082865972302282e-06
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9759999358485512,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 1,
+            "successful_questions": 1,
+            "scoring_sequences": 1,
+            "logical_prompt_tokens": 505,
+            "engine_prompt_tokens": 505,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 504
+          },
+          "latency_ms": 80.74321411550045
+        }
+      }
+    ]
+  },
+  "passed": true,
+  "finished_at": 1790498971.1086123
+}

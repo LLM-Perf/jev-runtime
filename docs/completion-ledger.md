@@ -15,7 +15,7 @@ replacement for any requirement in `implementation-plan.md`.
 - CPU contract tests with a controlled engine double. These are not model evaluations.
 - Temperature/Platt fitting and collection CLI with grouped split checks, NLL/Brier/ECE/risk-coverage metrics,
   immutable artifact binding, and synchronous/asynchronous Python clients.
-- Local checkpoint: 65 Python tests and Ruff passed; TypeScript SDK build and
+- Local checkpoint: 73 Python tests and Ruff passed; TypeScript SDK build and
   four client tests passed. All three Python distributions built successfully.
 - Four real GPU combinations (two models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
@@ -35,12 +35,18 @@ replacement for any requirement in `implementation-plan.md`.
   bootstrap runs a canary on every worker. A local activation barrier requires all
   serving workers to prepare the target digest. vLLM with two API workers passed
   its barrier, 1,000 switches and K=32/64 scoring at `a283bd5`. SGLang's first
-  two-worker attempt exposed missing plugin routes; its worker-target fix is
-  awaiting real retest. Multi-node rollout remains incomplete.
+  two-worker attempt exposed missing plugin routes; its worker-target fix passed
+  at `c5f8867`, as did an independent two-worker SGLang gateway. All owned process
+  groups exited after the checks; GPU free memory returned to the observed baseline.
+  Multi-node rollout remains incomplete.
 - Real-tokenizer checks of all 20 pinned entries at `53d8185`: 11 passed all 16
   combinations, Phi-3 passed 14/16 (joint K=64 unsupported; independent works), six
   gated repositories were inaccessible, and Mistral Small/GLM require specific
   template/tokenizer profiles. These are not GPU/model-quality certifications.
+- Server-side input export, a fixed 144-case performance manifest, paired native
+  and typed HTTP runner, and strict cohort accounting are implemented. The runner
+  preserves parity/setup failures, actual token lengths, drain and unknown cache
+  observations. Real harness validation and the full performance suite remain pending.
 
 ## Required evidence still outstanding
 
@@ -49,7 +55,7 @@ replacement for any requirement in `implementation-plan.md`.
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
 | SGLang real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
 | vLLM real serving | Qwen3-0.6B and SmolLM2 functional checks passed | Remaining matrix; cross-implementation BF16 numerical differences remain |
-| Native plugin lifecycle | vLLM two-worker check passed; SGLang worker import failure fixed locally | SGLang two-worker retest and final-source checks |
+| Native plugin lifecycle | Both native two-worker paths and two-worker SGLang gateway passed | Additional configurations and final-source checks |
 | GPU hot-switch and drain | Four combinations each passed 1,000 route switches | Cancellation faults, adapter swaps, multi-replica rollout |
 | 20-model/40-combination matrix | 2/20 functional checks per engine | Remaining 36 combinations and numerical/quality/performance gates |
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
@@ -59,7 +65,7 @@ replacement for any requirement in `implementation-plan.md`.
 | LoRA lifecycle | Incomplete | Load/unload adapters, engine identity, draining, cache isolation |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
 | Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
-| Multi-replica rollout | Incomplete | Per-replica READY state, shared activation, consistent request versions |
+| Multi-replica rollout | Shared-local-registry activation barrier passed on both engines | Multi-node coordinator, quotas and cancellation routing |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
 
 ## DSW preflight, 2026-09-27
