@@ -1,7 +1,9 @@
-"""Kill only a recorded, task-owned gateway; validate its durable dispatch recovery.
+"""Kill a recorded task-owned gateway or native engine and check durable recovery.
 
-The engine stays alive. Run on Linux after dsw_service.py created both run dirs.
-Reports prove journal/owner recovery, not a GPU LoRA unload barrier.
+Run on Linux after dsw_service.py created the run directories. Gateway mode keeps
+its engine alive; native mode kills the recorded API/GPU process group and requires
+its full exit plus the prior free-memory baseline before restarting. No LoRA profile
+or hardware-fault recovery is certified by this harness.
 """
 
 from __future__ import annotations
@@ -12,6 +14,7 @@ import json
 import os
 import signal
 import sqlite3
+import subprocess
 import sys
 import time
 import uuid
@@ -40,6 +43,39 @@ def identity(pid: int) -> dict | None:
         return None
 
 
+def process_group_members(pgid: int) -> list[int]:
+    members = []
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdecimal():
+            continue
+        try:
+            fields = (entry / "stat").read_text().rsplit(")", 1)[1].split()
+            if fields[0] != "Z" and int(fields[2]) == pgid:
+                members.append(int(entry.name))
+        except (FileNotFoundError, ProcessLookupError):
+            pass
+    return sorted(members)
+
+
+def gpu_snapshot(uuid: str) -> dict:
+    value = (
+        subprocess.check_output(
+            [
+                "nvidia-smi",
+                f"--id={uuid}",
+                "--query-gpu=index,uuid,memory.free,memory.used",
+                "--format=csv,noheader,nounits",
+            ],
+            text=True,
+        )
+        .strip()
+        .split(", ")
+    )
+    result = dict(zip(("index", "uuid", "free_mib", "used_mib"), value, strict=True))
+    assert result["uuid"] == uuid
+    return result
+
+
 async def ready(url: str, key: str) -> dict:
     async with httpx.AsyncClient(
         base_url=url, headers={"Authorization": "Bearer " + key}, timeout=2
@@ -58,12 +94,16 @@ async def ready(url: str, key: str) -> dict:
 async def run(args):
     if args.output.exists():
         raise ValueError("Keep previous evidence; choose a new output")
-    gateway_dir = args.gateway_run_dir.resolve()
-    engine_dir = args.engine_run_dir.resolve()
+    native_mode = args.native_run_dir is not None
+    gateway_dir = (args.native_run_dir or args.gateway_run_dir).resolve()
+    engine_dir = gateway_dir if native_mode else args.engine_run_dir.resolve()
     settings = load_settings(gateway_dir / "config.json")
     gateway_record = json.loads((gateway_dir / "process.json").read_text())
     engine_record = json.loads((engine_dir / "process.json").read_text())
-    assert gateway_record["mode"] == "gateway"
+    assert gateway_record["mode"] == ("native-plugin" if native_mode else "gateway")
+    if native_mode:
+        assert settings.workers == 1 and not settings.adapters.enabled
+        assert args.verify_admission, "Native crash checks require admission assertions"
     assert engine_record["mode"] == "native-plugin"
     assert identity(engine_record["identity"]["pid"]) == engine_record["identity"]
     assert identity(gateway_record["identity"]["pid"]) == gateway_record["identity"]
@@ -75,19 +115,28 @@ async def run(args):
     config_before = (gateway_dir / "config.json").read_bytes()
     keys_before = (gateway_dir / "keys.json").read_bytes()
     if args.verify_admission:
-        assert settings.workers == 1, "Fault injection targets one gateway API process"
+        assert settings.workers == 1, "Fault injection targets one API process group"
         assert settings.admission.max_requests == 1
         assert settings.admission.max_queue >= 2 and settings.admission.max_tenant_queue >= 2
     tenant_key = keys["tenants"][args.tenant] if args.tenant else keys["api"]
     url = f"http://127.0.0.1:{settings.port}"
+    if native_mode:
+        url += "/plugins/jev-runtime"
     report = {
         "source_commit": args.source_commit,
         "runtime_source_commit": args.runtime_source_commit or args.source_commit,
-        "qualification": "co-located gateway process-kill and journal recovery",
+        "qualification": (
+            "co-located native API/GPU process-group kill and journal recovery; "
+            "not hardware fault or LoRA certification"
+            if native_mode
+            else "co-located gateway process-kill and journal recovery"
+        ),
+        "mode": "native-plugin" if native_mode else "gateway",
         "started_at": time.time(),
         "engine": engine_record["engine"],
         "engine_identity": engine_record["identity"],
-        "gateway_before": gateway_record["identity"],
+        "process_record_before": gateway_record,
+        ("native_before" if native_mode else "gateway_before"): gateway_record["identity"],
         "admission_limits": settings.admission.model_dump(),
         "verify_admission": args.verify_admission,
         "tenant": args.tenant or "default",
@@ -215,14 +264,25 @@ async def run(args):
             # Final identity comparison immediately before the fault injection.
             original = gateway_record["identity"]
             assert identity(original["pid"]) == original
+            assert os.getpgid(original["pid"]) == original["pid"]
+            checks["process_group_before_kill"] = process_group_members(original["pid"])
             os.killpg(original["pid"], signal.SIGKILL)
             checks["signal"] = "SIGKILL"
-            for _ in range(300):
-                if identity(original["pid"]) is None:
-                    break
-                await asyncio.sleep(0.05)
-            else:
-                raise TimeoutError("Killed gateway did not exit within 15 seconds")
+            async with asyncio.timeout(45):
+                while process_group_members(original["pid"]):  # noqa: ASYNC110 - external OS processes
+                    await asyncio.sleep(0.1)
+            checks["process_group_exited_after_kill"] = True
+            assert identity(original["pid"]) is None
+            if native_mode:
+                prior_gpu = engine_record["gpu_before"]
+                async with asyncio.timeout(30):
+                    while True:
+                        current_gpu = await asyncio.to_thread(gpu_snapshot, prior_gpu["uuid"])
+                        if int(current_gpu["free_mib"]) >= int(prior_gpu["free_mib"]):
+                            break
+                        await asyncio.sleep(0.25)
+                checks["gpu_memory_after_kill"] = current_gpu
+                checks["gpu_free_memory_baseline"] = int(prior_gpu["free_mib"])
             result = (await asyncio.gather(request_task, return_exceptions=True))[0]
             assert isinstance(result, httpx.TransportError), type(result).__name__
             checks["client_disconnect_error"] = type(result).__name__
@@ -261,16 +321,40 @@ async def run(args):
             str(settings.tokenizer),
             "--port",
             str(settings.port),
-            "--gateway",
-            "--engine-url",
-            settings.engine_url,
-            "--engine-run-dir",
-            str(engine_dir),
             "--api-workers",
             str(settings.workers),
             "--admission-config",
             str(admission_config),
         ]
+        if native_mode:
+            memory_flag = (
+                "--gpu-memory-utilization"
+                if settings.backend == "vllm"
+                else "--mem-fraction-static"
+            )
+            memory_fraction = engine_record["command"][
+                engine_record["command"].index(memory_flag) + 1
+            ]
+            command.extend(
+                [
+                    "--gpu",
+                    current_gpu["index"],
+                    "--memory-fraction",
+                    memory_fraction,
+                    "--reserve-mib",
+                    str(args.reserve_mib),
+                ]
+            )
+        else:
+            command.extend(
+                [
+                    "--gateway",
+                    "--engine-url",
+                    settings.engine_url,
+                    "--engine-run-dir",
+                    str(engine_dir),
+                ]
+            )
         for tenant in settings.tenant_key_envs:
             command.extend(["--tenant", tenant])
         child = await asyncio.create_subprocess_exec(
@@ -278,7 +362,14 @@ async def run(args):
         )
         stdout, stderr = await child.communicate()
         assert child.returncode == 0, stderr.decode()[-2000:]
-        report["gateway_restart"] = json.loads(stdout)
+        report["native_restart" if native_mode else "gateway_restart"] = json.loads(stdout)
+        restarted_record = json.loads((gateway_dir / "process.json").read_text())
+        assert restarted_record["identity"] != gateway_record["identity"]
+        assert identity(restarted_record["identity"]["pid"]) == restarted_record["identity"]
+        if native_mode:
+            assert restarted_record["command"] == engine_record["command"]
+            assert restarted_record["gpu_before"]["uuid"] == engine_record["gpu_before"]["uuid"]
+            checks["same_engine_command_and_gpu"] = True
         checks["ready_after_restart"] = await ready(url, keys["api"])
         assert bundle.reference in checks["ready_after_restart"]["prepared_bundles"]
         # Validate normalized settings because old launchers omitted default
@@ -392,8 +483,13 @@ async def run(args):
             )
             response.raise_for_status()
             assert response.json()["usage"]["completion_tokens"] > 0
-        assert identity(engine_record["identity"]["pid"]) == engine_record["identity"]
-        checks["original_engine_survives_native_chat"] = True
+        checked_engine = restarted_record if native_mode else engine_record
+        assert identity(checked_engine["identity"]["pid"]) == checked_engine["identity"]
+        checks[
+            "restarted_engine_serves_native_chat"
+            if native_mode
+            else "original_engine_survives_native_chat"
+        ] = True
         report["passed"] = True
     except BaseException as exc:
         report["passed"] = False
@@ -423,11 +519,21 @@ async def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gateway-run-dir", type=Path, required=True)
-    parser.add_argument("--engine-run-dir", type=Path, required=True)
+    target = parser.add_mutually_exclusive_group(required=True)
+    target.add_argument("--gateway-run-dir", type=Path)
+    target.add_argument("--native-run-dir", type=Path)
+    parser.add_argument("--engine-run-dir", type=Path)
+    parser.add_argument("--reserve-mib", type=int, default=3072)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--runtime-source-commit")
     parser.add_argument("--verify-admission", action="store_true")
     parser.add_argument("--tenant")
-    asyncio.run(run(parser.parse_args()))
+    args = parser.parse_args()
+    if args.gateway_run_dir and not args.engine_run_dir:
+        parser.error("gateway mode requires --engine-run-dir")
+    if args.native_run_dir and (args.engine_run_dir or not args.verify_admission):
+        parser.error("native mode requires --verify-admission and no --engine-run-dir")
+    if args.reserve_mib < 0:
+        parser.error("reserve-mib must be non-negative")
+    asyncio.run(run(args))
