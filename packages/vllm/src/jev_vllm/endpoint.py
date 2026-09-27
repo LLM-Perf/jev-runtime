@@ -39,6 +39,8 @@ class JevEndpointPlugin:
     async def init_state(self, engine_client, state, args):
         if engine_client is None:
             return
+        from vllm import envs
+
         config = engine_client.model_config
         backend = VLLMNative(
             engine_client,
@@ -46,6 +48,7 @@ class JevEndpointPlugin:
             config.max_model_len,
             version("vllm"),
             api_workers=getattr(args, "api_server_count", None) or 1,
+            batch_invariant=envs.VLLM_BATCH_INVARIANT,
         )
         state.jev_backend = backend
         path = os.environ.get("JEV_CONFIG")

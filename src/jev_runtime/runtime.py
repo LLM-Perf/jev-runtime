@@ -88,6 +88,17 @@ class Runtime:
                         f"report {observed}; use an explicit verified engine precision profile",
                         409,
                     )
+            expected_mode = self.expected_model.batch_invariant
+            observed_mode = self.capabilities.batch_invariant
+            if (expected_mode is not None and expected_mode != observed_mode) or (
+                expected_mode is None and observed_mode is True
+            ):
+                raise JevError(
+                    "engine_execution_mismatch",
+                    "Bundle execution mode differs from the engine report; "
+                    "configure and build a matching batch-invariance profile",
+                    409,
+                )
         if self.adapter_store is not None:
             if not self.capabilities.lora:
                 raise JevError(
@@ -235,6 +246,7 @@ class Runtime:
                 "revision",
                 "dtype",
                 "readout_dtype",
+                "batch_invariant",
                 "quantization",
                 "tokenizer_digest",
                 "tokenizer_implementation_digest",

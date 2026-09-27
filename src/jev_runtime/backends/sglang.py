@@ -87,6 +87,7 @@ class SGLangHTTP:
                 max_label_tokens=128,
                 lora=False,
                 prefix_cache=not bool(config.get("disable_radix_cache", False)),
+                batch_invariant=config.get("enable_deterministic_inference"),
                 verified=False,
                 model_dtype=reported_dtype(config.get("dtype")),
                 readout_dtype=(
@@ -144,6 +145,7 @@ class SGLangNative:
         architectures = getattr(getattr(model, "hf_config", None), "architectures", ()) or ()
         return bool(
             self.managed_lora
+            and not getattr(args, "enable_deterministic_inference", False)
             and self.version.split("+")[0] == "0.5.19"
             and getattr(args, "enable_lora", False)
             and getattr(args, "tokenizer_worker_num", None) == 1
@@ -239,6 +241,7 @@ class SGLangNative:
             max_context_tokens=config.context_len,
             lora=self._lora_profile(),
             prefix_cache=not bool(getattr(args, "disable_radix_cache", False)),
+            batch_invariant=getattr(args, "enable_deterministic_inference", None),
             model_dtype=reported_dtype(getattr(config, "dtype", None)),
             readout_dtype=(
                 "float32"

@@ -57,6 +57,7 @@ class Settings(Contract):
     chat_template: TemplateFile | None = None
     dtype: str = "bfloat16"
     readout_dtype: FloatingDType | None = None
+    batch_invariant: bool = False
     quantization: str | None = None
     registry_path: str = ".jev/registry.db"
     host: str = "127.0.0.1"
@@ -132,6 +133,9 @@ def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
         template_digest=compiler.template_digest,
         dtype=settings.dtype,
         readout_dtype=settings.readout_dtype or reported_dtype(settings.dtype),
+        # Preserve legacy ordinary-mode digests; deterministic mode is always
+        # explicit and cannot reuse a bundle/calibrator lacking this binding.
+        batch_invariant=True if settings.batch_invariant else None,
         quantization=settings.quantization,
     )
 

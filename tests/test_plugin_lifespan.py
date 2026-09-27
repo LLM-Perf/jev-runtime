@@ -55,6 +55,8 @@ async def test_vllm_host_may_delete_state_after_plugin_drains(monkeypatch):
 
 
 async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp_path):
+    import sys
+
     from jev_vllm import endpoint
 
     runtime = AsyncMock()
@@ -78,9 +80,13 @@ async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp
     monkeypatch.setattr(endpoint, "version", lambda name: "fixture")
     monkeypatch.setattr(endpoint, "build_runtime", build)
     monkeypatch.setattr(endpoint, "bootstrap", AsyncMock())
+    host = ModuleType("vllm")
+    host.envs = SimpleNamespace(VLLM_BATCH_INVARIANT=True)
+    monkeypatch.setitem(sys.modules, "vllm", host)
     state = SimpleNamespace()
     await JevEndpointPlugin().init_state(engine, state, SimpleNamespace(api_server_count=1))
     assert state.jev_runtime is runtime
+    assert state.jev_backend.batch_invariant is True
     runtime.start.assert_awaited_once()
 
 

@@ -17,10 +17,12 @@ class VLLMNative:
         max_context: int,
         version: str,
         api_workers: int = 1,
+        batch_invariant: bool | None = None,
     ):
         self.engine_client = engine_client
         self.model_id, self.max_context, self.version = model_id, max_context, version
         self.api_workers = api_workers
+        self.batch_invariant = batch_invariant
         self.managed_lora = False
         self._adapter_bindings: dict[str, AdapterBinding] = {}
 
@@ -31,6 +33,7 @@ class VLLMNative:
         architectures = getattr(getattr(model, "hf_config", None), "architectures", ()) or ()
         return bool(
             self.managed_lora
+            and self.batch_invariant is not True
             and self.version.split("+")[0] == "0.30.0"
             and self.api_workers == 1
             and getattr(config, "lora_config", None) is not None
@@ -103,6 +106,7 @@ class VLLMNative:
             raw_logprobs=getattr(model, "logprobs_mode", None) == "raw_logprobs",
             prefix_cache=getattr(cache, "enable_prefix_caching", None),
             api_workers=self.api_workers,
+            batch_invariant=self.batch_invariant,
             model_dtype=reported_dtype(getattr(model, "dtype", None)),
             readout_dtype=(
                 reported_dtype(getattr(model, "head_dtype", getattr(model, "dtype", None)))

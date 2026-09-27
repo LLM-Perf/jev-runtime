@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from pydantic import Field
+from pydantic import Field, StrictBool
 
 from jev_runtime.schema import Contract, FloatingDType
 
@@ -29,6 +29,8 @@ class Capabilities(Contract):
     verified: bool = False
     model_dtype: FloatingDType | None = None
     readout_dtype: FloatingDType | None = None
+    # Observed engine configuration, not a numerical/kernel certificate.
+    batch_invariant: StrictBool | None = None
 
 
 @dataclass(frozen=True)

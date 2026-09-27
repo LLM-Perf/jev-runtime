@@ -115,6 +115,7 @@ def launch(args):
         "tokenizer": str(tokenizer),
         "dtype": "bfloat16",
         "readout_dtype": "float32" if args.readout_dtype == "float32" else "bfloat16",
+        "batch_invariant": getattr(args, "batch_invariant", False),
         "registry_path": str(root / "registry.db"),
         "bootstrap_alias": "decision-model",
         "bootstrap_bundle_id": "default",
@@ -206,6 +207,8 @@ def launch(args):
         ]
     elif args.engine == "vllm":
         env["VLLM_PLUGINS"] = "jev_runtime_api"
+        # Do not silently inherit a different numerical mode from the shell.
+        env["VLLM_BATCH_INVARIANT"] = "1" if config["batch_invariant"] else "0"
         command = [
             str(Path(sys.executable).with_name("vllm")),
             "serve",
@@ -308,6 +311,8 @@ def launch(args):
             )
     if template_source is not None and not args.gateway:
         command.extend(["--chat-template", config["chat_template"]["path"]])
+    if config["batch_invariant"] and args.engine == "sglang" and not args.gateway:
+        command.append("--enable-deterministic-inference")
     if args.tokenizer_path and not args.gateway:
         flag = "--tokenizer" if args.engine == "vllm" else "--tokenizer-path"
         command.extend([flag, str(tokenizer)])
@@ -327,6 +332,7 @@ def launch(args):
         "gpus_before": gpus,
         "tensor_parallel_size": len(indices) if gpus else None,
         "readout_dtype": config["readout_dtype"],
+        "batch_invariant": config["batch_invariant"],
         "chat_template_source": template_source.model_dump() if template_source else None,
         "chat_template_snapshot": config.get("chat_template"),
         "created": time.time(),
@@ -380,6 +386,7 @@ def main():
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
     parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
+    parser.add_argument("--batch-invariant", action="store_true")
     parser.add_argument("--chat-template-path", type=Path)
     parser.add_argument("--chat-template-sha256")
     parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
@@ -418,6 +425,7 @@ def main():
             or args.api_workers != 1
             or len(indices) != 1
             or args.readout_dtype != "model"
+            or args.batch_invariant
         ):
             parser.error("managed adapters require the native TP1 single-worker profile")
         if len(set(args.tenant)) != len(args.tenant) or any(

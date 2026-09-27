@@ -93,6 +93,7 @@ class ModelIdentity(Contract):
     template_digest: str = Field(min_length=1)
     dtype: str = "bfloat16"
     readout_dtype: FloatingDType | None = None
+    batch_invariant: StrictBool | None = None
     quantization: str | None = None
     adapter_id: str | None = None
     adapter_revision: str | None = None
@@ -107,6 +108,8 @@ class ModelIdentity(Contract):
             result.pop("tokenizer_implementation_digest", None)
         if self.readout_dtype is None:
             result.pop("readout_dtype", None)
+        if self.batch_invariant is None:
+            result.pop("batch_invariant", None)
         return result
 
     @model_validator(mode="after")

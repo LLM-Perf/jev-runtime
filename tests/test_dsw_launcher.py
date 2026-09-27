@@ -98,6 +98,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         },
     )
     captured = {}
+    monkeypatch.setenv("VLLM_BATCH_INVARIANT", "1")
 
     def start(command, **kwargs):
         captured.update(command=command, **kwargs)
@@ -132,6 +133,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         assert snapshot["sha256"] == hashlib.sha256(b"{{ messages[0].content }}").hexdigest()
         assert (args.run_dir / "chat_template.jinja").read_text() == "{{ messages[0].content }}"
     if engine == "vllm":
+        assert captured["env"]["VLLM_BATCH_INVARIANT"] == "0"
         assert ("--hf-overrides" in command) == (readout == "float32")
         if readout == "float32":
             assert json.loads(command[command.index("--hf-overrides") + 1]) == {
