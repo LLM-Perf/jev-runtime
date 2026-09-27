@@ -68,6 +68,12 @@ recovery. No elapsed-time TTL reclaims potentially live GPU work. Under contenti
 workers poll the shared queue every 20 ms; this is not a GPU scheduler or a claim
 of latency certification.
 
+If a database failure prevented recording `abort_pending`, the retained lease can
+still be `inflight`. Recovery then requires a verified dead owner: stop/restart
+the affected API **process** before using the existing recovery procedure. Merely
+closing a Runtime object does not prove process death. This is conservative
+capacity retention, not automatic recovery from database failure.
+
 Migration from a process-local release requires stopping all old API workers and
 draining/recovering their leases before starting the shared-admission release.
 New workers reject incompatible live/unknown workers or retained work with
@@ -230,9 +236,11 @@ GPU memory before launching a replacement. Existing services are not stopped.
 
 ## Runtime metrics
 
-Authenticated `/metrics` exposes process-local observations for both decision and
-System One requests after they enter the runtime route. It does not count rejected
-authentication, body-schema validation, management endpoints or native engine APIs.
+Authenticated `/metrics` exposes observations for both decision and System One
+requests after they enter the runtime route. Request counters and histograms are
+process-local; admission gauges use the scope described below. Request observations
+exclude rejected authentication, body-schema validation, management endpoints and
+native engine APIs.
 
 - `jev_runtime_stage_seconds{stage,outcome}`: seven serial phases and inclusive
   `total`; includes durable lease release and failure/cancellation cleanup.

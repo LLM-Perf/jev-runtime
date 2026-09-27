@@ -517,6 +517,15 @@
         "evidence": "evidence/dsw/sglang-input300-c11d2b3/report.json",
         "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
         "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
+      },
+      "development_shared_admission": {
+        "status": "passed_targeted_two_worker_two_tenant_checks",
+        "source_commit": "4944efdf8b996c35966975b330480905f3ca3e34",
+        "evidence": "evidence/dsw/sglang-shared-admission-4944efd/shared-admission.json",
+        "cleanup_evidence": "evidence/dsw/sglang-shared-admission-4944efd/cleanup.json",
+        "timing_evidence": "evidence/dsw/sglang-shared-admission-perf-4944efd/report.json",
+        "release_gate_passed": false,
+        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
       }
     },
     {
@@ -580,6 +589,15 @@
         "evidence": "evidence/dsw/vllm-input300-c11d2b3/report.json",
         "validation_evidence": "evidence/dsw/input300-validation-c11d2b3.json",
         "scope": "300 exact L256/K8 inputs, C1, three ten-second repeats, prefix cache enabled; below 90% throughput gate"
+      },
+      "development_shared_admission": {
+        "status": "passed_targeted_two_worker_two_tenant_checks",
+        "source_commit": "4944efdf8b996c35966975b330480905f3ca3e34",
+        "evidence": "evidence/dsw/vllm-shared-admission-4944efd/shared-admission.json",
+        "cleanup_evidence": "evidence/dsw/vllm-shared-admission-4944efd/cleanup.json",
+        "timing_evidence": "evidence/dsw/vllm-shared-admission-perf-4944efd/report.json",
+        "release_gate_passed": false,
+        "scope": "BF16 TP1 API2 shared local registry; quota/queue/cancel/drain only; not full functional or crash-restart certification"
       }
     }
   ],

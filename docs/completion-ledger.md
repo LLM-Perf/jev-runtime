@@ -24,8 +24,9 @@ replacement for any requirement in `implementation-plan.md`.
   that source; see `evidence/package-check-fe71bb3.json`.
 - Six real GPU combinations (three models per engine) each passed 1,000 bundle
   route switches with consistent snapshots; see the failure-inclusive matrix.
-- Tenant credentials select per-tenant queues, request/token quotas and cancellation
-  ownership. Quotas are per API process; multi-replica quotas remain unfinished.
+- Tenant credentials select per-tenant queues, quotas and cancellation ownership.
+  Shared same-host quotas are now implemented and checked at `4944efd` below;
+  multi-node quotas remain unfinished.
 - A real standalone SGLang gateway passed Python SDK serving, 16-question request
   cancellation (499, no retained gateway lease), disable/native-chat coexistence
   and rollback at `453ebf2`. Its initial repeated-cancellation failure at `790448e`
@@ -179,6 +180,27 @@ replacement for any requirement in `implementation-plan.md`.
   `evidence/dsw/input300-validation-c11d2b3.json`. No earlier LoRA, multi-worker,
   business-quality or full-release acceptance is implied by these targeted checks.
 
+- At `4944efd`, default Runtime/gateway/native-plugin admission uses shared local
+  SQLite transactions to reserve requests, expanded tokens and branches, with
+  global/per-tenant queues and per-tenant FIFO/round-robin scheduling. Reservations
+  live with durable request leases; uncertain aborts or failed lease cleanup do
+  not silently return capacity. Policy disagreement prevents worker startup, and
+  policy migration requires stopped workers and drained work. An explicit deadline
+  check prevents synchronous compilation/admission from dispatching expired work.
+  Local regression passed 220 Python tests, including an actual three-process
+  branch-budget race; lint/format and three wheel builds passed. Both native
+  engines passed a two-worker, two-tenant GPU check of shared quotas, queue-full
+  rejection, eligible-tenant progress, queued timeout/cancellation, owner-bound
+  cancellation, shared gauges and drain. All lease/ticket tables ended empty.
+  Separate short two-worker timing cohorts completed 1,324/1,324 vLLM and
+  1,168/1,168 SGLang attempts with zero within-engine native/typed parity error.
+  Throughput ratios still fall below 90%; API-worker counts/workloads differ from
+  prior checkpoints, so no causal regression or release pass is claimed. All
+  owned process groups exited and GPU7 returned to 11,990 MiB free. See
+  `evidence/dsw/shared-admission-validation-4944efd.json`. These targeted checks do
+  not recertify LoRA, the full functional/quality matrix, 1,000 hot switches at
+  this new source, database-failure recovery or GPU crash/restart quota retention.
+
 ## Required evidence still outstanding
 
 | Requirement | Status | Required next evidence |
@@ -195,7 +217,7 @@ replacement for any requirement in `implementation-plan.md`.
 | 24h soak and fault injection | Gateway crash recovery passed on both engines; soak not run | Remaining faults and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 profile | GPU crash/restart checks; further profiles require separate evidence |
 | SDKs and deployment productization | Python/TypeScript SDK checks and both standalone gateways pass | Deployment images, final-source recertification |
-| Resource fairness/multiple tenants | Per-process implementation and contract tests pass | Real tenant load, replica-wide quota and mixed workloads |
+| Resource fairness/multiple tenants | Durable same-host budgets and targeted real two-worker/two-tenant load pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |
 | Advanced readout/VLM roadmap | Not implemented | Follow the separate staged scope in the original plan |
 

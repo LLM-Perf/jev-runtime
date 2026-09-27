@@ -1,0 +1,225 @@
+{
+  "source_commit": "4944efdf8b996c35966975b330480905f3ca3e34",
+  "release_gate_passed": false,
+  "engines": {
+    "vllm": {
+      "functional_checks_passed": [
+        "distinct_worker_connections",
+        "long_request_admitted",
+        "same_tenant_queued_on_peer",
+        "shared_tenant_queue_limit",
+        "tenant_cannot_cancel_peer_tenant",
+        "eligible_other_tenant_served_during_long_request",
+        "queued_cancel_releases_ticket",
+        "queued_deadline_releases_ticket",
+        "expanded_branch_budget_shared_across_workers",
+        "shared_gauge_identical_on_both_workers",
+        "peer_cancel_active_owner_and_drain",
+        "serving_after_drain",
+        "retired_after_drain"
+      ],
+      "functional_evidence": "evidence/dsw/vllm-shared-admission-4944efd/shared-admission.json",
+      "timing_evidence": "evidence/dsw/vllm-shared-admission-perf-4944efd/report.json",
+      "strict_success_requests": 1324,
+      "attempts": 1324,
+      "measurements": [
+        {
+          "repeat": 1,
+          "method": "native-label",
+          "attempts": 236,
+          "rps": 47.12357713703148,
+          "p95_ms": 24.54377873800695,
+          "observed_cache_ratio": null
+        },
+        {
+          "repeat": 1,
+          "method": "native-plugin",
+          "attempts": 203,
+          "rps": 40.53880573202591,
+          "p95_ms": 28.509289678186175,
+          "observed_cache_ratio": 0.9375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.6088194729064039,
+            "compile": 0.19785165517241382,
+            "journal": 0.33065391133004923,
+            "queue": 0.7591740049261084,
+            "execute": 18.90932975862069,
+            "finalize": 0.15230853201970446,
+            "release": 0.5892941330049262,
+            "total": 21.547431369458128
+          }
+        },
+        {
+          "repeat": 2,
+          "method": "native-plugin",
+          "attempts": 209,
+          "rps": 41.741043075158224,
+          "p95_ms": 27.47596763074398,
+          "observed_cache_ratio": 0.9375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.5129297990430621,
+            "compile": 0.19520875598086126,
+            "journal": 0.31443331578947364,
+            "queue": 0.6248045071770335,
+            "execute": 18.623239794258375,
+            "finalize": 0.1506565933014354,
+            "release": 0.4323006363636364,
+            "total": 20.85357343062201
+          }
+        },
+        {
+          "repeat": 2,
+          "method": "native-label",
+          "attempts": 235,
+          "rps": 46.958378487834096,
+          "p95_ms": 24.350564833730456,
+          "observed_cache_ratio": null
+        },
+        {
+          "repeat": 3,
+          "method": "native-label",
+          "attempts": 241,
+          "rps": 48.17919166260318,
+          "p95_ms": 23.66587519645691,
+          "observed_cache_ratio": null
+        },
+        {
+          "repeat": 3,
+          "method": "native-plugin",
+          "attempts": 200,
+          "rps": 39.995257351413215,
+          "p95_ms": 29.88885920494795,
+          "observed_cache_ratio": 0.9375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.6023680450000001,
+            "compile": 0.19646092000000004,
+            "journal": 0.32404543500000005,
+            "queue": 0.7351262850000001,
+            "execute": 18.987199829999998,
+            "finalize": 0.14910498,
+            "release": 0.7349689699999999,
+            "total": 21.729274459999996
+          }
+        }
+      ],
+      "plugin_to_native_rps_ratio": [
+        0.8602658837664721,
+        0.8888944724948803,
+        0.8301354998128299
+      ],
+      "all_raw_cohort_summaries_recomputed_exactly": true,
+      "empty_admission_and_lease_tables_verified": true,
+      "owned_process_group_exit_verified": true
+    },
+    "sglang": {
+      "functional_checks_passed": [
+        "distinct_worker_connections",
+        "long_request_admitted",
+        "same_tenant_queued_on_peer",
+        "shared_tenant_queue_limit",
+        "tenant_cannot_cancel_peer_tenant",
+        "eligible_other_tenant_served_during_long_request",
+        "queued_cancel_releases_ticket",
+        "queued_deadline_releases_ticket",
+        "expanded_branch_budget_shared_across_workers",
+        "shared_gauge_identical_on_both_workers",
+        "peer_cancel_active_owner_and_drain",
+        "serving_after_drain",
+        "retired_after_drain"
+      ],
+      "functional_evidence": "evidence/dsw/sglang-shared-admission-4944efd/shared-admission.json",
+      "timing_evidence": "evidence/dsw/sglang-shared-admission-perf-4944efd/report.json",
+      "strict_success_requests": 1168,
+      "attempts": 1168,
+      "measurements": [
+        {
+          "repeat": 1,
+          "method": "native-label",
+          "attempts": 212,
+          "rps": 42.21155419691302,
+          "p95_ms": 27.693426702171564,
+          "observed_cache_ratio": 0.99609375
+        },
+        {
+          "repeat": 1,
+          "method": "native-plugin",
+          "attempts": 175,
+          "rps": 34.9559453287983,
+          "p95_ms": 32.364914659410715,
+          "observed_cache_ratio": 0.99609375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.5883144742857144,
+            "compile": 0.21411885142857143,
+            "journal": 0.3562546914285714,
+            "queue": 0.8026988114285715,
+            "execute": 22.574797211428574,
+            "finalize": 0.15690400000000002,
+            "release": 0.40820453142857144,
+            "total": 25.101292542857145
+          }
+        },
+        {
+          "repeat": 2,
+          "method": "native-plugin",
+          "attempts": 176,
+          "rps": 34.99936577084498,
+          "p95_ms": 31.94708633236587,
+          "observed_cache_ratio": 0.99609375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.5858858636363636,
+            "compile": 0.21845728977272724,
+            "journal": 0.3283141306818182,
+            "queue": 0.6519135511363637,
+            "execute": 22.50483130681818,
+            "finalize": 0.16181894886363635,
+            "release": 0.6063588352272727,
+            "total": 25.057580045454543
+          }
+        },
+        {
+          "repeat": 2,
+          "method": "native-label",
+          "attempts": 209,
+          "rps": 41.70620292682129,
+          "p95_ms": 27.371196635067463,
+          "observed_cache_ratio": 0.99609375
+        },
+        {
+          "repeat": 3,
+          "method": "native-label",
+          "attempts": 220,
+          "rps": 43.91123198445944,
+          "p95_ms": 27.062569372355938,
+          "observed_cache_ratio": 0.99609375
+        },
+        {
+          "repeat": 3,
+          "method": "native-plugin",
+          "attempts": 176,
+          "rps": 35.07390050995662,
+          "p95_ms": 33.72974041849375,
+          "observed_cache_ratio": 0.99609375,
+          "runtime_phase_mean_ms": {
+            "pin": 0.6392865340909091,
+            "compile": 0.20767324431818188,
+            "journal": 0.3134408409090909,
+            "queue": 0.6232485284090908,
+            "execute": 22.435014545454546,
+            "finalize": 0.15553373295454545,
+            "release": 0.633367875,
+            "total": 25.007565363636363
+          }
+        }
+      ],
+      "plugin_to_native_rps_ratio": [
+        0.8281132025068783,
+        0.8391884975061314,
+        0.7987455355925694
+      ],
+      "all_raw_cohort_summaries_recomputed_exactly": true,
+      "empty_admission_and_lease_tables_verified": true,
+      "owned_process_group_exit_verified": true
+    }
+  },
+  "qualification": "Same-host two-worker functional and short shared-GPU timing checks; not multi-node, crash-restart, 24h or release performance certification"
+}

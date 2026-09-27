@@ -175,7 +175,7 @@ seven serial phases partition the runtime's `total`, including durable cleanup:
 | pin | Resolve route and acquire the persisted bundle lease |
 | compile | Validate bundle/request and render/tokenize/validate scoring sequences |
 | journal | Persist branch IDs before dispatch and emit the correlation log |
-| queue | Wait for per-process admission |
+| queue | Reserve admission capacity and wait when needed; includes the shared reservation transaction |
 | execute | Schedule branches, await engine results, assemble answers and drain child tasks |
 | finalize | Aggregate question outcomes/usage and construct the response contract |
 | release | Persist lease completion or uncertain-abort state and clear local ownership |
@@ -302,3 +302,43 @@ recomputed, including per-variant frequencies and timing observation counts.
 These checks do not recertify previous LoRA/multi-worker profiles or the release
 matrix. See the [SGLang report](../evidence/dsw/sglang-input300-c11d2b3/report.json)
 and [two-engine evidence validation](../evidence/dsw/input300-validation-c11d2b3.json).
+
+## Shared-admission two-worker checkpoint
+
+At `4944efd`, both native engines used two API workers and a single shared local
+registry with durable request/token/branch reservations. The functional check
+holds a 128-branch alpha-tenant request on one worker, observes another alpha
+request queued on its peer, rejects a further alpha request with 429, serves an
+eligible beta request, enforces tenant-bound cancellation, and verifies queued
+cancellation/deadline cleanup. A beta request with two branches remains queued
+while the shared 129-branch budget has 128 reserved. Both workers report the same
+shared gauges. Peer cancellation drains the long request, subsequent serving
+succeeds and retirement leaves zero leases and admission tickets. Both engines
+passed these checks. This is a targeted functional load, not representative
+fairness/performance certification or a GPU crash-restart experiment.
+
+A separate short timing check then used one warm L=256/K=8 input, concurrency 1,
+BF16/TP1/eager, with three five-second repeats per method. Neither method's timed
+cohort includes the preceding quota/cancellation cases. Native/typed probability
+parity error was zero, and every timed attempt succeeded:
+
+| Engine / method | Successes / attempts | RPS, repeats 1/2/3 | P95 ms, repeats 1/2/3 |
+|---|---:|---|---|
+| vLLM native-label | 712/712 | 47.12, 46.96, 48.18 | 24.54, 24.35, 23.67 |
+| vLLM native-plugin | 612/612 | 40.54, 41.74, 39.99 | 28.51, 27.48, 29.89 |
+| SGLang native-label | 641/641 | 42.21, 41.71, 43.91 | 27.69, 27.37, 27.06 |
+| SGLang native-plugin | 527/527 | 34.96, 35.00, 35.07 | 32.37, 31.95, 33.73 |
+
+Plugin/native throughput was 83.0–88.9% for vLLM and 79.9–83.9% for SGLang, still
+below the 90% target. Observed mean `queue` phase time, which includes the durable
+admission transaction even without waiting, was 0.63–0.76 ms for vLLM and
+0.62–0.80 ms for SGLang. These timings are not an isolated ablation of admission:
+the API-worker count and workload differ from prior checkpoints. They do not
+establish a controlled regression magnitude, stable P99 or confidence interval.
+The controlled release matrix remains unrun.
+
+All raw cohort summaries were recomputed from JSONL. Both task-owned process
+groups exited and GPU7 returned to 11,990 MiB free. Evidence:
+[shared-quota and timing validation](../evidence/dsw/shared-admission-validation-4944efd.json),
+[vLLM raw timing report](../evidence/dsw/vllm-shared-admission-perf-4944efd/report.json),
+[SGLang raw timing report](../evidence/dsw/sglang-shared-admission-perf-4944efd/report.json).

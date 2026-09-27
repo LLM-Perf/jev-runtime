@@ -471,11 +471,16 @@
       "actual_deliverables": [
         "src/jev_runtime/admission.py",
         "src/jev_runtime/runtime.py",
-        "tests/test_admission.py"
+        "tests/test_admission.py",
+        "src/jev_runtime/shared_admission.py",
+        "tests/test_shared_admission.py",
+        "tests/integration/live_shared_admission.py",
+        "evidence/dsw/shared-admission-validation-4944efd.json"
       ],
       "progress_notes": [
-        "Pre-dispatch branch/token budgets and per-process tenant fairness are implemented.",
-        "Replica-wide quotas and controlled mixed-load validation remain."
+        "Pre-dispatch branch/token budgets and per-tenant fairness are implemented. Default runtimes, gateways and plugins now share durable request/token/expanded-branch and queue budgets across same-host workers using one exact engine identity and local registry.",
+        "Uncertain aborts and failed durable cleanup retain capacity until confirmed recovery. Policy changes require stopped workers and drained leases. Three actual Python processes passed an atomic branch-reservation race locally.",
+        "At 4944efd both native engines passed targeted real two-worker/two-tenant shared quota, queue-full, eligible-tenant progress, queued deadline/cancel and peer-owner cancellation checks; lease/ticket tables drained. Controlled representative mixed-load performance, GPU crash/restart quota retention and multi-node quotas remain."
       ],
       "acceptance_complete": false
     },
@@ -510,7 +515,8 @@
       "progress_notes": [
         "Durable cancellation ownership and uncertain-abort retention are implemented.",
         "Both native engines have peer-worker cancellation evidence; expanded fault suites remain.",
-        "A real SGLang prefix-abort collision was reproduced and fixed with fixed-length branch IDs. The live serving compiler retest preserves sibling completion; both engines pass their functional/1,000-switch suites at 0421d50."
+        "A real SGLang prefix-abort collision was reproduced and fixed with fixed-length branch IDs. The live serving compiler retest preserves sibling completion; both engines pass their functional/1,000-switch suites at 0421d50.",
+        "Shared admission retains the full work reservation with uncertain-abort leases; synchronous compilation/admission cannot dispatch after the request deadline. Local regressions cover both boundaries."
       ],
       "acceptance_complete": false
     },
@@ -588,7 +594,8 @@
         "Colocated SGLang repeats remain below the 90% throughput target; release performance is not certified.",
         "Per-request phase profiling separates warm-input and 300-variant compilation costs. The IDs-only path preserves exact full-context checks; vLLM uses a verified private copy of the host pool prototype.",
         "On the 300-input colocated vLLM check, mean compilation fell from 3.85–3.91 ms to 1.78–1.90 ms, but plugin/native throughput remains about 80%. This is not controlled release certification.",
-        "SGLang at c11d2b3 completed all 2,078 attempts on the same 300 input/label-ID lists; compile means 2.28–2.41 ms and plugin/native throughput 76–83%. No matching pre-change varying-input GPU cohort was run for SGLang."
+        "SGLang at c11d2b3 completed all 2,078 attempts on the same 300 input/label-ID lists; compile means 2.28–2.41 ms and plugin/native throughput 76–83%. No matching pre-change varying-input GPU cohort was run for SGLang.",
+        "After shared admission, short two-worker warm-input cohorts at 4944efd completed all attempts: 1324 vLLM and 1168 SGLang. Ratios remain 83.0–88.9% and 79.9–83.9%; configuration differs from earlier checkpoints, so no isolated admission regression magnitude is claimed."
       ],
       "acceptance_complete": false
     },
@@ -689,7 +696,8 @@
       ],
       "progress_notes": [
         "Separate admin authorization, readiness canaries and request/branch correlation exist.",
-        "Bounded phase/branch-operation histograms, error categories, known-token observation denominators, admission occupancy and opt-in request-bound timing headers are implemented. Multi-worker metric aggregation and operational handoff remain."
+        "Bounded phase/branch-operation histograms, error categories, known-token observation denominators, admission occupancy and opt-in request-bound timing headers are implemented. Multi-worker metric aggregation and operational handoff remain.",
+        "Registry-wide admission gauges and the admin profile expose shared occupancy and limits. These gauges must not be summed across workers; request counters and histograms remain process-local."
       ],
       "acceptance_complete": false
     },

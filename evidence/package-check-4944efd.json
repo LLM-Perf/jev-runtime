@@ -1,0 +1,30 @@
+{
+  "source_commit": "4944efdf8b996c35966975b330480905f3ca3e34",
+  "pytest": {
+    "passed": 220
+  },
+  "ruff_check": "passed",
+  "ruff_format_check": {
+    "passed": true,
+    "files": 80
+  },
+  "wheels": [
+    {
+      "name": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "749d3ac2fa5f2c69b2346047609ca147e414a61a7d989cad4a1edcd72535b8be",
+      "bytes": 70490,
+      "shared_admission_packaged": true
+    },
+    {
+      "name": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "4074e56433c31c002a76c03db8ce7411d7d3a6b81484d8dc244866ff57439221",
+      "bytes": 3556
+    },
+    {
+      "name": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "76d4649e9d456345e35dbc9940b09a3074bd4ff6b4c2306604da865d58118eea",
+      "bytes": 3683
+    }
+  ],
+  "qualification": "Local CPU tests including three-process reservation race; GPU results retained separately"
+}
