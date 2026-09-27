@@ -1,0 +1,2268 @@
+{
+  "schema_version": 1,
+  "source_commit": "bef9abb",
+  "qualification": "real tokenizer compilation only; no GPU or quality certification",
+  "selected_count": 20,
+  "transformers_version": "5.17.0",
+  "models": [
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+      "started_at": 1790497478.62573,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "Qwen/Qwen3-0.6B",
+        "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+        "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+        "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497492.240179
+    },
+    {
+      "model": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "started_at": 1790497492.251453,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+        "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497499.087532
+    },
+    {
+      "model": "Qwen/Qwen3-30B-A3B",
+      "revision": "ad44e777bcd18fa416d9da3bd8f70d33ebb85d39",
+      "started_at": 1790497499.097266,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "Qwen/Qwen3-30B-A3B",
+        "revision": "ad44e777bcd18fa416d9da3bd8f70d33ebb85d39",
+        "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+        "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497504.9810271
+    },
+    {
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "started_at": 1790497504.992231,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "Qwen/Qwen2.5-7B-Instruct",
+        "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "tokenizer_digest": "sha256:1b2f8ead5b3422a89c85c6182076f9b18f331bd6863442f76bc987597491159a",
+        "template_digest": "sha256:2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497512.9938529
+    },
+    {
+      "model": "meta-llama/Llama-3.2-1B-Instruct",
+      "revision": "9213176726f574b556790deb65791e0c5aa438b6",
+      "started_at": 1790497513.005651,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct.\n401 Client Error. (Request ID: Root=1-6ab8d2e9-7fd63f6e4cd0db5b0a7498d0;0df35167-78f7-463f-b570-ce978e5086e4)\n\nCannot access gated repo for url https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct/resolve/9213176726f574b556790deb65791e0c5aa438b6/config.json.\nAccess to model meta-llama/Llama-3.2-1B-Instruct is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497513.6900969
+    },
+    {
+      "model": "meta-llama/Llama-3.2-3B-Instruct",
+      "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+      "started_at": 1790497513.692199,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct.\n401 Client Error. (Request ID: Root=1-6ab8d2ea-189d665d53971e5315c9a206;827b63b8-2de6-4c85-9664-0f3d5316122e)\n\nCannot access gated repo for url https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct/resolve/0cb88a4f764b7a12671c53f0838cd831a0843b95/config.json.\nAccess to model meta-llama/Llama-3.2-3B-Instruct is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497514.382219
+    },
+    {
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "started_at": 1790497514.383925,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct.\n401 Client Error. (Request ID: Root=1-6ab8d2eb-6621048b22f2b4c2070ee640;b03a0298-0101-49ec-9ce2-237a402e73db)\n\nCannot access gated repo for url https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct/resolve/0e9e39f249a16976918f6564b8830bc894c89659/config.json.\nAccess to model meta-llama/Llama-3.1-8B-Instruct is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497515.203489
+    },
+    {
+      "model": "google/gemma-3-1b-it",
+      "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752",
+      "started_at": 1790497515.205096,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/google/gemma-3-1b-it.\n401 Client Error. (Request ID: Root=1-6ab8d2eb-0f8c790a20fec2b8254c798a;3a0d483a-1f91-4d6f-91c2-516a1dab6f70)\n\nCannot access gated repo for url https://huggingface.co/google/gemma-3-1b-it/resolve/dcc83ea841ab6100d6b47a070329e1ba4cf78752/config.json.\nAccess to model google/gemma-3-1b-it is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497515.885094
+    },
+    {
+      "model": "google/gemma-3-4b-it",
+      "revision": "093f9f388b31de276ce2de164bdc2081324b9767",
+      "started_at": 1790497515.888064,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/google/gemma-3-4b-it.\n401 Client Error. (Request ID: Root=1-6ab8d2ec-6b87772d0ee4845753aacb26;382c6e96-8ec6-46a1-bfb4-e341568ab9e3)\n\nCannot access gated repo for url https://huggingface.co/google/gemma-3-4b-it/resolve/093f9f388b31de276ce2de164bdc2081324b9767/config.json.\nAccess to model google/gemma-3-4b-it is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497516.597075
+    },
+    {
+      "model": "google/gemma-3-12b-it",
+      "revision": "96b6f1eccf38110c56df3a15bffe176da04bfd80",
+      "started_at": 1790497516.6167061,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "OSError",
+        "message": "You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/google/gemma-3-12b-it.\n401 Client Error. (Request ID: Root=1-6ab8d2ed-51100dab0d069fbf61051a5d;bc7ceb92-cf07-43fc-bc9c-2c14566cb97b)\n\nCannot access gated repo for url https://huggingface.co/google/gemma-3-12b-it/resolve/96b6f1eccf38110c56df3a15bffe176da04bfd80/config.json.\nAccess to model google/gemma-3-12b-it is restricted. You must have access to it and be authenticated to access it. Please log in."
+      },
+      "finished_at": 1790497517.388303
+    },
+    {
+      "model": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "started_at": 1790497517.4080052,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "mistralai/Mistral-7B-Instruct-v0.3",
+        "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+        "tokenizer_digest": "sha256:8be2a249f4c16e061f4e04b0dcf813e833fef2574dc2a5b67b0069a7458b5ebf",
+        "template_digest": "sha256:b3fcbc404295814f21f15e626e6403753def5c2359d8e797d3aea5fd47f47a72",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497524.548589
+    },
+    {
+      "model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "started_at": 1790497524.550378,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "JevError",
+        "message": "The tokenizer needs an explicit chat template"
+      },
+      "finished_at": 1790497534.9724438
+    },
+    {
+      "model": "microsoft/Phi-3-mini-4k-instruct",
+      "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+      "started_at": 1790497534.973707,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "microsoft/Phi-3-mini-4k-instruct",
+        "revision": "f39ac1d28e925b323eae81227eaba4464caced4e",
+        "tokenizer_digest": "sha256:f34640b4f2336b6c623388ca4d3967bc620c750fc9b62b16da11f0ab99d0534e",
+        "template_digest": "sha256:51dba1fab684e722d37cf2c10e089ca47ee005b141f9e54ff173dac7c3e6fe8c",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497542.966111
+    },
+    {
+      "model": "microsoft/Phi-4-mini-instruct",
+      "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "started_at": 1790497542.968058,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "microsoft/Phi-4-mini-instruct",
+        "revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+        "tokenizer_digest": "sha256:e9d00b022ab7e4c5591463bbc5c1d82476ccaede002db53aec628551c7e88370",
+        "template_digest": "sha256:7329549bd965083583b7be7c26d182fc1208060ec88767cf43cc6ec61478b8ef",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497551.373068
+    },
+    {
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+      "started_at": 1790497551.379483,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+        "revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+        "tokenizer_digest": "sha256:b60300b296f78f2e76ee1eb8d338661b470881ceff0b6c01a3006b173c3451c1",
+        "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497557.782306
+    },
+    {
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "revision": "916b56a44061fd5cd7d6a8fb632557ed4f724f60",
+      "started_at": 1790497557.7935622,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "revision": "916b56a44061fd5cd7d6a8fb632557ed4f724f60",
+        "tokenizer_digest": "sha256:b60300b296f78f2e76ee1eb8d338661b470881ceff0b6c01a3006b173c3451c1",
+        "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497563.6511319
+    },
+    {
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+      "started_at": 1790497563.661427,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+        "revision": "6a6f4aa4197940add57724a7707d069478df56b1",
+        "tokenizer_digest": "sha256:1df8c26e8722a678ac35febaaae3bfe9d98ce46554f1c0c8dc5553c17fee6a8a",
+        "template_digest": "sha256:417c5b998999125f84cd81a4642f4c4bddb0be7006067c1e3b27db330dd7b5d4",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497569.719073
+    },
+    {
+      "model": "zai-org/glm-4-9b-chat",
+      "revision": "bd8234fe5e0c09c48637a92abb0c797cb5fa0e73",
+      "started_at": 1790497569.723695,
+      "cases": [],
+      "passed": false,
+      "error": {
+        "type": "ValueError",
+        "message": "The repository zai-org/glm-4-9b-chat contains custom code which must be executed to correctly load the model. You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat .\n You can inspect the repository content at https://hf.co/zai-org/glm-4-9b-chat.\nPlease pass the argument `trust_remote_code=True` to allow custom code to be run."
+      },
+      "finished_at": 1790497571.654135
+    },
+    {
+      "model": "allenai/OLMo-2-1124-7B-Instruct",
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "started_at": 1790497571.6579359,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "allenai/OLMo-2-1124-7B-Instruct",
+        "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+        "tokenizer_digest": "sha256:eae32c5126cca496a57bf86b3cbb4be23f12edadc76cbd7a59416947697810cb",
+        "template_digest": "sha256:f12865aaf152f6978fe525786d54ab0331a2cf0a6e085dfed8a74299fff2396d",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497576.769336
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "started_at": 1790497576.7733061,
+      "cases": [
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": true,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "joint-label",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 2,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 8,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 32,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        },
+        {
+          "system_role": false,
+          "mode": "independent-candidate",
+          "candidates": 64,
+          "passed": false,
+          "error": {
+            "type": "JevError",
+            "message": "Template rendering failed: ImportError"
+          }
+        }
+      ],
+      "passed": false,
+      "model_identity": {
+        "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+        "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "adapter_id": null,
+        "adapter_revision": null
+      },
+      "deployable_profiles": [],
+      "finished_at": 1790497581.959954
+    }
+  ],
+  "complete": true,
+  "passed_models": 0,
+  "models_with_deployable_profile": 0
+}
