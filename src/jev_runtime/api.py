@@ -16,7 +16,7 @@ from jev_runtime.config import Settings, bootstrap, build_runtime, load_settings
 from jev_runtime.errors import JevError
 from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
-from jev_runtime.schema import Bundle, Contract, DecisionRequest, Identifier
+from jev_runtime.schema import Bundle, Contract, DecisionRequest, DecisionResponse, Identifier
 from jev_runtime.systemone import SystemOneRequest, from_decision
 from jev_runtime.telemetry import DecisionTrace
 
@@ -243,7 +243,9 @@ def install_routes(
                 observe(trace, outcome, response)
 
     @router.post("/v1/decisions")
-    async def decisions(body: DecisionRequest, request: Request, http_response: Response):
+    async def decisions(
+        body: DecisionRequest, request: Request, http_response: Response
+    ) -> DecisionResponse:
         return await execute(body, request, http_response)
 
     @router.post("/v1/systemone")
