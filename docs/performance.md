@@ -375,3 +375,7 @@ pass real two-tenant quota and peer-cancel checks at the new source. See the
 The subsequent [combined lease/admission comparison](combined-reservation-validation.md)
 uses two commits on stable routes. It reduces commit-related work but does not
 establish a consistent throughput gain or pass the low-concurrency release gate.
+
+[Declared response-model serialization](response-serialization-validation.md) removes
+recursive response encoding in both engines. Matched C1 ratios remain below 90%;
+call-count improvements do not certify end-to-end throughput.

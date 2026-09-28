@@ -1,0 +1,7 @@
+{"signal_sent": "SIGTERM", "identity": {"pid": 2744225, "start_ticks": "431529145", "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"}, "exit_confirmed": false}
+{"signal_sent": "SIGTERM", "identity": {"pid": 2745549, "start_ticks": "431537378", "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"}, "exit_confirmed": false}
+Traceback (most recent call last):
+  File "/root/jev-runtime/asgi-profile-a475ad4/campaign.py", line 48, in <module>
+    assert item['cleanup']['passed']
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError

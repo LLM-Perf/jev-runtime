@@ -1,0 +1,19 @@
+{
+  "tensor_parallel_size": 1,
+  "parent_cuda_visible_devices": "7",
+  "selected_gpus": [
+    {
+      "index": 7,
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "owned_worker_rank_pids": {
+    "0": 2747424
+  },
+  "proof": "Live rank-labelled workers and parent CUDA mapping; no NVML PID mapping claimed"
+}

@@ -1,0 +1,32 @@
+{
+  "observed_at": 1790561134.1824996,
+  "qualification": "Read-only final-audit framework versions and source hashes; no package changes made during this campaign",
+  "engines": {
+    "vllm": {
+      "versions": {
+        "fastapi": "0.136.3",
+        "starlette": "1.7.0",
+        "pydantic": "2.13.5",
+        "pydantic-core": "2.46.5"
+      },
+      "files": {
+        "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py": "76985f8c425116068eb1d255ef8bcfabb6cff8268cd364fa2c75196cfbfad6a1",
+        "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/encoders.py": "9b63869eaf64f7802571de9440cf2bee2c27f9c8ef25da4e291549b9047af13f",
+        "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/_compat/v2.py": "b031b28b588a4855bd2ee27b9f807ad7ed72ad0235347452c2c15144bb8527c9"
+      }
+    },
+    "sglang": {
+      "versions": {
+        "fastapi": "0.141.1",
+        "starlette": "1.7.0",
+        "pydantic": "2.13.5",
+        "pydantic-core": "2.46.5"
+      },
+      "files": {
+        "/root/jev-runtime/envs/sglang/lib/python3.12/site-packages/fastapi/routing.py": "7b1ef65fb6b209445dc43be070a23324b7879aef9c6b9f63e6968234b7723b55",
+        "/root/jev-runtime/envs/sglang/lib/python3.12/site-packages/fastapi/encoders.py": "4cc09230eca6435892f6bc25a2185e214dbedfe994d5103feb63ad269137caad",
+        "/root/jev-runtime/envs/sglang/lib/python3.12/site-packages/fastapi/_compat/v2.py": "b031b28b588a4855bd2ee27b9f807ad7ed72ad0235347452c2c15144bb8527c9"
+      }
+    }
+  }
+}

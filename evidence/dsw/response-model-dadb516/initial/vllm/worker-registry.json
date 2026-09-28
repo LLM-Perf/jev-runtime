@@ -1,0 +1,46 @@
+{
+  "observed_at": 1790561134.191673,
+  "registry_path": "/root/jev-runtime/runs/vllm-asgi-profile-a475ad4/registry.db",
+  "workers": [
+    {
+      "owner": "d4e8865f5d704d9683af07d1843191b3",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2744492, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431530737\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "fa8c44ea122649a68553e34cecf6a831",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2744690, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431531225\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "d4e8865f5d704d9683af07d1843191b3",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "fa8c44ea122649a68553e34cecf6a831",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "d4e8865f5d704d9683af07d1843191b3",
+      "ref": "bench-d3c36b3d17a041509339d57da8fdc13f@1",
+      "digest": "sha256:62ac0a63814a2180291831db2751d57c764fd310a3b0aa18a55475561664c686"
+    },
+    {
+      "owner": "fa8c44ea122649a68553e34cecf6a831",
+      "ref": "bench-d3c36b3d17a041509339d57da8fdc13f@1",
+      "digest": "sha256:62ac0a63814a2180291831db2751d57c764fd310a3b0aa18a55475561664c686"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "script_sha256": "7e06602cd03445b92bbe572238a158c629377f3b71289c2a8b6de32998093f4f",
+  "started_at": 1790560237.8852916,
+  "run_dir": "/root/jev-runtime/runs/sglang-asgi-recovery-a475ad4",
+  "original_registry": "/root/jev-runtime/runs/sglang-asgi-profile-a475ad4/registry.db",
+  "before": {
+    "leases": [
+      {
+        "id": "7218bd7985b8470abb1616ce1b17f385",
+        "ref": "default@1",
+        "owner": "f8482f1ff81d43cda68579c80cb7635e",
+        "request_id": "prepare-be97b2a5d098449aba62d4c66189ccb5",
+        "created": 1790559904.6698096
+      },
+      {
+        "id": "2c5d10f55f8e46799f30237d3a0021ed",
+        "ref": "default@1",
+        "owner": "226547f62c7c4d089183cbd7c768ba9e",
+        "request_id": "prepare-781a4dd9321e4d749522ce8de0c44f26",
+        "created": 1790559904.7068453
+      }
+    ],
+    "lease_work": [
+      {
+        "lease_id": "7218bd7985b8470abb1616ce1b17f385",
+        "branches": "[\"prepare-be97b2a5d098449aba62d4c66189ccb5.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"]",
+        "phase": "abort_pending"
+      },
+      {
+        "lease_id": "2c5d10f55f8e46799f30237d3a0021ed",
+        "branches": "[\"prepare-781a4dd9321e4d749522ce8de0c44f26.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"]",
+        "phase": "abort_pending"
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "ts": 1790559874.6643074,
+        "action": "upload",
+        "details": "{\"digest\": \"sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769\", \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 2,
+        "ts": 1790559874.6652372,
+        "action": "prepare",
+        "details": "{\"backend\": \"sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674\", \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 3,
+        "ts": 1790559876.1360898,
+        "action": "prepare_finished",
+        "details": "{\"ref\": \"default@1\", \"state\": \"READY\"}"
+      },
+      {
+        "id": 4,
+        "ts": 1790559876.2133965,
+        "action": "activate",
+        "details": "{\"alias\": \"decision-model\", \"generation\": 1, \"old\": null, \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 5,
+        "ts": 1790559877.3361726,
+        "action": "upload",
+        "details": "{\"digest\": \"sha256:5b614f5a913ff56111e64868db8d508deb9f69d0199b2c7907fa70dae84c8209\", \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 6,
+        "ts": 1790559877.355017,
+        "action": "prepare",
+        "details": "{\"backend\": \"sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674\", \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 7,
+        "ts": 1790559877.3817265,
+        "action": "prepare_finished",
+        "details": "{\"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\", \"state\": \"READY\"}"
+      },
+      {
+        "id": 8,
+        "ts": 1790559877.4514625,
+        "action": "activate",
+        "details": "{\"alias\": \"bench-3a488e9b609f4d219aff902d3e38a1f2\", \"generation\": 1, \"old\": null, \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 9,
+        "ts": 1790559900.6359818,
+        "action": "disable",
+        "details": "{\"alias\": \"bench-3a488e9b609f4d219aff902d3e38a1f2\", \"generation\": 2}"
+      },
+      {
+        "id": 10,
+        "ts": 1790559900.6397803,
+        "action": "retire",
+        "details": "{\"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 11,
+        "ts": 1790559919.1739964,
+        "action": "abort_pending",
+        "details": "{\"engine_request_ids\": [\"prepare-be97b2a5d098449aba62d4c66189ccb5.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"], \"lease_id\": \"7218bd7985b8470abb1616ce1b17f385\"}"
+      },
+      {
+        "id": 12,
+        "ts": 1790559919.2101865,
+        "action": "abort_pending",
+        "details": "{\"engine_request_ids\": [\"prepare-781a4dd9321e4d749522ce8de0c44f26.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"], \"lease_id\": \"2c5d10f55f8e46799f30237d3a0021ed\"}"
+      }
+    ]
+  },
+  "before_snapshot": {
+    "path": "/root/jev-runtime/asgi-profile-a475ad4/recovery-before.sqlite",
+    "sha256": "87b71c2b91f0540abf4952ed54bfca8b846a19ec5fdc32add3cbd696f5081122"
+  },
+  "profile": {
+    "worker_id": "ef9a1fb1fdce4879bddd10db55bf666f",
+    "model": {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+      "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+      "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "quantization": null,
+      "adapter_id": null,
+      "adapter_revision": null
+    },
+    "recovery_only": true,
+    "deployment": null,
+    "auth_policy": "cd0aedc3380dfa72450258796439a124534ef3056f66ec0d5a42d62ef563147b",
+    "control_healthy": false,
+    "tokenizer_implementation_verified": true,
+    "engine_identity_verified": false,
+    "capabilities": {
+      "engine": "sglang",
+      "version": "0.5.19",
+      "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "max_label_tokens": 128,
+      "max_context_tokens": 2048,
+      "selected_logprobs": true,
+      "raw_logprobs": true,
+      "cancellation": true,
+      "lora": false,
+      "prefix_cache": true,
+      "api_workers": null,
+      "verified": false,
+      "model_dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "batch_invariant": false
+    },
+    "compiler": {
+      "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+      "copied_from_host_pool": false,
+      "chat_template_source": "host",
+      "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+      "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+      "backend_class": "tokenizers.Tokenizer",
+      "cache_token_limit": 262144,
+      "cache_entry_limit": 256,
+      "continuation_encoder": "backend-ids-only",
+      "backend_ids_only_eligible": true,
+      "batch_size_limit": 32,
+      "contract": "full prompt plus each label; exact prefix and one-token checks"
+    },
+    "admission": {
+      "scope": "shared_registry_engine",
+      "limits": {
+        "max_requests": 64,
+        "max_tokens": 1048576,
+        "max_queue": 256,
+        "max_tenant_requests": 16,
+        "max_tenant_tokens": 262144,
+        "max_tenant_queue": 64,
+        "max_branches": 1024,
+        "max_tenant_branches": 256
+      },
+      "requests": 0,
+      "expanded_tokens": 0,
+      "expanded_branches": 0,
+      "queued_requests": 0
+    },
+    "health": {
+      "scope": "local_api_worker",
+      "settings": {
+        "interval_seconds": 30,
+        "timeout_seconds": 10,
+        "max_age_seconds": 90
+      },
+      "monitor_running": false,
+      "bundles": {
+        "default@1": {
+          "ready": false,
+          "last_success_age_seconds": null,
+          "error": "health_stale",
+          "prepared": false
+        }
+      }
+    }
+  },
+  "candidates": [
+    {
+      "lease_id": "7218bd7985b8470abb1616ce1b17f385",
+      "request_id": "prepare-be97b2a5d098449aba62d4c66189ccb5",
+      "owner": "f8482f1ff81d43cda68579c80cb7635e",
+      "owner_status": "dead",
+      "phase": "abort_pending",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "reference": "default@1",
+      "engine_request_ids": [
+        "prepare-be97b2a5d098449aba62d4c66189ccb5.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000"
+      ],
+      "recoverable": true
+    },
+    {
+      "lease_id": "2c5d10f55f8e46799f30237d3a0021ed",
+      "request_id": "prepare-781a4dd9321e4d749522ce8de0c44f26",
+      "owner": "226547f62c7c4d089183cbd7c768ba9e",
+      "owner_status": "dead",
+      "phase": "abort_pending",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "reference": "default@1",
+      "engine_request_ids": [
+        "prepare-781a4dd9321e4d749522ce8de0c44f26.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000"
+      ],
+      "recoverable": true
+    }
+  ],
+  "recovered": [
+    {
+      "request_id": "prepare-be97b2a5d098449aba62d4c66189ccb5",
+      "response": {
+        "recovered": true
+      }
+    },
+    {
+      "request_id": "prepare-781a4dd9321e4d749522ce8de0c44f26",
+      "response": {
+        "recovered": true
+      }
+    }
+  ],
+  "after": {
+    "leases": [],
+    "lease_work": [],
+    "events": [
+      {
+        "id": 1,
+        "ts": 1790559874.6643074,
+        "action": "upload",
+        "details": "{\"digest\": \"sha256:0bee3c1612ba01ec032ceb19d3a71e0016f96d035f29367e94b88fc38fde6769\", \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 2,
+        "ts": 1790559874.6652372,
+        "action": "prepare",
+        "details": "{\"backend\": \"sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674\", \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 3,
+        "ts": 1790559876.1360898,
+        "action": "prepare_finished",
+        "details": "{\"ref\": \"default@1\", \"state\": \"READY\"}"
+      },
+      {
+        "id": 4,
+        "ts": 1790559876.2133965,
+        "action": "activate",
+        "details": "{\"alias\": \"decision-model\", \"generation\": 1, \"old\": null, \"ref\": \"default@1\"}"
+      },
+      {
+        "id": 5,
+        "ts": 1790559877.3361726,
+        "action": "upload",
+        "details": "{\"digest\": \"sha256:5b614f5a913ff56111e64868db8d508deb9f69d0199b2c7907fa70dae84c8209\", \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 6,
+        "ts": 1790559877.355017,
+        "action": "prepare",
+        "details": "{\"backend\": \"sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674\", \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 7,
+        "ts": 1790559877.3817265,
+        "action": "prepare_finished",
+        "details": "{\"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\", \"state\": \"READY\"}"
+      },
+      {
+        "id": 8,
+        "ts": 1790559877.4514625,
+        "action": "activate",
+        "details": "{\"alias\": \"bench-3a488e9b609f4d219aff902d3e38a1f2\", \"generation\": 1, \"old\": null, \"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 9,
+        "ts": 1790559900.6359818,
+        "action": "disable",
+        "details": "{\"alias\": \"bench-3a488e9b609f4d219aff902d3e38a1f2\", \"generation\": 2}"
+      },
+      {
+        "id": 10,
+        "ts": 1790559900.6397803,
+        "action": "retire",
+        "details": "{\"ref\": \"bench-3a488e9b609f4d219aff902d3e38a1f2@1\"}"
+      },
+      {
+        "id": 11,
+        "ts": 1790559919.1739964,
+        "action": "abort_pending",
+        "details": "{\"engine_request_ids\": [\"prepare-be97b2a5d098449aba62d4c66189ccb5.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"], \"lease_id\": \"7218bd7985b8470abb1616ce1b17f385\"}"
+      },
+      {
+        "id": 12,
+        "ts": 1790559919.2101865,
+        "action": "abort_pending",
+        "details": "{\"engine_request_ids\": [\"prepare-781a4dd9321e4d749522ce8de0c44f26.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000\"], \"lease_id\": \"2c5d10f55f8e46799f30237d3a0021ed\"}"
+      },
+      {
+        "id": 13,
+        "ts": 1790560269.8492918,
+        "action": "recovered",
+        "details": "{\"lease_id\": \"7218bd7985b8470abb1616ce1b17f385\", \"request_id\": \"prepare-be97b2a5d098449aba62d4c66189ccb5\"}"
+      },
+      {
+        "id": 14,
+        "ts": 1790560269.8525658,
+        "action": "recovered",
+        "details": "{\"lease_id\": \"2c5d10f55f8e46799f30237d3a0021ed\", \"request_id\": \"prepare-781a4dd9321e4d749522ce8de0c44f26\"}"
+      }
+    ]
+  },
+  "after_snapshot": {
+    "path": "/root/jev-runtime/asgi-profile-a475ad4/recovery-after.sqlite",
+    "sha256": "3e3f4deca55cf54107582937635d2d9a793e7a7c3a43a6773b7f04efbb16336e"
+  },
+  "complete": true,
+  "cleanup": {
+    "process_record": {
+      "identity": {
+        "pid": 2746633,
+        "start_ticks": "431578102",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "engine": "sglang",
+      "mode": "native-plugin",
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "sglang.launch_server",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--served-model-name",
+        "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18794",
+        "--dtype",
+        "bfloat16",
+        "--context-length",
+        "2048",
+        "--max-running-requests",
+        "4",
+        "--chunked-prefill-size",
+        "512",
+        "--max-total-tokens",
+        "2048",
+        "--mem-fraction-static",
+        "0.65",
+        "--disable-cuda-graph",
+        "--attention-backend",
+        "triton"
+      ],
+      "model": {
+        "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+        "revision": "31b70e2e869a7173562077fd711b654946d38674",
+        "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+      },
+      "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+      "gpu_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "gpus_before": [
+        {
+          "index": 7,
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        }
+      ],
+      "tensor_parallel_size": 1,
+      "dtype": "bfloat16",
+      "readout_dtype": "bfloat16",
+      "batch_invariant": false,
+      "recovery_only": true,
+      "registry_path": "/root/jev-runtime/runs/sglang-asgi-profile-a475ad4/registry.db",
+      "chat_template_source": null,
+      "chat_template_snapshot": null,
+      "created": 1790560241.685257,
+      "port": 18794,
+      "qualification": "colocated-functional-test",
+      "memory_budget_denominator": "free_mib"
+    },
+    "checked_at": 1790560269.8602664,
+    "remaining_process_group_members": [],
+    "gpus_after": [
+      {
+        "index": 7,
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11990",
+        "driver": "550.127.08",
+        "utilization": "0"
+      }
+    ],
+    "gpu_uuids_match": true,
+    "passed": true
+  },
+  "finished_at": 1790560271.019309
+}

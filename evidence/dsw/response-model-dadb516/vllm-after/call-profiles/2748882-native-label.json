@@ -1,0 +1,5736 @@
+{
+  "pid": 2748882,
+  "lane": "native-label",
+  "timer": "cProfile default monotonic wall clock",
+  "skip_requests": 64,
+  "limit_requests": 128,
+  "seen_requests": 192,
+  "profiled_requests": 128,
+  "statuses": {
+    "200": 128
+  },
+  "failed_requests": 0,
+  "nested_or_concurrent_skips": 0,
+  "window_wall_seconds": 2.913619626313448,
+  "profiler_total_seconds": 0.579368928,
+  "timing_sanity_passed": true,
+  "hook_sha256": "e9b4a5c749012d8e9737b26072ef13ca8d59ef2d726f83519efd485b6e2b2dd8",
+  "qualification": "One contiguous window, including event-loop idle/background callbacks. Function times overlap; not CPU-only or GPU time, and not ordinary throughput.",
+  "functions": [
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'step' of 'tokenizers.decoders.DecodeStream' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.021323161,
+      "cumulative_seconds": 0.021323161
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/protocol.py",
+      "line": 44,
+      "name": "__log_extra_fields__",
+      "primitive_calls": 640,
+      "calls": 1024,
+      "own_seconds": 0.013696576,
+      "cumulative_seconds": 0.029822567
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.isinstance>",
+      "primitive_calls": 42881,
+      "calls": 42881,
+      "own_seconds": 0.011077766000000001,
+      "cumulative_seconds": 0.013313513
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/values.py",
+      "line": 114,
+      "name": "inc",
+      "primitive_calls": 6784,
+      "calls": 6784,
+      "own_seconds": 0.010296748000000001,
+      "cumulative_seconds": 0.026207955
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'get' of 'dict' objects>",
+      "primitive_calls": 19834,
+      "calls": 19834,
+      "own_seconds": 0.006467884,
+      "cumulative_seconds": 0.006467884
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1543,
+      "name": "_get_value",
+      "primitive_calls": 11008,
+      "calls": 11008,
+      "own_seconds": 0.005912648,
+      "cumulative_seconds": 0.00916776
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 670,
+      "name": "_handle_events",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.005889114,
+      "cumulative_seconds": 0.026477803
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/routing.py",
+      "line": 244,
+      "name": "matches",
+      "primitive_calls": 5120,
+      "calls": 5120,
+      "own_seconds": 0.005882755000000001,
+      "cumulative_seconds": 0.013599862
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 470,
+      "name": "_add_recv_event",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.005772758,
+      "cumulative_seconds": 0.027504630000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/loggers.py",
+      "line": 1017,
+      "name": "record",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.005758179,
+      "cumulative_seconds": 0.051102720000000004
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1561,
+      "name": "__and__",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.005709082000000001,
+      "cumulative_seconds": 0.014617994
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/mmap_dict.py",
+      "line": 19,
+      "name": "_pack_two_doubles",
+      "primitive_calls": 8704,
+      "calls": 8704,
+      "own_seconds": 0.005645125,
+      "cumulative_seconds": 0.008130081
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/dependencies/utils.py",
+      "line": 598,
+      "name": "solve_dependencies",
+      "primitive_calls": 128,
+      "calls": 256,
+      "own_seconds": 0.005538767,
+      "cumulative_seconds": 0.040031858000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/serving.py",
+      "line": 127,
+      "name": "_create_completion",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.0054170830000000005,
+      "cumulative_seconds": 0.12099486200000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/mmap_dict.py",
+      "line": 127,
+      "name": "write_value",
+      "primitive_calls": 8704,
+      "calls": 8704,
+      "own_seconds": 0.005317855000000001,
+      "cumulative_seconds": 0.013447936
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'decode' of 'msgspec.msgpack.Decoder' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.005169598,
+      "cumulative_seconds": 0.009383196
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 586,
+      "name": "_handle_recv",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.004957826,
+      "cumulative_seconds": 0.020580794000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/decoder.py",
+      "line": 344,
+      "name": "raw_decode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.004889112,
+      "cumulative_seconds": 0.004889112
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 73,
+      "name": "_raise_if_not_observable",
+      "primitive_calls": 6272,
+      "calls": 6272,
+      "own_seconds": 0.004863744000000001,
+      "cumulative_seconds": 0.0073784210000000005
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 785,
+      "name": "output_handler",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.004792163,
+      "cumulative_seconds": 0.15296335700000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/encoder.py",
+      "line": 205,
+      "name": "iterencode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.004541789,
+      "cumulative_seconds": 0.004541789
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 667,
+      "name": "observe",
+      "primitive_calls": 2176,
+      "calls": 2176,
+      "own_seconds": 0.004365336,
+      "cumulative_seconds": 0.021782201
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'match' of 're.Pattern' objects>",
+      "primitive_calls": 5376,
+      "calls": 5376,
+      "own_seconds": 0.004326979,
+      "cumulative_seconds": 0.004326979
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/socket.py",
+      "line": 638,
+      "name": "send",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0043073090000000005,
+      "cumulative_seconds": 0.0043073090000000005
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 170,
+      "name": "data_received",
+      "primitive_calls": 249,
+      "calls": 249,
+      "own_seconds": 0.004281831000000001,
+      "cumulative_seconds": 0.013557324
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 382,
+      "name": "app",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.004022345,
+      "cumulative_seconds": 0.071133625
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.getattr>",
+      "primitive_calls": 7225,
+      "calls": 7225,
+      "own_seconds": 0.003974124,
+      "cumulative_seconds": 0.005701670000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 463,
+      "name": "send",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0037747350000000004,
+      "cumulative_seconds": 0.033482742
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 128,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.003661526,
+      "cumulative_seconds": 0.17560883700000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 998,
+      "name": "matches",
+      "primitive_calls": 4096,
+      "calls": 4096,
+      "own_seconds": 0.003643617,
+      "cumulative_seconds": 0.014063891
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 720,
+      "name": "__call__",
+      "primitive_calls": 5760,
+      "calls": 5760,
+      "own_seconds": 0.003618088,
+      "cumulative_seconds": 0.006065195000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/values.py",
+      "line": 121,
+      "name": "set",
+      "primitive_calls": 1920,
+      "calls": 1920,
+      "own_seconds": 0.003576104,
+      "cumulative_seconds": 0.009177543
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/hf.py",
+      "line": 84,
+      "name": "decode",
+      "primitive_calls": 1152,
+      "calls": 1152,
+      "own_seconds": 0.003554268,
+      "cumulative_seconds": 0.042535754
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/socket.py",
+      "line": 785,
+      "name": "recv_multipart",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.003527685,
+      "cumulative_seconds": 0.0038572470000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/metrics.py",
+      "line": 779,
+      "name": "instrumentation",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0034843010000000004,
+      "cumulative_seconds": 0.020354594
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 154,
+      "name": "get",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.003436948,
+      "cumulative_seconds": 0.009769611000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 544,
+      "name": "__getitem__",
+      "primitive_calls": 1408,
+      "calls": 1408,
+      "own_seconds": 0.00342822,
+      "cumulative_seconds": 0.004966153
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_base.py",
+      "line": 2853,
+      "name": "decode",
+      "primitive_calls": 1152,
+      "calls": 1152,
+      "own_seconds": 0.0033077870000000004,
+      "cumulative_seconds": 0.016137305
+    },
+    {
+      "file": "<frozen _collections_abc>",
+      "line": 804,
+      "name": "get",
+      "primitive_calls": 2561,
+      "calls": 2561,
+      "own_seconds": 0.0032938480000000003,
+      "cumulative_seconds": 0.012957022
+    },
+    {
+      "file": "/root/jev-runtime/response-model-dadb516/bootstrap/sitecustomize.py",
+      "line": 32,
+      "name": "profiled",
+      "primitive_calls": 377,
+      "calls": 377,
+      "own_seconds": 0.0032486750000000003,
+      "cumulative_seconds": 0.183794265
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/values.py",
+      "line": 103,
+      "name": "__check_for_pid_change",
+      "primitive_calls": 8704,
+      "calls": 8704,
+      "own_seconds": 0.003245224,
+      "cumulative_seconds": 0.006137944
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0031874290000000003,
+      "cumulative_seconds": 0.0031874290000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 248,
+      "name": "on_headers_complete",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.003183777,
+      "cumulative_seconds": 0.005488258
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.hasattr>",
+      "primitive_calls": 5888,
+      "calls": 6528,
+      "own_seconds": 0.0031157520000000003,
+      "cumulative_seconds": 0.0047733310000000004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method posix.getpid>",
+      "primitive_calls": 8889,
+      "calls": 8889,
+      "own_seconds": 0.003017591,
+      "cumulative_seconds": 0.003017591
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 113,
+      "name": "app",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.003007988,
+      "cumulative_seconds": 0.11518460500000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/instrumentator/metrics.py",
+      "line": 30,
+      "name": "_get_route_name",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002992933,
+      "cumulative_seconds": 0.01535033
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 138,
+      "name": "labels",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.002941452,
+      "cumulative_seconds": 0.0038897940000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 122,
+      "name": "put",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.002910113,
+      "cumulative_seconds": 0.007733864000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 118,
+      "name": "deepcopy",
+      "primitive_calls": 384,
+      "calls": 1664,
+      "own_seconds": 0.002878341,
+      "cumulative_seconds": 0.007549217
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 731,
+      "name": "gather",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.0028510700000000003,
+      "cumulative_seconds": 0.007137606
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method '__exit__' of '_thread.lock' objects>",
+      "primitive_calls": 12032,
+      "calls": 12032,
+      "own_seconds": 0.0027669390000000004,
+      "cumulative_seconds": 0.0027669390000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1111,
+      "name": "process_outputs_socket",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.002658932,
+      "cumulative_seconds": 0.045207905
+    },
+    {
+      "file": "<frozen os>",
+      "line": 709,
+      "name": "__getitem__",
+      "primitive_calls": 1153,
+      "calls": 1153,
+      "own_seconds": 0.002658871,
+      "cumulative_seconds": 0.004697021
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/logprobs.py",
+      "line": 69,
+      "name": "_update_sample_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002641809,
+      "cumulative_seconds": 0.052560447
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 460,
+      "name": "set",
+      "primitive_calls": 1920,
+      "calls": 1920,
+      "own_seconds": 0.00263065,
+      "cumulative_seconds": 0.014165946
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'execute' of 'sqlite3.Connection' objects>",
+      "primitive_calls": 57,
+      "calls": 57,
+      "own_seconds": 0.0026266270000000003,
+      "cumulative_seconds": 0.0026266270000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1550,
+      "name": "__or__",
+      "primitive_calls": 1024,
+      "calls": 1024,
+      "own_seconds": 0.002608345,
+      "cumulative_seconds": 0.006224519
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+      "primitive_calls": 768,
+      "calls": 768,
+      "own_seconds": 0.002582163,
+      "cumulative_seconds": 0.03240473
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/serving.py",
+      "line": 503,
+      "name": "request_output_to_completion_response",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002577035,
+      "cumulative_seconds": 0.016134492
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 67,
+      "name": "_is_observable",
+      "primitive_calls": 6272,
+      "calls": 6272,
+      "own_seconds": 0.0025146770000000003,
+      "cumulative_seconds": 0.0025146770000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'encode' of 'str' objects>",
+      "primitive_calls": 5122,
+      "calls": 5122,
+      "own_seconds": 0.0025039980000000003,
+      "cumulative_seconds": 0.0025039980000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/utils/generic.py",
+      "line": 346,
+      "name": "to_py_obj",
+      "primitive_calls": 1152,
+      "calls": 1152,
+      "own_seconds": 0.0024952900000000003,
+      "cumulative_seconds": 0.006710489
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'pack' of '_struct.Struct' objects>",
+      "primitive_calls": 8704,
+      "calls": 8704,
+      "own_seconds": 0.002484956,
+      "cumulative_seconds": 0.002484956
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.id>",
+      "primitive_calls": 2944,
+      "calls": 2944,
+      "own_seconds": 0.002451888,
+      "cumulative_seconds": 0.002451888
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1128,
+      "name": "__new__",
+      "primitive_calls": 5760,
+      "calls": 5760,
+      "own_seconds": 0.002447107,
+      "cumulative_seconds": 0.002447107
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/logprobs.py",
+      "line": 180,
+      "name": "append_logprobs_for_next_position",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002386685,
+      "cumulative_seconds": 0.003197492
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_tokenizers.py",
+      "line": 1133,
+      "name": "_decode",
+      "primitive_calls": 1152,
+      "calls": 1152,
+      "own_seconds": 0.002353351,
+      "cumulative_seconds": 0.005449628000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'set_result' of '_asyncio.Future' objects>",
+      "primitive_calls": 1745,
+      "calls": 1745,
+      "own_seconds": 0.002330692,
+      "cumulative_seconds": 0.002330692
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/serving.py",
+      "line": 652,
+      "name": "_create_completion_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002317034,
+      "cumulative_seconds": 0.0073691730000000006
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'flush' of '_io.TextIOWrapper' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0023155000000000003,
+      "cumulative_seconds": 0.0023155000000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'decode' of 'tokenizers.Tokenizer' objects>",
+      "primitive_calls": 1152,
+      "calls": 1152,
+      "own_seconds": 0.002287164,
+      "cumulative_seconds": 0.002287164
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/_utils.py",
+      "line": 140,
+      "name": "get_route_path",
+      "primitive_calls": 5376,
+      "calls": 5376,
+      "own_seconds": 0.002274112,
+      "cumulative_seconds": 0.0034361760000000004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.len>",
+      "primitive_calls": 9727,
+      "calls": 9727,
+      "own_seconds": 0.002232398,
+      "cumulative_seconds": 0.002232398
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 316,
+      "name": "to_sampling_params",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002157286,
+      "cumulative_seconds": 0.010100855
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 281,
+      "name": "process_inputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0021072490000000003,
+      "cumulative_seconds": 0.018441079000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 298,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.002078903,
+      "cumulative_seconds": 0.004724384
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 501,
+      "name": "<genexpr>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0020746420000000002,
+      "cumulative_seconds": 0.0020746420000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.max>",
+      "primitive_calls": 1795,
+      "calls": 1795,
+      "own_seconds": 0.002036923,
+      "cumulative_seconds": 0.002036923
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 55,
+      "name": "init_headers",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.002013551,
+      "cumulative_seconds": 0.003571191
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/routing.py",
+      "line": 678,
+      "name": "app",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.00200761,
+      "cumulative_seconds": 0.12706261500000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 104,
+      "name": "__init__",
+      "primitive_calls": 1337,
+      "calls": 1337,
+      "own_seconds": 0.001968941,
+      "cumulative_seconds": 0.00241535
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 361,
+      "name": "add_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0019292180000000001,
+      "cumulative_seconds": 0.047630773
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/attrsettr.py",
+      "line": 43,
+      "name": "__getattr__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0019120550000000002,
+      "cumulative_seconds": 0.004558873000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'append' of 'list' objects>",
+      "primitive_calls": 5623,
+      "calls": 5623,
+      "own_seconds": 0.0018567520000000001,
+      "cumulative_seconds": 0.0018567520000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/locks.py",
+      "line": 199,
+      "name": "wait",
+      "primitive_calls": 761,
+      "calls": 761,
+      "own_seconds": 0.0018440680000000001,
+      "cumulative_seconds": 0.0033832940000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.next>",
+      "primitive_calls": 2674,
+      "calls": 2674,
+      "own_seconds": 0.001755402,
+      "cumulative_seconds": 0.022005963
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/api_router.py",
+      "line": 35,
+      "name": "create_completion",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.0017512640000000002,
+      "cumulative_seconds": 0.13794376800000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 767,
+      "name": "_done_callback",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0017468870000000001,
+      "cumulative_seconds": 0.0028252760000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 149,
+      "name": "get",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.001736633,
+      "cumulative_seconds": 0.003577649
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 169,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001714728,
+      "cumulative_seconds": 0.002045084
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 61,
+      "name": "copy",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0017062750000000002,
+      "cumulative_seconds": 0.005568095
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 629,
+      "name": "process_outputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0016802770000000002,
+      "cumulative_seconds": 0.08947900900000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 394,
+      "name": "notify",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.001624299,
+      "cumulative_seconds": 0.0040938
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 337,
+      "name": "inc",
+      "primitive_calls": 1920,
+      "calls": 1920,
+      "own_seconds": 0.001584841,
+      "cumulative_seconds": 0.011203625
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 327,
+      "name": "on_response_complete",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00153731,
+      "cumulative_seconds": 0.001610131
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/hf.py",
+      "line": 48,
+      "name": "_borrow_from_pool",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.001525319,
+      "cumulative_seconds": 0.019843414
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'update' of 'dict' objects>",
+      "primitive_calls": 1920,
+      "calls": 1920,
+      "own_seconds": 0.0015150900000000002,
+      "cumulative_seconds": 0.0015150900000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 254,
+      "name": "body",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.0014799700000000002,
+      "cumulative_seconds": 0.004986659
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _abc._abc_instancecheck>",
+      "primitive_calls": 2048,
+      "calls": 2048,
+      "own_seconds": 0.00144794,
+      "cumulative_seconds": 0.00144794
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 532,
+      "name": "validate_alive",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0014454810000000002,
+      "cumulative_seconds": 0.0015638140000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 299,
+      "name": "helper",
+      "primitive_calls": 1337,
+      "calls": 1337,
+      "own_seconds": 0.001424661,
+      "cumulative_seconds": 0.0038400110000000004
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 670,
+      "name": "ensure_future",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.001416523,
+      "cumulative_seconds": 0.002638629
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 455,
+      "name": "update_from_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001407171,
+      "cumulative_seconds": 0.005534367
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/_weakrefset.py",
+      "line": 85,
+      "name": "add",
+      "primitive_calls": 1151,
+      "calls": 1151,
+      "own_seconds": 0.0014049470000000001,
+      "cumulative_seconds": 0.0019278000000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/cors.py",
+      "line": 151,
+      "name": "send",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.001396862,
+      "cumulative_seconds": 0.038122848
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/detokenizer_utils.py",
+      "line": 143,
+      "name": "convert_ids_list_to_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0013957160000000002,
+      "cumulative_seconds": 0.044144607
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 653,
+      "name": "sleep",
+      "primitive_calls": 174,
+      "calls": 174,
+      "own_seconds": 0.001390058,
+      "cumulative_seconds": 0.00142405
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method numpy.frombuffer>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00137725,
+      "cumulative_seconds": 0.00137725
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 704,
+      "name": "_drop_io_state",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0013561040000000001,
+      "cumulative_seconds": 0.005669934000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 588,
+      "name": "validate_prompt_list_length",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00135578,
+      "cumulative_seconds": 0.003248873
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/mixins.py",
+      "line": 12,
+      "name": "_get_loop",
+      "primitive_calls": 634,
+      "calls": 634,
+      "own_seconds": 0.0013431760000000002,
+      "cumulative_seconds": 0.001693849
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'lower' of 'str' objects>",
+      "primitive_calls": 3584,
+      "calls": 3584,
+      "own_seconds": 0.0013377570000000002,
+      "cumulative_seconds": 0.0013377570000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_base.py",
+      "line": 1281,
+      "name": "__getattr__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0013084680000000001,
+      "cumulative_seconds": 0.007445883
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'encode' of 'msgspec.msgpack.Encoder' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0013055100000000002,
+      "cumulative_seconds": 0.0013055100000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method '__enter__' of '_thread.lock' objects>",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.0013041650000000001,
+      "cumulative_seconds": 0.0013041650000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 289,
+      "name": "_with_kv_transfer_rejection_cleanup",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.0012641360000000001,
+      "cumulative_seconds": 0.122625038
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 299,
+      "name": "__enter__",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.001257328,
+      "cumulative_seconds": 0.002561493
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'acquire' of '_thread.lock' objects>",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.0012504600000000001,
+      "cumulative_seconds": 0.0012504600000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/main.py",
+      "line": 1015,
+      "name": "__getattr__",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.001245643,
+      "cumulative_seconds": 0.0035758110000000004
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 522,
+      "name": "_wait",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0012407590000000001,
+      "cumulative_seconds": 0.0017546310000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/online_renderer.py",
+      "line": 600,
+      "name": "preprocess_completion",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.001232215,
+      "cumulative_seconds": 0.019110761
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'decode' of 'bytes' objects>",
+      "primitive_calls": 1917,
+      "calls": 1917,
+      "own_seconds": 0.001223951,
+      "cumulative_seconds": 0.001223951
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 1130,
+      "name": "render_cmpl_async",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.0012231520000000001,
+      "cumulative_seconds": 0.011553748
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 314,
+      "name": "_is_owned",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.0012190410000000001,
+      "cumulative_seconds": 0.0024695010000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 302,
+      "name": "__exit__",
+      "primitive_calls": 2560,
+      "calls": 2560,
+      "own_seconds": 0.0012112210000000002,
+      "cumulative_seconds": 0.001727826
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/_weakrefset.py",
+      "line": 39,
+      "name": "_remove",
+      "primitive_calls": 1150,
+      "calls": 1150,
+      "own_seconds": 0.001208743,
+      "cumulative_seconds": 0.001715259
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 525,
+      "name": "_add_send_event",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001208186,
+      "cumulative_seconds": 0.009757346
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 487,
+      "name": "__post_init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001207558,
+      "cumulative_seconds": 0.004434919000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 132,
+      "name": "headers",
+      "primitive_calls": 1536,
+      "calls": 1536,
+      "own_seconds": 0.001207002,
+      "cumulative_seconds": 0.0019411320000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 682,
+      "name": "_schedule_remaining_events",
+      "primitive_calls": 896,
+      "calls": 896,
+      "own_seconds": 0.00120406,
+      "cumulative_seconds": 0.002755
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.any>",
+      "primitive_calls": 1024,
+      "calls": 1024,
+      "own_seconds": 0.001202785,
+      "cumulative_seconds": 0.003791865
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 398,
+      "name": "_new_completion_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0011922810000000001,
+      "cumulative_seconds": 0.0018936010000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1167,
+      "name": "get_output_async",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.001184233,
+      "cumulative_seconds": 0.0051260820000000006
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'search' of 're.Pattern' objects>",
+      "primitive_calls": 2048,
+      "calls": 2048,
+      "own_seconds": 0.001180861,
+      "cumulative_seconds": 0.001180861
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py",
+      "line": 28,
+      "name": "__call__",
+      "primitive_calls": 377,
+      "calls": 377,
+      "own_seconds": 0.0011800930000000001,
+      "cumulative_seconds": 0.18539134200000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 101,
+      "name": "wrapper",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.001173011,
+      "cumulative_seconds": 0.13952645400000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 567,
+      "name": "receive",
+      "primitive_calls": 505,
+      "calls": 505,
+      "own_seconds": 0.001167038,
+      "cumulative_seconds": 0.0029817610000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 141,
+      "name": "__exit__",
+      "primitive_calls": 1337,
+      "calls": 1337,
+      "own_seconds": 0.001164314,
+      "cumulative_seconds": 0.010817277
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 2179,
+      "name": "__getattr__",
+      "primitive_calls": 897,
+      "calls": 897,
+      "own_seconds": 0.0011545000000000001,
+      "cumulative_seconds": 0.010561049000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.min>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0011512360000000001,
+      "cumulative_seconds": 0.001287364
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/socket.py",
+      "line": 715,
+      "name": "send_multipart",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001133228,
+      "cumulative_seconds": 0.006846802000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 383,
+      "name": "from_optional",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0011222,
+      "cumulative_seconds": 0.005557119
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/online_renderer.py",
+      "line": 616,
+      "name": "preprocess_cmpl",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.0011197730000000001,
+      "cumulative_seconds": 0.017215691
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 221,
+      "name": "from_new_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001119395,
+      "cumulative_seconds": 0.005078618
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 299,
+      "name": "_start_asgi_task",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.001118607,
+      "cumulative_seconds": 0.0016210110000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/logging.py",
+      "line": 97,
+      "name": "formatMessage",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.001113302,
+      "cumulative_seconds": 0.008063807000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/utils/async_utils.py",
+      "line": 95,
+      "name": "merge_async_iterators",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.001111926,
+      "cumulative_seconds": 0.051899779
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/socket.py",
+      "line": 378,
+      "name": "__setattr__",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.001097627,
+      "cumulative_seconds": 0.001097627
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 412,
+      "name": "create_task",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.001097021,
+      "cumulative_seconds": 0.001636726
+    },
+    {
+      "file": "<frozen os>",
+      "line": 791,
+      "name": "encode",
+      "primitive_calls": 1153,
+      "calls": 1153,
+      "own_seconds": 0.001089777,
+      "cumulative_seconds": 0.0020381500000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 638,
+      "name": "generate",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.001051952,
+      "cumulative_seconds": 0.050586040000000006
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 132,
+      "name": "__enter__",
+      "primitive_calls": 1337,
+      "calls": 1337,
+      "own_seconds": 0.00105087,
+      "cumulative_seconds": 0.01340387
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 505,
+      "name": "__init__",
+      "primitive_calls": 896,
+      "calls": 896,
+      "own_seconds": 0.0010469300000000002,
+      "cumulative_seconds": 0.0010469300000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.all>",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.001046283,
+      "cumulative_seconds": 0.002165314
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/sugar/attrsettr.py",
+      "line": 66,
+      "name": "_get_attr_opt",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.001025633,
+      "cumulative_seconds": 0.0014051360000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 132,
+      "name": "parse_dec_only_prompt",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.001023194,
+      "cumulative_seconds": 0.0016000010000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 137,
+      "name": "put_nowait",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0010219320000000001,
+      "cumulative_seconds": 0.002481191
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 75,
+      "name": "wrapper",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.001020524,
+      "cumulative_seconds": 0.0073682700000000005
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 435,
+      "name": "wait",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00101865,
+      "cumulative_seconds": 0.004410312
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 256,
+      "name": "extract_prompt_components",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.001017612,
+      "cumulative_seconds": 0.002681507
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/uuid.py",
+      "line": 139,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00100595,
+      "cumulative_seconds": 0.001260323
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 352,
+      "name": "_new_request_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0010051180000000002,
+      "cumulative_seconds": 0.001148694
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'tolist' of 'numpy.generic' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000996224,
+      "cumulative_seconds": 0.000996224
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 549,
+      "name": "_verify_args",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0009694870000000001,
+      "cumulative_seconds": 0.002912317
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 70,
+      "name": "_is_model_supported",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000964745,
+      "cumulative_seconds": 0.005036354000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 383,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0009567740000000001,
+      "cumulative_seconds": 0.0017347450000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 33,
+      "name": "__init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0009379130000000001,
+      "cumulative_seconds": 0.011243005
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 819,
+      "name": "verify",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000929476,
+      "cumulative_seconds": 0.0027932400000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 1793,
+      "name": "<lambda>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000925852,
+      "cumulative_seconds": 0.0041309450000000004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'append' of 'collections.deque' objects>",
+      "primitive_calls": 2682,
+      "calls": 2682,
+      "own_seconds": 0.000921032,
+      "cumulative_seconds": 0.000921032
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 242,
+      "name": "on_header",
+      "primitive_calls": 1143,
+      "calls": 1143,
+      "own_seconds": 0.0009187160000000001,
+      "cumulative_seconds": 0.0015892670000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/cors.py",
+      "line": 147,
+      "name": "simple_response",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.000912316,
+      "cumulative_seconds": 0.17652115300000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/fields.py",
+      "line": 1432,
+      "name": "__getattr__",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000909298,
+      "cumulative_seconds": 0.001013622
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/utils/generic.py",
+      "line": 356,
+      "name": "<genexpr>",
+      "primitive_calls": 2304,
+      "calls": 2304,
+      "own_seconds": 0.000906491,
+      "cumulative_seconds": 0.0010721740000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1611,
+      "name": "findCaller",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000898688,
+      "cumulative_seconds": 0.0026704560000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py",
+      "line": 15,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.0008930710000000001,
+      "cumulative_seconds": 0.128557586
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 531,
+      "name": "update_from_finished_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000875263,
+      "cumulative_seconds": 0.0012550200000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/hf.py",
+      "line": 72,
+      "name": "convert_tokens_to_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0008729920000000001,
+      "cumulative_seconds": 0.005713426000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 200,
+      "name": "_is_internal_frame",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000864629,
+      "cumulative_seconds": 0.001161146
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/main.py",
+      "line": 253,
+      "name": "__init__",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.00084864,
+      "cumulative_seconds": 0.009095641
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 487,
+      "name": "_validate_model_input",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000847787,
+      "cumulative_seconds": 0.0031890250000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'match' of '_regex.Pattern' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0008444910000000001,
+      "cumulative_seconds": 0.0008444910000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 169,
+      "name": "send_wrapper",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0008235590000000001,
+      "cumulative_seconds": 0.039021026
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'popleft' of 'collections.deque' objects>",
+      "primitive_calls": 2304,
+      "calls": 2304,
+      "own_seconds": 0.0008160880000000001,
+      "cumulative_seconds": 0.0008160880000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 710,
+      "name": "_update_handler",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.0008148490000000001,
+      "cumulative_seconds": 0.004129884
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 193,
+      "name": "get_nowait",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.0008146200000000001,
+      "cumulative_seconds": 0.010584231000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 493,
+      "name": "render_prompts_async",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0008102560000000001,
+      "cumulative_seconds": 0.00566382
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/cors.py",
+      "line": 77,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.000808062,
+      "cumulative_seconds": 0.178422566
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'add' of 'set' objects>",
+      "primitive_calls": 1790,
+      "calls": 1790,
+      "own_seconds": 0.000804812,
+      "cumulative_seconds": 0.000804812
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 270,
+      "name": "recv_multipart",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00079865,
+      "cumulative_seconds": 0.02830328
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/locks.py",
+      "line": 181,
+      "name": "set",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.0007929450000000001,
+      "cumulative_seconds": 0.001319527
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/_internal/_model_construction.py",
+      "line": 364,
+      "name": "init_private_attributes",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000790882,
+      "cumulative_seconds": 0.00742876
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method time.time>",
+      "primitive_calls": 2562,
+      "calls": 2562,
+      "own_seconds": 0.000790601,
+      "cumulative_seconds": 0.000790601
+    },
+    {
+      "file": "<frozen abc>",
+      "line": 117,
+      "name": "__instancecheck__",
+      "primitive_calls": 2048,
+      "calls": 2048,
+      "own_seconds": 0.0007878070000000001,
+      "cumulative_seconds": 0.002235747
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/logprobs.py",
+      "line": 312,
+      "name": "_verify_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000787047,
+      "cumulative_seconds": 0.001300666
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1390,
+      "name": "_handle_fromlist",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.0007856790000000001,
+      "cumulative_seconds": 0.001188225
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 261,
+      "name": "assign_request_id",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000784904,
+      "cumulative_seconds": 0.004655475
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/metrics.py",
+      "line": 601,
+      "name": "_map_label_name_value",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000780933,
+      "cumulative_seconds": 0.001060098
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/asyncio.py",
+      "line": 151,
+      "name": "<lambda>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00077464,
+      "cumulative_seconds": 0.027252443
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 506,
+      "name": "update_from_events",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0007707500000000001,
+      "cumulative_seconds": 0.001302647
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'reshape' of 'numpy.ndarray' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0007697680000000001,
+      "cumulative_seconds": 0.0007697680000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 217,
+      "name": "_deepcopy_dict",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0007637340000000001,
+      "cumulative_seconds": 0.004164523
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/utils/__init__.py",
+      "line": 11,
+      "name": "random_uuid",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000762264,
+      "cumulative_seconds": 0.002745869
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/models/serving.py",
+      "line": 50,
+      "name": "is_base_model",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000751246,
+      "cumulative_seconds": 0.001260101
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 564,
+      "name": "add_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000735614,
+      "cumulative_seconds": 0.005953249000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/_internal/_fields.py",
+      "line": 705,
+      "name": "resolve_default_value",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0007320880000000001,
+      "cumulative_seconds": 0.006225242000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method __new__ of type object at 0x7f8cc1f7d600>",
+      "primitive_calls": 1024,
+      "calls": 1024,
+      "own_seconds": 0.0007299170000000001,
+      "cumulative_seconds": 0.0007299170000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/exceptions.py",
+      "line": 47,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.0007262350000000001,
+      "cumulative_seconds": 0.129946782
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 265,
+      "name": "build_tok_params",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0007163800000000001,
+      "cumulative_seconds": 0.002001544
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/serial_utils.py",
+      "line": 350,
+      "name": "dec_hook",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000715847,
+      "cumulative_seconds": 0.003939108
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 420,
+      "name": "run_asgi",
+      "primitive_calls": 377,
+      "calls": 377,
+      "own_seconds": 0.0006945990000000001,
+      "cumulative_seconds": 0.186085941
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method '__reduce_ex__' of 'object' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0006823840000000001,
+      "cumulative_seconds": 0.0006823840000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/_exception_handler.py",
+      "line": 31,
+      "name": "wrapped_app",
+      "primitive_calls": 378,
+      "calls": 756,
+      "own_seconds": 0.0006697360000000001,
+      "cumulative_seconds": 0.128909094
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 710,
+      "name": "__init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0006688890000000001,
+      "cumulative_seconds": 0.0006688890000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 320,
+      "name": "run_endpoint_function",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000667647,
+      "cumulative_seconds": 0.008254363
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 600,
+      "name": "get_content_type",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000661363,
+      "cumulative_seconds": 0.002969723
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 578,
+      "name": "__setitem__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000654864,
+      "cumulative_seconds": 0.0008348050000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 698,
+      "name": "_add_io_state",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0006511920000000001,
+      "cumulative_seconds": 0.005702560000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 488,
+      "name": "check_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0006508890000000001,
+      "cumulative_seconds": 0.0011203880000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 110,
+      "name": "app",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.000643221,
+      "cumulative_seconds": 0.116397233
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/__init__.py",
+      "line": 183,
+      "name": "dumps",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000640783,
+      "cumulative_seconds": 0.00594566
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/serial_utils.py",
+      "line": 389,
+      "name": "_decode_ndarray",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0006365230000000001,
+      "cumulative_seconds": 0.002913072
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 213,
+      "name": "_put",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.000632515,
+      "cumulative_seconds": 0.001010197
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1219,
+      "name": "add_request_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000631389,
+      "cumulative_seconds": 0.013421814
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 344,
+      "name": "format_token_id_placeholder",
+      "primitive_calls": 1155,
+      "calls": 1155,
+      "own_seconds": 0.0006293890000000001,
+      "cumulative_seconds": 0.0006293890000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'lower' of 'bytes' objects>",
+      "primitive_calls": 1783,
+      "calls": 1783,
+      "own_seconds": 0.000624919,
+      "cumulative_seconds": 0.000624919
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/serving.py",
+      "line": 88,
+      "name": "render_completion_request",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000623844,
+      "cumulative_seconds": 0.023750347
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 231,
+      "name": "_keep_alive",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000613446,
+      "cumulative_seconds": 0.001097504
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 707,
+      "name": "__aexit__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.0006133940000000001,
+      "cumulative_seconds": 0.0009667740000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 247,
+      "name": "_reconstruct",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.0006116310000000001,
+      "cumulative_seconds": 0.001694554
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/errors.py",
+      "line": 149,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.000608406,
+      "cumulative_seconds": 0.17934623600000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/loggers.py",
+      "line": 1268,
+      "name": "record",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000599509,
+      "cumulative_seconds": 0.051702229
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 1000,
+      "name": "_validate_logits_processors",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005968050000000001,
+      "cumulative_seconds": 0.001118552
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'endswith' of 'str' objects>",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.000596684,
+      "cumulative_seconds": 0.000596684
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/logging.py",
+      "line": 55,
+      "name": "formatMessage",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005921230000000001,
+      "cumulative_seconds": 0.002752055
+    },
+    {
+      "file": "<frozen os>",
+      "line": 808,
+      "name": "getenv",
+      "primitive_calls": 897,
+      "calls": 897,
+      "own_seconds": 0.0005877370000000001,
+      "cumulative_seconds": 0.0054626710000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'pop' of 'dict' objects>",
+      "primitive_calls": 1536,
+      "calls": 1536,
+      "own_seconds": 0.000586789,
+      "cumulative_seconds": 0.000586789
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 217,
+      "name": "_get",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.000580406,
+      "cumulative_seconds": 0.0009901740000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/serial_utils.py",
+      "line": 340,
+      "name": "decode",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000571715,
+      "cumulative_seconds": 0.010200688000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/hf.py",
+      "line": 1297,
+      "name": "_process_tokens_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000562717,
+      "cumulative_seconds": 0.001519072
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 217,
+      "name": "__init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000562086,
+      "cumulative_seconds": 0.000705923
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 600,
+      "name": "__delitem__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000554792,
+      "cumulative_seconds": 0.0006898750000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'discard' of 'set' objects>",
+      "primitive_calls": 1278,
+      "calls": 1278,
+      "own_seconds": 0.000547018,
+      "cumulative_seconds": 0.000547018
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'done' of '_asyncio.Future' objects>",
+      "primitive_calls": 1530,
+      "calls": 1530,
+      "own_seconds": 0.0005460150000000001,
+      "cumulative_seconds": 0.0005460150000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/applications.py",
+      "line": 1156,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.0005421660000000001,
+      "cumulative_seconds": 0.18034449000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/_exception_handler.py",
+      "line": 34,
+      "name": "sender",
+      "primitive_calls": 256,
+      "calls": 512,
+      "own_seconds": 0.000541233,
+      "cumulative_seconds": 0.039562259
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 58,
+      "name": "_wakeup_next",
+      "primitive_calls": 768,
+      "calls": 768,
+      "own_seconds": 0.000539224,
+      "cumulative_seconds": 0.000941085
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/routing.py",
+      "line": 396,
+      "name": "matches",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000538116,
+      "cumulative_seconds": 0.0016144780000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 83,
+      "name": "headers",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000537647,
+      "cumulative_seconds": 0.000804523
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/logprobs.py",
+      "line": 42,
+      "name": "from_new_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000534197,
+      "cumulative_seconds": 0.0007493070000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 234,
+      "name": "stream",
+      "primitive_calls": 506,
+      "calls": 506,
+      "own_seconds": 0.00053346,
+      "cumulative_seconds": 0.0027482070000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/dependencies/utils.py",
+      "line": 955,
+      "name": "request_body_to_args",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005303780000000001,
+      "cumulative_seconds": 0.026200146
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 2092,
+      "name": "<lambda>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000527477,
+      "cumulative_seconds": 0.002296839
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1148,
+      "name": "emit",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000526337,
+      "cumulative_seconds": 0.013590640000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 175,
+      "name": "get_nowait",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000524674,
+      "cumulative_seconds": 0.0010249010000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 222,
+      "name": "on_message_begin",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.000523316,
+      "cumulative_seconds": 0.000604901
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 759,
+      "name": "tokenize_prompts_async",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000522836,
+      "cumulative_seconds": 0.002662563
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 165,
+      "name": "__call__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005209370000000001,
+      "cumulative_seconds": 0.040083196
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/utils.py",
+      "line": 51,
+      "name": "get_client_addr",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005209240000000001,
+      "cumulative_seconds": 0.000587672
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1529,
+      "name": "info",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.0005135690000000001,
+      "cumulative_seconds": 0.023871425
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 323,
+      "name": "_get_decoded_token",
+      "primitive_calls": 1155,
+      "calls": 1155,
+      "own_seconds": 0.0005107380000000001,
+      "cumulative_seconds": 0.0011401270000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 180,
+      "name": "<genexpr>",
+      "primitive_calls": 1408,
+      "calls": 1408,
+      "own_seconds": 0.000508152,
+      "cumulative_seconds": 0.000508152
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method sys._getframe>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000504889,
+      "cumulative_seconds": 0.000504889
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'items' of 'dict' objects>",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.000504145,
+      "cumulative_seconds": 0.000504145
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/serving.py",
+      "line": 109,
+      "name": "create_completion",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.000501365,
+      "cumulative_seconds": 0.12312640300000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/queue.py",
+      "line": 209,
+      "name": "_qsize",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.0005013130000000001,
+      "cumulative_seconds": 0.000772924
+    },
+    {
+      "file": "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/src/jev_runtime/registry.py",
+      "line": 677,
+      "name": "pending_cancel_commands",
+      "primitive_calls": 57,
+      "calls": 57,
+      "own_seconds": 0.000500745,
+      "cumulative_seconds": 0.004288621
+    },
+    {
+      "file": "<frozen _collections_abc>",
+      "line": 469,
+      "name": "__new__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00048785800000000003,
+      "cumulative_seconds": 0.000805991
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 136,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00048460800000000003,
+      "cumulative_seconds": 0.000826159
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 169,
+      "name": "get_max_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00047917200000000004,
+      "cumulative_seconds": 0.0009881830000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 507,
+      "name": "_add_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00047872,
+      "cumulative_seconds": 0.020006554000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 865,
+      "name": "_update_stats_from_finished",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00047822100000000003,
+      "cumulative_seconds": 0.002089769
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/__init__.py",
+      "line": 299,
+      "name": "loads",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00047784300000000004,
+      "cumulative_seconds": 0.007134436
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/urllib/parse.py",
+      "line": 951,
+      "name": "quote_from_bytes",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000464941,
+      "cumulative_seconds": 0.0008185310000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1178,
+      "name": "_send_input",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00046378500000000003,
+      "cumulative_seconds": 0.012708371000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 690,
+      "name": "format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000463697,
+      "cumulative_seconds": 0.009258236000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 638,
+      "name": "update_scheduler_stats",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00046051200000000005,
+      "cumulative_seconds": 0.000617804
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 84,
+      "name": "_validate_params",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000459277,
+      "cumulative_seconds": 0.0033280270000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/utils/collection_utils.py",
+      "line": 55,
+      "name": "is_list_of",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000457218,
+      "cumulative_seconds": 0.0006072510000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/applications.py",
+      "line": 92,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.00045608800000000006,
+      "cumulative_seconds": 0.179802324
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 138,
+      "name": "_unset_keepalive_if_required",
+      "primitive_calls": 377,
+      "calls": 377,
+      "own_seconds": 0.000452312,
+      "cumulative_seconds": 0.000452312
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/decoder.py",
+      "line": 333,
+      "name": "decode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00045148300000000003,
+      "cumulative_seconds": 0.005800774000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 536,
+      "name": "apply_post_tokenization",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00045101,
+      "cumulative_seconds": 0.00145966
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/encoder.py",
+      "line": 183,
+      "name": "encode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00045014400000000003,
+      "cumulative_seconds": 0.005179131
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/coroutines.py",
+      "line": 32,
+      "name": "iscoroutine",
+      "primitive_calls": 768,
+      "calls": 768,
+      "own_seconds": 0.00044970700000000004,
+      "cumulative_seconds": 0.0011745360000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/online_renderer.py",
+      "line": 538,
+      "name": "render_completion",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00044217400000000004,
+      "cumulative_seconds": 0.019552935
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'startswith' of 'str' objects>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000441749,
+      "cumulative_seconds": 0.000441749
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 96,
+      "name": "update",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000440354,
+      "cumulative_seconds": 0.022213601000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 286,
+      "name": "make_request_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00044015700000000005,
+      "cumulative_seconds": 0.003482452
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1660,
+      "name": "_log",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000440042,
+      "cumulative_seconds": 0.023277540000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/routing.py",
+      "line": 273,
+      "name": "handle",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.00043691300000000004,
+      "cumulative_seconds": 0.11683414600000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 954,
+      "name": "_process_tokens_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000426903,
+      "cumulative_seconds": 0.0008122030000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 29,
+      "name": "_splitparam",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000426762,
+      "cumulative_seconds": 0.0006654850000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/uuid.py",
+      "line": 723,
+      "name": "uuid4",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00042416700000000003,
+      "cumulative_seconds": 0.0019836050000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1190,
+      "name": "_send_input_message",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00042265600000000004,
+      "cumulative_seconds": 0.010510275000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 188,
+      "name": "state",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000422627,
+      "cumulative_seconds": 0.0007422510000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/logging.py",
+      "line": 82,
+      "name": "get_status_code",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000419229,
+      "cumulative_seconds": 0.000659927
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 537,
+      "name": "getlist",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000417548,
+      "cumulative_seconds": 0.0005963580000000001
+    },
+    {
+      "file": "/root/jev-runtime/response-model-dadb516/bootstrap/sitecustomize.py",
+      "line": 46,
+      "name": "observed_send",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00041600700000000003,
+      "cumulative_seconds": 0.033898749
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/__init__.py",
+      "line": 244,
+      "name": "detect_encoding",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00041399700000000004,
+      "cumulative_seconds": 0.000663904
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/utils/system_utils.py",
+      "line": 215,
+      "name": "write_with_prefix",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00041219700000000005,
+      "cumulative_seconds": 0.000716212
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 264,
+      "name": "<genexpr>",
+      "primitive_calls": 896,
+      "calls": 896,
+      "own_seconds": 0.00041076000000000003,
+      "cumulative_seconds": 0.0007891770000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 262,
+      "name": "json",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000408338,
+      "cumulative_seconds": 0.007667351
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 521,
+      "name": "_validate_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00040031800000000004,
+      "cumulative_seconds": 0.0008871300000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 186,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000400086,
+      "cumulative_seconds": 0.008549367
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 196,
+      "name": "render",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00039948500000000004,
+      "cumulative_seconds": 0.006472060000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 760,
+      "name": "_finish_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000398033,
+      "cumulative_seconds": 0.0005877850000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 430,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00039637600000000004,
+      "cumulative_seconds": 0.0006624710000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'token_to_id' of 'tokenizers.Tokenizer' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00039134200000000004,
+      "cumulative_seconds": 0.00039134200000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 551,
+      "name": "__contains__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000391175,
+      "cumulative_seconds": 0.0005852930000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 84,
+      "name": "get",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00039037,
+      "cumulative_seconds": 0.0017061070000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 313,
+      "name": "on_body",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000388916,
+      "cumulative_seconds": 0.000899155
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 248,
+      "name": "extract_target_prompt",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00038789200000000003,
+      "cumulative_seconds": 0.0014625570000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 498,
+      "name": "get",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00038787500000000004,
+      "cumulative_seconds": 0.001285467
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1645,
+      "name": "makeRecord",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00038628400000000003,
+      "cumulative_seconds": 0.0051106680000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'add_done_callback' of '_asyncio.Task' objects>",
+      "primitive_calls": 767,
+      "calls": 767,
+      "own_seconds": 0.00038431,
+      "cumulative_seconds": 0.00038431
+    },
+    {
+      "file": "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/src/jev_runtime/runtime.py",
+      "line": 188,
+      "name": "_watch_cancellations",
+      "primitive_calls": 57,
+      "calls": 57,
+      "own_seconds": 0.00037927100000000004,
+      "cumulative_seconds": 0.005610522000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 690,
+      "name": "update_from_generation_config",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00037916400000000003,
+      "cumulative_seconds": 0.000548724
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/locks.py",
+      "line": 166,
+      "name": "__init__",
+      "primitive_calls": 255,
+      "calls": 255,
+      "own_seconds": 0.000373302,
+      "cumulative_seconds": 0.000373302
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1011,
+      "name": "handle",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00036073,
+      "cumulative_seconds": 0.014429274
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 838,
+      "name": "_validate_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00035770500000000005,
+      "cumulative_seconds": 0.000473444
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_client/metrics.py",
+      "line": 546,
+      "name": "observe",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00035694700000000004,
+      "cumulative_seconds": 0.005029439
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/routing.py",
+      "line": 83,
+      "name": "get_route_name",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000354935,
+      "cumulative_seconds": 0.015998471
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method sys.exc_info>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00035338000000000004,
+      "cumulative_seconds": 0.00035338000000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/utils.py",
+      "line": 58,
+      "name": "get_path_with_query_string",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000352555,
+      "cumulative_seconds": 0.0015463450000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'extend' of 'list' objects>",
+      "primitive_calls": 896,
+      "calls": 896,
+      "own_seconds": 0.000346915,
+      "cumulative_seconds": 0.000346915
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'done' of '_asyncio.Task' objects>",
+      "primitive_calls": 897,
+      "calls": 897,
+      "own_seconds": 0.000345539,
+      "cumulative_seconds": 0.000345539
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.issubclass>",
+      "primitive_calls": 896,
+      "calls": 896,
+      "own_seconds": 0.00034474500000000003,
+      "cumulative_seconds": 0.00034474500000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 35,
+      "name": "_verify_num_sequences",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00034401600000000005,
+      "cumulative_seconds": 0.0013039820000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'split' of 'str' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000341686,
+      "cumulative_seconds": 0.000341686
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/utils/__init__.py",
+      "line": 15,
+      "name": "length_from_prompt_token_ids_or_embeds",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000340774,
+      "cumulative_seconds": 0.000436584
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'join' of 'bytes' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000338478,
+      "cumulative_seconds": 0.000338478
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 138,
+      "name": "query_params",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00033520200000000005,
+      "cumulative_seconds": 0.002131116
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/models/serving.py",
+      "line": 51,
+      "name": "<genexpr>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000332858,
+      "cumulative_seconds": 0.000332858
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/_internal/_model_construction.py",
+      "line": 285,
+      "name": "__getattr__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00032894200000000004,
+      "cumulative_seconds": 0.00043501200000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 36,
+      "name": "listen_for_disconnect",
+      "primitive_calls": 255,
+      "calls": 255,
+      "own_seconds": 0.00032834300000000004,
+      "cumulative_seconds": 0.0010840040000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/routing.py",
+      "line": 672,
+      "name": "__call__",
+      "primitive_calls": 378,
+      "calls": 378,
+      "own_seconds": 0.000323925,
+      "cumulative_seconds": 0.12738654000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/base_futures.py",
+      "line": 13,
+      "name": "isfuture",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000322711,
+      "cumulative_seconds": 0.0005172660000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 223,
+      "name": "_get_trace_headers",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00032110600000000004,
+      "cumulative_seconds": 0.0016955840000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 779,
+      "name": "update_scheduler_stats",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000316683,
+      "cumulative_seconds": 0.000934487
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 455,
+      "name": "_format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000315221,
+      "cumulative_seconds": 0.000315221
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 534,
+      "name": "items",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00031359300000000003,
+      "cumulative_seconds": 0.000599507
+    },
+    {
+      "file": "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/src/jev_runtime/registry.py",
+      "line": 199,
+      "name": "_connection",
+      "primitive_calls": 114,
+      "calls": 114,
+      "own_seconds": 0.000313489,
+      "cumulative_seconds": 0.000407147
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 48,
+      "name": "prompt_to_seq",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000312256,
+      "cumulative_seconds": 0.000609383
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 383,
+      "name": "getMessage",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00031089,
+      "cumulative_seconds": 0.00031089
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 425,
+      "name": "__setitem__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000310213,
+      "cumulative_seconds": 0.00043092
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py",
+      "line": 149,
+      "name": "__contains__",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.000308599,
+      "cumulative_seconds": 0.00035874100000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tracing/utils.py",
+      "line": 59,
+      "name": "<genexpr>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000308244,
+      "cumulative_seconds": 0.000893537
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 350,
+      "name": "validate_json_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000305691,
+      "cumulative_seconds": 0.001011249
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 49,
+      "name": "from_new_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000304964,
+      "cumulative_seconds": 0.0023837570000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1137,
+      "name": "flush",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000303449,
+      "cumulative_seconds": 0.002969839
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 49,
+      "name": "_get_loop",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000302212,
+      "cumulative_seconds": 0.0006508610000000001
+    },
+    {
+      "file": "<frozen posixpath>",
+      "line": 169,
+      "name": "basename",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00030099,
+      "cumulative_seconds": 0.000604547
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method posix.urandom>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000299115,
+      "cumulative_seconds": 0.000299115
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'rfind' of 'str' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00029488800000000004,
+      "cumulative_seconds": 0.00029488800000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/middleware/errors.py",
+      "line": 156,
+      "name": "_send",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000293553,
+      "cumulative_seconds": 0.034192302
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/futures.py",
+      "line": 301,
+      "name": "_get_loop",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00029242900000000003,
+      "cumulative_seconds": 0.00039843
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 1129,
+      "name": "<lambda>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00029230200000000003,
+      "cumulative_seconds": 0.0012127910000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 415,
+      "name": "get_by_source",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00029062500000000003,
+      "cumulative_seconds": 0.00029062500000000003
+    },
+    {
+      "file": "<string>",
+      "line": 1,
+      "name": "<lambda>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000290423,
+      "cumulative_seconds": 0.0005789710000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/urllib/parse.py",
+      "line": 875,
+      "name": "quote",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000284657,
+      "cumulative_seconds": 0.0011937900000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/elastic_ep/middleware.py",
+      "line": 34,
+      "name": "__call__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000284168,
+      "cumulative_seconds": 0.000315264
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 269,
+      "name": "extract_prompt_len",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00028311600000000003,
+      "cumulative_seconds": 0.001009162
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/_policybase.py",
+      "line": 289,
+      "name": "_sanitize_header",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000281148,
+      "cumulative_seconds": 0.000607062
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1746,
+      "name": "callHandlers",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00027791100000000004,
+      "cumulative_seconds": 0.014707185000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 305,
+      "name": "send_multipart",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00027776,
+      "cumulative_seconds": 0.010035106
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/logprobs.py",
+      "line": 348,
+      "name": "update_from_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00027770100000000004,
+      "cumulative_seconds": 0.052838148
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 1090,
+      "name": "_ensure_output_queue_task",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00027667500000000004,
+      "cumulative_seconds": 0.00027667500000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/main.py",
+      "line": 1044,
+      "name": "__setattr__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00027406100000000003,
+      "cumulative_seconds": 0.000579486
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/urllib/parse.py",
+      "line": 757,
+      "name": "parse_qsl",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00027274600000000003,
+      "cumulative_seconds": 0.000324785
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 149,
+      "name": "cookies",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000272001,
+      "cumulative_seconds": 0.000718533
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'count' of 'str' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000271398,
+      "cumulative_seconds": 0.000271398
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/dependencies/utils.py",
+      "line": 784,
+      "name": "request_params_to_args",
+      "primitive_calls": 1024,
+      "calls": 1024,
+      "own_seconds": 0.000268844,
+      "cumulative_seconds": 0.000268844
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 60,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000266292,
+      "cumulative_seconds": 0.00041519800000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 95,
+      "name": "empty",
+      "primitive_calls": 1024,
+      "calls": 1024,
+      "own_seconds": 0.000265084,
+      "cumulative_seconds": 0.000265084
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 202,
+      "name": "__get__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000264759,
+      "cumulative_seconds": 0.000443178
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/asyncio.py",
+      "line": 106,
+      "name": "_default_loop",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000264666,
+      "cumulative_seconds": 0.00034864900000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 70,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00026322300000000004,
+      "cumulative_seconds": 0.000330356
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _asyncio.get_running_loop>",
+      "primitive_calls": 727,
+      "calls": 727,
+      "own_seconds": 0.00026090900000000003,
+      "cumulative_seconds": 0.00026090900000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/futures.py",
+      "line": 313,
+      "name": "_set_result_unless_cancelled",
+      "primitive_calls": 87,
+      "calls": 87,
+      "own_seconds": 0.00025905000000000004,
+      "cumulative_seconds": 0.000650136
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 1647,
+      "name": "<lambda>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000256848,
+      "cumulative_seconds": 0.000948357
+    },
+    {
+      "file": "<frozen genericpath>",
+      "line": 133,
+      "name": "_splitext",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000256635,
+      "cumulative_seconds": 0.000370645
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/fields.py",
+      "line": 1467,
+      "name": "get_default",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00025499400000000003,
+      "cumulative_seconds": 0.006480236
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1686,
+      "name": "handle",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000254714,
+      "cumulative_seconds": 0.015056374
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 250,
+      "name": "_is_handler_excluded",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000252734,
+      "cumulative_seconds": 0.0013838860000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/inputs/engine.py",
+      "line": 53,
+      "name": "tokens_input",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000252669,
+      "cumulative_seconds": 0.000252669
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 1216,
+      "name": "errored",
+      "primitive_calls": 257,
+      "calls": 257,
+      "own_seconds": 0.000251371,
+      "cumulative_seconds": 0.0005687530000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 534,
+      "name": "_on_completion",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000251149,
+      "cumulative_seconds": 0.00043310800000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 226,
+      "name": "method",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000250696,
+      "cumulative_seconds": 0.000294328
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 666,
+      "name": "_tokenize_singleton_prompt_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00024952700000000004,
+      "cumulative_seconds": 0.001709187
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'keys' of 'dict' objects>",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.00024932700000000003,
+      "cumulative_seconds": 0.00024932700000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/sample/logits_processor/__init__.py",
+      "line": 224,
+      "name": "validate_logits_processors_parameters",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00024785700000000004,
+      "cumulative_seconds": 0.00024785700000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/_compat/v2.py",
+      "line": 173,
+      "name": "validate",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00024561900000000003,
+      "cumulative_seconds": 0.024554357000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'cancelled' of '_asyncio.Task' objects>",
+      "primitive_calls": 768,
+      "calls": 768,
+      "own_seconds": 0.000244306,
+      "cumulative_seconds": 0.000244306
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/models/serving.py",
+      "line": 141,
+      "name": "is_base_model",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00024303600000000002,
+      "cumulative_seconds": 0.001503137
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 998,
+      "name": "_process_singleton_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00024301900000000003,
+      "cumulative_seconds": 0.0017620910000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 174,
+      "name": "_preflight",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00024273800000000002,
+      "cumulative_seconds": 0.00070764
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'exception' of '_asyncio.Task' objects>",
+      "primitive_calls": 768,
+      "calls": 768,
+      "own_seconds": 0.000241959,
+      "cumulative_seconds": 0.000241959
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 53,
+      "name": "_put",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00024152100000000002,
+      "cumulative_seconds": 0.000391529
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'upper' of 'str' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00024134900000000002,
+      "cumulative_seconds": 0.00024134900000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'get_name' of '_asyncio.Task' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00023972000000000002,
+      "cumulative_seconds": 0.00023972000000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'setdefault' of 'dict' objects>",
+      "primitive_calls": 383,
+      "calls": 383,
+      "own_seconds": 0.000238554,
+      "cumulative_seconds": 0.000238554
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 401,
+      "name": "get_eos_token_id",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000238385,
+      "cumulative_seconds": 0.007684268
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 968,
+      "name": "acquire",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00023704300000000001,
+      "cumulative_seconds": 0.00045452100000000005
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/server.py",
+      "line": 242,
+      "name": "main_loop",
+      "primitive_calls": 29,
+      "calls": 29,
+      "own_seconds": 0.000236275,
+      "cumulative_seconds": 0.000890933
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 233,
+      "name": "_get_handler",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000234588,
+      "cumulative_seconds": 0.016233059
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'tolist' of 'numpy.ndarray' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00023458700000000002,
+      "cumulative_seconds": 0.00023458700000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 191,
+      "name": "_deepcopy_list",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00022944000000000003,
+      "cumulative_seconds": 0.00041253700000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/_internal/_utils.py",
+      "line": 336,
+      "name": "smart_deepcopy",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00022793500000000002,
+      "cumulative_seconds": 0.0052506
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _asyncio._get_running_loop>",
+      "primitive_calls": 634,
+      "calls": 634,
+      "own_seconds": 0.00022687800000000002,
+      "cumulative_seconds": 0.00022687800000000002
+    },
+    {
+      "file": "<frozen posixpath>",
+      "line": 117,
+      "name": "splitext",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000226159,
+      "cumulative_seconds": 0.000646106
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 1207,
+      "name": "is_running",
+      "primitive_calls": 257,
+      "calls": 257,
+      "own_seconds": 0.00022569200000000002,
+      "cumulative_seconds": 0.000317382
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1583,
+      "name": "__invert__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00022538400000000002,
+      "cumulative_seconds": 0.00035290900000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'strip' of 'str' objects>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00022528600000000002,
+      "cumulative_seconds": 0.00022528600000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'remove' of 'collections.deque' objects>",
+      "primitive_calls": 377,
+      "calls": 377,
+      "own_seconds": 0.00022527400000000003,
+      "cumulative_seconds": 0.00022527400000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copyreg.py",
+      "line": 98,
+      "name": "__newobj__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00022489700000000003,
+      "cumulative_seconds": 0.000318591
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method time.perf_counter>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00022438400000000003,
+      "cumulative_seconds": 0.00022438400000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 50,
+      "name": "_get",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00022390200000000003,
+      "cumulative_seconds": 0.00035004800000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'cancel' of '_asyncio.Task' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00022374200000000003,
+      "cumulative_seconds": 0.00022374200000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/responses.py",
+      "line": 48,
+      "name": "render",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000223479,
+      "cumulative_seconds": 0.000261841
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 1123,
+      "name": "<lambda>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000221195,
+      "cumulative_seconds": 0.0008076870000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 297,
+      "name": "check_admission",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000219886,
+      "cumulative_seconds": 0.000219886
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/typing.py",
+      "line": 2187,
+      "name": "cast",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.00021887800000000001,
+      "cumulative_seconds": 0.00021887800000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'values' of 'dict' objects>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00021789900000000002,
+      "cumulative_seconds": 0.00021789900000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'acquire' of '_thread.RLock' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000217478,
+      "cumulative_seconds": 0.000217478
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'startswith' of 'bytes' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000214591,
+      "cumulative_seconds": 0.000214591
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'add_done_callback' of '_asyncio.Future' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00021404800000000002,
+      "cumulative_seconds": 0.00021404800000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'find' of 'str' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000213269,
+      "cumulative_seconds": 0.000213269
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 224,
+      "name": "__post_init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000206034,
+      "cumulative_seconds": 0.00027014300000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 481,
+      "name": "__init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000205803,
+      "cumulative_seconds": 0.000205803
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 567,
+      "name": "validate_prompt_and_prompt_embeds",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00020566100000000002,
+      "cumulative_seconds": 0.000322629
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 409,
+      "name": "check_cache_salt_support",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000204501,
+      "cumulative_seconds": 0.000290881
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/_exception_handler.py",
+      "line": 23,
+      "name": "wrap_app_handling_exceptions",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000204007,
+      "cumulative_seconds": 0.000204007
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/routing.py",
+      "line": 254,
+      "name": "_extract_endpoint_context",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00020242300000000002,
+      "cumulative_seconds": 0.000619807
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 89,
+      "name": "_extract_prompt_text",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00020213900000000002,
+      "cumulative_seconds": 0.0017953070000000001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 624,
+      "name": "get_content_maintype",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000197896,
+      "cumulative_seconds": 0.002293855
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tracing/utils.py",
+      "line": 57,
+      "name": "contains_trace_headers",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000196744,
+      "cumulative_seconds": 0.001251966
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 765,
+      "name": "<genexpr>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00019382200000000002,
+      "cumulative_seconds": 0.00019382200000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _asyncio.get_event_loop>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000193532,
+      "cumulative_seconds": 0.000193532
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/serial_utils.py",
+      "line": 166,
+      "name": "encode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00019279800000000002,
+      "cumulative_seconds": 0.001498308
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 224,
+      "name": "_protected_step",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000192682,
+      "cumulative_seconds": 0.021515843
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 406,
+      "name": "update_from_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00019094,
+      "cumulative_seconds": 0.00019094
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/__init__.py",
+      "line": 68,
+      "name": "__str__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00018950300000000002,
+      "cumulative_seconds": 0.000396678
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 460,
+      "name": "<genexpr>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000189411,
+      "cumulative_seconds": 0.000697957
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_base.py",
+      "line": 1456,
+      "name": "convert_tokens_to_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000188927,
+      "cumulative_seconds": 0.000784706
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 1084,
+      "name": "process_for_engine_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000187865,
+      "cumulative_seconds": 0.001949956
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'write' of '_io.TextIOWrapper' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000185832,
+      "cumulative_seconds": 0.000185832
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/main.py",
+      "line": 95,
+      "name": "_model_field_setattr_handler",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00018513400000000002,
+      "cumulative_seconds": 0.000248064
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/copy.py",
+      "line": 172,
+      "name": "_deepcopy_atomic",
+      "primitive_calls": 1280,
+      "calls": 1280,
+      "own_seconds": 0.00018444400000000003,
+      "cumulative_seconds": 0.00018444400000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 447,
+      "name": "usesTime",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000183847,
+      "cumulative_seconds": 0.00030071700000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 116,
+      "name": "_base_request_id",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00018311500000000002,
+      "cumulative_seconds": 0.000907483
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 673,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000182833,
+      "cumulative_seconds": 0.000182833
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 207,
+      "name": "stat_mm_cache",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000180929,
+      "cumulative_seconds": 0.000180929
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/main.py",
+      "line": 427,
+      "name": "model_dump",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00018078200000000002,
+      "cumulative_seconds": 0.0033682110000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/transformers/tokenization_utils_tokenizers.py",
+      "line": 832,
+      "name": "_convert_token_to_id_with_added_voc",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000179349,
+      "cumulative_seconds": 0.000570691
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/enum.py",
+      "line": 1291,
+      "name": "value",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000178419,
+      "cumulative_seconds": 0.000178419
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 144,
+      "name": "path_params",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000176311,
+      "cumulative_seconds": 0.000276395
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 260,
+      "name": "_get_session_id",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000175815,
+      "cumulative_seconds": 0.0008657700000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/__init__.py",
+      "line": 279,
+      "name": "__post_init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000172754,
+      "cumulative_seconds": 0.000172754
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 749,
+      "name": "tokenize_prompt_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000172661,
+      "cumulative_seconds": 0.0018818480000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 211,
+      "name": "decode_next",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000172399,
+      "cumulative_seconds": 0.021688242
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 486,
+      "name": "_token_truncation",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000172026,
+      "cumulative_seconds": 0.000265033
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method posix.fspath>",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.000171873,
+      "cumulative_seconds": 0.000171873
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 235,
+      "name": "parse_model_prompt",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000171602,
+      "cumulative_seconds": 0.000696938
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 551,
+      "name": "_validate_model_inputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00017027600000000002,
+      "cumulative_seconds": 0.0033593010000000003
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 178,
+      "name": "_maybe_get_adapters",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00017016200000000002,
+      "cumulative_seconds": 0.0024763750000000003
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/utils.py",
+      "line": 52,
+      "name": "_has_surrogates",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000168325,
+      "cumulative_seconds": 0.00027219900000000004
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 77,
+      "name": "tokenizer",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00016777800000000002,
+      "cumulative_seconds": 0.00016777800000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 380,
+      "name": "__init__",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.00016694500000000002,
+      "cumulative_seconds": 0.00016694500000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/locks.py",
+      "line": 193,
+      "name": "clear",
+      "primitive_calls": 640,
+      "calls": 640,
+      "own_seconds": 0.000165994,
+      "cumulative_seconds": 0.000165994
+    },
+    {
+      "file": "<frozen posixpath>",
+      "line": 52,
+      "name": "normcase",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00016580700000000002,
+      "cumulative_seconds": 0.000296517
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/api_router.py",
+      "line": 31,
+      "name": "completion",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000163677,
+      "cumulative_seconds": 0.00023216000000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'result' of '_asyncio.Task' objects>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.00016341200000000001,
+      "cumulative_seconds": 0.00016341200000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 844,
+      "name": "_update_stats_from_output",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000161489,
+      "cumulative_seconds": 0.005695856
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'remove_done_callback' of '_asyncio.Task' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000161266,
+      "cumulative_seconds": 0.000161266
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/inspect.py",
+      "line": 302,
+      "name": "isclass",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000160452,
+      "cumulative_seconds": 0.000220589
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 681,
+      "name": "__getattr__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000160371,
+      "cumulative_seconds": 0.000160371
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/dependencies/utils.py",
+      "line": 738,
+      "name": "_validate_value_with_model_field",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00015837500000000001,
+      "cumulative_seconds": 0.024712732
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 256,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000157941,
+      "cumulative_seconds": 0.00017839800000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/parallel_sampling.py",
+      "line": 134,
+      "name": "observe_finished_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000155749,
+      "cumulative_seconds": 0.000223737
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'copy' of 'dict' objects>",
+      "primitive_calls": 255,
+      "calls": 255,
+      "own_seconds": 0.000155513,
+      "cumulative_seconds": 0.000155513
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 629,
+      "name": "request_waiting",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000155271,
+      "cumulative_seconds": 0.000199872
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/_policybase.py",
+      "line": 319,
+      "name": "header_fetch_parse",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000153362,
+      "cumulative_seconds": 0.000760424
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 812,
+      "name": "clone",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000152287,
+      "cumulative_seconds": 0.0008134850000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 252,
+      "name": "_get_session_id_from_headers",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00015215200000000002,
+      "cumulative_seconds": 0.000689955
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/type_adapter.py",
+      "line": 398,
+      "name": "validate_python",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00015100900000000002,
+      "cumulative_seconds": 0.024308738
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method '__copy__' of 'msgspec._core._StructMixin' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00014638700000000002,
+      "cumulative_seconds": 0.00014638700000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 68,
+      "name": "put",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000146107,
+      "cumulative_seconds": 0.000731292
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 1485,
+      "name": "current_thread",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000145858,
+      "cumulative_seconds": 0.00017349500000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 321,
+      "name": "on_message_complete",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000145489,
+      "cumulative_seconds": 0.00017069400000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 86,
+      "name": "__init__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000143837,
+      "cumulative_seconds": 0.000143837
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'partition' of 'str' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00014098,
+      "cumulative_seconds": 0.00014098
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 309,
+      "name": "extract_structured_outputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000140461,
+      "cumulative_seconds": 0.000169924
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 237,
+      "name": "_get_data_parallel_rank",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000139545,
+      "cumulative_seconds": 0.0007217990000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'join' of 'str' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000139362,
+      "cumulative_seconds": 0.000139362
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 975,
+      "name": "release",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000137939,
+      "cumulative_seconds": 0.00021911800000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'removesuffix' of 'str' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000137248,
+      "cumulative_seconds": 0.000137248
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/api_utils.py",
+      "line": 196,
+      "name": "<genexpr>",
+      "primitive_calls": 512,
+      "calls": 512,
+      "own_seconds": 0.000136128,
+      "cumulative_seconds": 0.000136128
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 40,
+      "name": "_check_model",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000135787,
+      "cumulative_seconds": 0.0028659280000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 275,
+      "name": "_get_priority",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000134155,
+      "cumulative_seconds": 0.000616508
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 86,
+      "name": "_extract_prompt_components",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00013182,
+      "cumulative_seconds": 0.001593168
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method math.isfinite>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00013010000000000002,
+      "cumulative_seconds": 0.00013010000000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 633,
+      "name": "get_content_subtype",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00013001,
+      "cumulative_seconds": 0.001239007
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method fromkeys>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00012940300000000002,
+      "cumulative_seconds": 0.00012940300000000002
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 645,
+      "name": "parent",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000128829,
+      "cumulative_seconds": 0.00024255400000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 1149,
+      "name": "<genexpr>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000128501,
+      "cumulative_seconds": 0.000128501
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/threading.py",
+      "line": 1182,
+      "name": "name",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000126116,
+      "cumulative_seconds": 0.000126116
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/json/encoder.py",
+      "line": 105,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000125746,
+      "cumulative_seconds": 0.000125746
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/inputs/preprocess.py",
+      "line": 119,
+      "name": "_validate_prompt_dict",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000123064,
+      "cumulative_seconds": 0.000123064
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 554,
+      "name": "validate_stream_options",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000122773,
+      "cumulative_seconds": 0.00017830500000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 1032,
+      "name": "is_tracing_enabled",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000122512,
+      "cumulative_seconds": 0.000122512
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 831,
+      "name": "filter",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000122309,
+      "cumulative_seconds": 0.000122309
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/config/model.py",
+      "line": 1496,
+      "name": "get_vocab_size",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.000121966,
+      "cumulative_seconds": 0.000121966
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 988,
+      "name": "format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00012001600000000001,
+      "cumulative_seconds": 0.009378252
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 668,
+      "name": "usesTime",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00011912500000000001,
+      "cumulative_seconds": 0.000419842
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/fastapi/_compat/shared.py",
+      "line": 47,
+      "name": "lenient_issubclass",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00011752500000000001,
+      "cumulative_seconds": 0.000308127
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'rpartition' of 'str' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00011372500000000001,
+      "cumulative_seconds": 0.00011372500000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 494,
+      "name": "_token_len_check",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00011240700000000001,
+      "cumulative_seconds": 0.00017629600000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py",
+      "line": 239,
+      "name": "on_url",
+      "primitive_calls": 127,
+      "calls": 127,
+      "own_seconds": 0.00011206100000000001,
+      "cumulative_seconds": 0.00011206100000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'groupdict' of 're.Match' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00011177700000000001,
+      "cumulative_seconds": 0.00011177700000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 458,
+      "name": "check_structured_outputs_count",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000111457,
+      "cumulative_seconds": 0.000168254
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/queues.py",
+      "line": 99,
+      "name": "full",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000111064,
+      "cumulative_seconds": 0.000111064
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 216,
+      "name": "max_input_tokens",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 0.00010852000000000001,
+      "cumulative_seconds": 0.00010852000000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'get' of 'mappingproxy' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010607,
+      "cumulative_seconds": 0.00010607
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'get_loop' of '_asyncio.Future' objects>",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000106001,
+      "cumulative_seconds": 0.000106001
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 170,
+      "name": "<lambda>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010573300000000001,
+      "cumulative_seconds": 0.000610622
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 417,
+      "name": "normalize_null_max_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010481600000000001,
+      "cumulative_seconds": 0.000168924
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/detokenizer_utils.py",
+      "line": 66,
+      "name": "_get_leading_space_marker",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010416900000000001,
+      "cumulative_seconds": 0.00021313700000000002
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/multiprocessing/process.py",
+      "line": 189,
+      "name": "name",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010402000000000001,
+      "cumulative_seconds": 0.00010402000000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 618,
+      "name": "_request_update",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.00010263000000000001,
+      "cumulative_seconds": 0.00010263000000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/completion/protocol.py",
+      "line": 425,
+      "name": "validate_response_format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.000102454,
+      "cumulative_seconds": 0.00015095900000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/serial_utils.py",
+      "line": 473,
+      "name": "ext_hook",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 0.000101736,
+      "cumulative_seconds": 0.000101736
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'cancelled' of '_asyncio.Future' objects>",
+      "primitive_calls": 87,
+      "calls": 87,
+      "own_seconds": 0.000101574,
+      "cumulative_seconds": 0.000101574
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 462,
+      "name": "format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 0.00010001600000000001,
+      "cumulative_seconds": 0.00041523700000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'update' of 'set' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.982e-05,
+      "cumulative_seconds": 9.982e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/protocols/http/flow_control.py",
+      "line": 26,
+      "name": "resume_reading",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 9.9306e-05,
+      "cumulative_seconds": 9.9306e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method from_bytes>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.8094e-05,
+      "cumulative_seconds": 9.8094e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'rstrip' of 'str' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.768e-05,
+      "cumulative_seconds": 9.768e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 635,
+      "name": "request_finished",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.685100000000001e-05,
+      "cumulative_seconds": 0.000132791
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 674,
+      "name": "formatMessage",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.677700000000001e-05,
+      "cumulative_seconds": 0.000512014
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'end' of 're.Match' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 9.600200000000001e-05,
+      "cumulative_seconds": 9.600200000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 440,
+      "name": "_validate_prompt_len",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.533600000000001e-05,
+      "cumulative_seconds": 9.533600000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 92,
+      "name": "_extract_prompt_len",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.2656e-05,
+      "cumulative_seconds": 0.001101818
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/server.py",
+      "line": 251,
+      "name": "on_tick",
+      "primitive_calls": 29,
+      "calls": 29,
+      "own_seconds": 9.1241e-05,
+      "cumulative_seconds": 0.000180483
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/config/parallel.py",
+      "line": 603,
+      "name": "local_engines_only",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.1079e-05,
+      "cumulative_seconds": 9.1079e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 129,
+      "name": "getLevelName",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.099800000000001e-05,
+      "cumulative_seconds": 0.000162255
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/platforms/interface.py",
+      "line": 217,
+      "name": "get_max_output_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 9.0314e-05,
+      "cumulative_seconds": 9.0314e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'rstrip' of 'bytes' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.8288e-05,
+      "cumulative_seconds": 8.8288e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _thread.get_ident>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 8.820900000000001e-05,
+      "cumulative_seconds": 8.820900000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 94,
+      "name": "get_nowait",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.676800000000001e-05,
+      "cumulative_seconds": 0.000136154
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 105,
+      "name": "build_spec_decoding_metrics",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.5275e-05,
+      "cumulative_seconds": 8.5275e-05
+    },
+    {
+      "file": "<string>",
+      "line": 2,
+      "name": "__init__",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 8.525e-05,
+      "cumulative_seconds": 8.525e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'count' of 'list' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.480900000000001e-05,
+      "cumulative_seconds": 8.480900000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 354,
+      "name": "get_supported_tasks",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.238800000000001e-05,
+      "cumulative_seconds": 0.00014535400000000002
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 105,
+      "name": "app",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 8.220100000000001e-05,
+      "cumulative_seconds": 8.220100000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'release' of '_thread.RLock' objects>",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 8.1179e-05,
+      "cumulative_seconds": 8.1179e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method _asyncio.current_task>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.110100000000001e-05,
+      "cumulative_seconds": 8.110100000000001e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/logging/__init__.py",
+      "line": 1790,
+      "name": "isEnabledFor",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.031600000000001e-05,
+      "cumulative_seconds": 8.031600000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 632,
+      "name": "request_running",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 8.0271e-05,
+      "cumulative_seconds": 0.00010236
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 802,
+      "name": "num_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 7.9973e-05,
+      "cumulative_seconds": 0.00010573900000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'disable' of '_lsprof.Profiler' objects>",
+      "primitive_calls": 1,
+      "calls": 1,
+      "own_seconds": 7.925300000000001e-05,
+      "cumulative_seconds": 7.925300000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'remove' of 'list' objects>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 7.8248e-05,
+      "cumulative_seconds": 7.8248e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/outputs.py",
+      "line": 133,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 7.430800000000001e-05,
+      "cumulative_seconds": 7.430800000000001e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 451,
+      "name": "_time_since",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 7.3867e-05,
+      "cumulative_seconds": 7.3867e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 452,
+      "name": "_remove_finished_future",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 7.375200000000001e-05,
+      "cumulative_seconds": 7.375200000000001e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/message.py",
+      "line": 150,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.9992e-05,
+      "cumulative_seconds": 6.9992e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 1052,
+      "name": "_validate_diffusion",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.8928e-05,
+      "cumulative_seconds": 6.8928e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/contextlib.py",
+      "line": 704,
+      "name": "__aenter__",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 6.5194e-05,
+      "cumulative_seconds": 6.5194e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 96,
+      "name": "__len__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.4922e-05,
+      "cumulative_seconds": 0.00010106400000000001
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 775,
+      "name": "_update_admission_stats",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 6.384400000000001e-05,
+      "cumulative_seconds": 6.384400000000001e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/multiprocessing/process.py",
+      "line": 37,
+      "name": "current_process",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.3e-05,
+      "cumulative_seconds": 6.3e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 476,
+      "name": "has_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.2067e-05,
+      "cumulative_seconds": 6.2067e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 481,
+      "name": "_render_prompt_async",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.188600000000001e-05,
+      "cumulative_seconds": 0.000114735
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 149,
+      "name": "get_next_output_text",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.1844e-05,
+      "cumulative_seconds": 6.1844e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/zmq/_future.py",
+      "line": 193,
+      "name": "cancel",
+      "primitive_calls": 384,
+      "calls": 384,
+      "own_seconds": 6.1124e-05,
+      "cumulative_seconds": 6.1124e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 460,
+      "name": "_truncation_slice",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 6.0252000000000005e-05,
+      "cumulative_seconds": 6.0252000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/inputs/engine.py",
+      "line": 381,
+      "name": "split_enc_dec_input",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 5.7361e-05,
+      "cumulative_seconds": 5.7361e-05
+    },
+    {
+      "file": "<frozen posixpath>",
+      "line": 41,
+      "name": "_get_sep",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 5.6070000000000004e-05,
+      "cumulative_seconds": 0.000102034
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/asyncio/tasks.py",
+      "line": 70,
+      "name": "_set_task_name",
+      "primitive_calls": 256,
+      "calls": 256,
+      "own_seconds": 5.584e-05,
+      "cumulative_seconds": 5.584e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/applications.py",
+      "line": 85,
+      "name": "routes",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 5.449e-05,
+      "cumulative_seconds": 5.449e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core_client.py",
+      "line": 759,
+      "name": "ensure_alive",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 5.2513000000000004e-05,
+      "cumulative_seconds": 5.2513000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/metrics/stats.py",
+      "line": 446,
+      "name": "num_prompt_tokens",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 5.0168000000000005e-05,
+      "cumulative_seconds": 5.0168000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 204,
+      "name": "_raise_if_error",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.8797e-05,
+      "cumulative_seconds": 4.8797e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 645,
+      "name": "<genexpr>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.6857e-05,
+      "cumulative_seconds": 4.6857e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/logprobs.py",
+      "line": 175,
+      "name": "create_sample_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.6629000000000004e-05,
+      "cumulative_seconds": 4.6629000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/params.py",
+      "line": 438,
+      "name": "_token_padding",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.5483000000000005e-05,
+      "cumulative_seconds": 4.5483000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/logprobs.py",
+      "line": 208,
+      "name": "_get_sampled_context_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.5062e-05,
+      "cumulative_seconds": 4.5062e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/pydantic/fields.py",
+      "line": 1450,
+      "name": "default_factory_takes_validated_data",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.4576e-05,
+      "cumulative_seconds": 4.4576e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/server.py",
+      "line": 88,
+      "name": "serve",
+      "primitive_calls": 29,
+      "calls": 29,
+      "own_seconds": 4.3917e-05,
+      "cumulative_seconds": 0.000975397
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/metrics.py",
+      "line": 22,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.3431000000000005e-05,
+      "cumulative_seconds": 4.3431000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 109,
+      "name": "__del__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.2891e-05,
+      "cumulative_seconds": 4.2891e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 945,
+      "name": "_validate_trace_replay",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.2362000000000005e-05,
+      "cumulative_seconds": 4.2362000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/openai/models/serving.py",
+      "line": 144,
+      "name": "model_name",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.2315000000000004e-05,
+      "cumulative_seconds": 4.2315000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/datastructures.py",
+      "line": 678,
+      "name": "__setattr__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.1824000000000005e-05,
+      "cumulative_seconds": 4.1824000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/output_processor.py",
+      "line": 104,
+      "name": "close",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.1708e-05,
+      "cumulative_seconds": 4.1708e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 720,
+      "name": "update_from_tokenizer",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.0916e-05,
+      "cumulative_seconds": 4.0916e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/utils/orca_metrics.py",
+      "line": 100,
+      "name": "metrics_header",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 4.0770000000000004e-05,
+      "cumulative_seconds": 4.0770000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/uvicorn/server.py",
+      "line": 92,
+      "name": "_serve",
+      "primitive_calls": 29,
+      "calls": 29,
+      "own_seconds": 4.0547e-05,
+      "cumulative_seconds": 0.00093148
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method '__exit__' of '_thread.RLock' objects>",
+      "primitive_calls": 57,
+      "calls": 57,
+      "own_seconds": 3.9599000000000005e-05,
+      "cumulative_seconds": 3.9599000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/protocol.py",
+      "line": 36,
+      "name": "validate_cache_salt",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.8432e-05,
+      "cumulative_seconds": 3.8432e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/tokenizers/hf.py",
+      "line": 143,
+      "name": "max_token_id",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.8243e-05,
+      "cumulative_seconds": 3.8243e-05
+    },
+    {
+      "file": "<frozen _collections_abc>",
+      "line": 511,
+      "name": "_is_param_expr",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.799e-05,
+      "cumulative_seconds": 3.799e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/__init__.py",
+      "line": 236,
+      "name": "finished",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.7488000000000004e-05,
+      "cumulative_seconds": 3.7488000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py",
+      "line": 764,
+      "name": "_run_output_handler",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.6915e-05,
+      "cumulative_seconds": 3.6915e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 925,
+      "name": "_validate_logit_bias",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.6365e-05,
+      "cumulative_seconds": 3.6365e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 51,
+      "name": "validate_thinking_token_budget",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.5924000000000004e-05,
+      "cumulative_seconds": 3.5924000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/renderers/base.py",
+      "line": 769,
+      "name": "_apply_prompt_extras",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.5408000000000004e-05,
+      "cumulative_seconds": 3.5408000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 32,
+      "name": "__init__",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.5076e-05,
+      "cumulative_seconds": 3.5076e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/__init__.py",
+      "line": 160,
+      "name": "params",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.3845000000000005e-05,
+      "cumulative_seconds": 3.3845000000000005e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 1007,
+      "name": "_validate_allowed_token_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.3316000000000004e-05,
+      "cumulative_seconds": 3.3316000000000004e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/engine/serving.py",
+      "line": 95,
+      "name": "_log_inputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.3269e-05,
+      "cumulative_seconds": 3.3269e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/serve/elastic_ep/middleware.py",
+      "line": 13,
+      "name": "get_scaling_elastic_ep",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.1096e-05,
+      "cumulative_seconds": 3.1096e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 1074,
+      "name": "_validate_structured_outputs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.0685e-05,
+      "cumulative_seconds": 3.0685e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 900,
+      "name": "_validate_stop_token_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.0069000000000003e-05,
+      "cumulative_seconds": 3.0069000000000003e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 1038,
+      "name": "_validate_spec_decode",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 3.0043e-05,
+      "cumulative_seconds": 3.0043e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/starlette/requests.py",
+      "line": 230,
+      "name": "receive",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.9721000000000002e-05,
+      "cumulative_seconds": 2.9721000000000002e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/protocol.py",
+      "line": 136,
+      "name": "structured_outputs_from_response_format",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.9463000000000002e-05,
+      "cumulative_seconds": 2.9463000000000002e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/_policybase.py",
+      "line": 209,
+      "name": "header_max_count",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.9435000000000002e-05,
+      "cumulative_seconds": 2.9435000000000002e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/input_processor.py",
+      "line": 185,
+      "name": "_validate_lora",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.9322e-05,
+      "cumulative_seconds": 2.9322e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/generate/base/serving.py",
+      "line": 376,
+      "name": "clamp_prompt_logprobs",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.8751000000000003e-05,
+      "cumulative_seconds": 2.8751000000000003e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/_policybase.py",
+      "line": 313,
+      "name": "header_store_parse",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.8241000000000003e-05,
+      "cumulative_seconds": 2.8241000000000003e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'timetuple' of 'datetime.datetime' objects>",
+      "primitive_calls": 2,
+      "calls": 2,
+      "own_seconds": 2.6264e-05,
+      "cumulative_seconds": 2.6264e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/detokenizer.py",
+      "line": 35,
+      "name": "output_token_ids",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.5784000000000003e-05,
+      "cumulative_seconds": 2.5784000000000003e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 658,
+      "name": "<genexpr>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.4956000000000003e-05,
+      "cumulative_seconds": 2.4956000000000003e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/platforms/interface.py",
+      "line": 1145,
+      "name": "validate_request",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.4769000000000003e-05,
+      "cumulative_seconds": 2.4769000000000003e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/sampling_params.py",
+      "line": 650,
+      "name": "<genexpr>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.4649e-05,
+      "cumulative_seconds": 2.4649e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/prometheus_fastapi_instrumentator/middleware.py",
+      "line": 154,
+      "name": "<genexpr>",
+      "primitive_calls": 128,
+      "calls": 128,
+      "own_seconds": 2.4535e-05,
+      "cumulative_seconds": 2.4535e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/utils.py",
+      "line": 242,
+      "name": "formatdate",
+      "primitive_calls": 2,
+      "calls": 2,
+      "own_seconds": 1.8295e-05,
+      "cumulative_seconds": 8.607200000000001e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/utils.py",
+      "line": 233,
+      "name": "_format_timetuple_and_zone",
+      "primitive_calls": 2,
+      "calls": 2,
+      "own_seconds": 1.6305e-05,
+      "cumulative_seconds": 1.6305e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method fromtimestamp>",
+      "primitive_calls": 2,
+      "calls": 2,
+      "own_seconds": 1.5714000000000002e-05,
+      "cumulative_seconds": 1.5714000000000002e-05
+    },
+    {
+      "file": "/root/.pyenv/versions/3.12.11/lib/python3.12/email/utils.py",
+      "line": 271,
+      "name": "format_datetime",
+      "primitive_calls": 2,
+      "calls": 2,
+      "own_seconds": 9.494000000000001e-06,
+      "cumulative_seconds": 5.2063000000000006e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/launchers/launcher.py",
+      "line": 199,
+      "name": "terminate_if_errored",
+      "primitive_calls": 1,
+      "calls": 1,
+      "own_seconds": 5.964e-06,
+      "cumulative_seconds": 2.0448e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/launchers/launcher.py",
+      "line": 187,
+      "name": "watchdog_loop",
+      "primitive_calls": 1,
+      "calls": 1,
+      "own_seconds": 4.423000000000001e-06,
+      "cumulative_seconds": 3.2116e-05
+    },
+    {
+      "file": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/envs.py",
+      "line": 1090,
+      "name": "<lambda>",
+      "primitive_calls": 1,
+      "calls": 1,
+      "own_seconds": 3.311e-06,
+      "cumulative_seconds": 9.93e-06
+    }
+  ]
+}

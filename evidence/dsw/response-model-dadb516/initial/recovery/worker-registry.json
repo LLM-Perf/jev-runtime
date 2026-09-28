@@ -1,0 +1,36 @@
+{
+  "observed_at": 1790561134.195923,
+  "registry_path": "/root/jev-runtime/runs/sglang-asgi-profile-a475ad4/registry.db",
+  "workers": [
+    {
+      "owner": "f8482f1ff81d43cda68579c80cb7635e",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2745981, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431540160\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "226547f62c7c4d089183cbd7c768ba9e",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2745982, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431540160\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "226547f62c7c4d089183cbd7c768ba9e",
+      "ref": "bench-3a488e9b609f4d219aff902d3e38a1f2@1",
+      "digest": "sha256:5b614f5a913ff56111e64868db8d508deb9f69d0199b2c7907fa70dae84c8209"
+    },
+    {
+      "owner": "f8482f1ff81d43cda68579c80cb7635e",
+      "ref": "bench-3a488e9b609f4d219aff902d3e38a1f2@1",
+      "digest": "sha256:5b614f5a913ff56111e64868db8d508deb9f69d0199b2c7907fa70dae84c8209"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0
+  }
+}

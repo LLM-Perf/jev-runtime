@@ -1,0 +1,48 @@
+{
+  "observed_at": 1790560122.3462155,
+  "reason": "Owned diagnostic group survived recorded SIGTERM deadline; exact live parent PID/start/boot identity and launch command were revalidated before SIGKILL",
+  "original_parent": {
+    "pid": 2745549,
+    "start_ticks": "431537378",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "signal": "SIGKILL",
+  "remaining_group": [],
+  "pending_recovery": [
+    {
+      "lease_id": "7218bd7985b8470abb1616ce1b17f385",
+      "request_id": "prepare-be97b2a5d098449aba62d4c66189ccb5",
+      "owner": "f8482f1ff81d43cda68579c80cb7635e",
+      "owner_status": "dead",
+      "phase": "abort_pending",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "reference": "default@1",
+      "engine_request_ids": [
+        "prepare-be97b2a5d098449aba62d4c66189ccb5.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000"
+      ],
+      "recoverable": true
+    },
+    {
+      "lease_id": "2c5d10f55f8e46799f30237d3a0021ed",
+      "request_id": "prepare-781a4dd9321e4d749522ce8de0c44f26",
+      "owner": "226547f62c7c4d089183cbd7c768ba9e",
+      "owner_status": "dead",
+      "phase": "abort_pending",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "reference": "default@1",
+      "engine_request_ids": [
+        "prepare-781a4dd9321e4d749522ce8de0c44f26.e100fbce008c04ec40637af0af91fb2f05aeedc23f856a2d3c0b1580625d755e.00000000"
+      ],
+      "recoverable": true
+    }
+  ],
+  "gpu7": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "original_cleanup_failure_preserved": true
+}

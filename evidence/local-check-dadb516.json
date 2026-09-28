@@ -1,0 +1,29 @@
+{
+  "source_commit": "dadb516b38816b32254c710b8f33cba6dd4a6af3",
+  "local_tests": {
+    "passed": 473,
+    "duration_seconds": 22.96
+  },
+  "targeted_response_api_telemetry_recovery_tests": 40,
+  "ruff_check": "passed",
+  "format_check": "121 files passed",
+  "wheels": [
+    {
+      "file": "jev_sglang-0.1.0a1-py3-none-any.whl",
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "packaged_python_sources_verified": 4
+    },
+    {
+      "file": "jev_vllm-0.1.0a1-py3-none-any.whl",
+      "sha256": "b1f081ce513a63015c1974e3e66763c6518a50f0c0625cd143d2e76b0861a6f9",
+      "packaged_python_sources_verified": 4
+    },
+    {
+      "file": "jev_runtime_core-0.1.0a1-py3-none-any.whl",
+      "sha256": "33a41333ce22b961467c23dd630aa737ad04e306df64ef9549e7db62816f2f13",
+      "packaged_python_sources_verified": 31
+    }
+  ],
+  "typescript": "unchanged, not rerun",
+  "dsw_execution": "source checkout, not these local wheels"
+}

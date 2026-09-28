@@ -1,0 +1,56 @@
+{
+  "observed_at": 1790561134.184831,
+  "registry_path": "/root/jev-runtime/runs/vllm-response-before-dadb516/registry.db",
+  "workers": [
+    {
+      "owner": "e74bb1ff790e48e9b46f8a71e78372f7",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2747490, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431606576\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "f129d12ec4264f9082021399aeb73845",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2747685, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431607080\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "e74bb1ff790e48e9b46f8a71e78372f7",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "f129d12ec4264f9082021399aeb73845",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "e74bb1ff790e48e9b46f8a71e78372f7",
+      "ref": "bench-90ebad9bfad742038b3104d62b112a40@1",
+      "digest": "sha256:c6f93bc5fb29c0a2d6952302839bb30ab31436c67563f80dfad6afd3966f36ff"
+    },
+    {
+      "owner": "f129d12ec4264f9082021399aeb73845",
+      "ref": "bench-90ebad9bfad742038b3104d62b112a40@1",
+      "digest": "sha256:c6f93bc5fb29c0a2d6952302839bb30ab31436c67563f80dfad6afd3966f36ff"
+    },
+    {
+      "owner": "e74bb1ff790e48e9b46f8a71e78372f7",
+      "ref": "bench-822cde7a019b484fab1ebe6b12ea0226@1",
+      "digest": "sha256:11982f8e46644f270b5b2fd2063e7318824f02d423e1dff14b1d43c2c9682163"
+    },
+    {
+      "owner": "f129d12ec4264f9082021399aeb73845",
+      "ref": "bench-822cde7a019b484fab1ebe6b12ea0226@1",
+      "digest": "sha256:11982f8e46644f270b5b2fd2063e7318824f02d423e1dff14b1d43c2c9682163"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0
+  }
+}

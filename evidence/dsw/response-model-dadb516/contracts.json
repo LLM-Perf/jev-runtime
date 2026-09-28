@@ -1,0 +1,36 @@
+{
+  "source_commit": "dadb516b38816b32254c710b8f33cba6dd4a6af3",
+  "script_sha256": "b9754bf1a20a3a597ceff3185618a00313598e11b1f32d55f45a8a34af8384e0",
+  "started_at": 1790561124.9560707,
+  "qualification": "CPU engine doubles and HTTP contract fixtures in each actual engine environment; not additional GPU execution",
+  "engines": {
+    "vllm": {
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_response_serialization.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_api.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_telemetry.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_recovery_mode.py"
+      ],
+      "returncode": 0
+    },
+    "sglang": {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_response_serialization.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_api.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_telemetry.py",
+        "/root/jev-runtime/response-model-sources/dadb516b38816b32254c710b8f33cba6dd4a6af3/tests/test_recovery_mode.py"
+      ],
+      "returncode": 0
+    }
+  },
+  "complete": true,
+  "finished_at": 1790561133.158241
+}

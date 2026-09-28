@@ -1,0 +1,297 @@
+{
+  "before_source": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "after_source": "dadb516b38816b32254c710b8f33cba6dd4a6af3",
+  "release_gate_passed": false,
+  "qualification": "Matched colocated C1 samples with an inactive diagnostic header gate; no causal or release certificate.",
+  "profiling_qualification": "Separate continuous default-clock windows include idle/background callbacks. The copied runner retains stale thread-CPU wording; collector metadata and this qualification supersede it.",
+  "comparisons": [
+    {
+      "engine": "vllm",
+      "concurrency": 1,
+      "before": {
+        "strict_success_attempts": 2517,
+        "plugin_native_rps_ratios": [
+          0.8163694739197759,
+          0.8440795625681539,
+          0.8471670684132165
+        ],
+        "plugin_stages": [
+          {
+            "repeat": 1,
+            "requests": 373,
+            "pin_journal_queue_mean_ms": 1.7274739222520106,
+            "runtime_total_mean_ms": 22.953337742627344,
+            "compile_mean_ms": 0.2188072922252011,
+            "release_mean_ms": 0.7092543297587132,
+            "client_mean_ms": 26.843121734724928
+          },
+          {
+            "repeat": 2,
+            "requests": 392,
+            "pin_journal_queue_mean_ms": 1.4371097474489798,
+            "runtime_total_mean_ms": 21.869344471938774,
+            "compile_mean_ms": 0.21106326785714286,
+            "release_mean_ms": 0.5306941096938775,
+            "client_mean_ms": 25.538038222442324
+          },
+          {
+            "repeat": 3,
+            "requests": 382,
+            "pin_journal_queue_mean_ms": 1.8245126832460732,
+            "runtime_total_mean_ms": 22.7590232591623,
+            "compile_mean_ms": 0.20897438481675393,
+            "release_mean_ms": 0.5716378821989528,
+            "client_mean_ms": 26.206326563671933
+          }
+        ],
+        "native_rps": [
+          45.57711206757474,
+          46.33513545162367,
+          44.98971914972952
+        ],
+        "plugin_rps": [
+          37.207763001388656,
+          39.11054086354267,
+          38.113808480810306
+        ]
+      },
+      "after": {
+        "strict_success_attempts": 2773,
+        "plugin_native_rps_ratios": [
+          0.8138677048756031,
+          0.8634447017198409,
+          0.8491879691900379
+        ],
+        "plugin_stages": [
+          {
+            "repeat": 1,
+            "requests": 418,
+            "pin_journal_queue_mean_ms": 1.335835937799043,
+            "runtime_total_mean_ms": 20.757891533492824,
+            "compile_mean_ms": 0.1993506076555024,
+            "release_mean_ms": 0.5490682559808612,
+            "client_mean_ms": 23.923116087753094
+          },
+          {
+            "repeat": 2,
+            "requests": 421,
+            "pin_journal_queue_mean_ms": 1.3297195059382423,
+            "runtime_total_mean_ms": 20.629511802850356,
+            "compile_mean_ms": 0.18929931828978622,
+            "release_mean_ms": 0.4981662185273159,
+            "client_mean_ms": 23.751324179832274
+          },
+          {
+            "repeat": 3,
+            "requests": 428,
+            "pin_journal_queue_mean_ms": 1.284019301401869,
+            "runtime_total_mean_ms": 20.506391726635513,
+            "compile_mean_ms": 0.18758296962616822,
+            "release_mean_ms": 0.5726576098130841,
+            "client_mean_ms": 23.3595467185619
+          }
+        ],
+        "native_rps": [
+          51.30795420068488,
+          48.713325365903174,
+          50.36231694604587
+        ],
+        "plugin_rps": [
+          41.75788692717396,
+          42.061262690343824,
+          42.76707365111773
+        ]
+      }
+    },
+    {
+      "engine": "sglang",
+      "concurrency": 1,
+      "before": {
+        "strict_success_attempts": 2408,
+        "plugin_native_rps_ratios": [
+          0.8653083813614166,
+          0.8508625056242047,
+          0.8585454633512222
+        ],
+        "plugin_stages": [
+          {
+            "repeat": 1,
+            "requests": 376,
+            "pin_journal_queue_mean_ms": 1.4244797898936172,
+            "runtime_total_mean_ms": 23.260799382978725,
+            "compile_mean_ms": 0.19397943882978722,
+            "release_mean_ms": 0.5879581409574468,
+            "client_mean_ms": 26.61985330818657
+          },
+          {
+            "repeat": 2,
+            "requests": 372,
+            "pin_journal_queue_mean_ms": 1.3510371209677419,
+            "runtime_total_mean_ms": 23.380748771505374,
+            "compile_mean_ms": 0.2050870483870968,
+            "release_mean_ms": 0.4877055080645161,
+            "client_mean_ms": 26.858309579272102
+          },
+          {
+            "repeat": 3,
+            "requests": 364,
+            "pin_journal_queue_mean_ms": 1.3284048626373628,
+            "runtime_total_mean_ms": 24.061367936813184,
+            "compile_mean_ms": 0.19649666208791208,
+            "release_mean_ms": 0.5270937912087912,
+            "client_mean_ms": 27.47785250635838
+          }
+        ],
+        "native_rps": [
+          43.37177893288361,
+          43.715002580654605,
+          42.34920446484353
+        ],
+        "plugin_rps": [
+          37.529963825178704,
+          37.19545662914435,
+          36.35871736982474
+        ]
+      },
+      "after": {
+        "strict_success_attempts": 2350,
+        "plugin_native_rps_ratios": [
+          0.8467898840515873,
+          0.8644306408219914,
+          0.8421687267481244
+        ],
+        "plugin_stages": [
+          {
+            "repeat": 1,
+            "requests": 356,
+            "pin_journal_queue_mean_ms": 1.413235129213483,
+            "runtime_total_mean_ms": 24.813211556179773,
+            "compile_mean_ms": 0.1994209466292135,
+            "release_mean_ms": 0.6103676123595506,
+            "client_mean_ms": 28.088350361736303
+          },
+          {
+            "repeat": 2,
+            "requests": 364,
+            "pin_journal_queue_mean_ms": 1.4337795521978023,
+            "runtime_total_mean_ms": 24.244097351648353,
+            "compile_mean_ms": 0.19653971703296705,
+            "release_mean_ms": 0.6308777857142857,
+            "client_mean_ms": 27.51832364822973
+          },
+          {
+            "repeat": 3,
+            "requests": 361,
+            "pin_journal_queue_mean_ms": 1.411764703601108,
+            "runtime_total_mean_ms": 24.374598628808865,
+            "compile_mean_ms": 0.19957596121883656,
+            "release_mean_ms": 0.5696138227146815,
+            "client_mean_ms": 27.72577289605405
+          }
+        ],
+        "native_rps": [
+          42.002401393409606,
+          41.99800302717522,
+          42.78182053426392
+        ],
+        "plugin_rps": [
+          35.56720860581355,
+          36.30436067002501,
+          36.02951132730781
+        ]
+      }
+    }
+  ],
+  "call_profiles": {
+    "vllm-before": [
+      {
+        "lane": "native-label",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 0,
+        "window_wall_seconds": 3.438636528328061,
+        "profiler_total_seconds": 0.6182239719999999
+      },
+      {
+        "lane": "native-plugin",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 10240,
+        "jsonable_encoder_cumulative_seconds": 0.057413718,
+        "decision_response_validation_calls": 128,
+        "window_wall_seconds": 3.879638521000743,
+        "profiler_total_seconds": 1.1770248630000002
+      }
+    ],
+    "vllm-after": [
+      {
+        "lane": "native-plugin",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 256,
+        "window_wall_seconds": 3.4895579274743795,
+        "profiler_total_seconds": 1.0661346350000005
+      },
+      {
+        "lane": "native-label",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 0,
+        "window_wall_seconds": 2.913619626313448,
+        "profiler_total_seconds": 0.579368928
+      }
+    ],
+    "sglang-before": [
+      {
+        "lane": "native-label",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 0,
+        "window_wall_seconds": 2.9372548945248127,
+        "profiler_total_seconds": 2.5725201040000005
+      },
+      {
+        "lane": "native-plugin",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 10240,
+        "jsonable_encoder_cumulative_seconds": 0.051394366000000004,
+        "decision_response_validation_calls": 128,
+        "window_wall_seconds": 3.827234628610313,
+        "profiler_total_seconds": 3.743584057999999
+      }
+    ],
+    "sglang-after": [
+      {
+        "lane": "native-label",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 0,
+        "window_wall_seconds": 3.1663178773596883,
+        "profiler_total_seconds": 2.838115925000002
+      },
+      {
+        "lane": "native-plugin",
+        "profiled_requests": 128,
+        "jsonable_encoder_calls": 0,
+        "jsonable_encoder_cumulative_seconds": 0,
+        "decision_response_validation_calls": 256,
+        "window_wall_seconds": 3.8571516508236527,
+        "profiler_total_seconds": 3.465056425999999
+      }
+    ]
+  },
+  "artifact_hashes_verified": 171,
+  "source_python_files_verified": 239,
+  "owned_records_checked": 295,
+  "total_unprofiled_strict_success_attempts": 10048,
+  "initial_invalid_timing_and_shutdown_failure_preserved": true,
+  "recovered_health_probe_leases": 2,
+  "engine_environment_contract_tests": {
+    "vllm": 40,
+    "sglang": 40
+  }
+}

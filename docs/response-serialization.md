@@ -20,3 +20,6 @@ than treating the experiment as a successful performance result. Corrected
 continuous-window call profiles and separate unprofiled measurements are required
 before reporting any measured benefit. No performance release gate follows from
 the implementation alone.
+
+See [the completed scoped validation](response-serialization-validation.md) for
+corrected call profiles, matched unprofiled measurements and retained failure/recovery.

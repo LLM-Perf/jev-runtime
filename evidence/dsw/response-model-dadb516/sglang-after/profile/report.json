@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "provided_runtime_source_commit": "dadb516b38816b32254c710b8f33cba6dd4a6af3",
+  "started_at": 1790561006.8797626,
+  "qualification": "Instrumented ASGI thread-CPU profiling; not ordinary latency, throughput or release certification",
+  "release_gate_passed": false,
+  "engine": "sglang",
+  "mode": "native-plugin",
+  "scenario": {
+    "context_tokens": 256,
+    "candidates": 8,
+    "concurrency": 1,
+    "cache": "hot",
+    "scoring_mode": "joint-label",
+    "structured_generation": false,
+    "runtime_timing": true,
+    "input_variants": 1
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674"
+  },
+  "duration_seconds": 10.0,
+  "repeats": 1,
+  "warmup_requests_per_method": 32,
+  "input_schedule": "Each method/repeat starts at fixture 0, round-robin by dispatch; coverage reported per attempt",
+  "service_process_identity": {
+    "pid": 2751126,
+    "start_ticks": "431650360",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/sglang/bin/python",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18794",
+    "--dtype",
+    "bfloat16",
+    "--context-length",
+    "2048",
+    "--max-running-requests",
+    "4",
+    "--chunked-prefill-size",
+    "512",
+    "--max-total-tokens",
+    "2048",
+    "--mem-fraction-static",
+    "0.65",
+    "--disable-cuda-graph",
+    "--attention-backend",
+    "triton",
+    "--tokenizer-worker-num",
+    "2"
+  ],
+  "measurements": [
+    {
+      "repeat": 1,
+      "method": "native-label",
+      "rows": "1-native-label.jsonl",
+      "summary": {
+        "dispatched_requests": 409,
+        "strict_success_requests": 409,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 409,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.020902608521282673,
+        "makespan_seconds": 10.020902608521283,
+        "strict_success_rps_over_full_cohort": 40.814686658286305,
+        "strict_success_rps_completed_in_window": 40.8,
+        "successful_questions_per_second_over_full_cohort": 40.814686658286305,
+        "latency_successful_requests": {
+          "samples": 409,
+          "p50_ms": 24.051054380834103,
+          "p95_ms": 28.768603317439556,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 409,
+          "p50_ms": 24.051054380834103,
+          "p95_ms": 28.768603317439556,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "input_fixtures": {
+          "observed_attempts": 409,
+          "counts": {
+            "0": 409
+          },
+          "qualification": "Per-dispatch round-robin selection; unequal completed rates can produce unequal fixture frequencies"
+        },
+        "outcomes": {
+          "completed": 409
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 409
+        },
+        "runtime_timings": {
+          "all_attempts": {
+            "request_denominator": 409,
+            "stages": {
+              "pin": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "compile": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "journal": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "queue": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "execute": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "finalize": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "release": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "total": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              }
+            },
+            "qualification": "Server-observed runtime wall time; excludes HTTP parsing/serialization/network. Serial phases partition each observed total; percentiles must not be added. Missing phases/headers remain unobserved."
+          },
+          "strict_successes": {
+            "request_denominator": 409,
+            "stages": {
+              "pin": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "compile": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "journal": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "queue": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "execute": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "finalize": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "release": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              },
+              "total": {
+                "observed_requests": 0,
+                "mean_ms": null,
+                "p50_ms": null,
+                "p95_ms": null,
+                "p99_ms": null
+              }
+            },
+            "qualification": "Server-observed runtime wall time; excludes HTTP parsing/serialization/network. Serial phases partition each observed total; percentiles must not be added. Missing phases/headers remain unobserved."
+          }
+        },
+        "output_cost": {
+          "all_attempts": {
+            "request_denominator": 409,
+            "requests_with_observed_completion_tokens": 409,
+            "observed_completion_tokens": 0,
+            "full_cohort_completion_tokens": 0,
+            "requests_with_observed_content_bytes": 0,
+            "observed_content_bytes": 0,
+            "finish_reasons": {
+              "unknown": 409
+            }
+          },
+          "strict_successes": {
+            "request_denominator": 409,
+            "requests_with_observed_completion_tokens": 409,
+            "observed_completion_tokens": 0,
+            "full_cohort_completion_tokens": 0,
+            "requests_with_observed_content_bytes": 0,
+            "observed_content_bytes": 0,
+            "finish_reasons": {
+              "unknown": 409
+            }
+          }
+        },
+        "decision_outputs": {
+          "strict_success_denominator": 409,
+          "requests_with_selected_candidate": 0,
+          "candidate_counts": {},
+          "abstained_requests": 0,
+          "requests_with_abstention_status": 0,
+          "reference_comparison_denominator": 0,
+          "matches_label_reference": 0,
+          "qualification": "agreement with a readout reference, not accuracy against labels"
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 409,
+          "request_denominator": 409,
+          "observed_prompt_tokens": 104704,
+          "observed_cached_tokens": 104295,
+          "observed_token_weighted_ratio": 0.99609375,
+          "full_cohort_token_weighted_ratio": 0.99609375
+        }
+      }
+    },
+    {
+      "repeat": 1,
+      "method": "native-plugin",
+      "rows": "1-native-plugin.jsonl",
+      "summary": {
+        "dispatched_requests": 348,
+        "strict_success_requests": 348,
+        "partial_requests": 0,
+        "failed_requests": 0,
+        "successful_questions_including_partial": 348,
+        "window_seconds": 10.0,
+        "drain_seconds": 0.007261049002408981,
+        "makespan_seconds": 10.007261049002409,
+        "strict_success_rps_over_full_cohort": 34.77474988370479,
+        "strict_success_rps_completed_in_window": 34.7,
+        "successful_questions_per_second_over_full_cohort": 34.77474988370479,
+        "latency_successful_requests": {
+          "samples": 348,
+          "p50_ms": 28.081088792532682,
+          "p95_ms": 33.07724897749722,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "latency_all_attempts": {
+          "samples": 348,
+          "p50_ms": 28.081088792532682,
+          "p95_ms": 33.07724897749722,
+          "p99_ms": null,
+          "p99_minimum_samples": 10000,
+          "statistics": "descriptive, not confidence intervals"
+        },
+        "input_fixtures": {
+          "observed_attempts": 348,
+          "counts": {
+            "0": 348
+          },
+          "qualification": "Per-dispatch round-robin selection; unequal completed rates can produce unequal fixture frequencies"
+        },
+        "outcomes": {
+          "completed": 348
+        },
+        "errors": {},
+        "http_statuses": {
+          "200": 348
+        },
+        "runtime_timings": {
+          "all_attempts": {
+            "request_denominator": 348,
+            "stages": {
+              "pin": {
+                "observed_requests": 348,
+                "mean_ms": 0.19342752873563218,
+                "p50_ms": 0.1920165,
+                "p95_ms": 0.24051205,
+                "p99_ms": null
+              },
+              "compile": {
+                "observed_requests": 348,
+                "mean_ms": 0.2501962385057472,
+                "p50_ms": 0.23057450000000002,
+                "p95_ms": 0.3741381,
+                "p99_ms": null
+              },
+              "journal": {
+                "observed_requests": 348,
+                "mean_ms": 0.002196419540229885,
+                "p50_ms": 0.0021075,
+                "p95_ms": 0.0031493999999999997,
+                "p99_ms": null
+              },
+              "queue": {
+                "observed_requests": 348,
+                "mean_ms": 1.280158606321839,
+                "p50_ms": 1.1767595,
+                "p95_ms": 1.5347408,
+                "p99_ms": null
+              },
+              "execute": {
+                "observed_requests": 348,
+                "mean_ms": 22.33893751149425,
+                "p50_ms": 21.897063,
+                "p95_ms": 26.0675994,
+                "p99_ms": null
+              },
+              "finalize": {
+                "observed_requests": 348,
+                "mean_ms": 0.16875680459770115,
+                "p50_ms": 0.16616999999999998,
+                "p95_ms": 0.22164299999999998,
+                "p99_ms": null
+              },
+              "release": {
+                "observed_requests": 348,
+                "mean_ms": 0.5925391609195402,
+                "p50_ms": 0.395392,
+                "p95_ms": 0.7951496999999986,
+                "p99_ms": null
+              },
+              "total": {
+                "observed_requests": 348,
+                "mean_ms": 24.826212293103445,
+                "p50_ms": 24.254338,
+                "p95_ms": 28.6093463,
+                "p99_ms": null
+              }
+            },
+            "qualification": "Server-observed runtime wall time; excludes HTTP parsing/serialization/network. Serial phases partition each observed total; percentiles must not be added. Missing phases/headers remain unobserved."
+          },
+          "strict_successes": {
+            "request_denominator": 348,
+            "stages": {
+              "pin": {
+                "observed_requests": 348,
+                "mean_ms": 0.19342752873563218,
+                "p50_ms": 0.1920165,
+                "p95_ms": 0.24051205,
+                "p99_ms": null
+              },
+              "compile": {
+                "observed_requests": 348,
+                "mean_ms": 0.2501962385057472,
+                "p50_ms": 0.23057450000000002,
+                "p95_ms": 0.3741381,
+                "p99_ms": null
+              },
+              "journal": {
+                "observed_requests": 348,
+                "mean_ms": 0.002196419540229885,
+                "p50_ms": 0.0021075,
+                "p95_ms": 0.0031493999999999997,
+                "p99_ms": null
+              },
+              "queue": {
+                "observed_requests": 348,
+                "mean_ms": 1.280158606321839,
+                "p50_ms": 1.1767595,
+                "p95_ms": 1.5347408,
+                "p99_ms": null
+              },
+              "execute": {
+                "observed_requests": 348,
+                "mean_ms": 22.33893751149425,
+                "p50_ms": 21.897063,
+                "p95_ms": 26.0675994,
+                "p99_ms": null
+              },
+              "finalize": {
+                "observed_requests": 348,
+                "mean_ms": 0.16875680459770115,
+                "p50_ms": 0.16616999999999998,
+                "p95_ms": 0.22164299999999998,
+                "p99_ms": null
+              },
+              "release": {
+                "observed_requests": 348,
+                "mean_ms": 0.5925391609195402,
+                "p50_ms": 0.395392,
+                "p95_ms": 0.7951496999999986,
+                "p99_ms": null
+              },
+              "total": {
+                "observed_requests": 348,
+                "mean_ms": 24.826212293103445,
+                "p50_ms": 24.254338,
+                "p95_ms": 28.6093463,
+                "p99_ms": null
+              }
+            },
+            "qualification": "Server-observed runtime wall time; excludes HTTP parsing/serialization/network. Serial phases partition each observed total; percentiles must not be added. Missing phases/headers remain unobserved."
+          }
+        },
+        "output_cost": {
+          "all_attempts": {
+            "request_denominator": 348,
+            "requests_with_observed_completion_tokens": 348,
+            "observed_completion_tokens": 0,
+            "full_cohort_completion_tokens": 0,
+            "requests_with_observed_content_bytes": 0,
+            "observed_content_bytes": 0,
+            "finish_reasons": {
+              "unknown": 348
+            }
+          },
+          "strict_successes": {
+            "request_denominator": 348,
+            "requests_with_observed_completion_tokens": 348,
+            "observed_completion_tokens": 0,
+            "full_cohort_completion_tokens": 0,
+            "requests_with_observed_content_bytes": 0,
+            "observed_content_bytes": 0,
+            "finish_reasons": {
+              "unknown": 348
+            }
+          }
+        },
+        "decision_outputs": {
+          "strict_success_denominator": 348,
+          "requests_with_selected_candidate": 348,
+          "candidate_counts": {
+            "c1": 348
+          },
+          "abstained_requests": 0,
+          "requests_with_abstention_status": 348,
+          "reference_comparison_denominator": 0,
+          "matches_label_reference": 0,
+          "qualification": "agreement with a readout reference, not accuracy against labels"
+        },
+        "cache": {
+          "scope": "strictly successful requests in this cohort",
+          "requests_with_observed_tokens": 348,
+          "request_denominator": 348,
+          "observed_prompt_tokens": 89088,
+          "observed_cached_tokens": 88740,
+          "observed_token_weighted_ratio": 0.99609375,
+          "full_cohort_token_weighted_ratio": 0.99609375
+        }
+      }
+    }
+  ],
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "batch_invariant": false
+  },
+  "cache_definition": "prefix cache enabled; round-robin over 1 exact inputs after warmup; actual hits reported",
+  "fixture_digest": "sha256:702f89bcbe4b2efa5cf0a6f55abc9e2909a17c3251bb157ab604477dd67f4310",
+  "fixture_pool_digest": "sha256:4cbde76eecfc65b20eb357441785461022b38b7dab8cc0d0543ef20c24bb2888",
+  "sequence_lengths": [
+    256
+  ],
+  "bundle_digest": "sha256:e3360fb89e46d1d3079f70aa3a1674f7f137481009604514e3d7650714405744",
+  "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+  "compiler_profile": {
+    "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+    "copied_from_host_pool": false,
+    "chat_template_source": "host",
+    "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+    "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+    "backend_class": "tokenizers.Tokenizer",
+    "cache_token_limit": 262144,
+    "cache_entry_limit": 256,
+    "continuation_encoder": "backend-ids-only",
+    "backend_ids_only_eligible": true,
+    "batch_size_limit": 32,
+    "contract": "full prompt plus each label; exact prefix and one-token checks"
+  },
+  "parity_warmup_requests_per_method": 32,
+  "parity_variant_rewarm_requests_per_method": 0,
+  "native_typed_probability_parity": {
+    "max_absolute_error": 0.0,
+    "tolerance": 0.0001,
+    "passed": true,
+    "variants_checked": 1,
+    "variants_required": 1,
+    "per_variant": [
+      {
+        "input_fixture_index": 0,
+        "max_absolute_error": 0.0,
+        "tolerance": 0.0001,
+        "passed": true,
+        "native_cached_tokens_per_branch": [
+          255
+        ],
+        "typed_cached_prompt_tokens": 255
+      }
+    ]
+  },
+  "measurement_complete": true,
+  "all_attempts_successful": true,
+  "temporary_alias_retired": true,
+  "finished_at": 1790561030.7595425
+}
