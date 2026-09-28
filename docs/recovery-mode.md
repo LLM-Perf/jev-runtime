@@ -9,6 +9,11 @@ load adapters or bootstrap a route. It never declares Jev readiness.
 This is an explicit maintenance startup mode. Restart the process to leave it;
 there is no HTTP switch that enables serving inside a recovery process.
 
+The isolated launcher's ordinary configuration omits the disabled optional field
+to retain the prior configuration shape. A configuration explicitly enabling
+`recovery_only` requires a supporting runtime; older versions must reject it.
+This does not implement general configuration/schema downgrade migration.
+
 ## Procedure
 
 1. Preserve the failed registry with a consistent private snapshot and retain the
@@ -71,3 +76,8 @@ admin authentication, live-owner rejection, unconfirmed-abort retention,
 confirmed recovery, and retained precision/mode/cancellation capability guards.
 Real DSW evidence is recorded separately; local doubles do not establish GPU
 cancellation or restart behavior.
+
+The [DSW recovery exercise](recovery-mode-validation.md) records the retained
+SGLang startup failure, a vLLM before-dispatch process crash, explicit recovery
+and two normal starts per engine with 40 total validated responses. Its scope
+does not extend to arbitrary GPU/host failures or full release acceptance.

@@ -1,0 +1,181 @@
+{
+  "script_sha256": "287ed8b622b0bba8642368442886e389b1343ab49e3408438d144a213f7cd725",
+  "artifacts": {
+    "campaign.json": {
+      "sha256": "404106af5fb5abafc8f3180a8f501f8210efd918769b4fc849a569a22bf303ca",
+      "size_bytes": 246155
+    },
+    "campaign.log": {
+      "sha256": "06bbcd9d29969f831ed2d8eb8903006849acb437ab065b6fd77f754252826717",
+      "size_bytes": 1126
+    },
+    "sglang-before-snapshot/registry.sqlite3": {
+      "sha256": "fadc92896d775c0a07c2e1ac2267ec15f3bf454e3a20a5d5088f51ef9c71d1af",
+      "size_bytes": 188416
+    },
+    "sglang-before-snapshot/manifest.json": {
+      "sha256": "5c0374fc3f94ee4224640557c4b6fb57829556493dc6db625d30d483c29a7000",
+      "size_bytes": 2395
+    },
+    "sglang-after-snapshot/registry.sqlite3": {
+      "sha256": "9e90b4f632ada31b98ecf40f6ce2f748e1d5949156e358479bedba71dae4febd",
+      "size_bytes": 188416
+    },
+    "sglang-after-snapshot/manifest.json": {
+      "sha256": "bcf248f02d2eeee8cff9836efd5fe63080fb9067a452cfe1ee1107c1ca74d444",
+      "size_bytes": 2348
+    },
+    "sglang-maintenance/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "sglang-maintenance/process.json": {
+      "sha256": "5f8d8a866efa877ed793a921cd22685c35534e1c7a2080dd325ceabf9e209e62",
+      "size_bytes": 2025
+    },
+    "sglang-maintenance/cleanup.json": {
+      "sha256": "ea7996f24c099e387f02774d126e5879d8ed90bbd756d563913dbc91fae4f2a7",
+      "size_bytes": 2573
+    },
+    "sglang-maintenance/launch.log": {
+      "sha256": "c16e0630d6c3806236908f5c3502454e46e06db944b5dd4f7df63c4cb6792ca7",
+      "size_bytes": 197
+    },
+    "sglang-maintenance/engine.log": {
+      "sha256": "3aea5829556599e7ec906907d868a470b58d00b996031fd9f3738350764cead6",
+      "size_bytes": 23085
+    },
+    "sglang-serve/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "sglang-serve/process.json": {
+      "sha256": "536a67101cc34406d20e1e9ec61ed28a8558e482705255b8d3754dc83f938ec3",
+      "size_bytes": 2026
+    },
+    "sglang-serve/cleanup.json": {
+      "sha256": "c14dee1ec321edc170f3c5dd281eb583a9ceef8385b20e72a8cd8ded8d45b00b",
+      "size_bytes": 2574
+    },
+    "sglang-serve/launch.log": {
+      "sha256": "77ffc783bb4570e71c6cda308533fbcd7d3937162b2a9fed75d3ea18f83a1e5f",
+      "size_bytes": 191
+    },
+    "sglang-serve/engine.log": {
+      "sha256": "c02e9a2a81bbeaf6d4e3d15ef5dd1bc8b89d608fd3010e1bb1a01ef61e3f4481",
+      "size_bytes": 29475
+    },
+    "sglang-restart/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "sglang-restart/process.json": {
+      "sha256": "fb90326962f3594298b22fe160bbfb556b1c9e7e69b20c3844733e1cb85e2228",
+      "size_bytes": 2026
+    },
+    "sglang-restart/cleanup.json": {
+      "sha256": "0294ed6cedd6ef6bfb02e7216f40fffdf0c373ad4f9ac7543a1715c4eadb2f1d",
+      "size_bytes": 2573
+    },
+    "sglang-restart/launch.log": {
+      "sha256": "b4335dbef136eb928f9b5c8f8f0eebc84507dc9407d8d19f3e7f0a783cd148d8",
+      "size_bytes": 193
+    },
+    "sglang-restart/engine.log": {
+      "sha256": "d7ee85ad234766ec18535f4dc2adf39b41288ee37d1544ab8dc2abe35d603da1",
+      "size_bytes": 29158
+    },
+    "vllm-before-snapshot/registry.sqlite3": {
+      "sha256": "90ac68eb06684a3bcb8ed151601e8cf189e8a482c0bfdb8fcaf37da4daf0e963",
+      "size_bytes": 188416
+    },
+    "vllm-before-snapshot/manifest.json": {
+      "sha256": "21738a3c651333b7ad7cfd6dd003e04fedacea89eeb94d89792841feded7738f",
+      "size_bytes": 2387
+    },
+    "vllm-after-snapshot/registry.sqlite3": {
+      "sha256": "fe2997f064af95073af6f9b7036a23dfe823f69a3e63d74d0b3d0cd9c5d3368a",
+      "size_bytes": 188416
+    },
+    "vllm-after-snapshot/manifest.json": {
+      "sha256": "3099ae421077cb5407c87aa38b19ef6f6d0298b31ad69b674b4dbb6e1c52886b",
+      "size_bytes": 2341
+    },
+    "vllm-seed/journal.json": {
+      "sha256": "4ec76dd74bcc29933d64fe36c56f026643a11751eaa0da9cc40a3af8aad50b33",
+      "size_bytes": 621
+    },
+    "vllm-seed/create_journal.py": {
+      "sha256": "2d36d9d4c17e44c3f0c80b6ef015639c0b24924136fb0c2bbe1f8a9d65a7e8d0",
+      "size_bytes": 988
+    },
+    "vllm-seed/seed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "vllm-maintenance/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "vllm-maintenance/process.json": {
+      "sha256": "ed56c81fbca45d5aef3b48496155d5e998c14565f491aca5e53f302d8ad5eea0",
+      "size_bytes": 1869
+    },
+    "vllm-maintenance/cleanup.json": {
+      "sha256": "47e3fb3af97d2307e43598430c86053ca92736cc2481c5e9b643857b0754fd64",
+      "size_bytes": 2407
+    },
+    "vllm-maintenance/launch.log": {
+      "sha256": "94a366b3154fb102bff27d2533c18bc4d310d6945794bee740f6bb5f3c1f9baa",
+      "size_bytes": 195
+    },
+    "vllm-maintenance/engine.log": {
+      "sha256": "6f7f8f99fd0f60e4c14703c576456bb6d7793397a3f8ea571ee88409156a46ad",
+      "size_bytes": 23342
+    },
+    "vllm-serve/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "vllm-serve/process.json": {
+      "sha256": "5ef123cfaf1513fa80aff160917251e7f613d25a66bfd007bb18be1e1b05c8a3",
+      "size_bytes": 1870
+    },
+    "vllm-serve/cleanup.json": {
+      "sha256": "ae987220b5dd023012b5711b2336108bc406faef390674476139b1bab03d0d56",
+      "size_bytes": 2407
+    },
+    "vllm-serve/launch.log": {
+      "sha256": "fe86cc18c293d08f9fb01fc7d4f194905a2f65b34828d8ab0c6e7b6175408842",
+      "size_bytes": 189
+    },
+    "vllm-serve/engine.log": {
+      "sha256": "da3874e039a09316e2d47180d2f511fbd9fcc0fc0c1a74c613a64a135941a30f",
+      "size_bytes": 23486
+    },
+    "vllm-restart/health-settings.json": {
+      "sha256": "4b3b9045d94139bb23686bbb82cdfa9d110521c451abb4c8ee42ca2ac6d1b85b",
+      "size_bytes": 72
+    },
+    "vllm-restart/process.json": {
+      "sha256": "19175ca2372e2c593d7b216f9bd8a0e260337e91e011d4cd55aee6952472b516",
+      "size_bytes": 1869
+    },
+    "vllm-restart/cleanup.json": {
+      "sha256": "60cd1047bcb3b9693d505d8d5f0c0d4e931e69847a0fe8ebabfc7a1b56a5aa5d",
+      "size_bytes": 2407
+    },
+    "vllm-restart/launch.log": {
+      "sha256": "08f6730b25ba187a52a25e45b48d89051c20e83bebd574e326298d993b359ffd",
+      "size_bytes": 191
+    },
+    "vllm-restart/engine.log": {
+      "sha256": "604d06085ab4b44f368da5037d1ca225f8040a4104ad774d28530da2b4889680",
+      "size_bytes": 23139
+    },
+    "audit.json": {
+      "sha256": "b0c9a489d5f1a18b59b015fc2c29ad70fa66faf5de4df7e36d954d176bdf1e6e",
+      "size_bytes": 104414
+    }
+  }
+}

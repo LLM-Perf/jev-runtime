@@ -85,7 +85,24 @@
         "case_count": 32,
         "ordinary_registry_recovery_required": true,
         "full_gate_passed": false,
-        "prior_numerical_status_preserved": true
+        "prior_numerical_status_preserved": true,
+        "subsequent_registry_recovery": {
+          "source_commit": "95de3d5aa88641031962aee59ad5f8136dff7d82",
+          "evidence": "evidence/dsw/recovery-mode-95de3d5/verified-summary.json",
+          "original_startup_failure_preserved": true
+        }
+      },
+      "development_recovery_only": {
+        "source_commit": "95de3d5aa88641031962aee59ad5f8136dff7d82",
+        "status": "scoped_recovery_and_resume_passed",
+        "evidence": "evidence/dsw/recovery-mode-95de3d5/verified-summary.json",
+        "scope": "TP1/API1 eager; FP32 invariant recovery of retained ordinary-FP32 startup crash; new immutable serving bundle",
+        "recovered_requests": 1,
+        "blocked_write_checks": 6,
+        "validated_responses": 20,
+        "normal_starts_after_recovery": 2,
+        "old_bundle_manifest_preserved": true,
+        "full_gate_passed": false
       }
     },
     {
@@ -165,6 +182,18 @@
         "ordinary_registry_recovery_required": false,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_recovery_only": {
+        "source_commit": "95de3d5aa88641031962aee59ad5f8136dff7d82",
+        "status": "scoped_recovery_and_resume_passed",
+        "evidence": "evidence/dsw/recovery-mode-95de3d5/verified-summary.json",
+        "scope": "TP1/API1 eager; BF16 ordinary mode; SIGKILL of journal owner before native dispatch, no killed GPU request claimed",
+        "recovered_requests": 1,
+        "blocked_write_checks": 6,
+        "validated_responses": 20,
+        "normal_starts_after_recovery": 2,
+        "old_bundle_manifest_preserved": true,
+        "full_gate_passed": false
       }
     },
     {

@@ -1,0 +1,29 @@
+{
+  "source_commit": "95de3d5aa88641031962aee59ad5f8136dff7d82",
+  "engines": {
+    "sglang": {
+      "fault_scope": "Previously retained real SGLang ordinary-FP32 startup/canary failure; restart uses explicit supported FP32 invariant mode for recovery and new bundles",
+      "recovered_requests": 1,
+      "confirmed_branch_ids": 1,
+      "blocked_write_checks": 6,
+      "strict_responses": 20,
+      "normal_restarts_after_recovery": 2,
+      "old_bundle_manifest_preserved": true,
+      "registry_drained": true
+    },
+    "vllm": {
+      "fault_scope": "SIGKILL of owned preparation-journal process before native dispatch; engine cancellation endpoint and resume are real, no killed GPU request is claimed",
+      "recovered_requests": 1,
+      "confirmed_branch_ids": 1,
+      "blocked_write_checks": 6,
+      "strict_responses": 20,
+      "normal_restarts_after_recovery": 2,
+      "old_bundle_manifest_preserved": true,
+      "registry_drained": true
+    }
+  },
+  "strict_responses": 40,
+  "full_release_gate_passed": false,
+  "owned_records_terminal": 276,
+  "registries_drained": true
+}

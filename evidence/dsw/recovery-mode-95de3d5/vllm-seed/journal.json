@@ -1,0 +1,19 @@
+{
+  "requests": [
+    {
+      "lease_id": "33b933e0699f43f0b7ae5043ba8a6394",
+      "request_id": "prepare-45eaf1e4d4a14dc3afe5b5d3cc871432",
+      "owner": "af72275368c5433dbcb5ac6cc45c63c2",
+      "owner_status": "alive",
+      "phase": "inflight",
+      "backend": "vllm:http://127.0.0.1:18795:Qwen/Qwen3-0.6B:c1899de289a04d12100db370d81485cdf75e47ca",
+      "reference": "crashed-prepare@1",
+      "engine_request_ids": [
+        "prepare-45eaf1e4d4a14dc3afe5b5d3cc871432.before-dispatch"
+      ],
+      "recoverable": false
+    }
+  ],
+  "dispatched_to_engine": false,
+  "owner": "af72275368c5433dbcb5ac6cc45c63c2"
+}

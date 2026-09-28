@@ -118,6 +118,12 @@ provide that confirmation. Recovery of this preparation-stage crash remains open
 The snapshot is evidence, not a restore-ready artifact: its blockers must not be
 ignored or bypassed to activate it.
 
+In the subsequent [recovery-mode exercise at `95de3d5`](recovery-mode-validation.md),
+the retained source registry is recovered through the administrative cancellation
+path, then serves a new invariant-mode bundle. This campaign's failed audit,
+ordinary-mode startup failure and original snapshot remain unchanged. Recovery
+of that registry does not make ordinary FP32 execution supported.
+
 ## Evidence and acceptance boundaries
 
 The final audit verifies **269 retained owned process identities/groups are

@@ -1,0 +1,14 @@
+{
+  "source_commit": "bfb8cdef9c554676436ce522ed6069ead515b3c6",
+  "targeted_launcher_tests": {
+    "passed": 33,
+    "duration_seconds": 1.13
+  },
+  "legacy_settings_source": "b730b58",
+  "legacy_normal_configuration_without_field": "accepted",
+  "legacy_explicit_recovery_field_false_and_true": "rejected_as_unknown",
+  "core_and_plugin_sources_equal_to": "95de3d5aa88641031962aee59ad5f8136dff7d82",
+  "ruff_check": "passed",
+  "format_check": "119 files passed",
+  "dsw": "GPU campaign at 95de3d5; no rerun claimed for this launcher-only omission of the disabled field"
+}

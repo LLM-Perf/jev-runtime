@@ -1,0 +1,159 @@
+import hashlib,json,os,signal,sqlite3,subprocess,sys,tarfile,time
+from pathlib import Path
+import httpx
+ROOT=Path('/root/jev-runtime');COMMIT='95de3d5aa88641031962aee59ad5f8136dff7d82'
+source=ROOT/'recovery-mode-sources'/COMMIT;archive=ROOT/'recovery-mode-source-95de3d5.tar.gz'
+EXPECTED_ARCHIVE='b002531ba5d3e4cdff3fb3f861c0cd6d15c2da55dc132a5ea7bb65c51177595e'
+assert hashlib.sha256(archive.read_bytes()).hexdigest()==EXPECTED_ARCHIVE
+source.mkdir(parents=True,exist_ok=False)
+with tarfile.open(archive) as t:t.extractall(source,filter='data')
+sys.path[:0]=[str(source),str(source/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import cleanup,group_members,require_owner,wait_ready
+from jev_runtime.registry_backup import connect,blockers,summary,snapshot
+from jev_runtime.schema import Bundle,DecisionResponse
+OUT=ROOT/'recovery-mode-campaign-95de3d5.json';assert not OUT.exists()
+report={'source_commit':COMMIT,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'source_archive_sha256':EXPECTED_ARCHIVE,'started_at':time.time(),'attempts':[]}
+def read(p):return json.loads(p.read_text())
+def save():OUT.write_text(json.dumps(report,indent=2)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def registry_view(path):
+ with connect(path) as db:
+  state={'summary':summary(db),'blockers':blockers(db)}
+  db.row_factory=sqlite3.Row
+  state.update({table:[dict(r) for r in db.execute('SELECT * FROM '+table)] for table in ['bundles','leases','lease_work','routes','events','owners','workers']})
+  return state
+
+def wait_profile(record,client,admin):
+ end=time.monotonic()+420
+ while time.monotonic()<end:
+  require_owner(record)
+  try:
+   r=client.get('/admin/profile',headers=admin)
+   if r.status_code==200:return r.json()
+  except httpx.TransportError:pass
+  time.sleep(1)
+ raise TimeoutError('Administrative profile never became available')
+
+def start_stage(engine,stage,registry,fn,recovery=False):
+ run=ROOT/'runs'/f'{engine}-recovery-{stage}-95de3d5';run.mkdir(exist_ok=False)
+ item={'stage':stage,'run_dir':str(run),'started_at':time.time()};attempt['stages'].append(item);save();record=None
+ health=run/'health-settings.json';health.write_text(json.dumps({'interval_seconds':300,'timeout_seconds':10,'max_age_seconds':900}))
+ ep=ROOT/'envs'/engine/'bin/python'
+ env={k:v for k,v in os.environ.items() if not k.startswith(('PYTHON','PIP_'))}
+ env.update(PYTHONPATH=':'.join(map(str,[source,source/'src',source/'packages/sglang/src',source/'packages/vllm/src'])),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
+ command=[str(ep),str(source/'deployment/dsw_service.py'),'launch','--run-dir',str(run),'--engine',engine,'--model-path',str(ROOT/'models/Qwen3-0.6B'),'--tokenizer-path',str(ROOT/'tokenizers'/f'Qwen3-0.6B-preserved-{engine}-cdd0caf'),'--gpus','7','--port',str(18794 if engine=='sglang' else 18795),'--memory-fraction','.5' if engine=='sglang' else '.07','--reserve-mib','3072','--registry-path',str(registry),'--no-bootstrap','--health-config',str(health)]
+ if engine=='sglang':command += ['--dtype','float32','--batch-invariant']
+ if recovery:command.append('--recovery-only')
+ item['launch_command']=command
+ try:
+  assert int(get_gpu(7)['free_mib'])>=11900
+  for p in (ROOT/'runs').rglob('process.json'):
+   i=read(p)['identity'];assert process_identity(i['pid'])!=i and not group_members(i['pid']),str(p)
+  imports="import json,pathlib,hashlib,jev_runtime,jev_"+engine+"; print(json.dumps({m.__name__:{'path':m.__file__,'files':{str(p.relative_to(pathlib.Path(m.__file__).parent)):hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path(m.__file__).parent.rglob('*.py')}} for m in [jev_runtime,jev_"+engine+"]}))"
+  item['imports']=json.loads(subprocess.check_output([str(ep),'-c',imports],env=env,text=True,cwd=source));assert all(COMMIT in v['path'] for v in item['imports'].values());save()
+  with (run/'launch.log').open('x') as f:subprocess.run(command,env=env,cwd=source,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=60)
+  record=read(run/'process.json');keys=read(run/'keys.json');assert record['recovery_only'] is recovery and record['registry_path']==str(registry)
+  admin={'Authorization':'Bearer '+keys['admin']}
+  with httpx.Client(base_url=f"http://127.0.0.1:{record['port']}/plugins/jev-runtime",headers={'Authorization':'Bearer '+keys['api']},timeout=30,trust_env=False) as c:
+   profile=wait_profile(record,c,admin);assert profile['recovery_only'] is recovery
+   item['profile']=profile;save();fn(c,admin,profile,item)
+  require_owner(record);item['execution_complete']=True
+ except BaseException as e:
+  item['failure']={'type':type(e).__name__,'message':str(e)};raise
+ finally:
+  if record is None and (run/'process.json').exists():record=read(run/'process.json')
+  if record:item['cleanup']=cleanup(run,record)
+  item['finished_at']=time.time();save()
+ if record:assert item['cleanup']['passed'] and int(get_gpu(7)['free_mib'])>=11900
+
+try:
+ for engine in ['sglang','vllm']:
+  attempt={'engine':engine,'stages':[],'started_at':time.time()};report['attempts'].append(attempt);save()
+  if engine=='sglang':
+   oldrun=ROOT/'runs/sglang-ordinary-full-fp32-f2ccc2a';registry=oldrun/'registry.db';oldrecord=read(oldrun/'process.json')
+   assert process_identity(oldrecord['identity']['pid']) is None and not group_members(oldrecord['identity']['pid'])
+   attempt['original_process_record']=oldrecord
+   attempt['retained_original_artifact_hashes']={n:sha(oldrun/n) for n in ['process.json','config.json','keys.json','engine.log','launch.log','cleanup.json']}
+   before=registry_view(registry);prior=read(ROOT/'full-fp32-failed-registry-snapshot-f2ccc2a/manifest.json')
+   assert before['summary']==prior['summary'] and before['blockers']=={'leases':1,'lease_work':1,'preparing_bundles':1}
+   attempt['fault_scope']='Previously retained real SGLang ordinary-FP32 startup/canary failure; restart uses explicit supported FP32 invariant mode for recovery and new bundles'
+  else:
+   seed=ROOT/'runs/vllm-recovery-seed-95de3d5';seed.mkdir(exist_ok=False);registry=seed/'registry.db';marker=seed/'journal.json'
+   code="""import json,time,uuid
+from pathlib import Path
+from jev_runtime.config import Settings,load_compiler,model_identity
+from jev_runtime.registry import Registry
+from jev_runtime.schema import Bundle
+root=Path('/root/jev-runtime');seed=root/'runs/vllm-recovery-seed-95de3d5'
+s=Settings(backend='vllm',engine_url='http://127.0.0.1:18795',model_id='Qwen/Qwen3-0.6B',model_revision='c1899de289a04d12100db370d81485cdf75e47ca',tokenizer=str(root/'tokenizers/Qwen3-0.6B-preserved-vllm-cdd0caf'))
+r=Registry(seed/'registry.db');b=Bundle(id='crashed-prepare',version=1,model=model_identity(s,load_compiler(s)));r.upload(b)
+rid='prepare-'+uuid.uuid4().hex;_,lease=r.begin_prepare(b.reference,'vllm:http://127.0.0.1:18795:Qwen/Qwen3-0.6B:c1899de289a04d12100db370d81485cdf75e47ca',rid);r.record_branches(lease,[rid+'.before-dispatch'])
+(seed/'journal.json').write_text(json.dumps({'requests':r.recovery_candidates(),'dispatched_to_engine':False,'owner':r.owner},indent=2)+'\\n')
+while True:time.sleep(1)
+"""
+   script=seed/'create_journal.py';script.write_text(code)
+   env={**os.environ,'PYTHONPATH':str(source/'src'),'HF_HUB_OFFLINE':'1','TRANSFORMERS_OFFLINE':'1'}
+   with (seed/'seed.log').open('x') as f:
+    child=subprocess.Popen([str(ROOT/'envs/vllm/bin/python'),str(script)],env=env,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
+    ident=process_identity(child.pid);attempt['seed_child']={'identity':ident,'script_sha256':sha(script),'log':str(seed/'seed.log')};save()
+    try:
+     end=time.monotonic()+60
+     while not marker.exists():
+      assert child.poll() is None
+      if time.monotonic()>end:raise TimeoutError('journal marker not created')
+      time.sleep(.1)
+     attempt['seed_journal']=read(marker);assert attempt['seed_journal']['dispatched_to_engine'] is False
+     assert process_identity(child.pid)==ident;os.killpg(child.pid,signal.SIGKILL)
+     assert child.wait(timeout=10)==-9
+    finally:
+     if child.poll() is None:
+      assert process_identity(child.pid)==ident;os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=10)
+     attempt['seed_child'].update(returncode=child.returncode,remaining_group=group_members(child.pid));save()
+   assert process_identity(child.pid) is None and not group_members(child.pid)
+   before=registry_view(registry);assert before['blockers']=={'leases':1,'lease_work':1,'preparing_bundles':1}
+   attempt['fault_scope']='SIGKILL of owned preparation-journal process before native dispatch; engine cancellation endpoint and resume are real, no killed GPU request is claimed'
+  attempt['registry_path']=str(registry);attempt['before']=before
+  snapdir=ROOT/f'recovery-mode-{engine}-before-95de3d5';attempt['before_snapshot']=snapshot(registry,snapdir)
+  request_id=before['leases'][0]['request_id'];oldref=before['bundles'][0]['ref'];oldmanifest=before['bundles'][0]['manifest'];save()
+  def recover(c,admin,profile,item):
+   pending=c.get('/admin/requests/recovery',headers=admin);pending.raise_for_status();rows=pending.json()['requests'];assert len(rows)==1 and rows[0]['request_id']==request_id and rows[0]['owner_status']=='dead' and rows[0]['recoverable']
+   item['pending_before']=rows;listing=c.get('/admin/bundles',headers=admin).json();assert listing['leases']
+   r=c.get('/ready');assert r.status_code==503 and r.json()['error']['code']=='recovery_only';item['ready_before']={'status':r.status_code,'body':r.json()}
+   body={'model':'decision-model','input':{'text':'ready'},'questions':[{'id':'q','type':'boolean','instruction':'Does the data contain the word ready?'}]}
+   blocked=[('/v1/decisions',body,None),('/v1/scores',{'request_id':'blocked','question_id':'q','input_ids':[1],'label_ids':[2]},None),('/admin/bundles/prepare',{'reference':oldref},admin),('/admin/bundles/activate',{'alias':'decision-model','reference':oldref,'expected_generation':0},admin),('/admin/bundles/disable',{'alias':'decision-model','expected_generation':0},admin),('/admin/bundles/retire',{'reference':oldref},admin)]
+   item['blocked_writes']=[]
+   for path,body,headers in blocked:
+    r=c.post(path,json=body,headers=headers);assert r.status_code==503 and r.json()['error']['code']=='recovery_only',(path,r.text);item['blocked_writes'].append({'path':path,'status':r.status_code,'body':r.json()})
+   assert c.get('/admin/bundles',headers=admin).json()==listing
+   denied=c.post('/admin/requests/'+request_id+'/recover');assert denied.status_code==401;item['admin_auth_rejection']=denied.json()
+   r=c.post('/admin/requests/'+request_id+'/recover',headers=admin);r.raise_for_status();assert r.json()=={'recovered':True};item['recover_response']=r.json()
+   r=c.post('/admin/requests/'+request_id+'/recover',headers=admin);assert r.status_code==200 and r.json()=={'recovered':False};item['repeat_recover_response']=r.json()
+   after=c.get('/admin/bundles',headers=admin).json();assert not after['leases'] and after['routes']==listing['routes'];item['listing_after']=after
+   assert c.get('/ready').status_code==503
+   afterdb=registry_view(registry);old=next(b for b in afterdb['bundles'] if b['ref']==oldref);assert old['state']=='FAILED' and old['manifest']==oldmanifest;assert not afterdb['leases'] and not afterdb['lease_work']
+   workers=c.get('/admin/workers',headers=admin).json()['workers'];assert profile['worker_id'] not in [w['worker_id'] for w in workers];item['recovery_worker_not_admitted']=True;item['after_recover_registry']=afterdb;save()
+  start_stage(engine,'maintenance',registry,recover,recovery=True)
+  attempt['after_recovery_stopped']=registry_view(registry);assert not attempt['after_recovery_stopped']['blockers']
+  def serve(c,admin,profile,item):
+   assert profile['recovery_only'] is False
+   if item['stage']=='serve':
+    bundle=Bundle(id='recovered-profile',version=1,model=profile['model']);item['new_bundle']=bundle.model_dump(mode='json')
+    for path,payload in [('/admin/bundles',bundle.model_dump(mode='json')),('/admin/bundles/prepare',{'reference':bundle.reference}),('/admin/bundles/activate',{'alias':'decision-model','reference':bundle.reference,'expected_generation':0})]:
+     r=c.post(path,json=payload,headers=admin);r.raise_for_status()
+   r=c.get('/ready');r.raise_for_status();assert r.json()['ready'] is True;item['ready']=r.json()
+   item['responses']=[]
+   for i in range(10):
+    r=c.post('/v1/decisions',json={'model':'decision-model','request_id':f'{engine}-{item["stage"]}-{i}','input':{'text':'ready'},'questions':[{'id':'q','type':'boolean','instruction':'Does the data contain the word ready?'}]});r.raise_for_status();result=DecisionResponse.model_validate(r.json());assert result.status=='completed' and result.bundle=='recovered-profile@1';item['responses'].append(r.json())
+   listing=c.get('/admin/bundles',headers=admin).json();assert not listing['leases'];item['listing_after']=listing
+   old=next(b for b in registry_view(registry)['bundles'] if b['ref']==oldref);assert old['state']=='FAILED' and old['manifest']==oldmanifest
+   item['profile_after']=c.get('/admin/profile',headers=admin).json();assert not any(item['profile_after']['admission'][k] for k in ['requests','expanded_tokens','expanded_branches','queued_requests']);save()
+  start_stage(engine,'serve',registry,serve)
+  start_stage(engine,'restart',registry,serve)
+  attempt['after']=registry_view(registry);assert not attempt['after']['blockers']
+  attempt['after_snapshot']=snapshot(registry,ROOT/f'recovery-mode-{engine}-after-95de3d5')
+  if engine=='sglang':assert attempt['retained_original_artifact_hashes']=={n:sha(oldrun/n) for n in attempt['retained_original_artifact_hashes']}
+  attempt['execution_complete']=True;attempt['finished_at']=time.time();save();print(json.dumps({'engine':engine,'execution_complete':True,'strict_serving_responses':20}),flush=True)
+ report['complete']=True
+except BaseException as e:report['failure']={'type':type(e).__name__,'message':str(e)};raise
+finally:report['finished_at']=time.time();save()

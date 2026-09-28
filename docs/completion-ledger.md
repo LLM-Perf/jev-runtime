@@ -514,6 +514,20 @@ this known unsupported configuration before allocation; 443 local tests pass.
 Core/plugin code is unchanged, functional coverage remains 24/40 and BF16 failures
 and all broader release gates remain. See [full-FP32 diagnostics](full-fp32-validation.md).
 
+At `95de3d5`, explicit recovery-only startup exposes inspection and administrative
+recovery while rejecting Jev scoring/publication and remaining unready. It skips
+canaries, bootstrap and admission enrollment without bypassing cancellation or
+precision/mode checks. On DSW, the retained SGLang preparation lease is recovered
+using explicit FP32 invariant execution and a new bundle; the old ordinary-mode
+manifest and failure evidence remain. vLLM recovers a journaled before-dispatch
+process SIGKILL using its BF16 ordinary profile. Each engine rejects six writes,
+requires admin authentication, recovers one branch and completes 20 validated
+responses across two subsequent normal starts. Both registries drain; all 276
+retained owned process records are terminal, GPU7 returns to baseline and four
+SQLite snapshots verify. Exact-source local tests pass 452 checks and all three
+wheel payloads match source. Coverage and broader release gates remain unchanged.
+See [recovery-only validation](recovery-mode-validation.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
@@ -525,7 +539,7 @@ and all broader release gates remain. See [full-FP32 diagnostics](full-fp32-vali
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
-| 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Preparation-stage startup crash recovery (retained SGLang FP32 lease), interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
+| 24h soak and fault injection | Gateway/native quota recovery, READY-LoRA native group crash/restart, retained SGLang preparation-crash recovery and vLLM before-dispatch recovery passed in scoped profiles; soak not run | Additional preparation/dispatch crash timings, interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
 | SDKs and deployment productization | SDKs, immutable wheels/offline locks, and stable-proxy two-worker installed-wheel gateway upgrade/rollback pass on both engines | Expanded rollout faults/load, deployment images, migration/downgrade, handoff and final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
