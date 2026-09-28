@@ -299,11 +299,12 @@ def reference_readout(source: dict, engine: dict) -> str:
         not engine["complete"]
         or source["model_id"] != model["id"]
         or source["revision"] != model["revision"]
-        or model["dtype"] != "bfloat16"
+        or model["dtype"] not in ("bfloat16", "float32")
         or model.get("readout_dtype") not in ("bfloat16", "float32")
+        or (model["dtype"] == "float32" and model.get("readout_dtype") != "float32")
         or model["quantization"] is not None
     ):
-        raise ValueError("Expected matching unquantized BF16 backbone and explicit BF16/FP32 head")
+        raise ValueError("Expected matching unquantized BF16/FP32 backbone and non-narrowing head")
     return model["readout_dtype"]
 
 
@@ -320,14 +321,20 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
     engine = json.loads(engine_path.read_text())
     source = json.loads((model_path / "jev-source.json").read_text())
     readout_dtype = reference_readout(source, engine)
+    backbone_dtype = engine["model"]["dtype"]
+    tensor_dtype = getattr(torch, backbone_dtype)
+    recompute_head = backbone_dtype != readout_dtype
     if torch.cuda.device_count() != 1:
         raise ValueError("Expose exactly one allocated GPU")
     free, total = torch.cuda.mem_get_info()
     budget = cuda_budget(free, total, 6144, 3072)
     weights = sum(p.stat().st_size for p in model_path.glob("*.safetensors"))
-    if weights * 2 > budget:
+    if weights * (3 if backbone_dtype == "float32" else 2) > budget:
         raise ValueError("Insufficient bounded resident reference capacity")
     torch.set_num_threads(2)
+    if backbone_dtype == "float32":
+        torch.set_float32_matmul_precision("highest")
+        torch.backends.cuda.matmul.allow_tf32 = False
     torch.cuda.set_per_process_memory_fraction(budget / total)
     torch.cuda.reset_peak_memory_stats()
     report = {
@@ -337,12 +344,10 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
         "script_sha256": sha(Path(__file__)),
         "reference_contract": {
             "device": "cuda",
-            "backbone_dtype": "bfloat16",
+            "backbone_dtype": backbone_dtype,
             "head_dtype": readout_dtype,
             "head_projection": (
-                "float32_linear_at_module_boundary"
-                if readout_dtype == "float32"
-                else "unchanged_model_linear"
+                "float32_linear_at_module_boundary" if recompute_head else "unchanged_model_linear"
             ),
             "log_softmax_dtype": "float32",
             "attention": attention,
@@ -373,7 +378,7 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
         model = (
             transformers.AutoModelForCausalLM.from_pretrained(
                 str(model_path),
-                dtype=torch.bfloat16,
+                dtype=tensor_dtype,
                 trust_remote_code=False,
                 local_files_only=True,
                 attn_implementation=attention,
@@ -381,17 +386,25 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
             .eval()
             .to("cuda")
         )
+        parameters = list(model.parameters())
+        if any(p.is_floating_point() and p.dtype != tensor_dtype for p in parameters):
+            raise ValueError("Reference has unexpected mixed parameter precision")
+        report["model_parameters"] = {
+            "floating_dtype": backbone_dtype,
+            "unique_tensor_count": len(parameters),
+            "unique_elements": sum(p.numel() for p in parameters),
+        }
         head, embedding = model.get_output_embeddings(), model.get_input_embeddings()
         if not isinstance(head, torch.nn.Linear):
             raise ValueError("Reference requires an unquantized Linear output head")
         head_weight, embedding_weight = head.weight, embedding.weight
         pointers = (head_weight.data_ptr(), embedding_weight.data_ptr())
-        if head_weight.dtype != torch.bfloat16 or embedding_weight.dtype != torch.bfloat16:
+        if head_weight.dtype != tensor_dtype or embedding_weight.dtype != tensor_dtype:
             raise ValueError("Unexpected backbone/embedding parameter dtype")
         observed = []
 
         def project(module, inputs, output):
-            if readout_dtype == "float32":
+            if recompute_head:
                 # Recompute without casting a shared Parameter: the input
                 # embedding must remain BF16 even when it is tied to the head.
                 output = torch.nn.functional.linear(
@@ -431,8 +444,8 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
             hook.remove()
         if observed != [
             {
-                "input_dtype": "bfloat16",
-                "weight_dtype": "bfloat16",
+                "input_dtype": backbone_dtype,
+                "weight_dtype": backbone_dtype,
                 "output_dtype": readout_dtype,
             }
         ] * len(engine["cases"]):
@@ -441,15 +454,15 @@ def reference(model_path: Path, engine_path: Path, output: Path, attention: str)
             head.weight is not head_weight
             or embedding.weight is not embedding_weight
             or (head.weight.data_ptr(), embedding.weight.data_ptr()) != pointers
-            or head.weight.dtype != torch.bfloat16
-            or embedding.weight.dtype != torch.bfloat16
+            or head.weight.dtype != tensor_dtype
+            or embedding.weight.dtype != tensor_dtype
         ):
             raise ValueError("Reference changed the model's shared parameter identity or dtype")
         report["readout_observations"] = observed
         report["parameters"] = {
             "tied_input_output_weights": pointers[0] == pointers[1],
-            "input_embedding_dtype": "bfloat16",
-            "output_weight_dtype": "bfloat16",
+            "input_embedding_dtype": backbone_dtype,
+            "output_weight_dtype": backbone_dtype,
             "identities_and_dtypes_preserved": True,
         }
         torch.cuda.synchronize()

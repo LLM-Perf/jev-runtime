@@ -40,13 +40,17 @@ def test_budget_uses_each_device_memory_denominator_and_records_mapping(monkeypa
 
 
 @pytest.mark.parametrize(
-    "engine,flag", [("vllm", "--tensor-parallel-size"), ("sglang", "--tp-size")]
+    "engine,flag,readout,dtype",
+    [
+        (engine, flag, readout, dtype)
+        for engine, flag in [("vllm", "--tensor-parallel-size"), ("sglang", "--tp-size")]
+        for readout, dtype in [("model", "bfloat16"), ("float32", "bfloat16"), ("model", "float32")]
+    ],
 )
-@pytest.mark.parametrize("readout", ["model", "float32"])
 @pytest.mark.parametrize("explicit_template", [False, True])
 @pytest.mark.parametrize("explicit_tokenizer", [False, True])
 def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
-    engine, flag, readout, explicit_template, explicit_tokenizer, monkeypatch, tmp_path
+    engine, flag, readout, dtype, explicit_template, explicit_tokenizer, monkeypatch, tmp_path
 ):
     import hashlib
     import json
@@ -76,6 +80,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         adapters_root=None,
         engine_run_dir=None,
         readout_dtype=readout,
+        dtype=dtype,
         chat_template_path=None,
         chat_template_sha256=None,
         chat_template_format="json",
@@ -115,7 +120,9 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     assert record["tensor_parallel_size"] == 2
     assert [gpu["index"] for gpu in record["gpus_before"]] == [6, 7]
     assert record["gpu_before"]["uuid"] == "gpu-6"
-    expected = "bfloat16" if readout == "model" else readout
+    expected = dtype if readout == "model" else readout
+    assert record["dtype"] == dtype and command[command.index("--dtype") + 1] == dtype
+    assert json.loads((args.run_dir / "config.json").read_text())["dtype"] == dtype
     assert record["readout_dtype"] == expected
     tokenizer = args.tokenizer_path if explicit_tokenizer else model
     assert record["tokenizer_path"] == str(tokenizer)
@@ -133,6 +140,9 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         assert snapshot["sha256"] == hashlib.sha256(b"{{ messages[0].content }}").hexdigest()
         assert (args.run_dir / "chat_template.jinja").read_text() == "{{ messages[0].content }}"
     if engine == "vllm":
+        assert ("--attention-backend" in command) == (dtype == "float32")
+        if dtype == "float32":
+            assert command[command.index("--attention-backend") + 1] == "FLEX_ATTENTION"
         assert captured["env"]["VLLM_BATCH_INVARIANT"] == "0"
         assert ("--hf-overrides" in command) == (readout == "float32")
         if readout == "float32":
@@ -141,3 +151,13 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
             }
     else:
         assert ("--enable-fp32-lm-head" in command) == (readout == "float32")
+
+
+def test_fp32_backbone_does_not_extend_managed_lora_profile(tmp_path):
+    from types import SimpleNamespace
+
+    with pytest.raises(ValueError, match="frozen BF16"):
+        dsw_service.launch(
+            SimpleNamespace(dtype="float32", adapters_root=tmp_path, run_dir=tmp_path / "run")
+        )
+    assert not (tmp_path / "run").exists()

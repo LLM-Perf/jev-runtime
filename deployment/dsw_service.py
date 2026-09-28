@@ -78,6 +78,11 @@ def check_gpu_budgets(indices: list[int], engine: str, fraction: float, reserve:
 
 
 def launch(args):
+    dtype = getattr(args, "dtype", "bfloat16")
+    if dtype not in {"bfloat16", "float32"}:
+        raise ValueError("The isolated launcher supports BF16 or FP32 model precision")
+    if args.adapters_root and dtype != "bfloat16":
+        raise ValueError("Managed adapters require the frozen BF16 backbone profile")
     indices = device_indices(args.gpu, args.gpus)
     root = args.run_dir.resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -113,8 +118,8 @@ def launch(args):
         "model_id": source["model_id"],
         "model_revision": source["revision"],
         "tokenizer": str(tokenizer),
-        "dtype": "bfloat16",
-        "readout_dtype": "float32" if args.readout_dtype == "float32" else "bfloat16",
+        "dtype": dtype,
+        "readout_dtype": "float32" if args.readout_dtype == "float32" else dtype,
         "batch_invariant": getattr(args, "batch_invariant", False),
         "registry_path": str(root / "registry.db"),
         "bootstrap_alias": "decision-model",
@@ -220,7 +225,7 @@ def launch(args):
             "--port",
             str(args.port),
             "--dtype",
-            "bfloat16",
+            dtype,
             "--max-model-len",
             "2048",
             "--max-num-seqs",
@@ -233,6 +238,10 @@ def launch(args):
             str(args.memory_fraction),
             "--enforce-eager",
         ]
+        if dtype == "float32":
+            # The pinned vLLM FlashAttention/Triton backends reject FP32.
+            # FlexAttention declares FP32 support; it still needs live validation.
+            command.extend(["--attention-backend", "FLEX_ATTENTION"])
         if args.api_workers > 1:
             command.extend(["--api-server-count", str(args.api_workers)])
         if len(indices) > 1:
@@ -268,7 +277,7 @@ def launch(args):
             "--port",
             str(args.port),
             "--dtype",
-            "bfloat16",
+            dtype,
             "--context-length",
             "2048",
             "--max-running-requests",
@@ -331,6 +340,7 @@ def launch(args):
         "gpu_before": gpu,
         "gpus_before": gpus,
         "tensor_parallel_size": len(indices) if gpus else None,
+        "dtype": dtype,
         "readout_dtype": config["readout_dtype"],
         "batch_invariant": config["batch_invariant"],
         "chat_template_source": template_source.model_dump() if template_source else None,
@@ -385,6 +395,7 @@ def main():
     parser.add_argument("--port", type=int, default=18795)
     parser.add_argument("--memory-fraction", type=float, default=0.07)
     parser.add_argument("--reserve-mib", type=int, default=3072)
+    parser.add_argument("--dtype", choices=["bfloat16", "float32"], default="bfloat16")
     parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
     parser.add_argument("--batch-invariant", action="store_true")
     parser.add_argument("--chat-template-path", type=Path)
@@ -425,6 +436,7 @@ def main():
             or args.api_workers != 1
             or len(indices) != 1
             or args.readout_dtype != "model"
+            or args.dtype != "bfloat16"
             or args.batch_invariant
         ):
             parser.error("managed adapters require the native TP1 single-worker profile")

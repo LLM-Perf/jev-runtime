@@ -43,15 +43,21 @@ async def verify(args):
             model = ModelIdentity.model_validate(profile["model"])
             assert model.readout_dtype in {"bfloat16", "float32"}
             assert profile["capabilities"]["readout_dtype"] == model.readout_dtype
-            assert profile["capabilities"]["model_dtype"] == model.dtype == "bfloat16"
+            assert profile["capabilities"]["model_dtype"] == model.dtype
+            assert model.dtype in {"bfloat16", "float32"}
             report["model"] = model.model_dump(mode="json")
             report["capabilities"] = profile["capabilities"]
             other = "float32" if model.readout_dtype == "bfloat16" else "bfloat16"
-            for name, readout in (("legacy", None), ("wrong", other)):
+            other_backbone = "float32" if model.dtype == "bfloat16" else "bfloat16"
+            for name, changed in (
+                ("legacy", {"readout_dtype": None}),
+                ("wrong", {"readout_dtype": other}),
+                ("wrong_backbone", {"dtype": other_backbone}),
+            ):
                 bundle = Bundle(
                     id="precision-" + uuid.uuid4().hex,
                     version=1,
-                    model=model.model_copy(update={"readout_dtype": readout}),
+                    model=model.model_copy(update=changed),
                 )
                 response = await client.post("/admin/bundles", json=bundle.model_dump(mode="json"))
                 response.raise_for_status()
@@ -78,31 +84,35 @@ async def verify(args):
             checks["zero_leases_after_rejections"] = True
         # A fresh HTTP-attached runtime must compare its declaration with the
         # real engine before it can publish or score. Never mutate the host.
-        bad_settings = settings.model_copy(
-            update={
-                "readout_dtype": other,
-                "bootstrap_alias": None,
-                "registry_path": str(
-                    args.run_dir / ("precision-reject-" + uuid.uuid4().hex + ".db")
-                ),
-            }
-        )
-        backend = (
-            SGLangHTTP(settings.engine_url, settings.model_id, keys["api"])
-            if settings.backend == "sglang"
-            else VLLMHTTP(settings.engine_url, keys["api"])
-        )
-        runtime = await build_runtime(bad_settings, native_backend=backend)
-        try:
+        for name, changed in (
+            ("mismatched_attached_runtime", {"readout_dtype": other}),
+            ("mismatched_backbone_runtime", {"dtype": other_backbone}),
+        ):
+            bad_settings = settings.model_copy(
+                update={
+                    **changed,
+                    "bootstrap_alias": None,
+                    "registry_path": str(
+                        args.run_dir / ("precision-reject-" + uuid.uuid4().hex + ".db")
+                    ),
+                }
+            )
+            backend = (
+                SGLangHTTP(settings.engine_url, settings.model_id, keys["api"])
+                if settings.backend == "sglang"
+                else VLLMHTTP(settings.engine_url, keys["api"])
+            )
+            runtime = await build_runtime(bad_settings, native_backend=backend)
             try:
-                await runtime.start()
-            except JevError as exc:
-                checks["mismatched_attached_runtime"] = {"code": exc.code, "message": str(exc)}
-                assert exc.code == "engine_precision_mismatch"
-            else:
-                raise AssertionError("Mismatched readout precision reached serving")
-        finally:
-            await runtime.close()
+                try:
+                    await runtime.start()
+                except JevError as exc:
+                    checks[name] = {"code": exc.code, "message": str(exc)}
+                    assert exc.code == "engine_precision_mismatch"
+                else:
+                    raise AssertionError("Mismatched precision reached serving")
+            finally:
+                await runtime.close()
         report["passed"] = True
     except BaseException as exc:
         report["passed"] = False

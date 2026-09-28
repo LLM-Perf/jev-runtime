@@ -53,6 +53,8 @@ def test_offline_build_binds_default_and_explicit_readout(compiler):
         ).readout_dtype
         == "float32"
     )
+    fp32 = model_identity(settings.model_copy(update={"dtype": "float32"}), compiler)
+    assert fp32.dtype == fp32.readout_dtype == "float32"
 
 
 @pytest.mark.parametrize(

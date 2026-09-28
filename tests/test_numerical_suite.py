@@ -94,15 +94,17 @@ def test_one_state_failure_is_counted_and_input_is_not_mutated():
     assert engine == before
 
 
-@pytest.mark.parametrize("readout", ["bfloat16", "float32"])
-def test_reference_precision_is_bound_to_saved_model(readout):
+@pytest.mark.parametrize(
+    "backbone,readout", [("bfloat16", "bfloat16"), ("bfloat16", "float32"), ("float32", "float32")]
+)
+def test_reference_precision_is_bound_to_saved_model(backbone, readout):
     source = {"model_id": "fixture", "revision": "a" * 40}
     engine = {
         "complete": True,
         "model": {
             "id": "fixture",
             "revision": "a" * 40,
-            "dtype": "bfloat16",
+            "dtype": backbone,
             "readout_dtype": readout,
             "quantization": None,
         },
@@ -114,7 +116,8 @@ def test_reference_precision_is_bound_to_saved_model(readout):
     for update in (
         {"readout_dtype": None},
         {"readout_dtype": "float16"},
-        {"dtype": "float32"},
+        {"dtype": "float16"},
+        {"dtype": "float32", "readout_dtype": "bfloat16"},
         {"quantization": "awq"},
         {"revision": "b" * 40},
         {"id": "other"},

@@ -27,8 +27,8 @@ HTTP response alone does not establish that the scheduler can reset its pools.
 A timeout or rejected reset still fails collection; it never becomes a cold case.
 
 After the serving engine exits, run independent Transformers reference forwards
-on the saved IDs. This implementation requires an unquantized BF16 backbone and
-an explicitly declared BF16 or FP32 output projection, one visible GPU, a
+on the saved IDs. This implementation requires an unquantized BF16 or FP32 backbone
+and an explicitly declared output projection of equal or higher precision, one visible GPU, a
 resident model fitting the bounded allocator, batch
 size one and `use_cache=False`. It retains GPU identity, package versions, math
 settings, observed head dtype and peak reserved memory. Eager and SDPA are two
@@ -43,6 +43,15 @@ logits dtype and records every projection's input, weight and output dtype.
 Changing precision creates a different reference/serving contract; it does not
 repair or overwrite earlier BF16-profile failures. This computation is an
 independent reference, not a benchmark of the serving engine's optimized head.
+
+An FP32-backbone reference loads all floating parameters in FP32, checks that no
+unexpected mixed parameter precision remains, and uses the unchanged FP32 Linear
+head. It explicitly requests highest-precision PyTorch matmul and disables TF32
+for CUDA matmul. Its report retains actual parameter counts/dtypes and CUDA
+allocator peaks. The resident-memory preflight reserves additional weight
+capacity for expansion of BF16 checkpoints. An engine's configured FP32 dtype
+does not by itself attest every kernel's internal arithmetic; selected backend
+and actual numerical results must still be recorded.
 
 ```sh
 # In the same source checkout / isolated engine environment used by the campaign:

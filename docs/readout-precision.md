@@ -35,6 +35,16 @@ the Jev setting and native engine flag. Omitting it keeps the default readout.
 For a gateway, the setting declares the required remote profile; it does not
 change the existing remote engine.
 
+For a separate full-FP32 diagnostic profile, the isolated launcher accepts
+`--dtype float32`; the readout defaults to that model dtype. The native vLLM
+launcher explicitly selects `FLEX_ATTENTION`, whose pinned implementation
+declares FP32 support. SGLang retains the launcher's Triton attention path. This
+changes the backbone and, for vLLM, the attention backend; it is not a controlled
+head-only intervention or the high-performance default. Settings, immutable
+bundle identity and process manifests retain the selected dtype. Managed LoRA
+continues to require the frozen BF16 backbone profile. A successful launch is
+not numerical, performance or cross-model certification.
+
 Native adapters report the model and output-layer dtype from engine model
 configuration. SGLang's HTTP adapter reads explicit startup configuration;
 `auto` is not guessed. Unknown or mismatched reported precision prevents a
