@@ -1,0 +1,52 @@
+{
+  "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "started_at": 1790558934.8447363,
+  "script_sha256": "4541122f986693cebf811218af4a204f2b9402dcdeb9ea4b64fe51ed4f0e18dc",
+  "attempts": [
+    {
+      "engine": "vllm",
+      "tag": "quota",
+      "label": "quota-7391ed3",
+      "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+      "started_at": 1790558946.2240138,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/combined-reservation-7391ed3/run_quota.py",
+        "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+        "vllm"
+      ],
+      "identity": {
+        "pid": 2741917,
+        "start_ticks": "431448556",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "remaining_group": [],
+      "finished_at": 1790558993.5911841
+    },
+    {
+      "engine": "sglang",
+      "tag": "quota",
+      "label": "quota-7391ed3",
+      "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+      "started_at": 1790558997.139271,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/combined-reservation-7391ed3/run_quota.py",
+        "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+        "sglang"
+      ],
+      "identity": {
+        "pid": 2743173,
+        "start_ticks": "431453647",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "returncode": 0,
+      "remaining_group": [],
+      "finished_at": 1790559048.6718247
+    }
+  ],
+  "linux_contracts_returncode": 0,
+  "complete": true,
+  "finished_at": 1790559048.672176
+}

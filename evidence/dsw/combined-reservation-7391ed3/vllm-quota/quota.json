@@ -1,0 +1,134 @@
+{
+  "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "runtime_source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "started_at": 1790558989.3913143,
+  "process_identity": {
+    "pid": 2741920,
+    "start_ticks": "431448619",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "service_launch_command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager",
+    "--api-server-count",
+    "2"
+  ],
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "limits": {
+    "max_requests": 2,
+    "max_tokens": 524288,
+    "max_queue": 2,
+    "max_tenant_requests": 1,
+    "max_tenant_tokens": 262144,
+    "max_tenant_queue": 1,
+    "max_branches": 129,
+    "max_tenant_branches": 128
+  },
+  "qualification": "Colocated two-worker GPU functional check; not throughput or multi-node certification",
+  "checks": {
+    "distinct_worker_connections": {
+      "38aeb6b0c28b4cadbd4dd8d1f150fb20": 2,
+      "3bab2be106f44d74ab665ce88453dbb3": 2
+    },
+    "long_request_admitted": {
+      "request_id": "long-2a451a8b71ab43b394568a849efd7c2e",
+      "owner": "38aeb6b0c28b4cadbd4dd8d1f150fb20",
+      "tenant": "alpha",
+      "tokens": 82048,
+      "branches": 128,
+      "state": "ADMITTED"
+    },
+    "same_tenant_queued_on_peer": {
+      "request_id": "queued-8c42ebe533d3438c87b476016c30a7ea",
+      "owner": "3bab2be106f44d74ab665ce88453dbb3",
+      "tenant": "alpha",
+      "tokens": 641,
+      "branches": 1,
+      "state": "QUEUED"
+    },
+    "shared_tenant_queue_limit": {
+      "http_status": 429
+    },
+    "tenant_cannot_cancel_peer_tenant": true,
+    "eligible_other_tenant_served_during_long_request": {
+      "status": "completed",
+      "usage": {
+        "questions": 1,
+        "successful_questions": 1,
+        "scoring_sequences": 1,
+        "logical_prompt_tokens": 641,
+        "engine_prompt_tokens": 641,
+        "engine_completion_tokens": 1,
+        "cached_prompt_tokens": 640
+      }
+    },
+    "queued_cancel_releases_ticket": {
+      "http_status": 499
+    },
+    "queued_deadline_releases_ticket": {
+      "http_status": 504
+    },
+    "expanded_branch_budget_shared_across_workers": {
+      "queued": {
+        "request_id": "branches-a440c628c3f74f3dbb8cb9fac6b75dfa",
+        "owner": "3bab2be106f44d74ab665ce88453dbb3",
+        "tenant": "beta",
+        "tokens": 1282,
+        "branches": 2,
+        "state": "QUEUED"
+      },
+      "admission": {
+        "scope": "shared_registry_engine",
+        "limits": {
+          "max_requests": 2,
+          "max_tokens": 524288,
+          "max_queue": 2,
+          "max_tenant_requests": 1,
+          "max_tenant_tokens": 262144,
+          "max_tenant_queue": 1,
+          "max_branches": 129,
+          "max_tenant_branches": 128
+        },
+        "requests": 1,
+        "expanded_tokens": 82048,
+        "expanded_branches": 128,
+        "queued_requests": 1
+      }
+    },
+    "shared_gauge_identical_on_both_workers": true,
+    "peer_cancel_active_owner_and_drain": {
+      "http_status": 499,
+      "remaining_tickets": 0
+    },
+    "serving_after_drain": true,
+    "retired_after_drain": true
+  },
+  "passed": true,
+  "finished_at": 1790558990.0187914
+}

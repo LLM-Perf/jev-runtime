@@ -580,3 +580,9 @@ from the passing local and DSW checks; see `evidence/hosted-ci-ad9b417.json`.
 Hosted CI run `36318099621` at `0c1e38d` again executed zero steps: account
 billing/spending eligibility rejected job startup. See
 `evidence/hosted-ci-0c1e38d.json`; local and DSW checks are separate evidence.
+
+## Combined stable-route reservation checkpoint
+
+At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes.
+
+See [validation and matched measurements](combined-reservation-validation.md).

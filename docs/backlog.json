@@ -575,14 +575,17 @@
         "tests/integration/live_shared_admission.py",
         "evidence/dsw/shared-admission-validation-4944efd.json",
         "evidence/dsw/quota-crash-validation-0df49a1.json",
-        "docs/atomic-admission-performance.md"
+        "docs/atomic-admission-performance.md",
+        "docs/combined-reservation-validation.md",
+        "evidence/dsw/combined-reservation-7391ed3/verified-summary.json"
       ],
       "progress_notes": [
         "Pre-dispatch branch/token budgets and per-tenant fairness are implemented. Default runtimes, gateways and plugins now share durable request/token/expanded-branch and queue budgets across same-host workers using one exact engine identity and local registry.",
         "Uncertain aborts and failed durable cleanup retain capacity until confirmed recovery. Policy changes require stopped workers and drained leases. Three actual Python processes passed an atomic branch-reservation race locally.",
         "At 4944efd both native engines passed targeted real two-worker/two-tenant shared quota, queue-full, eligible-tenant progress, queued deadline/cancel and peer-owner cancellation checks; lease/ticket tables drained. Controlled representative mixed-load performance, hardware/LoRA/database fault profiles and multi-node quotas remain.",
         "Four DSW cases passed durable admission and queued-ticket retention across SIGKILL/restart: gateways on both engines at aba3b52 and native API/GPU process groups at 0df49a1. Original settings/credentials, withheld capacity, ordered explicit recovery and final drain were verified; native groups exited and GPU memory returned before same-command restart. This is a single-worker SmolLM2 profile, not a broad fault certification.",
-        "At 3377c95 both native engines again pass two-worker/two-tenant shared quotas, queue-full rejection, eligible-tenant progress, queued cancel/deadline and peer-owner cancellation; journal and quota now commit atomically. Unconfirmed abort retention remains covered by local recovery tests."
+        "At 3377c95 both native engines again pass two-worker/two-tenant shared quotas, queue-full rejection, eligible-tenant progress, queued cancel/deadline and peer-owner cancellation; journal and quota now commit atomically. Unconfirmed abort retention remains covered by local recovery tests.",
+        "At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes."
       ],
       "acceptance_complete": false
     },
@@ -614,14 +617,17 @@
         "tests/integration/live_abort_prefix.py",
         "evidence/dsw/sglang-prefix-0421d50/abort-prefix.json",
         "docs/native-rollout-cancellation.md",
-        "evidence/dsw/native-rollout-cancel-b20d3f4/verified-summary.json"
+        "evidence/dsw/native-rollout-cancel-b20d3f4/verified-summary.json",
+        "docs/combined-reservation-validation.md",
+        "evidence/dsw/combined-reservation-7391ed3/verified-summary.json"
       ],
       "progress_notes": [
         "Durable cancellation ownership and uncertain-abort retention are implemented.",
         "Both native engines have peer-worker cancellation evidence; expanded fault suites remain.",
         "A real SGLang prefix-abort collision was reproduced and fixed with fixed-length branch IDs. The live serving compiler retest preserves sibling completion; both engines pass their functional/1,000-switch suites at 0421d50.",
         "Shared admission retains the full work reservation with uncertain-abort leases; synchronous compilation/admission cannot dispatch after the request deadline. Local regressions cover both boundaries.",
-        "At b20d3f4, both native engines pass three real scoring cancellations across installed-wheel rollback (6f0cda8 to 7739145), with completed and active RPC observations, pinned bundle/worker/lease, blocked early drain, HTTP 499, released lease and resumed serving. Continuous traffic passes 580/580 vLLM and 627/627 SGLang over 19 proxy-map generations each; initial admin-client setup failures remain. Local 368 tests pass; all 145 distinct historical owned records are terminal. This is one shared-GPU SmolLM2 TP1 two-gateway-worker profile; broader fault, engine-process upgrade, performance, image, migration and soak gates remain open."
+        "At b20d3f4, both native engines pass three real scoring cancellations across installed-wheel rollback (6f0cda8 to 7739145), with completed and active RPC observations, pinned bundle/worker/lease, blocked early drain, HTTP 499, released lease and resumed serving. Continuous traffic passes 580/580 vLLM and 627/627 SGLang over 19 proxy-map generations each; initial admin-client setup failures remain. Local 368 tests pass; all 145 distinct historical owned records are terminal. This is one shared-GPU SmolLM2 TP1 two-gateway-worker profile; broader fault, engine-process upgrade, performance, image, migration and soak gates remain open.",
+        "At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes."
       ],
       "acceptance_complete": false
     },
@@ -656,14 +662,17 @@
         "evidence/dsw/vllm-input300-c11d2b3/report.json",
         "evidence/dsw/sglang-input300-c11d2b3/report.json",
         "evidence/dsw/input300-validation-c11d2b3.json",
-        "docs/atomic-admission-performance.md"
+        "docs/atomic-admission-performance.md",
+        "docs/combined-reservation-validation.md",
+        "evidence/dsw/combined-reservation-7391ed3/verified-summary.json"
       ],
       "progress_notes": [
         "144 scenarios, strict native-vs-typed paired accounting and structured-generation choice baseline are implemented.",
         "Both engines completed three five-second colocated SmolLM2 repeats at harness 444fd1b/runtime 60b3415; actual generation prompt/output IDs and all-attempt costs are retained. HTTP 200 truncation is rejected in a real SGLang negative check.",
         "Generation and selected-label decisions disagree on the synthetic fixture; no equivalent-quality speedup is claimed. Plugin/native throughput remains below 90% in several repeats.",
         "A frozen 300-input scoring pool completed both engines with exact per-variant parity, round-robin indices and all-attempt phase observations. Multi-input generation, representative workloads, remaining candidate/other Jev baselines and the controlled matrix remain incomplete.",
-        "Same-harness before/after BF16 TP1/API2 C=1/16 warm-fixture measurements retain all 45,970 successful timed attempts across 48 cohorts. Summaries, exact input/label IDs, settings, cleanup and 117 artifact hashes were independently verified. This is not the controlled 144-case release matrix."
+        "Same-harness before/after BF16 TP1/API2 C=1/16 warm-fixture measurements retain all 45,970 successful timed attempts across 48 cohorts. Summaries, exact input/label IDs, settings, cleanup and 117 artifact hashes were independently verified. This is not the controlled 144-case release matrix.",
+        "At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes."
       ],
       "acceptance_complete": false
     },
@@ -695,7 +704,9 @@
         "benchmarks/compare_compiler.py",
         "packages/vllm/src/jev_vllm/tokenizer.py",
         "evidence/dsw/vllm-encoding-comparison-c11d2b3.json",
-        "docs/atomic-admission-performance.md"
+        "docs/atomic-admission-performance.md",
+        "docs/combined-reservation-validation.md",
+        "evidence/dsw/combined-reservation-7391ed3/verified-summary.json"
       ],
       "progress_notes": [
         "CPU profiles motivated bounded encoding caching and persistent FULL-synchronous WAL connections.",
@@ -704,7 +715,8 @@
         "On the 300-input colocated vLLM check, mean compilation fell from 3.85–3.91 ms to 1.78–1.90 ms, but plugin/native throughput remains about 80%. This is not controlled release certification.",
         "SGLang at c11d2b3 completed all 2,078 attempts on the same 300 input/label-ID lists; compile means 2.28–2.41 ms and plugin/native throughput 76–83%. No matching pre-change varying-input GPU cohort was run for SGLang.",
         "After shared admission, short two-worker warm-input cohorts at 4944efd completed all attempts: 1324 vLLM and 1168 SGLang. Ratios remain 83.0–88.9% and 79.9–83.9%; configuration differs from earlier checkpoints, so no isolated admission regression magnitude is claimed.",
-        "At 3377c95 immediately admitted requests use three durable commits instead of four. Journal+queue time falls in both native engines, but C=1 plugin/native throughput remains below 90% and no consistent overall throughput gain is claimed. C=16 was already above 90% before the change; see docs/atomic-admission-performance.md."
+        "At 3377c95 immediately admitted requests use three durable commits instead of four. Journal+queue time falls in both native engines, but C=1 plugin/native throughput remains below 90% and no consistent overall throughput gain is claimed. C=16 was already above 90% before the change; see docs/atomic-admission-performance.md.",
+        "At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes."
       ],
       "acceptance_complete": false
     },
@@ -980,7 +992,9 @@
         "docs/recovery-mode.md",
         "docs/recovery-mode-validation.md",
         "tests/test_recovery_mode.py",
-        "evidence/dsw/recovery-mode-95de3d5/verified-summary.json"
+        "evidence/dsw/recovery-mode-95de3d5/verified-summary.json",
+        "docs/combined-reservation-validation.md",
+        "evidence/dsw/combined-reservation-7391ed3/verified-summary.json"
       ],
       "progress_notes": [
         "Six distinct model/engine combinations each completed 1,000 configuration switches; gateway crash recovery passed. SmolLM2 on both engines passed another 1,000 switches at 0421d50 after the branch-ID fix. Both engines passed a further 1,000 switches at c11d2b3 after telemetry and tokenizer changes, with 548 SGLang / 469 vLLM successful traffic requests and zero mixed versions; all owned process groups exited.",
@@ -993,7 +1007,8 @@
         "Qwen3-8B and OLMo-2 each passed 1000 switches per engine with zero mixed responses. Strict traffic successes were Qwen 206/362 and OLMo 154/215 (SGLang/vLLM). This does not replace the controlled 24-hour soak.",
         "Two Mistral7B native 1000-switch runs have zero mixed versions, with 229 SGLang / 423 vLLM strict traffic successes. The controlled 24h soak and expanded fault profiles remain unrun.",
         "Source f2ccc2a exposes an unresolved preparation-stage crash: unsupported ordinary SGLang FP32 RMSNorm dispatch kills the native group, leaving one lease/work journal and one PREPARING bundle. All recorded owned groups exit, but registry drain fails. The original audit failure, traceback and consistent private SQLite snapshot are retained without forced recovery or state deletion. Launcher guard 3233a80 prevents this known unsupported diagnostic launch before allocation; it does not close preparation-crash recovery or broaden the previously qualified restart profiles.",
-        "At 95de3d5, explicit recovery-only startup retains engine precision/mode checks while skipping admission, canaries, bootstrap and publication; Jev writes/raw scores are rejected and readiness remains closed. DSW recovers the retained SGLang preparation-crash lease using explicit FP32 invariant execution plus a newly built bundle; its ordinary-mode failure and old immutable manifest remain unchanged. vLLM separately recovers a before-dispatch journal process SIGKILL in its BF16 ordinary profile. Each engine rejects six writes, enforces admin recovery authentication, releases one journaled branch only through confirmed cancellation, then serves 20 validated responses across two normal starts. Both registries drain, four before/after SQLite snapshots verify, all 276 retained owned groups are terminal and GPU7 returns to baseline. Exact-source 452 local tests and three source-matched wheel builds pass; DSW runs source. No model count, numerical, quality, performance, soak, deployment or full release gate is newly accepted."
+        "At 95de3d5, explicit recovery-only startup retains engine precision/mode checks while skipping admission, canaries, bootstrap and publication; Jev writes/raw scores are rejected and readiness remains closed. DSW recovers the retained SGLang preparation-crash lease using explicit FP32 invariant execution plus a newly built bundle; its ordinary-mode failure and old immutable manifest remain unchanged. vLLM separately recovers a before-dispatch journal process SIGKILL in its BF16 ordinary profile. Each engine rejects six writes, enforces admin recovery authentication, releases one journaled branch only through confirmed cancellation, then serves 20 validated responses across two normal starts. Both registries drain, four before/after SQLite snapshots verify, all 276 retained owned groups are terminal and GPU7 returns to baseline. Exact-source 452 local tests and three source-matched wheel builds pass; DSW runs source. No model count, numerical, quality, performance, soak, deployment or full release gate is newly accepted.",
+        "At 7391ed3, stable-route SharedAdmission pins the immutable bundle, journals every engine branch and reserves capacity in one FULL-synchronous transaction; normal completion uses two commits instead of three. Route generation/digest changes trigger one authoritative pin-before-compile fallback. 463 local tests, three source-matched wheel builds and 49 isolated Linux tests pass; the initial missing-pytest launcher failure is retained. Both real API2 engines pass 13 quota/cancellation checks. Matched d8a2649/7391ed3 hot-input C=1/16 measurements retain 46,835/46,835 strict successes over 48 cohorts. Commit-related phase time falls but C=1 plugin/native throughput remains 82–88%, with no consistent end-to-end throughput gain. 153 artifact hashes and 237 source files verify, all 288 retained owned groups are terminal and GPU7 returns to baseline. No release gate or model-coverage denominator changes."
       ],
       "acceptance_complete": false
     },

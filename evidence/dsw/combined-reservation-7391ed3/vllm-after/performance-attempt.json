@@ -1,0 +1,137 @@
+{
+  "harness_source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "runtime_source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "engine": "vllm",
+  "qualification": "colocated development measurement, not release certification",
+  "wrapper_sha256": "3c6279087135db04a06ec44e683962572aa30cfa40e9466ead970e8ffbbdf197",
+  "started_at": 1790558339.8637443,
+  "stages": {
+    "ready": {
+      "ready": true,
+      "elapsed_seconds": 43.094386817887425
+    },
+    "c1": {
+      "completed": true
+    },
+    "c16": {
+      "completed": true
+    },
+    "postcheck": {
+      "zero_leases": true,
+      "zero_admission": true,
+      "all_active_bundles_healthy": true,
+      "active_routes": [
+        {
+          "alias": "bench-46b6d94c3d7d4cd3b7a2a33f3e28b369",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "bench-c5d6f336b01e4924826b6bb8aa6bc903",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "decision-model",
+          "ref": "default@1",
+          "generation": 1
+        }
+      ]
+    },
+    "cleanup": {
+      "process_record": {
+        "identity": {
+          "pid": 2738234,
+          "start_ticks": "431387935",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "engine": "vllm",
+        "mode": "native-plugin",
+        "command": [
+          "/root/jev-runtime/envs/vllm/bin/vllm",
+          "serve",
+          "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "--served-model-name",
+          "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "18795",
+          "--dtype",
+          "bfloat16",
+          "--max-model-len",
+          "2048",
+          "--max-num-seqs",
+          "4",
+          "--max-num-batched-tokens",
+          "512",
+          "--max-logprobs",
+          "128",
+          "--gpu-memory-utilization",
+          "0.07",
+          "--enforce-eager",
+          "--api-server-count",
+          "2"
+        ],
+        "model": {
+          "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+        },
+        "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "gpu_before": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "gpus_before": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "tensor_parallel_size": 1,
+        "dtype": "bfloat16",
+        "readout_dtype": "bfloat16",
+        "batch_invariant": false,
+        "recovery_only": false,
+        "registry_path": "/root/jev-runtime/runs/vllm-combined-after-7391ed3/registry.db",
+        "chat_template_source": null,
+        "chat_template_snapshot": null,
+        "created": 1790558340.0183165,
+        "port": 18795,
+        "qualification": "colocated-functional-test",
+        "memory_budget_denominator": "total_mib"
+      },
+      "checked_at": 1790558517.4038446,
+      "remaining_process_group_members": [],
+      "gpus_after": [
+        {
+          "index": 7,
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        }
+      ],
+      "gpu_uuids_match": true,
+      "passed": true
+    }
+  },
+  "import_paths": {
+    "jev_runtime": "/root/jev-runtime/combined-reservation-sources/7391ed362117ab39a32bfa1dd1554356ee7a6178/src/jev_runtime/__init__.py",
+    "jev_vllm": "/root/jev-runtime/combined-reservation-sources/7391ed362117ab39a32bfa1dd1554356ee7a6178/packages/vllm/src/jev_vllm/__init__.py"
+  },
+  "passed": true,
+  "finished_at": 1790558520.6056151
+}

@@ -1,0 +1,141 @@
+{
+  "harness_source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+  "runtime_source_commit": "d8a2649339da391e506dd9cab17570c659267716",
+  "engine": "sglang",
+  "qualification": "colocated development measurement, not release certification",
+  "wrapper_sha256": "3c6279087135db04a06ec44e683962572aa30cfa40e9466ead970e8ffbbdf197",
+  "started_at": 1790558527.3521538,
+  "stages": {
+    "ready": {
+      "ready": true,
+      "elapsed_seconds": 42.12331867124885
+    },
+    "c1": {
+      "completed": true
+    },
+    "c16": {
+      "completed": true
+    },
+    "postcheck": {
+      "zero_leases": true,
+      "zero_admission": true,
+      "all_active_bundles_healthy": true,
+      "active_routes": [
+        {
+          "alias": "bench-8e6a75977a8b498a8913ca420cdb2bad",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "bench-f58eda58369b4b1ebe230da5f7f89007",
+          "ref": null,
+          "generation": 2
+        },
+        {
+          "alias": "decision-model",
+          "ref": "default@1",
+          "generation": 1
+        }
+      ]
+    },
+    "cleanup": {
+      "process_record": {
+        "identity": {
+          "pid": 2739629,
+          "start_ticks": "431406687",
+          "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+        },
+        "engine": "sglang",
+        "mode": "native-plugin",
+        "command": [
+          "/root/jev-runtime/envs/sglang/bin/python",
+          "-m",
+          "sglang.launch_server",
+          "--model-path",
+          "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "--served-model-name",
+          "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "18794",
+          "--dtype",
+          "bfloat16",
+          "--context-length",
+          "2048",
+          "--max-running-requests",
+          "4",
+          "--chunked-prefill-size",
+          "512",
+          "--max-total-tokens",
+          "2048",
+          "--mem-fraction-static",
+          "0.65",
+          "--disable-cuda-graph",
+          "--attention-backend",
+          "triton",
+          "--tokenizer-worker-num",
+          "2"
+        ],
+        "model": {
+          "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+          "revision": "31b70e2e869a7173562077fd711b654946d38674",
+          "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+        },
+        "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "gpu_before": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "gpus_before": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "tensor_parallel_size": 1,
+        "dtype": "bfloat16",
+        "readout_dtype": "bfloat16",
+        "batch_invariant": false,
+        "recovery_only": false,
+        "registry_path": "/root/jev-runtime/runs/sglang-combined-before-d8a2649/registry.db",
+        "chat_template_source": null,
+        "chat_template_snapshot": null,
+        "created": 1790558527.538125,
+        "port": 18794,
+        "qualification": "colocated-functional-test",
+        "memory_budget_denominator": "free_mib"
+      },
+      "checked_at": 1790558706.2875445,
+      "remaining_process_group_members": [],
+      "gpus_after": [
+        {
+          "index": 7,
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        }
+      ],
+      "gpu_uuids_match": true,
+      "passed": true
+    }
+  },
+  "import_paths": {
+    "jev_runtime": "/root/jev-runtime/combined-reservation-sources/d8a2649339da391e506dd9cab17570c659267716/src/jev_runtime/__init__.py",
+    "jev_sglang": "/root/jev-runtime/combined-reservation-sources/d8a2649339da391e506dd9cab17570c659267716/packages/sglang/src/jev_sglang/__init__.py"
+  },
+  "passed": true,
+  "finished_at": 1790558713.6465747
+}

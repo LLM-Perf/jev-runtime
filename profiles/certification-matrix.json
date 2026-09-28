@@ -1763,6 +1763,13 @@
         "compiler_cases_attempted": 16,
         "profile_manifest_sha256": "f83a1bf7a56e58f40dd25f57574a6d9d4558f6043d2deb7c2ec08fe78423572a",
         "identity_post_processor_inserted": true
+      },
+      "development_combined_reservation": {
+        "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+        "baseline_source_commit": "d8a2649339da391e506dd9cab17570c659267716",
+        "evidence": "evidence/dsw/combined-reservation-7391ed3/verified-summary.json",
+        "scope": "BF16 TP1 API2 eager, one L256/K8 hot input, C1/16, three 10-second repeats per method; separate two-worker quota/cancellation checks. No controlled performance certification or new model qualification.",
+        "release_gate_passed": false
       }
     },
     {
@@ -1986,6 +1993,13 @@
         "compiler_cases_attempted": 16,
         "profile_manifest_sha256": "9aabab2f6709782520356600ffc4f3e53d301ec8e3ba907615255809d63860fd",
         "identity_post_processor_inserted": true
+      },
+      "development_combined_reservation": {
+        "source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
+        "baseline_source_commit": "d8a2649339da391e506dd9cab17570c659267716",
+        "evidence": "evidence/dsw/combined-reservation-7391ed3/verified-summary.json",
+        "scope": "BF16 TP1 API2 eager, one L256/K8 hot input, C1/16, three 10-second repeats per method; separate two-worker quota/cancellation checks. No controlled performance certification or new model qualification.",
+        "release_gate_passed": false
       }
     }
   ],

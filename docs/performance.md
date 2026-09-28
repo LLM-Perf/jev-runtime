@@ -371,3 +371,7 @@ results were already above 90% before the change. These are short colocated samp
 not a consistent throughput-gain or release certification claim. Both plugins also
 pass real two-tenant quota and peer-cancel checks at the new source. See the
 [full comparison, failure-inclusive artifacts and reproduction](atomic-admission-performance.md).
+
+The subsequent [combined lease/admission comparison](combined-reservation-validation.md)
+uses two commits on stable routes. It reduces commit-related work but does not
+establish a consistent throughput gain or pass the low-concurrency release gate.

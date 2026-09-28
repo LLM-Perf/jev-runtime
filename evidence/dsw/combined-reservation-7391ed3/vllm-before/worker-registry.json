@@ -1,0 +1,55 @@
+{
+  "observed_at": 1790559117.9516761,
+  "workers": [
+    {
+      "owner": "84b7fe35e6de4475bb7ab5ae2ddbff43",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2737297, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431371245\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "7365ccef3e98498e91b05dc190c00d71",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "SERVING",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2737102, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"431370782\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "prepared": [
+    {
+      "owner": "84b7fe35e6de4475bb7ab5ae2ddbff43",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "7365ccef3e98498e91b05dc190c00d71",
+      "ref": "default@1",
+      "digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4"
+    },
+    {
+      "owner": "7365ccef3e98498e91b05dc190c00d71",
+      "ref": "bench-2b0cf4e848894fba853a62aa7da4e7c3@1",
+      "digest": "sha256:a987e44102626592983b77a00ea3cd117eefb4c3586070d4a4061687f5961f53"
+    },
+    {
+      "owner": "84b7fe35e6de4475bb7ab5ae2ddbff43",
+      "ref": "bench-2b0cf4e848894fba853a62aa7da4e7c3@1",
+      "digest": "sha256:a987e44102626592983b77a00ea3cd117eefb4c3586070d4a4061687f5961f53"
+    },
+    {
+      "owner": "7365ccef3e98498e91b05dc190c00d71",
+      "ref": "bench-2ba4b2db907d45d5b79cc1d82236b814@1",
+      "digest": "sha256:18a99d656ca04102f63d60790ab078587947f81c19749902c6093f3ea9414a7f"
+    },
+    {
+      "owner": "84b7fe35e6de4475bb7ab5ae2ddbff43",
+      "ref": "bench-2ba4b2db907d45d5b79cc1d82236b814@1",
+      "digest": "sha256:18a99d656ca04102f63d60790ab078587947f81c19749902c6093f3ea9414a7f"
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0
+  }
+}
