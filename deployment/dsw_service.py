@@ -98,6 +98,13 @@ def launch(args):
         if registry_path.is_symlink() or not registry_path.is_file():
             raise ValueError("An explicit registry path must be an existing regular file")
         registry_path = registry_path.resolve(strict=True)
+    shutdown_timeout = getattr(args, "vllm_shutdown_timeout", None)
+    if shutdown_timeout is not None and (args.engine != "vllm" or args.gateway):
+        raise ValueError("vllm-shutdown-timeout applies only to a native vLLM launch")
+    if args.engine == "vllm" and not args.gateway:
+        shutdown_timeout = 30 if shutdown_timeout is None else shutdown_timeout
+        if type(shutdown_timeout) is not int or not 1 <= shutdown_timeout <= 300:
+            raise ValueError("vllm-shutdown-timeout must be an integer between 1 and 300 seconds")
     indices = device_indices(args.gpu, args.gpus)
     root = args.run_dir.resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -256,6 +263,10 @@ def launch(args):
             "--gpu-memory-utilization",
             str(args.memory_fraction),
             "--enforce-eager",
+            # vLLM's default zero budget force-kills API/engine processes even
+            # after Jev has drained. Give native resource teardown a deadline.
+            "--shutdown-timeout",
+            str(shutdown_timeout),
         ]
         if dtype == "float32":
             # The pinned vLLM FlashAttention/Triton backends reject FP32.
@@ -363,6 +374,7 @@ def launch(args):
         "readout_dtype": config["readout_dtype"],
         "batch_invariant": config["batch_invariant"],
         "recovery_only": config.get("recovery_only", False),
+        "native_shutdown_timeout_seconds": shutdown_timeout,
         "registry_path": config["registry_path"],
         "chat_template_source": template_source.model_dump() if template_source else None,
         "chat_template_snapshot": config.get("chat_template"),
@@ -468,6 +480,11 @@ def main():
     parser.add_argument("--engine-url")
     parser.add_argument("--engine-run-dir", type=Path)
     parser.add_argument("--api-workers", type=int, default=1)
+    parser.add_argument(
+        "--vllm-shutdown-timeout",
+        type=int,
+        help="Native vLLM resource-teardown budget in seconds (1-300; default 30)",
+    )
     parser.add_argument("--adapters-root", type=Path)
     parser.add_argument("--admission-config", type=Path)
     parser.add_argument("--health-config", type=Path)

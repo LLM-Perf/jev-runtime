@@ -28,7 +28,7 @@ pip install -e '.[tokenizers]' -e packages/vllm
 export VLLM_PLUGINS=jev_runtime_api
 # Set JEV_API_KEY using your secret manager, not a checked-in file.
 export JEV_CONFIG=/absolute/path/to/vllm-native.yaml
-vllm serve /absolute/path/to/model
+vllm serve /absolute/path/to/model --shutdown-timeout 30
 ```
 
 The config selects `backend: vllm`; its model and tokenizer identity must match the
@@ -36,6 +36,12 @@ engine. The endpoint prefix is `/plugins/jev-runtime`. Complete raw-label scores
 are exposed under `/v1/scores`, and typed decisions under `/v1/decisions` beneath
 that prefix. Without `JEV_CONFIG`, only the raw scoring contract is initialized.
 `JEV_API_KEY` is mandatory for loading the plugin routes.
+For the pinned vLLM version, zero is the native default shutdown budget and means
+immediate abort. Use a positive `--shutdown-timeout` (30 seconds above) so native
+API and engine processes have time to release resources after the
+[Jev quiescence handshake](quiescence.md). The DSW launcher now defaults to 30 seconds
+and accepts `--vllm-shutdown-timeout 1..300`; it records the exact budget. This flag
+does not replace Jev drain, and does not configure a gateway or SGLang shutdown.
 The native typed endpoints passed a two-API-worker DSW check with SmolLM2 at
 `a283bd5`, including the publication barrier, 1,000 switches, K=32/64 and native
 chat. The separate HTTP gateway currently requires one engine API worker so that

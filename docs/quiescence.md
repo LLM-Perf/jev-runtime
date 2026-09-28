@@ -29,6 +29,10 @@ native plugin. The following require the separate `JEV_ADMIN_KEY` environment va
    after the handshake. Do not signal the whole group: that kills the scheduler
    concurrently with API workers that still need their host's shutdown machinery.
    Its output still distinguishes signal delivery from verified process exit.
+   Native vLLM receives an explicit 30-second teardown budget by default; override
+   it with `--vllm-shutdown-timeout` at launch. Its native zero-timeout default means
+   immediate abort, even after Jev has drained. The native budget starts after
+   the Jev handshake; a container/service-manager stop deadline must cover both.
 5. Before restarting, run
    `jevctl registry resume-backend REGISTRY_PATH BACKEND_ID GENERATION` locally.
    This CAS operation requires no retained work and every old worker STOPPED or

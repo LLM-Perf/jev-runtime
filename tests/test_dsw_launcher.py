@@ -143,6 +143,8 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         assert snapshot["sha256"] == hashlib.sha256(b"{{ messages[0].content }}").hexdigest()
         assert (args.run_dir / "chat_template.jinja").read_text() == "{{ messages[0].content }}"
     if engine == "vllm":
+        assert command[command.index("--shutdown-timeout") + 1] == "30"
+        assert record["native_shutdown_timeout_seconds"] == 30
         assert ("--attention-backend" in command) == (dtype == "float32")
         if dtype == "float32":
             assert command[command.index("--attention-backend") + 1] == "FLEX_ATTENTION"
@@ -153,6 +155,8 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
                 "head_dtype": "float32"
             }
     else:
+        assert "--shutdown-timeout" not in command
+        assert record["native_shutdown_timeout_seconds"] is None
         assert ("--enable-fp32-lm-head" in command) == (readout == "float32")
         assert ("--enable-deterministic-inference" in command) == args.batch_invariant
 
@@ -200,6 +204,35 @@ def test_explicit_registry_rejects_unsafe_paths_before_allocation(tmp_path, kind
                 dtype="bfloat16",
                 adapters_root=None,
                 registry_path=path,
+                run_dir=tmp_path / "run",
+            )
+        )
+    assert not (tmp_path / "run").exists()
+
+
+@pytest.mark.parametrize(
+    "engine,gateway,seconds",
+    [
+        ("vllm", False, 0),
+        ("vllm", False, -1),
+        ("vllm", False, 301),
+        ("vllm", False, True),
+        ("vllm", False, 1.5),
+        ("sglang", False, 30),
+        ("vllm", True, 30),
+    ],
+)
+def test_invalid_native_shutdown_budget_fails_before_allocating(tmp_path, engine, gateway, seconds):
+    from types import SimpleNamespace
+
+    with pytest.raises(ValueError, match="vllm-shutdown-timeout"):
+        dsw_service.launch(
+            SimpleNamespace(
+                dtype="bfloat16",
+                adapters_root=None,
+                engine=engine,
+                gateway=gateway,
+                vllm_shutdown_timeout=seconds,
                 run_dir=tmp_path / "run",
             )
         )
