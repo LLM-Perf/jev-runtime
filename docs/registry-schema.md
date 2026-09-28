@@ -112,3 +112,6 @@ interruption, not a zero-downtime cross-schema rolling upgrade. Cross-host resto
 changed boot/PID namespaces, lost-source recovery, replica coordination and future
 schema transformations require separate support. Current migration owner checks
 require the same Linux host, boot ID and PID namespace.
+
+See [real DSW upgrade/rollback and interruption evidence](registry-migration-validation.md)
+for the exact qualified source versions, workload and remaining boundaries.

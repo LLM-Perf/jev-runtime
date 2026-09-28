@@ -1784,6 +1784,14 @@
         "corrected_runs": 3,
         "scope": "BF16, TP1, two API workers; Jev drain and process reclamation with preserved-route restart. Initial SGLang group-signal shutdown failure and explicit remediation retained. Native shutdown warnings remain; no release certification.",
         "release_gate_passed": false
+      },
+      "development_registry_migration": {
+        "source_commit": "0ac5935477cd7265087c3a2548794f0a1f26c15c",
+        "baseline_source_commit": "e3f82d705b5db37504ec88f7c9ab89cf5a9c041c",
+        "report": "docs/registry-migration-validation.md",
+        "evidence": "evidence/dsw/registry-migration-0ac5935/verified-summary.json",
+        "scope": "Same-host BF16 TP1 API2 eager native maintenance upgrade/downgrade; generations 3,5,5 and 18 responses per engine. Separate migration-process crash timing; no quality, performance, container or release qualification.",
+        "release_gate_passed": false
       }
     },
     {
@@ -2035,6 +2043,14 @@
         "evidence": "evidence/dsw/vllm-shutdown-e3f82d7/verified-summary.json",
         "runs": 3,
         "scope": "BF16 TP1 eager API1/API2; Jev drain, positive native shutdown budget and preserved-registry restart. No forced child cleanup, leaked semaphore or traceback observed; sibling-port warning remains. Exit codes not captured.",
+        "release_gate_passed": false
+      },
+      "development_registry_migration": {
+        "source_commit": "0ac5935477cd7265087c3a2548794f0a1f26c15c",
+        "baseline_source_commit": "e3f82d705b5db37504ec88f7c9ab89cf5a9c041c",
+        "report": "docs/registry-migration-validation.md",
+        "evidence": "evidence/dsw/registry-migration-0ac5935/verified-summary.json",
+        "scope": "Same-host BF16 TP1 API2 eager native maintenance upgrade/downgrade; generations 3,5,5 and 18 responses per engine. Separate migration-process crash timing; no quality, performance, container or release qualification.",
         "release_gate_passed": false
       }
     }

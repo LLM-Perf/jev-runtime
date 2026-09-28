@@ -1,0 +1,22 @@
+{
+  "backend": "sglang",
+  "engine_url": "http://127.0.0.1:18794",
+  "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "model_revision": "31b70e2e869a7173562077fd711b654946d38674",
+  "tokenizer": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+  "dtype": "bfloat16",
+  "readout_dtype": "bfloat16",
+  "batch_invariant": false,
+  "registry_path": "/root/jev-runtime/runs/sglang-migration-baseline-0ac5935/registry.db",
+  "bootstrap_alias": "decision-model",
+  "bootstrap_bundle_id": "default",
+  "host": "127.0.0.1",
+  "port": 18794,
+  "workers": 2,
+  "health": {
+    "interval_seconds": 1.0,
+    "timeout_seconds": 10.0,
+    "max_age_seconds": 30.0
+  },
+  "tenant_key_envs": {}
+}

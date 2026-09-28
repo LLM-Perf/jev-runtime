@@ -1,0 +1,70 @@
+{
+  "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+  "generation": 5,
+  "state": "QUIESCING",
+  "scope": "single_host_registry_backend_jev_work",
+  "drained": true,
+  "outstanding": {
+    "leases": 0,
+    "raw_work": 0,
+    "adapter_operations": 0,
+    "recovery_operations": 0
+  },
+  "waiting_workers": [],
+  "workers": [
+    {
+      "worker_id": "8eae66594a324c9890d347bf03545f39",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1"
+      ]
+    },
+    {
+      "worker_id": "200e978a713047bf9ac9e91c1a647ea5",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1"
+      ]
+    },
+    {
+      "worker_id": "ebc8284b4bba4ec59b485bc6a6b61e73",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1"
+      ]
+    },
+    {
+      "worker_id": "1a06ebbf6a0f46b4999f7dfcd18075ff",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1"
+      ]
+    },
+    {
+      "worker_id": "71680ad3c15e486eb3df399894fbbcde",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "alive",
+      "prepared": [
+        "default@1"
+      ]
+    },
+    {
+      "worker_id": "f7d06e45481d4cde922f2eadb492c17f",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "alive",
+      "prepared": [
+        "default@1"
+      ]
+    }
+  ]
+}

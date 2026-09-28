@@ -11,13 +11,18 @@ not GPU compatibility, model quality, performance certification, or a production
 See [the implementation plan](docs/implementation-plan.md) and
 [the completion ledger](docs/completion-ledger.md) for the full scope and evidence.
 
+Existing unversioned registries require the explicit
+[offline schema upgrade](docs/registry-schema.md) before starting the current runtime.
+New registries use version 1. Compatible code rollback preserves latest state through
+the same migration tool; it does not restore an old route-generation snapshot.
+
 ## Development
 
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm
 .venv/bin/pytest
-.venv/bin/ruff check .
+.venv/bin/ruff check src tests packages deployment benchmarks
 ```
 
 Engine adapters are separate distributions under `packages/` so the core does not

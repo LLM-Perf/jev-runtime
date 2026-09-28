@@ -1,0 +1,106 @@
+{
+  "format": {
+    "format": "versioned-v1",
+    "user_version": 1,
+    "schema_sha256": "7b5e02f7ee4b5873f70d388c3385d8a80a4eaadf8b3c2ce7d3784e94f89c22d3"
+  },
+  "summary": {
+    "schema_sha256": "7b5e02f7ee4b5873f70d388c3385d8a80a4eaadf8b3c2ce7d3784e94f89c22d3",
+    "content_sha256": "ae52433f85be60e7009285ce81e400668531102ae7727afc3c6e59e3d25afc3a",
+    "tables": {
+      "adapters": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "admission_policies": {
+        "rows": 1,
+        "sha256": "880082e4d559b8c6f22c37cc3bd83a1aa39d31f2f52cb290a6a5c0f144d9bcb6"
+      },
+      "admission_tenants": {
+        "rows": 1,
+        "sha256": "e773dc556f057173b9245cc7a440db47986f67e1b2b185df864a9001ef52070a"
+      },
+      "admission_tickets": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "backend_controls": {
+        "rows": 1,
+        "sha256": "8a0a428a54f23c9d11f4ed9df94f424074576f0468d4bf4dbfa6fd4778d8bb18"
+      },
+      "bundle_adapters": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bundles": {
+        "rows": 1,
+        "sha256": "2918adfa668a87d42fcdad84bdc64dfb7d5c8039e57eaf5403ac5da50bf5a87c"
+      },
+      "cancel_commands": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "events": {
+        "rows": 11,
+        "sha256": "c62dd791969b724ccc4c38e37e5df5db1154fdea7737704166706b59d8307732"
+      },
+      "lease_tenants": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lease_work": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "leases": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owner_protocols": {
+        "rows": 5,
+        "sha256": "c865755d1bab34bd597d9eb2b99cf787313f1ea2c2b296751490b42c5b72dc04"
+      },
+      "owners": {
+        "rows": 5,
+        "sha256": "db91fff8df9f0b74944fb5fb2d65eb439623e7ca0044b5a50dba0916b2f0f5f4"
+      },
+      "raw_work": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "recovery_claims": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "routes": {
+        "rows": 1,
+        "sha256": "990058c9232c424da48160df9cc65bece6e9cd400a9857bfefd13f25a5d053a6"
+      },
+      "sqlite_sequence": {
+        "rows": 2,
+        "sha256": "e972afce199cdf70eae714b267a5d373f83978a2b0ab06664d556a5fba6a5f4b"
+      },
+      "worker_admission": {
+        "rows": 4,
+        "sha256": "86665a27ee6dd4dd9b2dee48e32f2b7a4a26259d0d1339bec75d614475973913"
+      },
+      "worker_bundles": {
+        "rows": 4,
+        "sha256": "2031fc82c75058ca98ed083da0baa601ea5b89ad55d59b50b05313501581b73e"
+      },
+      "worker_deployments": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "worker_quiescence": {
+        "rows": 4,
+        "sha256": "6dda113926c32e4debb0dff178aad2b11ef76c4f4f7a7260ca1bdc2e12e7100e"
+      },
+      "workers": {
+        "rows": 4,
+        "sha256": "42686ff3802b92386c91a1ebfa627d6014584dd3a3b066524a1795ddcae9c673"
+      }
+    }
+  },
+  "blockers": {}
+}

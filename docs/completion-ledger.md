@@ -541,7 +541,7 @@ See [recovery-only validation](recovery-mode-validation.md).
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
 | 24h soak and fault injection | Gateway/native quota recovery, READY-LoRA native group crash/restart, retained SGLang preparation-crash recovery and vLLM before-dispatch recovery passed in scoped profiles; soak not run | Additional preparation/dispatch crash timings, interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
-| SDKs and deployment productization | SDKs, immutable wheels/offline locks, and stable-proxy two-worker installed-wheel gateway upgrade/rollback pass on both engines | Expanded rollout faults/load, deployment images, migration/downgrade, handoff and final-source recertification |
+| SDKs and deployment productization | SDKs, immutable wheels/offline locks, stable-proxy installed-wheel rollout and a scoped native offline schema upgrade/downgrade pass on both engines | Expanded rollout faults/load, deployment images, lost-source/namespace restore, handoff and final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |
 | Engine health and fault routing | Periodic real canaries, stale/failure circuits and gateway pause/resume checks pass on both engines | Certified compatible-replica selection/failover and expanded load/fault profiles |
 | Local multi-worker coordination | Activation barrier and cross-worker cancellation passed on both native engines | Expanded local fault/load cases; multi-node coordination is later-stage scope |
@@ -612,3 +612,22 @@ vLLM environment and three source-matched wheels pass. Verification covers 43
 artifacts, 165 Python files, three snapshots of two registries and 307 terminal
 owned groups; GPU 7 returns to baseline. All model/release gates stay unchanged.
 See [validation and limits](vllm-shutdown-validation.md).
+
+## Versioned registry migration checkpoint (0ac5935)
+
+Startup now rejects implicit legacy upgrades and unknown schemas. Version 1 adds
+an owner-registration handshake that blocks the previous constructor, while the
+explicit migration tool stages a new private database from the latest verified
+stopped state. Both native API2 engines pass baseline generation 3, candidate
+generation 5 and legacy-code rollback retaining generation 5: 36 typed responses,
+144 questions, six stale-CAS rejections, two live-migration rejections and six
+incompatible-constructor rejections. Original baseline state stays unchanged.
+One actual Linux migration-process SIGKILL before final database publication is
+rejected at startup, with a successful fresh-directory retry. All six native groups
+exit; SGLang native shutdown/NCCL warnings remain. 523 local tests, 140 CPU contracts
+per actual engine environment and three source-matched wheels pass. Verification
+covers 102 artifacts, 337 Python files, six stopped registry snapshots and 313
+terminal recorded groups; GPU 7 returns to baseline. The source, boot ID and PID
+namespace remain available; lost-source/container recovery and all broader release
+gates stay open. See [operations](registry-schema.md) and
+[failure-inclusive validation](registry-migration-validation.md).

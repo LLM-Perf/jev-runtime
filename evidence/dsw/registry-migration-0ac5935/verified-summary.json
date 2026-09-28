@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "verified_artifacts": 102,
+  "verified_python_sources": 337,
+  "owned_groups_terminal": 313,
+  "typed_responses": 36,
+  "answered_questions": 144,
+  "stale_generation_rejections": 6,
+  "live_migration_rejections": 2,
+  "incompatible_constructor_rejections": 6,
+  "replayed_logical_migrations": 4,
+  "stopped_registry_snapshots": 6,
+  "migration_process_sigkill_checks": 1,
+  "native_log_counts": {
+    "vllm-baseline": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 0
+    },
+    "vllm-candidate": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 0
+    },
+    "vllm-rollback": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 0
+    },
+    "sglang-baseline": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 4
+    },
+    "sglang-candidate": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 4
+    },
+    "sglang-rollback": {
+      "force killing": 0,
+      "leaked semaphore": 0,
+      "Traceback (most recent call last)": 4
+    }
+  },
+  "release_gate_passed": false
+}

@@ -1,0 +1,102 @@
+{
+  "format": {
+    "format": "legacy-quiescence-v0",
+    "user_version": 0,
+    "schema_sha256": "2792fba005b6a6dcd4501e398db88c45cbf20e7682cd24c62aee7fe38dcf520f"
+  },
+  "summary": {
+    "schema_sha256": "2792fba005b6a6dcd4501e398db88c45cbf20e7682cd24c62aee7fe38dcf520f",
+    "content_sha256": "cd7e2a6def42d78bafed72fda29432f8bddd33f6fc52723362664b47bcd29726",
+    "tables": {
+      "adapters": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "admission_policies": {
+        "rows": 1,
+        "sha256": "7ad3ecef0e023a6d47a6a0e1678263d7287387bb1b31fc65e141d142dc57aa63"
+      },
+      "admission_tenants": {
+        "rows": 1,
+        "sha256": "b98d576c6c2303ffc243a2076bb6c1f4038e0a44e19212356480905ce49927f2"
+      },
+      "admission_tickets": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "backend_controls": {
+        "rows": 1,
+        "sha256": "75a84612b9a00acc5f2067311674a0876aa3b68ac06e24873d7b4b9219a5c073"
+      },
+      "bundle_adapters": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bundles": {
+        "rows": 1,
+        "sha256": "e4bee48c1aaa312e076c59c63f7f9ac81a63a52306c8f3e8b607ec6c5880b1e8"
+      },
+      "cancel_commands": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "events": {
+        "rows": 13,
+        "sha256": "823fd507eaa54cd7df479555e19d63a43bba4c1bec4f2ae78c427bf0201c6950"
+      },
+      "lease_tenants": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lease_work": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "leases": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owners": {
+        "rows": 8,
+        "sha256": "bad4eaade7a14be85f99821b43c7a0084910bcf0dc0adfbe17527edf4129be11"
+      },
+      "raw_work": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "recovery_claims": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "routes": {
+        "rows": 1,
+        "sha256": "990058c9232c424da48160df9cc65bece6e9cd400a9857bfefd13f25a5d053a6"
+      },
+      "sqlite_sequence": {
+        "rows": 2,
+        "sha256": "6ea63f58a980fc132ee75dc6f12d2d742faf1ca376d6f778b3817e28d5e4336e"
+      },
+      "worker_admission": {
+        "rows": 6,
+        "sha256": "8e5b5c4feec3a2718893a86607218b1945889dbdc2b5c30d6ee2a3b7516adb12"
+      },
+      "worker_bundles": {
+        "rows": 6,
+        "sha256": "14f9733862d1ffc52cb6fe7dbdec9724153e18fc91d0b2884c2722ed8f86703b"
+      },
+      "worker_deployments": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "worker_quiescence": {
+        "rows": 6,
+        "sha256": "f6bdc5c726c3615c1b40aa7302703e849ee58d02795d523e1260b895da3d7313"
+      },
+      "workers": {
+        "rows": 6,
+        "sha256": "a715c8442bc20c98ca295801036d7f40a26f67cd88a2cfc28d7b94e3b1ab1758"
+      }
+    }
+  },
+  "blockers": {}
+}
