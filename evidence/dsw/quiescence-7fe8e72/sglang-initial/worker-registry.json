@@ -1,0 +1,71 @@
+{
+  "observed_at": 1790566234.024014,
+  "registry_path": "/root/jev-runtime/runs/sglang-quiescence-initial-7fe8e72/registry.db",
+  "integrity_check": "ok",
+  "foreign_key_check": [],
+  "workers": [
+    {
+      "owner": "3b284c04f40649eba3dfa186e150e672",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2760532, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432156909\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "47827848901047799ff5d6fcbf82c11c",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2760533, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432156909\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "72321cfca0a84e14a99109db17318bf0",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2761530, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432164126\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "bbca18caf328469a9a6d810d9869bf34",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2761531, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432164126\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "a8826bc451554beb9b13fda7494f2336",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2762523, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432170142\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "525cdc2efec54eaababfe6e8a2139fac",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2762524, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432170142\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "controls": [
+    {
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "generation": 5,
+      "state": "QUIESCING"
+    }
+  ],
+  "routes": [
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    },
+    {
+      "alias": "quiescence",
+      "ref": "quiescence@1",
+      "generation": 1
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0,
+    "raw_work": 0,
+    "recovery_claims": 0
+  }
+}

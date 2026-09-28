@@ -1,0 +1,3448 @@
+{
+  "passed": true,
+  "checked_at": 1790566244.0767365,
+  "script_sha256": "88035c7f6da4bc5cee4e8e5e068821470faedf9893ba2f899d2d42e5efc63b76",
+  "owned_records_checked": 304,
+  "records": [
+    {
+      "record": "/root/jev-runtime/runs/native-cancel-sglang-engine-b20d3f4/process.json",
+      "identity": {
+        "pid": 2707411,
+        "start_ticks": "430197884",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-generation-60b3415/process.json",
+      "identity": {
+        "pid": 2601835,
+        "start_ticks": "426523350",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-qwen25-7b-f32-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2664524,
+        "start_ticks": "428777614",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-qwen25-7b-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2659418,
+        "start_ticks": "428742487",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-vllm-health-40b78c2/process.json",
+      "identity": {
+        "pid": 2623488,
+        "start_ticks": "427701688",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-lora-crash-5176a82/process.json",
+      "identity": {
+        "pid": 2620273,
+        "start_ticks": "427451271",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-atomic-before-75649bf-r2/process.json",
+      "identity": {
+        "pid": 2649998,
+        "start_ticks": "428584161",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-atomic-before-75649bf-r2/process.json",
+      "identity": {
+        "pid": 2651401,
+        "start_ticks": "428602181",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-generation-60b3415/process.json",
+      "identity": {
+        "pid": 2601007,
+        "start_ticks": "426499508",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-phi3-tp2-737d814/process.json",
+      "identity": {
+        "pid": 2626828,
+        "start_ticks": "427894632",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-mw-c5f8867/process.json",
+      "identity": {
+        "pid": 2584984,
+        "start_ticks": "425449145",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-health-40b78c2/process.json",
+      "identity": {
+        "pid": 2622763,
+        "start_ticks": "427698487",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-smollm17b/process.json",
+      "identity": {
+        "pid": 2577030,
+        "start_ticks": "425037968",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-timing-da2293b/process.json",
+      "identity": {
+        "pid": 2604380,
+        "start_ticks": "426718106",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-atomic-before-75649bf/process.json",
+      "identity": {
+        "pid": 2648726,
+        "start_ticks": "428566828",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-prefix-0421d50/process.json",
+      "identity": {
+        "pid": 2603467,
+        "start_ticks": "426637012",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-lora-crash-533549a/process.json",
+      "identity": {
+        "pid": 2621810,
+        "start_ticks": "427529057",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smol-bf16head-f6bda1a/process.json",
+      "identity": {
+        "pid": 2634065,
+        "start_ticks": "428103297",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-recovery-maintenance-95de3d5/process.json",
+      "identity": {
+        "pid": 2734095,
+        "start_ticks": "431190994",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-quota-crash-aba3b52/process.json",
+      "identity": {
+        "pid": 2615217,
+        "start_ticks": "427315502",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quota-crash-engine-aba3b52/process.json",
+      "identity": {
+        "pid": 2614435,
+        "start_ticks": "427304818",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/native-cancel-sglang-engine-6f0cda8/process.json",
+      "identity": {
+        "pid": 2704311,
+        "start_ticks": "430166356",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/process.json",
+      "identity": {
+        "pid": 2720539,
+        "start_ticks": "430724078",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smol-preserved-cdd0caf/process.json",
+      "identity": {
+        "pid": 2694246,
+        "start_ticks": "429772650",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-7eee70e/process.json",
+      "identity": {
+        "pid": 2579811,
+        "start_ticks": "425286933",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-native-vllm-c4e9cef/process.json",
+      "identity": {
+        "pid": 2713232,
+        "start_ticks": "430480718",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-qwen06b-attempt2/process.json",
+      "identity": {
+        "pid": 2573755,
+        "start_ticks": "424911710",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-bench-5c4fcbe/process.json",
+      "identity": {
+        "pid": 2585680,
+        "start_ticks": "425565603",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/native-cancel-vllm-engine-b20d3f4/process.json",
+      "identity": {
+        "pid": 2705793,
+        "start_ticks": "430191117",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-profile-4ded7ef/process.json",
+      "identity": {
+        "pid": 2607617,
+        "start_ticks": "426870694",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-f9167c9/process.json",
+      "identity": {
+        "pid": 2721478,
+        "start_ticks": "430732089",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-vllm-crash-7eee70e/process.json",
+      "identity": {
+        "pid": 2580806,
+        "start_ticks": "425294876",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-phi4-tp2-737d814/process.json",
+      "identity": {
+        "pid": 2628615,
+        "start_ticks": "427932375",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-qwen8b-tp4-b8742bd/process.json",
+      "identity": {
+        "pid": 2636140,
+        "start_ticks": "428248095",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-private-c11d2b3/process.json",
+      "identity": {
+        "pid": 2608548,
+        "start_ticks": "426905081",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-atomic-after-3377c95/process.json",
+      "identity": {
+        "pid": 2652725,
+        "start_ticks": "428623896",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-r1-qwen7b-tp4-d1ef50e/process.json",
+      "identity": {
+        "pid": 2675856,
+        "start_ticks": "429112651",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-native-sglang-49fea1c-r2/process.json",
+      "identity": {
+        "pid": 2712146,
+        "start_ticks": "430364148",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-lora-febb5d8/process.json",
+      "identity": {
+        "pid": 2596382,
+        "start_ticks": "426166178",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-prefix-0421d50/process.json",
+      "identity": {
+        "pid": 2602776,
+        "start_ticks": "426622286",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-health-40b78c2/process.json",
+      "identity": {
+        "pid": 2623721,
+        "start_ticks": "427714287",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-atomic-quota-3377c95/process.json",
+      "identity": {
+        "pid": 2654119,
+        "start_ticks": "428641945",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-glm4-fast-tp4-c48f18d/process.json",
+      "identity": {
+        "pid": 2679927,
+        "start_ticks": "429215362",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/rollout-vllm-native-7739145/process.json",
+      "identity": {
+        "pid": 2699316,
+        "start_ticks": "430022942",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-cancel-364b6e0/process.json",
+      "identity": {
+        "pid": 2589805,
+        "start_ticks": "425749607",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-phi4-tp2-737d814/process.json",
+      "identity": {
+        "pid": 2629617,
+        "start_ticks": "427944222",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smol-preserved-cdd0caf/process.json",
+      "identity": {
+        "pid": 2693272,
+        "start_ticks": "429765870",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-qwen25-7b-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2657743,
+        "start_ticks": "428732297",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-olmo7b-tp4-b8742bd/process.json",
+      "identity": {
+        "pid": 2641197,
+        "start_ticks": "428286694",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/process.json",
+      "identity": {
+        "pid": 2723385,
+        "start_ticks": "430844187",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smol-bf16head-f6bda1a/process.json",
+      "identity": {
+        "pid": 2634864,
+        "start_ticks": "428117017",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-lora-crash-5176a82/process.json",
+      "identity": {
+        "pid": 2619304,
+        "start_ticks": "427436317",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-deepseek15b-ad9b417/process.json",
+      "identity": {
+        "pid": 2598640,
+        "start_ticks": "426334926",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-olmo7b-tp4-b8742bd/process.json",
+      "identity": {
+        "pid": 2639291,
+        "start_ticks": "428272417",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/process.json",
+      "identity": {
+        "pid": 2689219,
+        "start_ticks": "429505942",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/process.json",
+      "identity": {
+        "pid": 2727834,
+        "start_ticks": "430958654",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-mw-a283bd5/process.json",
+      "identity": {
+        "pid": 2581394,
+        "start_ticks": "425383536",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-4e49524/process.json",
+      "identity": {
+        "pid": 2686001,
+        "start_ticks": "429451004",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-bench-fad1d84/process.json",
+      "identity": {
+        "pid": 2587666,
+        "start_ticks": "425662795",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-ids-8a126a8/process.json",
+      "identity": {
+        "pid": 2606691,
+        "start_ticks": "426848871",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/native-cancel-vllm-engine-6f0cda8/process.json",
+      "identity": {
+        "pid": 2702694,
+        "start_ticks": "430160982",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-vllm-crash-fad1d84/process.json",
+      "identity": {
+        "pid": 2588743,
+        "start_ticks": "425686049",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-glm4-fast-tp4-c48f18d/process.json",
+      "identity": {
+        "pid": 2681838,
+        "start_ticks": "429227247",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/process.json",
+      "identity": {
+        "pid": 2719441,
+        "start_ticks": "430715994",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-eb9a4cb/process.json",
+      "identity": {
+        "pid": 2577805,
+        "start_ticks": "425252767",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-quota-crash-engine-aba3b52/process.json",
+      "identity": {
+        "pid": 2613133,
+        "start_ticks": "427251895",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/process.json",
+      "identity": {
+        "pid": 2724549,
+        "start_ticks": "430852835",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b/process.json",
+      "identity": {
+        "pid": 2576079,
+        "start_ticks": "424960158",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-r1-qwen7b-tp4-d1ef50e/process.json",
+      "identity": {
+        "pid": 2677602,
+        "start_ticks": "429122865",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-r1-llama8b-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2661425,
+        "start_ticks": "428753157",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-bench-4e5203f/process.json",
+      "identity": {
+        "pid": 2589063,
+        "start_ticks": "425699756",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-vllm-quota-crash-aba3b52/process.json",
+      "identity": {
+        "pid": 2614061,
+        "start_ticks": "427257848",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-recovery-maintenance-95de3d5/process.json",
+      "identity": {
+        "pid": 2732110,
+        "start_ticks": "431175392",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/process.json",
+      "identity": {
+        "pid": 2729033,
+        "start_ticks": "430969206",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-qwen8b-tp4-b8742bd/process.json",
+      "identity": {
+        "pid": 2637827,
+        "start_ticks": "428260353",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b/process.json",
+      "identity": {
+        "pid": 2574855,
+        "start_ticks": "424935034",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-r1-llama8b-bytelevel-tp4-b28bb46/process.json",
+      "identity": {
+        "pid": 2670524,
+        "start_ticks": "428834118",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-explicit-4e49524/process.json",
+      "identity": {
+        "pid": 2687627,
+        "start_ticks": "429498847",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/process.json",
+      "identity": {
+        "pid": 2725718,
+        "start_ticks": "430861748",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-phi3-tp2-737d814/process.json",
+      "identity": {
+        "pid": 2625057,
+        "start_ticks": "427848050",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-phi3-tp2-balanced-737d814/process.json",
+      "identity": {
+        "pid": 2627555,
+        "start_ticks": "427919104",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-recovery-serve-95de3d5/process.json",
+      "identity": {
+        "pid": 2734955,
+        "start_ticks": "431195495",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-mistral7b-template-e17918e/process.json",
+      "identity": {
+        "pid": 2645928,
+        "start_ticks": "428407812",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-ids-c11d2b3/process.json",
+      "identity": {
+        "pid": 2609465,
+        "start_ticks": "426927709",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-native-sglang-49fea1c/process.json",
+      "identity": {
+        "pid": 2710047,
+        "start_ticks": "430350045",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-qwen06b/process.json",
+      "identity": {
+        "pid": 2573300,
+        "start_ticks": "424893299",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/process.json",
+      "identity": {
+        "pid": 2726727,
+        "start_ticks": "430870350",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-crash-eb9a4cb/process.json",
+      "identity": {
+        "pid": 2578378,
+        "start_ticks": "425255874",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-mw-c5f8867/process.json",
+      "identity": {
+        "pid": 2583942,
+        "start_ticks": "425439301",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/process.json",
+      "identity": {
+        "pid": 2722180,
+        "start_ticks": "430761877",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-native-sglang-c4e9cef/process.json",
+      "identity": {
+        "pid": 2714744,
+        "start_ticks": "430485204",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-deepseek15b-ad9b417/process.json",
+      "identity": {
+        "pid": 2599881,
+        "start_ticks": "426377269",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-shared-admission-4944efd/process.json",
+      "identity": {
+        "pid": 2610448,
+        "start_ticks": "427131335",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/process.json",
+      "identity": {
+        "pid": 2717369,
+        "start_ticks": "430599662",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-full-fp32-f2ccc2a/process.json",
+      "identity": {
+        "pid": 2730217,
+        "start_ticks": "430979786",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-batch-9fb3e8f/process.json",
+      "identity": {
+        "pid": 2605486,
+        "start_ticks": "426795857",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-health-40b78c2/process.json",
+      "identity": {
+        "pid": 2624296,
+        "start_ticks": "427719358",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-phi4-fp32head-f6bda1a/process.json",
+      "identity": {
+        "pid": 2633029,
+        "start_ticks": "428086277",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/rollout-sglang-native-accef86/process.json",
+      "identity": {
+        "pid": 2697544,
+        "start_ticks": "429982609",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-atomic-quota-3377c95/process.json",
+      "identity": {
+        "pid": 2656495,
+        "start_ticks": "428665435",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/process.json",
+      "identity": {
+        "pid": 2718345,
+        "start_ticks": "430708183",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-lora-febb5d8/process.json",
+      "identity": {
+        "pid": 2595789,
+        "start_ticks": "426155095",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-4e49524/process.json",
+      "identity": {
+        "pid": 2684476,
+        "start_ticks": "429440042",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-native-quota-crash-0df49a1/process.json",
+      "identity": {
+        "pid": 2616124,
+        "start_ticks": "427339933",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/rollout-vllm-native-accef86/process.json",
+      "identity": {
+        "pid": 2695922,
+        "start_ticks": "429975772",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-native-vllm-49fea1c/process.json",
+      "identity": {
+        "pid": 2708925,
+        "start_ticks": "430345856",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-r1-llama8b-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2663106,
+        "start_ticks": "428764047",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-lora-67a6fbb/process.json",
+      "identity": {
+        "pid": 2592185,
+        "start_ticks": "426057220",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-multiworker-97271f8/process.json",
+      "identity": {
+        "pid": 2590441,
+        "start_ticks": "425827693",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-lora-500b197/process.json",
+      "identity": {
+        "pid": 2593278,
+        "start_ticks": "426081614",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-mw-a283bd5/process.json",
+      "identity": {
+        "pid": 2582825,
+        "start_ticks": "425396033",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-mistral7b-template-e17918e/process.json",
+      "identity": {
+        "pid": 2643156,
+        "start_ticks": "428390441",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-crash-7eee70e/process.json",
+      "identity": {
+        "pid": 2579094,
+        "start_ticks": "425268447",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-lora-c36d65d/process.json",
+      "identity": {
+        "pid": 2594973,
+        "start_ticks": "426119886",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-recovery-restart-95de3d5/process.json",
+      "identity": {
+        "pid": 2735814,
+        "start_ticks": "431200150",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/process.json",
+      "identity": {
+        "pid": 2716339,
+        "start_ticks": "430592787",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-recovery-serve-95de3d5/process.json",
+      "identity": {
+        "pid": 2732688,
+        "start_ticks": "431180105",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-atomic-after-3377c95/process.json",
+      "identity": {
+        "pid": 2655377,
+        "start_ticks": "428646859",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/gateway-sglang-smollm17b-v2/process.json",
+      "identity": {
+        "pid": 2577346,
+        "start_ticks": "425096756",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-qwen25-7b-f32-tp4-3377c95/process.json",
+      "identity": {
+        "pid": 2666533,
+        "start_ticks": "428788057",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-native-cancel-febb5d8/process.json",
+      "identity": {
+        "pid": 2597257,
+        "start_ticks": "426182528",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/process.json",
+      "identity": {
+        "pid": 2730792,
+        "start_ticks": "430984084",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/rollout-sglang-native-7739145/process.json",
+      "identity": {
+        "pid": 2700932,
+        "start_ticks": "430029040",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-phi4-fp32head-f6bda1a/process.json",
+      "identity": {
+        "pid": 2631445,
+        "start_ticks": "428069766",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-native-vllm-49fea1c-r2/process.json",
+      "identity": {
+        "pid": 2711023,
+        "start_ticks": "430359831",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-r1-llama8b-bytelevel-tp4-b28bb46/process.json",
+      "identity": {
+        "pid": 2668850,
+        "start_ticks": "428823524",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-shared-admission-4944efd/process.json",
+      "identity": {
+        "pid": 2611884,
+        "start_ticks": "427153557",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-smollm17b-bench-5c4fcbe/process.json",
+      "identity": {
+        "pid": 2586742,
+        "start_ticks": "425633905",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-native-quota-crash-0df49a1/process.json",
+      "identity": {
+        "pid": 2617537,
+        "start_ticks": "427355047",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-recovery-restart-95de3d5/process.json",
+      "identity": {
+        "pid": 2733382,
+        "start_ticks": "431185425",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-qwen06b/process.json",
+      "identity": {
+        "pid": 2571074,
+        "start_ticks": "424790495",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-smollm17b-lora-500b197/process.json",
+      "identity": {
+        "pid": 2594154,
+        "start_ticks": "426090282",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/previous/process.json",
+      "identity": {
+        "pid": 2689863,
+        "start_ticks": "429510765",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/candidate-canary/process.json",
+      "identity": {
+        "pid": 2690060,
+        "start_ticks": "429511219",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/candidate-active/process.json",
+      "identity": {
+        "pid": 2690255,
+        "start_ticks": "429511635",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-explicit-4e49524/rollback/process.json",
+      "identity": {
+        "pid": 2690453,
+        "start_ticks": "429512088",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-release-wheels-4e49524/previous/process.json",
+      "identity": {
+        "pid": 2686573,
+        "start_ticks": "429454152",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-explicit-4e49524/previous/process.json",
+      "identity": {
+        "pid": 2688427,
+        "start_ticks": "429504120",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-explicit-4e49524/candidate-canary/process.json",
+      "identity": {
+        "pid": 2688625,
+        "start_ticks": "429504523",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-explicit-4e49524/candidate-active/process.json",
+      "identity": {
+        "pid": 2688820,
+        "start_ticks": "429504950",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-explicit-4e49524/rollback/process.json",
+      "identity": {
+        "pid": 2689018,
+        "start_ticks": "429505388",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-4e49524/previous/process.json",
+      "identity": {
+        "pid": 2685200,
+        "start_ticks": "429443392",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-4e49524/candidate-canary/process.json",
+      "identity": {
+        "pid": 2685398,
+        "start_ticks": "429443800",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-4e49524/candidate-active/process.json",
+      "identity": {
+        "pid": 2685592,
+        "start_ticks": "429444198",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-release-wheels-4e49524/rollback/process.json",
+      "identity": {
+        "pid": 2685790,
+        "start_ticks": "429444641",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2695789,
+        "start_ticks": "429964617"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2695795,
+        "start_ticks": "429964730"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2695804,
+        "start_ticks": "429964865"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2696647,
+        "start_ticks": "429979409"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2697042,
+        "start_ticks": "429980054"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2697436,
+        "start_ticks": "429980772"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2698115,
+        "start_ticks": "429985744"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2698509,
+        "start_ticks": "429986442"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2698903,
+        "start_ticks": "429987205"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2700042,
+        "start_ticks": "430026685"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2700433,
+        "start_ticks": "430026982"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2700825,
+        "start_ticks": "430027290"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2701506,
+        "start_ticks": "430032285"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2701897,
+        "start_ticks": "430032583"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "rollout-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2702289,
+        "start_ticks": "430032883"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2703420,
+        "start_ticks": "430164625"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2703811,
+        "start_ticks": "430164920"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2704203,
+        "start_ticks": "430165259"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2704884,
+        "start_ticks": "430169596"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2705275,
+        "start_ticks": "430169881"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2705667,
+        "start_ticks": "430170177"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2706519,
+        "start_ticks": "430194761"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2706910,
+        "start_ticks": "430195049"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2707302,
+        "start_ticks": "430195356"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:blue",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2707984,
+        "start_ticks": "430201032"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:green",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2708375,
+        "start_ticks": "430201316"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "native-cancel-report:haproxy",
+      "identity": {
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372",
+        "pid": 2708767,
+        "start_ticks": "430201647"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-entry-vllm-49fea1c",
+      "identity": {
+        "pid": 2709650,
+        "start_ticks": "430349465",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-entry-sglang-49fea1c",
+      "identity": {
+        "pid": 2710618,
+        "start_ticks": "430353153",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-entry-vllm-49fea1c-r2",
+      "identity": {
+        "pid": 2711747,
+        "start_ticks": "430363542",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/image-entry-sglang-49fea1c-r2",
+      "identity": {
+        "pid": 2712719,
+        "start_ticks": "430367256",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-vllm-c4e9cef:original",
+      "identity": {
+        "pid": 2713959,
+        "start_ticks": "430484332",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-vllm-c4e9cef:restored",
+      "identity": {
+        "pid": 2714349,
+        "start_ticks": "430484717",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-sglang-c4e9cef:original",
+      "identity": {
+        "pid": 2715316,
+        "start_ticks": "430488416",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/registry-sglang-c4e9cef:restored",
+      "identity": {
+        "pid": 2715706,
+        "start_ticks": "430488798",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/reference-eager.log",
+      "identity": {
+        "pid": 2717960,
+        "start_ticks": "430612513",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-eager.log",
+      "identity": {
+        "pid": 2718102,
+        "start_ticks": "430613530",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/reference-sdpa.log",
+      "identity": {
+        "pid": 2718104,
+        "start_ticks": "430613574",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/comparison-sdpa.log",
+      "identity": {
+        "pid": 2718247,
+        "start_ticks": "430614737",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/collect.log",
+      "identity": {
+        "pid": 2717195,
+        "start_ticks": "430596906",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/reference-eager.log",
+      "identity": {
+        "pid": 2717201,
+        "start_ticks": "430597361",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/comparison-eager.log",
+      "identity": {
+        "pid": 2717281,
+        "start_ticks": "430598383",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/reference-sdpa.log",
+      "identity": {
+        "pid": 2717283,
+        "start_ticks": "430598426",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-vllm-877f319/comparison-sdpa.log",
+      "identity": {
+        "pid": 2717363,
+        "start_ticks": "430599579",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/numerical-sglang-877f319/collect.log",
+      "identity": {
+        "pid": 2717939,
+        "start_ticks": "430603381",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/collect.log",
+      "identity": {
+        "pid": 2719199,
+        "start_ticks": "430712299",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/mode-check.log",
+      "identity": {
+        "pid": 2719203,
+        "start_ticks": "430712635",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/postcheck.log",
+      "identity": {
+        "pid": 2719272,
+        "start_ticks": "430713537",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/reference-eager.log",
+      "identity": {
+        "pid": 2719276,
+        "start_ticks": "430713702",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/comparison-eager.log",
+      "identity": {
+        "pid": 2719355,
+        "start_ticks": "430714700",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/reference-sdpa.log",
+      "identity": {
+        "pid": 2719356,
+        "start_ticks": "430714729",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-f9167c9/comparison-sdpa.log",
+      "identity": {
+        "pid": 2719435,
+        "start_ticks": "430715907",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/collect.log",
+      "identity": {
+        "pid": 2720297,
+        "start_ticks": "430720310",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/mode-check.log",
+      "identity": {
+        "pid": 2720300,
+        "start_ticks": "430720670",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/postcheck.log",
+      "identity": {
+        "pid": 2720369,
+        "start_ticks": "430721667",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/reference-eager.log",
+      "identity": {
+        "pid": 2720373,
+        "start_ticks": "430721840",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/comparison-eager.log",
+      "identity": {
+        "pid": 2720453,
+        "start_ticks": "430722863",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/reference-sdpa.log",
+      "identity": {
+        "pid": 2720454,
+        "start_ticks": "430722893",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-f9167c9/comparison-sdpa.log",
+      "identity": {
+        "pid": 2720533,
+        "start_ticks": "430723985",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/collect.log",
+      "identity": {
+        "pid": 2721111,
+        "start_ticks": "430727893",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/mode-check.log",
+      "identity": {
+        "pid": 2721114,
+        "start_ticks": "430728229",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/postcheck.log",
+      "identity": {
+        "pid": 2721183,
+        "start_ticks": "430729165",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/reference-eager.log",
+      "identity": {
+        "pid": 2721187,
+        "start_ticks": "430729850",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/comparison-eager.log",
+      "identity": {
+        "pid": 2721329,
+        "start_ticks": "430730866",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/reference-sdpa.log",
+      "identity": {
+        "pid": 2721330,
+        "start_ticks": "430730896",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-f9167c9/comparison-sdpa.log",
+      "identity": {
+        "pid": 2721472,
+        "start_ticks": "430732005",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-f9167c9/collect.log",
+      "identity": {
+        "pid": 2722104,
+        "start_ticks": "430736808",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/collect.log",
+      "identity": {
+        "pid": 2722753,
+        "start_ticks": "430765515",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/mode-check.log",
+      "identity": {
+        "pid": 2722815,
+        "start_ticks": "430767145",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/postcheck.log",
+      "identity": {
+        "pid": 2722884,
+        "start_ticks": "430768303",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-eager.log",
+      "identity": {
+        "pid": 2722888,
+        "start_ticks": "430768990",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-eager.log",
+      "identity": {
+        "pid": 2723029,
+        "start_ticks": "430770037",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/reference-sdpa.log",
+      "identity": {
+        "pid": 2723030,
+        "start_ticks": "430770073",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-5e6b2c7/comparison-sdpa.log",
+      "identity": {
+        "pid": 2723172,
+        "start_ticks": "430771296",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/collect.log",
+      "identity": {
+        "pid": 2724239,
+        "start_ticks": "430848306",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/mode-check.log",
+      "identity": {
+        "pid": 2724244,
+        "start_ticks": "430848626",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/precision-check.log",
+      "identity": {
+        "pid": 2724311,
+        "start_ticks": "430849538",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/postcheck.log",
+      "identity": {
+        "pid": 2724379,
+        "start_ticks": "430850324",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/reference-eager.log",
+      "identity": {
+        "pid": 2724383,
+        "start_ticks": "430850492",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/comparison-eager.log",
+      "identity": {
+        "pid": 2724463,
+        "start_ticks": "430851539",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/reference-sdpa.log",
+      "identity": {
+        "pid": 2724464,
+        "start_ticks": "430851573",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-fp32-55a1d26/comparison-sdpa.log",
+      "identity": {
+        "pid": 2724542,
+        "start_ticks": "430852740",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/collect.log",
+      "identity": {
+        "pid": 2725402,
+        "start_ticks": "430857051",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/mode-check.log",
+      "identity": {
+        "pid": 2725408,
+        "start_ticks": "430857422",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/precision-check.log",
+      "identity": {
+        "pid": 2725476,
+        "start_ticks": "430858428",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/postcheck.log",
+      "identity": {
+        "pid": 2725544,
+        "start_ticks": "430859220",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/reference-eager.log",
+      "identity": {
+        "pid": 2725548,
+        "start_ticks": "430859391",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/comparison-eager.log",
+      "identity": {
+        "pid": 2725629,
+        "start_ticks": "430860465",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/reference-sdpa.log",
+      "identity": {
+        "pid": 2725630,
+        "start_ticks": "430860504",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-fp32-55a1d26/comparison-sdpa.log",
+      "identity": {
+        "pid": 2725712,
+        "start_ticks": "430861652",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/collect.log",
+      "identity": {
+        "pid": 2726291,
+        "start_ticks": "430865464",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/mode-check.log",
+      "identity": {
+        "pid": 2726296,
+        "start_ticks": "430865802",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/precision-check.log",
+      "identity": {
+        "pid": 2726364,
+        "start_ticks": "430866819",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/postcheck.log",
+      "identity": {
+        "pid": 2726431,
+        "start_ticks": "430867646",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/reference-eager.log",
+      "identity": {
+        "pid": 2726436,
+        "start_ticks": "430867930",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/comparison-eager.log",
+      "identity": {
+        "pid": 2726578,
+        "start_ticks": "430869038",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/reference-sdpa.log",
+      "identity": {
+        "pid": 2726579,
+        "start_ticks": "430869067",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-ordinary-fp32-55a1d26/comparison-sdpa.log",
+      "identity": {
+        "pid": 2726721,
+        "start_ticks": "430870260",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/collect.log",
+      "identity": {
+        "pid": 2727304,
+        "start_ticks": "430874371",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/mode-check.log",
+      "identity": {
+        "pid": 2727309,
+        "start_ticks": "430875004",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/precision-check.log",
+      "identity": {
+        "pid": 2727378,
+        "start_ticks": "430876212",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/postcheck.log",
+      "identity": {
+        "pid": 2727448,
+        "start_ticks": "430876974",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/reference-eager.log",
+      "identity": {
+        "pid": 2727451,
+        "start_ticks": "430877661",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/comparison-eager.log",
+      "identity": {
+        "pid": 2727594,
+        "start_ticks": "430878764",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/reference-sdpa.log",
+      "identity": {
+        "pid": 2727595,
+        "start_ticks": "430878799",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-fp32-55a1d26/comparison-sdpa.log",
+      "identity": {
+        "pid": 2727737,
+        "start_ticks": "430879993",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/collect.log",
+      "identity": {
+        "pid": 2728707,
+        "start_ticks": "430964173",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/mode-check.log",
+      "identity": {
+        "pid": 2728716,
+        "start_ticks": "430964915",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/precision-check.log",
+      "identity": {
+        "pid": 2728789,
+        "start_ticks": "430965942",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/postcheck.log",
+      "identity": {
+        "pid": 2728857,
+        "start_ticks": "430966859",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/reference-eager.log",
+      "identity": {
+        "pid": 2728861,
+        "start_ticks": "430967032",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/comparison-eager.log",
+      "identity": {
+        "pid": 2728943,
+        "start_ticks": "430968039",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/reference-sdpa.log",
+      "identity": {
+        "pid": 2728944,
+        "start_ticks": "430968068",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-ordinary-full-fp32-f2ccc2a/comparison-sdpa.log",
+      "identity": {
+        "pid": 2729027,
+        "start_ticks": "430969116",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/collect.log",
+      "identity": {
+        "pid": 2729897,
+        "start_ticks": "430974624",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/mode-check.log",
+      "identity": {
+        "pid": 2729902,
+        "start_ticks": "430975441",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/precision-check.log",
+      "identity": {
+        "pid": 2729970,
+        "start_ticks": "430976509",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/postcheck.log",
+      "identity": {
+        "pid": 2730041,
+        "start_ticks": "430977451",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/reference-eager.log",
+      "identity": {
+        "pid": 2730045,
+        "start_ticks": "430977620",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/comparison-eager.log",
+      "identity": {
+        "pid": 2730127,
+        "start_ticks": "430978642",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/reference-sdpa.log",
+      "identity": {
+        "pid": 2730128,
+        "start_ticks": "430978671",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-invariant-full-fp32-f2ccc2a/comparison-sdpa.log",
+      "identity": {
+        "pid": 2730211,
+        "start_ticks": "430979689",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/collect.log",
+      "identity": {
+        "pid": 2731436,
+        "start_ticks": "430989670",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/mode-check.log",
+      "identity": {
+        "pid": 2731440,
+        "start_ticks": "430990302",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/precision-check.log",
+      "identity": {
+        "pid": 2731511,
+        "start_ticks": "430991431",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/postcheck.log",
+      "identity": {
+        "pid": 2731581,
+        "start_ticks": "430992333",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/reference-eager.log",
+      "identity": {
+        "pid": 2731584,
+        "start_ticks": "430993025",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/comparison-eager.log",
+      "identity": {
+        "pid": 2731730,
+        "start_ticks": "430994102",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/reference-sdpa.log",
+      "identity": {
+        "pid": 2731731,
+        "start_ticks": "430994132",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-invariant-full-fp32-f2ccc2a/comparison-sdpa.log",
+      "identity": {
+        "pid": 2731877,
+        "start_ticks": "430995215",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-recovery-seed-95de3d5/seed.log",
+      "identity": {
+        "pid": 2734024,
+        "start_ticks": "431189984",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "vllm-before/wrapper.log",
+      "identity": {
+        "pid": 2736834,
+        "start_ticks": "431369222",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "vllm-after/wrapper.log",
+      "identity": {
+        "pid": 2738231,
+        "start_ticks": "431387903",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "sglang-before/wrapper.log",
+      "identity": {
+        "pid": 2739626,
+        "start_ticks": "431406652",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "sglang-after/wrapper.log",
+      "identity": {
+        "pid": 2740751,
+        "start_ticks": "431425939",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "vllm-quota/wrapper.log",
+      "identity": {
+        "pid": 2741917,
+        "start_ticks": "431448556",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "sglang-quota/wrapper.log",
+      "identity": {
+        "pid": 2743173,
+        "start_ticks": "431453647",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-combined-quota-7391ed3/process.json",
+      "identity": {
+        "pid": 2743176,
+        "start_ticks": "431453710",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-combined-before-d8a2649/process.json",
+      "identity": {
+        "pid": 2739629,
+        "start_ticks": "431406687",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-combined-after-7391ed3/process.json",
+      "identity": {
+        "pid": 2740754,
+        "start_ticks": "431425974",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-combined-before-d8a2649/process.json",
+      "identity": {
+        "pid": 2736837,
+        "start_ticks": "431369258",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-combined-quota-7391ed3/process.json",
+      "identity": {
+        "pid": 2741920,
+        "start_ticks": "431448619",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-combined-after-7391ed3/process.json",
+      "identity": {
+        "pid": 2738234,
+        "start_ticks": "431387935",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-asgi-profile-a475ad4/process.json",
+      "identity": {
+        "pid": 2744225,
+        "start_ticks": "431529145",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-response-after-dadb516/process.json",
+      "identity": {
+        "pid": 2751126,
+        "start_ticks": "431650360",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-response-before-dadb516/process.json",
+      "identity": {
+        "pid": 2747225,
+        "start_ticks": "431604936",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-asgi-profile-a475ad4/process.json",
+      "identity": {
+        "pid": 2745549,
+        "start_ticks": "431537378",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-response-before-dadb516/process.json",
+      "identity": {
+        "pid": 2750007,
+        "start_ticks": "431635035",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-asgi-recovery-a475ad4/process.json",
+      "identity": {
+        "pid": 2746633,
+        "start_ticks": "431578102",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-response-after-dadb516/process.json",
+      "identity": {
+        "pid": 2748617,
+        "start_ticks": "431620119",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quiescence-restart-919c859/process.json",
+      "identity": {
+        "pid": 2756327,
+        "start_ticks": "432089462",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-quiescence-initial-7fe8e72/process.json",
+      "identity": {
+        "pid": 2757513,
+        "start_ticks": "432142039",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quiescence-restart-7fe8e72/process.json",
+      "identity": {
+        "pid": 2761099,
+        "start_ticks": "432161333",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quiescence-restart-2-7fe8e72/process.json",
+      "identity": {
+        "pid": 2762080,
+        "start_ticks": "432167344",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-quiescence-restart-7fe8e72/process.json",
+      "identity": {
+        "pid": 2758836,
+        "start_ticks": "432148593",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quiescence-initial-919c859/process.json",
+      "identity": {
+        "pid": 2755330,
+        "start_ticks": "432082447",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-quiescence-initial-919c859/process.json",
+      "identity": {
+        "pid": 2752793,
+        "start_ticks": "432070314",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/vllm-quiescence-restart-919c859/process.json",
+      "identity": {
+        "pid": 2754064,
+        "start_ticks": "432076740",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    },
+    {
+      "record": "/root/jev-runtime/runs/sglang-quiescence-initial-7fe8e72/process.json",
+      "identity": {
+        "pid": 2760101,
+        "start_ticks": "432154130",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "matching_live_process": false,
+      "live_group": []
+    }
+  ],
+  "gpu7": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "model_files": [
+    {
+      "name": "config.json",
+      "sha256": "994f50b16abb4ae00880baefe03c10260b5bd608d2bf586f7056ca05a534feea",
+      "size_bytes": 908,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "generation_config.json",
+      "sha256": "87b916edaaab66b3899b9d0dd0752727dff6666686da0504d89ae0a6e055a013",
+      "size_bytes": 132,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "merges.txt",
+      "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+      "size_bytes": 466391,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "model.safetensors",
+      "sha256": "f55217be716b6a997b97b9d8d7eb6fad02e00858f5010ec24f64603c3a98a0e8",
+      "size_bytes": 3422777952,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "special_tokens_map.json",
+      "sha256": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+      "size_bytes": 655,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "tokenizer.json",
+      "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+      "size_bytes": 2104556,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "tokenizer_config.json",
+      "sha256": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+      "size_bytes": 3764,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    },
+    {
+      "name": "vocab.json",
+      "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+      "size_bytes": 800662,
+      "hub_digest_verified": true,
+      "unchanged_since_Hub_verified_audit": true
+    }
+  ],
+  "model_validation": "Current hashes match the previously Hub-verified immutable audit; no new Hub query",
+  "prior_audit_sha256": "52e20eedacb54a6a8c99fdb2f384ad7ef02b63e9785677431c5c702cfc5eed2c",
+  "sources": {
+    "initial": {
+      "commit": "919c859598bbbd6bb885be280dd0b46360afd532",
+      "python_files": {
+        "deployment/release.py": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7",
+        "deployment/container_gateway.py": "1dc35b3e6be20998a21114b122ca99c9e9ea2cc5ae0da8a9b96b186c272bcdab",
+        "deployment/dsw_service.py": "3ea735a4c85a07bc3bda76b3da31f49771aad6a778982af4912b334431c875be",
+        "deployment/build_haproxy.py": "8305a328f225aea1ebdb1f17f17336b04df2ffaf727b608485bd9bcf5a1d9a02",
+        "deployment/image_context.py": "c29dc31dd7e55d4be4d2e2b3dcb8a609fbfafe6effd5a9ff3865358cd7bc707f",
+        "benchmarks/compare_compiler.py": "d0c589408bd09839a8d0ee977899abc1850912e1e709a72ec21ba8a0ce7a8cc3",
+        "benchmarks/generate_matrix.py": "2cf065b7db5f08a7f4be8961d51af838d8835d9fd71a429a164e1c0100f82534",
+        "benchmarks/prepare_public_quality.py": "1f543caf60ab6ab739b1aad1dcb485eab6321782be65d2ceeb135172603b314d",
+        "benchmarks/run_case.py": "fcf9f230f5fd17350be3262bd4a58b1d81a18da7ffa2d475d10ab4ff5982198f",
+        "benchmarks/public_quality.py": "cce59d02f0f3e84d59172207d757c6ce15b7475c0c4775b08088a442b5b6be7d",
+        "tests/test_rollout_progress.py": "8c12458ed9e8cb1859a0fedf85d4d1d4b943a142ae1a2ef9108743e641348c3a",
+        "tests/test_tokenizer_copy.py": "7ebf6908377d471314f2942278d464fb8d7309df3c7ded0f5cc8b10ed383bda3",
+        "tests/test_native_validation_runner.py": "cbeb33698ebc90619e3387d0f7b982da41f968278ee7d3a22a916e98595d55cb",
+        "tests/test_public_quality.py": "6d3ba284a0b86d1a1b00821e88874e9c16f022a4c17d6c19e9b533e46f744950",
+        "tests/test_integration_contract.py": "f6742794c5ac92411f4b08faeb2da7158cf9c1d93dd40f3d8cf63dd36e667108",
+        "tests/test_tokenizer_profiles.py": "52895d6e9d374a92f0a0d396ce882829c88bdcf5ae8835fe0247e76017f3c21e",
+        "tests/test_image_context.py": "3d0cc233d1a3064d3efdfc029522ed22d4c93034716bca2107ff89818866114b",
+        "tests/test_registry_backup.py": "5963889da6dc07511bbd05bde8e99d196282d0ac00bae4ebf912f76051650973",
+        "tests/test_health.py": "7a0123485f03ab0db2425cc1dc9824f6548781803ba6db4da4e25faaf3a6d42f",
+        "tests/test_release.py": "860ceb6f5f3c63e6354f83636d2cc80b50beadae463e8e8c8919458c5f3a89b0",
+        "tests/test_shared_admission.py": "8e49ea576bb9251a1216358d45361d4f239d56018895af91d78d06f0d1944853",
+        "tests/test_calibration_cli.py": "0449fc8d0c3a2049037cb32814c62fa1dbcbd902d3b07a8fc66668aaa486e0fb",
+        "tests/test_lifecycle.py": "b4fd46d08d8a78222f18b9b4c25ebd568ba5f89223d71abb4703f4dbd05f0622",
+        "tests/test_response_serialization.py": "84a29a5d5fe31f2b74f616a44821fbbb3be8ab4816af583a10c3ad25f0d4b0b6",
+        "tests/test_remote_cancel.py": "7a31a71510b9d03a30287996ef9f32b1c54ce5c096427a17b7bfdaf4f14d31f9",
+        "tests/test_admission.py": "3bd8b1ed7b707af28122616cc51e1ebf03c1091a67560f686b9d56ac934ff05c",
+        "tests/test_compiler.py": "7c031a584b2e1187b3269885500913bf0e217b29330c3461f7788d665e2ee8b6",
+        "tests/test_numerical_suite.py": "d6cba4a7dcea0aa4aff0d931743ddb99844f151134b55d6dc2d40edcdb0ebc69",
+        "tests/test_scoring.py": "415500054c22e86e0e8e957a5c542e5a82d64f0d510fa7b806b79e490787319d",
+        "tests/test_recovery.py": "52e12a66929c85d0969e84d574835bfdd806b3ef3d27a53fda6b7f4bc3719fc2",
+        "tests/test_plugin_lifespan.py": "3ab2cea1fc73bfe600ca7c8ac22b42e009d4d30e70109092b59038e5f3a5cf7e",
+        "tests/test_dsw_launcher.py": "055ac05c011ef58325c17c4b48200e0500cdc002d567ac0644470d9cbf64a64c",
+        "tests/test_precision.py": "aa0cb720a2d863deb5903a1ec93bd366502689904d40fb2add2f61d0f6bfa1e3",
+        "tests/test_quiescence.py": "660d1fcc103f2378a9a207fd96b8cf5fbe7cb17944a119cfcc7f845d32b46098",
+        "tests/test_readiness.py": "0efa0851889118198a698570281fe46330fb1354296d8756e95581001acde037",
+        "tests/test_rollout.py": "c4e8eac8a3266620b426390e8a8168a86c57c25873b8b438e13545e0739193ed",
+        "tests/conftest.py": "caf28e49f0118ae98c605813b2e827eed319a2c8f384eb8a3c4541b2db072404",
+        "tests/test_generation_baseline.py": "da61145bb635eb7ccf17675f0514046f3c94c7cdc3b3dea65e693af809cd3b70",
+        "tests/test_evaluation.py": "d7f3d292e20eac8cd712f031718de54742b2301d10becf4bf1ef2550c718d6bb",
+        "tests/test_template_override.py": "68fa997dddf8e61cf090c664d27f2f0092b730a41cb58563baa60941c057015d",
+        "tests/test_backends.py": "28b55b9460a0149c421fb7fb020363f9b4a6d2055e41d6bcfe85530911fc2eb9",
+        "tests/test_recovery_mode.py": "3f159937cdb32220269031da738ed35ec01bdc50b76c9969b6be4402c79c2108",
+        "tests/test_quiescent_stop.py": "c1706f17847475fe3b02946faf17cb28fa4d9a0862e1c32af0dc9e82b7bbda21",
+        "tests/test_adapter_lifecycle.py": "b19838df9cbaead694aef2f1ed5b7ded29d633c1f8d79a8e10a6cfc67893fab5",
+        "tests/test_combined_reservation.py": "7d14d0bc2c8f020b036ec99a5c22676dd347da9d100c3a7f4aad67310193cea3",
+        "tests/test_sglang_logprob_rows.py": "32f6086648d710c3f632a26fb8d5b84ecc7a2ce58f975f0e653366a82707b34f",
+        "tests/test_api.py": "5da870eb87c88745d2887a108ed755f99569e3612c39482841c5d60c8ff7f7cd",
+        "tests/test_serialized_tokenizer.py": "3acad972282246f723f287a291589bdb9b85e21c0c956490d6ec8c90faf289c3",
+        "tests/test_performance.py": "f7ebc1e17bb36ff863d12b6ee3219e540e8dcddb79cefa46540fa3601e58d9af",
+        "tests/test_reference_device.py": "e066855bd0e6ca94db43e6cdb0e92ab0bf0ff2307abb7d8cd57290b816301ed2",
+        "tests/test_adapter_artifacts.py": "c2ee0097fcb1a18f46f22b69cec461505d9b7a9cee803733cf64774049528d45",
+        "tests/test_bundle_cli.py": "c2c1698f962af0194050a1a81f96438e502f44b27028713f249e7a087661cfe9",
+        "tests/test_branch_identity.py": "661046d923df4a1008c122038be2d8f04c20d2d7f423f74201d94fa08f0f3455",
+        "tests/test_calibration.py": "9c1d6cdd71492c2ebfde61872fb246ad78ee37da897113fe0eaab28408c04582",
+        "tests/test_sdk.py": "c5d6446e3dfeed100df69f19bb2a52373b80692db069c1704ecd46ef67ef1d02",
+        "tests/test_registry_connections.py": "a9e8180fa8ccd820045da31bbeb81c5a4f40af35a3bfe96dee5eb4b87735a94a",
+        "tests/test_telemetry.py": "bf1ef83bf1103e03efafa984722ea7e11d940507e853079a1c933f7706db4e7e",
+        "tests/test_execution_mode.py": "80ba1f43a392ce00b1f623247967b7564f467a9b9fcad772fa65d11846fa00ab",
+        "src/jev_runtime/health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+        "src/jev_runtime/calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+        "src/jev_runtime/scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+        "src/jev_runtime/lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+        "src/jev_runtime/rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+        "src/jev_runtime/admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+        "src/jev_runtime/config.py": "7aa93d3350db59a67b88dbb80570f436bda40c565c5f941a7b549da6b995684c",
+        "src/jev_runtime/registry_backup.py": "f322201e5173c76304a23463fd9055996fc54ef331d4a01c22a1f4e0501ebf1a",
+        "src/jev_runtime/cli.py": "378ba28f6478c9101dc283dce2f5bf7ff9b46b9de808cb0d93d3ad744b65e376",
+        "src/jev_runtime/schema.py": "2c72507f010d21269042ab25241ca9efbb7652c82f58af7a3fdb2366c3200de7",
+        "src/jev_runtime/tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594",
+        "src/jev_runtime/shared_admission.py": "382d7797dd50a56a2671694c2fb773cc6458ac32335c2855c4bbd428f966ed9c",
+        "src/jev_runtime/systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+        "src/jev_runtime/api.py": "6fa9a761fa206deca22fc6091e1f9eab950d026a80cfc26c6ed66ed6bfe46a8f",
+        "src/jev_runtime/runtime.py": "84211a757c25ff40f1b22020b0c75b62e822c399e148785272f748c7bbd088d9",
+        "src/jev_runtime/sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+        "src/jev_runtime/templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+        "src/jev_runtime/adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+        "src/jev_runtime/performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+        "src/jev_runtime/telemetry.py": "f947398844cd9d8b4b51c48a9ba6059fba2b972226d415c2d1c5d135b85ec5f5",
+        "src/jev_runtime/quiescence.py": "f2b2491ed0e32a9c0b682e38f65be85e340e978708ffa717907f51e3bac518d5",
+        "src/jev_runtime/evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+        "src/jev_runtime/compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+        "src/jev_runtime/errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+        "src/jev_runtime/registry.py": "66b290037f9c2c9b762f62ca61303fc589a7fe9e9ea20193fc1811eef574ccbd",
+        "src/jev_runtime/generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+        "src/jev_runtime/__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+        "src/jev_runtime/plugin_api.py": "a616bcc02ce77ff8f5af9524d20647b7c571987a575c55cf9455c195c2c4603f",
+        "src/jev_runtime/backends/sglang.py": "4fe03b9f80cd5b58594be5bd5e9a821cce177b93da7bf91407b2ed4ee1a32ab0",
+        "src/jev_runtime/backends/vllm.py": "b3d9b4ec51317bf34854e6be8a79a3f15b0c85eddec23330bfa8a8e774bbc58a",
+        "src/jev_runtime/backends/base.py": "399160e3c36b01affb06bc42ba0a141d4f600b57bb903905dd8ae41965c96168",
+        "src/jev_runtime/backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+        "packages/vllm/src/jev_vllm/worker.py": "7e54cc5c44f4a8391047956bc34901f069070dccf22883b961bb2238599f3074",
+        "packages/vllm/src/jev_vllm/tokenizer.py": "e876cde2c21bcad672018c6b7d8077520648e89f15f273f0e20a8b589ce8dc1a",
+        "packages/vllm/src/jev_vllm/endpoint.py": "6b5c876794f0de353419c5480e4253de6c64e95e00c2071aa84cad6f028e8627",
+        "packages/vllm/src/jev_vllm/__init__.py": "c58c1fd7dea29065b54abdbbe31de978000dcceacfce38bfe803a855b58c6c79",
+        "packages/sglang/src/jev_sglang/plugin.py": "0adff17dc0e6a18e3a7332569b1c38833db23bbcac8c6078652363b73f546d22",
+        "packages/sglang/src/jev_sglang/worker.py": "08ea777d967b2b2a7a2620ab300fabec712526b1e6dc3251b52975aa203d8e9a",
+        "packages/sglang/src/jev_sglang/launcher.py": "f432512cc3653492a96647b32b8bccbd233e038290c76ddddac68cfe2107fcb7",
+        "packages/sglang/src/jev_sglang/__init__.py": "df0f14b124341fe1dab4f58249cdf23d59fbc1ace74fea4a0b6e6dd81bb938eb",
+        "evidence/harnesses/verify_recovery_mode_95de3d5.py": "c99535417d4aab7671365a0f0894154b41aea41519563bfea7ad27465fe20075",
+        "evidence/harnesses/verify_gateway_rollout_7739145.py": "29372b4ec08d8013d1b9c8c73103f646dd33027bc2e4c10044f5c14d316a3693",
+        "evidence/harnesses/verify_reference_diagnostics_5730449.py": "62fbd3a88b842f44b1403d1d0d29b5622d04a7eab4a2d2c1a335f5557e7bf61f",
+        "evidence/harnesses/verify_native_rollout_cancel_b20d3f4.py": "9623612fe96196215d0737042bb32f70be2b00375c38e7ff776a670acd98359e",
+        "evidence/harnesses/verify_registry_snapshot_c4e9cef.py": "8f2cb8042d5dce9205184e94c49d3d2cfd85155bba9a3ee72bc62342fe598128",
+        "evidence/harnesses/verify_release_packaging_4e49524.py": "3420ef6c19eeb90587dd0d47b313921a95b578f9279cc60e1cce3a66d5ef0b81",
+        "evidence/harnesses/verify_numerical_suite_877f319.py": "d761d4f439a041e5e0f86115cc7c8c2a176f424e1a2c9f70dc547d567be716e9",
+        "evidence/harnesses/verify_combined_reservation_7391ed3.py": "b2042d292f9d1ebf9cb2f1fa0d3475228e520d4353dc8b1d428f660ae3ef3515",
+        "evidence/harnesses/real_tokenizer_binding_75649bf.py": "8a4897c39e380332e7b10dfacccc82ee65205f754505df8a084515bc3df1c632",
+        "evidence/harnesses/verify_image_entrypoint_49fea1c.py": "c5b86bd70b2cc3419332809efeded146e04f48f4772635218409390a75bb6bbc",
+        "evidence/harnesses/verify_response_model_dadb516.py": "f5136ab3918993e242bd8d015842547e05bf66e9f295dd53c371e0fc8c802416",
+        "evidence/harnesses/verify_preserve_fast_cdd0caf.py": "d143f87a89d3ed83997a04ed21f0ced21d6edc9f271c0bca55956cdac2c9b010",
+        "evidence/harnesses/verify_public_pair_3377c95.py": "cc183fb4f078ed73950a50bb6f5ba9f9242cf651d59e5c8e035453413c84ee68",
+        "evidence/harnesses/verify_full_fp32_f2ccc2a.py": "078b22794e3cd826f1d6ca703b8e659115fcb2acebd857701b1803327ed56b42",
+        "evidence/harnesses/verify_fp32_readout_55a1d26.py": "90fc3080b23eda649ba8d1a08514ff46d79567c8843ed5ba694911c2429c9a6d",
+        "evidence/harnesses/verify_glm_r1_c48f18d.py": "689b78975e321ff8ddfa31ec5d9bfe1fcc367cfb889cc66cb7f1db9452396e94",
+        "evidence/harnesses/verify_atomic_comparison_3377c95.py": "7ee608d4ff5b3b94ec763cb89bf5f76a86112aa9d11facb1650269650168abd2",
+        "evidence/harnesses/verify_batch_invariant_f9167c9.py": "dea173ecd69fd8c604a83b02d83bb52ee2d79faa5664dc048963b46ee522a47d",
+        "evidence/dsw/response-model-dadb516/export.py": "3783a307f92488a23457277a82444192702457b5090ed3ba3f5a7f492102ac11",
+        "evidence/dsw/response-model-dadb516/campaign.py": "dae296ea238c2fb899749e3355268171b47a0c1b1c1277dd9476db348b2cc8bc",
+        "evidence/dsw/response-model-dadb516/run_case_profile.py": "ddb64b51bec1027d89f841f40ff2f0ce83e46c0f4f8051c0f1c307722903ef8b",
+        "evidence/dsw/response-model-dadb516/contracts.py": "b9754bf1a20a3a597ceff3185618a00313598e11b1f32d55f45a8a34af8384e0",
+        "evidence/dsw/combined-reservation-7391ed3/export.py": "f0a68c4e5760afa17c47211257236abf2d6b057879b3736729cee232a13589bb",
+        "evidence/dsw/combined-reservation-7391ed3/run_quota.py": "6389794499230b91c717adda5725ef31346c124c3762e92b9c18dcce3f50b50e",
+        "evidence/dsw/combined-reservation-7391ed3/quota_campaign.py": "4541122f986693cebf811218af4a204f2b9402dcdeb9ea4b64fe51ed4f0e18dc",
+        "evidence/dsw/combined-reservation-7391ed3/campaign.py": "47242b35f1c26cd903d2119982d14056c97f5b915a9cac2b56709a3447f5818a",
+        "evidence/dsw/combined-reservation-7391ed3/run_perf.py": "3c6279087135db04a06ec44e683962572aa30cfa40e9466ead970e8ffbbdf197",
+        "evidence/dsw/recovery-mode-95de3d5/vllm-seed/create_journal.py": "2d36d9d4c17e44c3f0c80b6ef015639c0b24924136fb0c2bbe1f8a9d65a7e8d0",
+        "evidence/dsw/response-model-dadb516/bootstrap/sitecustomize.py": "e9b4a5c749012d8e9737b26072ef13ca8d59ef2d726f83519efd485b6e2b2dd8",
+        "evidence/dsw/response-model-dadb516/initial/campaign.py": "59fca052467ac503f5d230653bc2959932ec72898f5dbac63e91e8d8e08b414c",
+        "evidence/dsw/response-model-dadb516/initial/recover.py": "7e06602cd03445b92bbe572238a158c629377f3b71289c2a8b6de32998093f4f",
+        "evidence/dsw/response-model-dadb516/initial/run_case_profile.py": "ddb64b51bec1027d89f841f40ff2f0ce83e46c0f4f8051c0f1c307722903ef8b",
+        "evidence/dsw/response-model-dadb516/initial/bootstrap/sitecustomize.py": "600b6ce1c314e856a4b36328d37ae514d6fa4d98454c99760b4fdf8d8d2391af",
+        "tests/integration/reference_device.py": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+        "tests/integration/live_gateway.py": "ee5db23d982b46551394959c254ab19b010db3f97f80ca002fb02e70703402b8",
+        "tests/integration/sglang_logprob_rows.py": "3db861e42b4b47c17dd7d72f13528f87e2a4d9bc4d787e6de33c7252e3687a54",
+        "tests/integration/tokenizer_contract.py": "2a88d8428fb80dd9d8ff2771b730361773df9dacb3f6185128b0171b8050d860",
+        "tests/integration/numerical_suite.py": "3f0383760670289ee4bf85543ea5c2513862208424ae4fe7d52a647ab8e48e8e",
+        "tests/integration/live_health.py": "2e55cf7f8e2db53881e9bca440533ba8a03a1822050cdfb324669d7a61c08444",
+        "tests/integration/check_reference_offload.py": "0f26279b49c7137c54e0ac8b6b69d6d14ecc9eadf70680eea107d72b0b5ea0be",
+        "tests/integration/replay_saved_responses.py": "c8be50e67a1c5977ff76967e83ecadc29fd6a4f7d12526b20f84aa9ac26d9dd0",
+        "tests/integration/live_abort_prefix.py": "b1efe89617b23bd038b26c5e502a7892570b927b293929dd275fc958706ba366",
+        "tests/integration/live_remote_cancel.py": "2c28bd1d007919a565c4969dfcc328d6f9b526973816aa331ff549319eb487d5",
+        "tests/integration/rollout_native_cancel.py": "536d53ae4a99aaf518f20e6defd1debbe4d66f1e5e0ddfde4f8a624f8f8380e5",
+        "tests/integration/live_multiworker.py": "d4f0adee6fa1eaee87a27b2098ae763179c0277709675fccc06ad7aa6c9dc92a",
+        "tests/integration/live_rollout.py": "04da65ce7f46d3e1aa0626cb5be73e367a04d90970db3311a99bbc1c3a1dc8ab",
+        "tests/integration/live_precision_binding.py": "8d9c8213ec7f76c6aed1a610489cbc7cfc0aeadb0304ee2e63c48f6ab1a30e6c",
+        "tests/integration/live_shared_admission.py": "385a679e04bda4ff6f8be800bfe1be89ef8a6fd7c7c76283b1da95eea6a6842f",
+        "tests/integration/live_execution_mode.py": "ee78b7cfd9ddcdfc717276d46fe76a7c8f4e6b9134e6997ae6c8fd513b10ef1c",
+        "tests/integration/rollout_fixture.py": "79c62a4e16ad9adaae1538ae67234416ed99be7fe5374df45351d6b49ae5de32",
+        "tests/integration/live_crash_recovery.py": "807cac1f8d0fdbc87f1bf00e028640f2b9dfe6c20879a5ee344b0d70295f0f55",
+        "tests/integration/reference_logits.py": "ed8dd3c0a4184ac870e9c98ad6fc57c3ce816fd31c89a2839fb44522347d552e",
+        "tests/integration/lora_fixture.py": "ea18f68ae5118eec1c6e5600273032763f72845aeb05986a43d58e67b8044f04",
+        "tests/integration/live_sglang_mixed.py": "51ef921209f6829c845432aece42b5b993f4fd2e48a363f313a47ee0e77b8302",
+        "tests/integration/live_contract.py": "e2f328361582411eec3eb22cdf325d1a027c61b799e9dbcd191a93f6fb0a02fc",
+        "tests/integration/live_lora_crash.py": "0767669c28b5e388b4c45322786d15787c911bb286ef709560db9c2626d4bcaa",
+        "tests/integration/live_lora.py": "cdc5dbd4c7773561d9dca502ebb57b2c3a530859a2d3eb374fe71b917550e6f3",
+        "tests/integration/run_native_validation.py": "824172421fbf2d02d471811de14364b8e43fef06fe27200eb624d86f17961e1c",
+        "tests/integration/live_quiescence.py": "0f2177179a91a61b9fe27f3c8af9a72c311741d6ea5b81bafe039a647d90a537"
+      }
+    },
+    "corrected": {
+      "commit": "7fe8e723d4b74db22fff12320a3073c85734cce0",
+      "python_files": {
+        "deployment/release.py": "692886a01c54fc231067f67cb45f8389ac4cb527e5571f797653e696375400f7",
+        "deployment/container_gateway.py": "1dc35b3e6be20998a21114b122ca99c9e9ea2cc5ae0da8a9b96b186c272bcdab",
+        "deployment/dsw_service.py": "b139a0326824e8f75a974f245cfeb29b5f82ecbfff4b5ce7d527e3948d6e8c42",
+        "deployment/build_haproxy.py": "8305a328f225aea1ebdb1f17f17336b04df2ffaf727b608485bd9bcf5a1d9a02",
+        "deployment/image_context.py": "c29dc31dd7e55d4be4d2e2b3dcb8a609fbfafe6effd5a9ff3865358cd7bc707f",
+        "benchmarks/compare_compiler.py": "d0c589408bd09839a8d0ee977899abc1850912e1e709a72ec21ba8a0ce7a8cc3",
+        "benchmarks/generate_matrix.py": "2cf065b7db5f08a7f4be8961d51af838d8835d9fd71a429a164e1c0100f82534",
+        "benchmarks/prepare_public_quality.py": "1f543caf60ab6ab739b1aad1dcb485eab6321782be65d2ceeb135172603b314d",
+        "benchmarks/run_case.py": "fcf9f230f5fd17350be3262bd4a58b1d81a18da7ffa2d475d10ab4ff5982198f",
+        "benchmarks/public_quality.py": "cce59d02f0f3e84d59172207d757c6ce15b7475c0c4775b08088a442b5b6be7d",
+        "tests/test_rollout_progress.py": "8c12458ed9e8cb1859a0fedf85d4d1d4b943a142ae1a2ef9108743e641348c3a",
+        "tests/test_tokenizer_copy.py": "7ebf6908377d471314f2942278d464fb8d7309df3c7ded0f5cc8b10ed383bda3",
+        "tests/test_native_validation_runner.py": "cbeb33698ebc90619e3387d0f7b982da41f968278ee7d3a22a916e98595d55cb",
+        "tests/test_public_quality.py": "6d3ba284a0b86d1a1b00821e88874e9c16f022a4c17d6c19e9b533e46f744950",
+        "tests/test_integration_contract.py": "f6742794c5ac92411f4b08faeb2da7158cf9c1d93dd40f3d8cf63dd36e667108",
+        "tests/test_tokenizer_profiles.py": "52895d6e9d374a92f0a0d396ce882829c88bdcf5ae8835fe0247e76017f3c21e",
+        "tests/test_image_context.py": "3d0cc233d1a3064d3efdfc029522ed22d4c93034716bca2107ff89818866114b",
+        "tests/test_registry_backup.py": "5963889da6dc07511bbd05bde8e99d196282d0ac00bae4ebf912f76051650973",
+        "tests/test_health.py": "7a0123485f03ab0db2425cc1dc9824f6548781803ba6db4da4e25faaf3a6d42f",
+        "tests/test_release.py": "860ceb6f5f3c63e6354f83636d2cc80b50beadae463e8e8c8919458c5f3a89b0",
+        "tests/test_shared_admission.py": "8e49ea576bb9251a1216358d45361d4f239d56018895af91d78d06f0d1944853",
+        "tests/test_calibration_cli.py": "0449fc8d0c3a2049037cb32814c62fa1dbcbd902d3b07a8fc66668aaa486e0fb",
+        "tests/test_lifecycle.py": "b4fd46d08d8a78222f18b9b4c25ebd568ba5f89223d71abb4703f4dbd05f0622",
+        "tests/test_response_serialization.py": "84a29a5d5fe31f2b74f616a44821fbbb3be8ab4816af583a10c3ad25f0d4b0b6",
+        "tests/test_remote_cancel.py": "7a31a71510b9d03a30287996ef9f32b1c54ce5c096427a17b7bfdaf4f14d31f9",
+        "tests/test_admission.py": "3bd8b1ed7b707af28122616cc51e1ebf03c1091a67560f686b9d56ac934ff05c",
+        "tests/test_compiler.py": "7c031a584b2e1187b3269885500913bf0e217b29330c3461f7788d665e2ee8b6",
+        "tests/test_numerical_suite.py": "d6cba4a7dcea0aa4aff0d931743ddb99844f151134b55d6dc2d40edcdb0ebc69",
+        "tests/test_scoring.py": "415500054c22e86e0e8e957a5c542e5a82d64f0d510fa7b806b79e490787319d",
+        "tests/test_recovery.py": "52e12a66929c85d0969e84d574835bfdd806b3ef3d27a53fda6b7f4bc3719fc2",
+        "tests/test_plugin_lifespan.py": "3ab2cea1fc73bfe600ca7c8ac22b42e009d4d30e70109092b59038e5f3a5cf7e",
+        "tests/test_dsw_launcher.py": "055ac05c011ef58325c17c4b48200e0500cdc002d567ac0644470d9cbf64a64c",
+        "tests/test_precision.py": "aa0cb720a2d863deb5903a1ec93bd366502689904d40fb2add2f61d0f6bfa1e3",
+        "tests/test_quiescence.py": "660d1fcc103f2378a9a207fd96b8cf5fbe7cb17944a119cfcc7f845d32b46098",
+        "tests/test_readiness.py": "0efa0851889118198a698570281fe46330fb1354296d8756e95581001acde037",
+        "tests/test_rollout.py": "c4e8eac8a3266620b426390e8a8168a86c57c25873b8b438e13545e0739193ed",
+        "tests/conftest.py": "caf28e49f0118ae98c605813b2e827eed319a2c8f384eb8a3c4541b2db072404",
+        "tests/test_generation_baseline.py": "da61145bb635eb7ccf17675f0514046f3c94c7cdc3b3dea65e693af809cd3b70",
+        "tests/test_evaluation.py": "d7f3d292e20eac8cd712f031718de54742b2301d10becf4bf1ef2550c718d6bb",
+        "tests/test_template_override.py": "68fa997dddf8e61cf090c664d27f2f0092b730a41cb58563baa60941c057015d",
+        "tests/test_backends.py": "28b55b9460a0149c421fb7fb020363f9b4a6d2055e41d6bcfe85530911fc2eb9",
+        "tests/test_recovery_mode.py": "3f159937cdb32220269031da738ed35ec01bdc50b76c9969b6be4402c79c2108",
+        "tests/test_quiescent_stop.py": "d76784ce36c634bb9f4e9ef3a68a0b126fabb753a1628f24e0ab6f4e9a3fcffc",
+        "tests/test_adapter_lifecycle.py": "b19838df9cbaead694aef2f1ed5b7ded29d633c1f8d79a8e10a6cfc67893fab5",
+        "tests/test_combined_reservation.py": "7d14d0bc2c8f020b036ec99a5c22676dd347da9d100c3a7f4aad67310193cea3",
+        "tests/test_sglang_logprob_rows.py": "32f6086648d710c3f632a26fb8d5b84ecc7a2ce58f975f0e653366a82707b34f",
+        "tests/test_api.py": "5da870eb87c88745d2887a108ed755f99569e3612c39482841c5d60c8ff7f7cd",
+        "tests/test_serialized_tokenizer.py": "3acad972282246f723f287a291589bdb9b85e21c0c956490d6ec8c90faf289c3",
+        "tests/test_performance.py": "f7ebc1e17bb36ff863d12b6ee3219e540e8dcddb79cefa46540fa3601e58d9af",
+        "tests/test_reference_device.py": "e066855bd0e6ca94db43e6cdb0e92ab0bf0ff2307abb7d8cd57290b816301ed2",
+        "tests/test_adapter_artifacts.py": "c2ee0097fcb1a18f46f22b69cec461505d9b7a9cee803733cf64774049528d45",
+        "tests/test_bundle_cli.py": "c2c1698f962af0194050a1a81f96438e502f44b27028713f249e7a087661cfe9",
+        "tests/test_branch_identity.py": "661046d923df4a1008c122038be2d8f04c20d2d7f423f74201d94fa08f0f3455",
+        "tests/test_calibration.py": "9c1d6cdd71492c2ebfde61872fb246ad78ee37da897113fe0eaab28408c04582",
+        "tests/test_sdk.py": "c5d6446e3dfeed100df69f19bb2a52373b80692db069c1704ecd46ef67ef1d02",
+        "tests/test_registry_connections.py": "a9e8180fa8ccd820045da31bbeb81c5a4f40af35a3bfe96dee5eb4b87735a94a",
+        "tests/test_telemetry.py": "bf1ef83bf1103e03efafa984722ea7e11d940507e853079a1c933f7706db4e7e",
+        "tests/test_execution_mode.py": "80ba1f43a392ce00b1f623247967b7564f467a9b9fcad772fa65d11846fa00ab",
+        "src/jev_runtime/health.py": "84b6121df4f6bf0a8df6ebe2847a66b51abde98db2fd6a58d03847b01bafee7f",
+        "src/jev_runtime/calibration.py": "15aae8deb9dfcf7501659b89c88d0374e956137d5222b7a32edaad169cee1054",
+        "src/jev_runtime/scoring.py": "9409056dba879e6aeec131ef6149946b09e526ede99b849c9b755e9861993b23",
+        "src/jev_runtime/lifecycle.py": "790212a184c74f7e25a3d6dc89abb834b530554a3ef90feaaec040ebd56cbc37",
+        "src/jev_runtime/rollout.py": "4fda3406ac8bbd1a09b451a1fc5544cb6b8e40772ef23ea2ca2a162bd041e562",
+        "src/jev_runtime/admission.py": "685f69a0d7e23b35eba47e26ae8f46929288cc4490d2f9417573588e18308c25",
+        "src/jev_runtime/config.py": "7aa93d3350db59a67b88dbb80570f436bda40c565c5f941a7b549da6b995684c",
+        "src/jev_runtime/registry_backup.py": "f322201e5173c76304a23463fd9055996fc54ef331d4a01c22a1f4e0501ebf1a",
+        "src/jev_runtime/cli.py": "be2074efac2f73f660ecf83e47b6748e1bdc709f2e418b7cae308784184e8889",
+        "src/jev_runtime/schema.py": "2c72507f010d21269042ab25241ca9efbb7652c82f58af7a3fdb2366c3200de7",
+        "src/jev_runtime/tokenizer_profiles.py": "2f16ed26d5d2beab630bfa0d9903a489c6e683cb6c6d2717c9a5d4dc8c7a4594",
+        "src/jev_runtime/shared_admission.py": "382d7797dd50a56a2671694c2fb773cc6458ac32335c2855c4bbd428f966ed9c",
+        "src/jev_runtime/systemone.py": "ffd67b223848694737a5f64a0f7dd0c1a6a5407ab24c59a24aa1ddc94b4cb094",
+        "src/jev_runtime/api.py": "6fa9a761fa206deca22fc6091e1f9eab950d026a80cfc26c6ed66ed6bfe46a8f",
+        "src/jev_runtime/runtime.py": "84211a757c25ff40f1b22020b0c75b62e822c399e148785272f748c7bbd088d9",
+        "src/jev_runtime/sdk.py": "845aff5458ede27f10b20ef1b48b94e7a24861df2e8dd67308f36bd8863df31b",
+        "src/jev_runtime/templates.py": "043599d8323d10aeb9ab5a9891850dadb088191bb5567bb3e9a28192903c8b1d",
+        "src/jev_runtime/adapters.py": "6a58f1beca39e8bf4ef9b9acd42382108d67014f2ee088ea661bca0d63980425",
+        "src/jev_runtime/performance.py": "52d9223cd831d4e217ac3d7d70cc13ff07c2281581a20d89d142058285c103d8",
+        "src/jev_runtime/telemetry.py": "f947398844cd9d8b4b51c48a9ba6059fba2b972226d415c2d1c5d135b85ec5f5",
+        "src/jev_runtime/quiescence.py": "f2b2491ed0e32a9c0b682e38f65be85e340e978708ffa717907f51e3bac518d5",
+        "src/jev_runtime/evaluation.py": "de0fe21c01d030c8daca986d1762758a2c0e5aeb8e03835c4db0553cacef5126",
+        "src/jev_runtime/compiler.py": "44ad4a2b4ab89d987e774c00787a893a071cc7f12f941b09e1c0f59d3425daf4",
+        "src/jev_runtime/errors.py": "eb083a58c82def0228fb7a148bb0dc5e34f886bcf22504ba296f151363ede435",
+        "src/jev_runtime/registry.py": "66b290037f9c2c9b762f62ca61303fc589a7fe9e9ea20193fc1811eef574ccbd",
+        "src/jev_runtime/generation_baseline.py": "40b1d85e49eef1eadca397cf7ac7fc55a667a2f14f484a4e7d559d8fde4020bc",
+        "src/jev_runtime/__init__.py": "f4bdb1aaeae644a662121bc61f5158c5f19996d3f9aaddcdb949435a0b778a2c",
+        "src/jev_runtime/plugin_api.py": "a616bcc02ce77ff8f5af9524d20647b7c571987a575c55cf9455c195c2c4603f",
+        "src/jev_runtime/backends/sglang.py": "4fe03b9f80cd5b58594be5bd5e9a821cce177b93da7bf91407b2ed4ee1a32ab0",
+        "src/jev_runtime/backends/vllm.py": "b3d9b4ec51317bf34854e6be8a79a3f15b0c85eddec23330bfa8a8e774bbc58a",
+        "src/jev_runtime/backends/base.py": "399160e3c36b01affb06bc42ba0a141d4f600b57bb903905dd8ae41965c96168",
+        "src/jev_runtime/backends/__init__.py": "a07105b87b6ec609c25075087a6d3fd6b990ef6bd105c4b4eaec04584738d23b",
+        "packages/vllm/src/jev_vllm/worker.py": "7e54cc5c44f4a8391047956bc34901f069070dccf22883b961bb2238599f3074",
+        "packages/vllm/src/jev_vllm/tokenizer.py": "e876cde2c21bcad672018c6b7d8077520648e89f15f273f0e20a8b589ce8dc1a",
+        "packages/vllm/src/jev_vllm/endpoint.py": "6b5c876794f0de353419c5480e4253de6c64e95e00c2071aa84cad6f028e8627",
+        "packages/vllm/src/jev_vllm/__init__.py": "c58c1fd7dea29065b54abdbbe31de978000dcceacfce38bfe803a855b58c6c79",
+        "packages/sglang/src/jev_sglang/plugin.py": "0adff17dc0e6a18e3a7332569b1c38833db23bbcac8c6078652363b73f546d22",
+        "packages/sglang/src/jev_sglang/worker.py": "08ea777d967b2b2a7a2620ab300fabec712526b1e6dc3251b52975aa203d8e9a",
+        "packages/sglang/src/jev_sglang/launcher.py": "f432512cc3653492a96647b32b8bccbd233e038290c76ddddac68cfe2107fcb7",
+        "packages/sglang/src/jev_sglang/__init__.py": "df0f14b124341fe1dab4f58249cdf23d59fbc1ace74fea4a0b6e6dd81bb938eb",
+        "evidence/harnesses/verify_recovery_mode_95de3d5.py": "c99535417d4aab7671365a0f0894154b41aea41519563bfea7ad27465fe20075",
+        "evidence/harnesses/verify_gateway_rollout_7739145.py": "29372b4ec08d8013d1b9c8c73103f646dd33027bc2e4c10044f5c14d316a3693",
+        "evidence/harnesses/verify_reference_diagnostics_5730449.py": "62fbd3a88b842f44b1403d1d0d29b5622d04a7eab4a2d2c1a335f5557e7bf61f",
+        "evidence/harnesses/verify_native_rollout_cancel_b20d3f4.py": "9623612fe96196215d0737042bb32f70be2b00375c38e7ff776a670acd98359e",
+        "evidence/harnesses/verify_registry_snapshot_c4e9cef.py": "8f2cb8042d5dce9205184e94c49d3d2cfd85155bba9a3ee72bc62342fe598128",
+        "evidence/harnesses/verify_release_packaging_4e49524.py": "3420ef6c19eeb90587dd0d47b313921a95b578f9279cc60e1cce3a66d5ef0b81",
+        "evidence/harnesses/verify_numerical_suite_877f319.py": "d761d4f439a041e5e0f86115cc7c8c2a176f424e1a2c9f70dc547d567be716e9",
+        "evidence/harnesses/verify_combined_reservation_7391ed3.py": "b2042d292f9d1ebf9cb2f1fa0d3475228e520d4353dc8b1d428f660ae3ef3515",
+        "evidence/harnesses/real_tokenizer_binding_75649bf.py": "8a4897c39e380332e7b10dfacccc82ee65205f754505df8a084515bc3df1c632",
+        "evidence/harnesses/verify_image_entrypoint_49fea1c.py": "c5b86bd70b2cc3419332809efeded146e04f48f4772635218409390a75bb6bbc",
+        "evidence/harnesses/verify_response_model_dadb516.py": "f5136ab3918993e242bd8d015842547e05bf66e9f295dd53c371e0fc8c802416",
+        "evidence/harnesses/verify_preserve_fast_cdd0caf.py": "d143f87a89d3ed83997a04ed21f0ced21d6edc9f271c0bca55956cdac2c9b010",
+        "evidence/harnesses/verify_public_pair_3377c95.py": "cc183fb4f078ed73950a50bb6f5ba9f9242cf651d59e5c8e035453413c84ee68",
+        "evidence/harnesses/verify_full_fp32_f2ccc2a.py": "078b22794e3cd826f1d6ca703b8e659115fcb2acebd857701b1803327ed56b42",
+        "evidence/harnesses/verify_fp32_readout_55a1d26.py": "90fc3080b23eda649ba8d1a08514ff46d79567c8843ed5ba694911c2429c9a6d",
+        "evidence/harnesses/verify_glm_r1_c48f18d.py": "689b78975e321ff8ddfa31ec5d9bfe1fcc367cfb889cc66cb7f1db9452396e94",
+        "evidence/harnesses/verify_atomic_comparison_3377c95.py": "7ee608d4ff5b3b94ec763cb89bf5f76a86112aa9d11facb1650269650168abd2",
+        "evidence/harnesses/verify_batch_invariant_f9167c9.py": "dea173ecd69fd8c604a83b02d83bb52ee2d79faa5664dc048963b46ee522a47d",
+        "evidence/dsw/response-model-dadb516/export.py": "3783a307f92488a23457277a82444192702457b5090ed3ba3f5a7f492102ac11",
+        "evidence/dsw/response-model-dadb516/campaign.py": "dae296ea238c2fb899749e3355268171b47a0c1b1c1277dd9476db348b2cc8bc",
+        "evidence/dsw/response-model-dadb516/run_case_profile.py": "ddb64b51bec1027d89f841f40ff2f0ce83e46c0f4f8051c0f1c307722903ef8b",
+        "evidence/dsw/response-model-dadb516/contracts.py": "b9754bf1a20a3a597ceff3185618a00313598e11b1f32d55f45a8a34af8384e0",
+        "evidence/dsw/combined-reservation-7391ed3/export.py": "f0a68c4e5760afa17c47211257236abf2d6b057879b3736729cee232a13589bb",
+        "evidence/dsw/combined-reservation-7391ed3/run_quota.py": "6389794499230b91c717adda5725ef31346c124c3762e92b9c18dcce3f50b50e",
+        "evidence/dsw/combined-reservation-7391ed3/quota_campaign.py": "4541122f986693cebf811218af4a204f2b9402dcdeb9ea4b64fe51ed4f0e18dc",
+        "evidence/dsw/combined-reservation-7391ed3/campaign.py": "47242b35f1c26cd903d2119982d14056c97f5b915a9cac2b56709a3447f5818a",
+        "evidence/dsw/combined-reservation-7391ed3/run_perf.py": "3c6279087135db04a06ec44e683962572aa30cfa40e9466ead970e8ffbbdf197",
+        "evidence/dsw/recovery-mode-95de3d5/vllm-seed/create_journal.py": "2d36d9d4c17e44c3f0c80b6ef015639c0b24924136fb0c2bbe1f8a9d65a7e8d0",
+        "evidence/dsw/response-model-dadb516/bootstrap/sitecustomize.py": "e9b4a5c749012d8e9737b26072ef13ca8d59ef2d726f83519efd485b6e2b2dd8",
+        "evidence/dsw/response-model-dadb516/initial/campaign.py": "59fca052467ac503f5d230653bc2959932ec72898f5dbac63e91e8d8e08b414c",
+        "evidence/dsw/response-model-dadb516/initial/recover.py": "7e06602cd03445b92bbe572238a158c629377f3b71289c2a8b6de32998093f4f",
+        "evidence/dsw/response-model-dadb516/initial/run_case_profile.py": "ddb64b51bec1027d89f841f40ff2f0ce83e46c0f4f8051c0f1c307722903ef8b",
+        "evidence/dsw/response-model-dadb516/initial/bootstrap/sitecustomize.py": "600b6ce1c314e856a4b36328d37ae514d6fa4d98454c99760b4fdf8d8d2391af",
+        "tests/integration/reference_device.py": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+        "tests/integration/live_gateway.py": "ee5db23d982b46551394959c254ab19b010db3f97f80ca002fb02e70703402b8",
+        "tests/integration/sglang_logprob_rows.py": "3db861e42b4b47c17dd7d72f13528f87e2a4d9bc4d787e6de33c7252e3687a54",
+        "tests/integration/tokenizer_contract.py": "2a88d8428fb80dd9d8ff2771b730361773df9dacb3f6185128b0171b8050d860",
+        "tests/integration/numerical_suite.py": "3f0383760670289ee4bf85543ea5c2513862208424ae4fe7d52a647ab8e48e8e",
+        "tests/integration/live_health.py": "2e55cf7f8e2db53881e9bca440533ba8a03a1822050cdfb324669d7a61c08444",
+        "tests/integration/check_reference_offload.py": "0f26279b49c7137c54e0ac8b6b69d6d14ecc9eadf70680eea107d72b0b5ea0be",
+        "tests/integration/replay_saved_responses.py": "c8be50e67a1c5977ff76967e83ecadc29fd6a4f7d12526b20f84aa9ac26d9dd0",
+        "tests/integration/live_abort_prefix.py": "b1efe89617b23bd038b26c5e502a7892570b927b293929dd275fc958706ba366",
+        "tests/integration/live_remote_cancel.py": "2c28bd1d007919a565c4969dfcc328d6f9b526973816aa331ff549319eb487d5",
+        "tests/integration/rollout_native_cancel.py": "536d53ae4a99aaf518f20e6defd1debbe4d66f1e5e0ddfde4f8a624f8f8380e5",
+        "tests/integration/live_multiworker.py": "d4f0adee6fa1eaee87a27b2098ae763179c0277709675fccc06ad7aa6c9dc92a",
+        "tests/integration/live_rollout.py": "04da65ce7f46d3e1aa0626cb5be73e367a04d90970db3311a99bbc1c3a1dc8ab",
+        "tests/integration/live_precision_binding.py": "8d9c8213ec7f76c6aed1a610489cbc7cfc0aeadb0304ee2e63c48f6ab1a30e6c",
+        "tests/integration/live_shared_admission.py": "385a679e04bda4ff6f8be800bfe1be89ef8a6fd7c7c76283b1da95eea6a6842f",
+        "tests/integration/live_execution_mode.py": "ee78b7cfd9ddcdfc717276d46fe76a7c8f4e6b9134e6997ae6c8fd513b10ef1c",
+        "tests/integration/rollout_fixture.py": "79c62a4e16ad9adaae1538ae67234416ed99be7fe5374df45351d6b49ae5de32",
+        "tests/integration/live_crash_recovery.py": "807cac1f8d0fdbc87f1bf00e028640f2b9dfe6c20879a5ee344b0d70295f0f55",
+        "tests/integration/reference_logits.py": "ed8dd3c0a4184ac870e9c98ad6fc57c3ce816fd31c89a2839fb44522347d552e",
+        "tests/integration/lora_fixture.py": "ea18f68ae5118eec1c6e5600273032763f72845aeb05986a43d58e67b8044f04",
+        "tests/integration/live_sglang_mixed.py": "51ef921209f6829c845432aece42b5b993f4fd2e48a363f313a47ee0e77b8302",
+        "tests/integration/live_contract.py": "e2f328361582411eec3eb22cdf325d1a027c61b799e9dbcd191a93f6fb0a02fc",
+        "tests/integration/live_lora_crash.py": "0767669c28b5e388b4c45322786d15787c911bb286ef709560db9c2626d4bcaa",
+        "tests/integration/live_lora.py": "cdc5dbd4c7773561d9dca502ebb57b2c3a530859a2d3eb374fe71b917550e6f3",
+        "tests/integration/run_native_validation.py": "824172421fbf2d02d471811de14364b8e43fef06fe27200eb624d86f17961e1c",
+        "tests/integration/live_quiescence.py": "0f2177179a91a61b9fe27f3c8af9a72c311741d6ea5b81bafe039a647d90a537"
+      }
+    }
+  },
+  "credential_values_absent_from_export": true
+}

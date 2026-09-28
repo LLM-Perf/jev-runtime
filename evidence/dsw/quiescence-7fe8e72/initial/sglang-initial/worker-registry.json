@@ -1,0 +1,59 @@
+{
+  "observed_at": 1790566234.0407784,
+  "registry_path": "/root/jev-runtime/runs/sglang-quiescence-initial-919c859/registry.db",
+  "integrity_check": "ok",
+  "foreign_key_check": [],
+  "workers": [
+    {
+      "owner": "092c5f60618549e6a9d5d7f361266a4a",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2755773, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432085273\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "6636aad999b14f40994a8ad2fb81f65f",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2755774, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432085273\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "767745ec9b3d47349441300f85cb36d9",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "STOPPED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2756814, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432092280\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "828a1ff2b5f04ab499da378c3925bf98",
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2756815, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432092280\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "controls": [
+    {
+      "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "generation": 3,
+      "state": "QUIESCING"
+    }
+  ],
+  "routes": [
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    },
+    {
+      "alias": "quiescence",
+      "ref": "quiescence@1",
+      "generation": 1
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0,
+    "raw_work": 0,
+    "recovery_claims": 0
+  }
+}

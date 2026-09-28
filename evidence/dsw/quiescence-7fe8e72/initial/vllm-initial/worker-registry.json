@@ -1,0 +1,59 @@
+{
+  "observed_at": 1790566234.0341027,
+  "registry_path": "/root/jev-runtime/runs/vllm-quiescence-initial-919c859/registry.db",
+  "integrity_check": "ok",
+  "foreign_key_check": [],
+  "workers": [
+    {
+      "owner": "ccd26d113bc74229a386c28eda3158db",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2753058, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432071875\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "d4dc05a624ae41d5b10b58ee45b30c22",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2753253, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432072350\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "f4a8124b79494482810aa65bc1e27eda",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2754538, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432078728\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    },
+    {
+      "owner": "0c606ab9185146fbb47a1a49f74fdfb2",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "identity": "{\"host\": \"dsw-501084-677cf96c94-zdgmr\", \"pid\": 2754332, \"boot_id\": \"76d809ca-ebca-412d-9bf3-09ddd580b372\", \"start_ticks\": \"432078246\", \"pid_namespace\": \"pid:[4026535817]\"}"
+    }
+  ],
+  "controls": [
+    {
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "generation": 3,
+      "state": "QUIESCING"
+    }
+  ],
+  "routes": [
+    {
+      "alias": "decision-model",
+      "ref": "default@1",
+      "generation": 1
+    },
+    {
+      "alias": "quiescence",
+      "ref": "quiescence@1",
+      "generation": 1
+    }
+  ],
+  "retained_counts": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0,
+    "raw_work": 0,
+    "recovery_claims": 0
+  }
+}

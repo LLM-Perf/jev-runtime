@@ -1,0 +1,56 @@
+{
+  "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+  "generation": 3,
+  "state": "QUIESCING",
+  "scope": "single_host_registry_backend_jev_work",
+  "drained": true,
+  "outstanding": {
+    "leases": 0,
+    "raw_work": 0,
+    "adapter_operations": 0,
+    "recovery_operations": 0
+  },
+  "waiting_workers": [],
+  "workers": [
+    {
+      "worker_id": "ccd26d113bc74229a386c28eda3158db",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1",
+        "quiescence@1"
+      ]
+    },
+    {
+      "worker_id": "d4dc05a624ae41d5b10b58ee45b30c22",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "dead",
+      "prepared": [
+        "default@1",
+        "quiescence@1"
+      ]
+    },
+    {
+      "worker_id": "f4a8124b79494482810aa65bc1e27eda",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "alive",
+      "prepared": [
+        "default@1",
+        "quiescence@1"
+      ]
+    },
+    {
+      "worker_id": "0c606ab9185146fbb47a1a49f74fdfb2",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "alive",
+      "prepared": [
+        "default@1",
+        "quiescence@1"
+      ]
+    }
+  ]
+}

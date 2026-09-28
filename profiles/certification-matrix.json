@@ -1777,6 +1777,13 @@
         "evidence": "evidence/dsw/response-model-dadb516/verified-summary.json",
         "scope": "BF16 TP1 API2 eager, L256 K8 C1 hot fixture. Separate diagnostic call windows and three 10-second unprofiled repeats/method. Initial invalid timing/shutdown failure retained with confirmed recovery; test aliases explicitly quiesced in corrected campaign. No release or model qualification.",
         "release_gate_passed": false
+      },
+      "development_quiescence": {
+        "source_commit": "7fe8e723d4b74db22fff12320a3073c85734cce0",
+        "report": "docs/quiescence-validation.md",
+        "corrected_runs": 3,
+        "scope": "BF16, TP1, two API workers; Jev drain and process reclamation with preserved-route restart. Initial SGLang group-signal shutdown failure and explicit remediation retained. Native shutdown warnings remain; no release certification.",
+        "release_gate_passed": false
       }
     },
     {
@@ -2013,6 +2020,13 @@
         "baseline_source_commit": "7391ed362117ab39a32bfa1dd1554356ee7a6178",
         "evidence": "evidence/dsw/response-model-dadb516/verified-summary.json",
         "scope": "BF16 TP1 API2 eager, L256 K8 C1 hot fixture. Separate diagnostic call windows and three 10-second unprofiled repeats/method. Initial invalid timing/shutdown failure retained with confirmed recovery; test aliases explicitly quiesced in corrected campaign. No release or model qualification.",
+        "release_gate_passed": false
+      },
+      "development_quiescence": {
+        "source_commit": "7fe8e723d4b74db22fff12320a3073c85734cce0",
+        "report": "docs/quiescence-validation.md",
+        "corrected_runs": 2,
+        "scope": "BF16, TP1, two API workers; Jev drain and process reclamation with preserved-route restart. Initial SGLang group-signal shutdown failure and explicit remediation retained. Native shutdown warnings remain; no release certification.",
         "release_gate_passed": false
       }
     }

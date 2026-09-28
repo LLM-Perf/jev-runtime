@@ -1,0 +1,37 @@
+{
+  "observed_at": 1790565689.5723636,
+  "identity": {
+    "pid": 2756327,
+    "start_ticks": "432089462",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "command_matches_owned_sglang": true,
+  "config_matches_owned_run": true,
+  "retained_counts_before": {
+    "leases": 0,
+    "lease_work": 0,
+    "lease_tenants": 0,
+    "admission_tickets": 0,
+    "raw_work": 0,
+    "recovery_claims": 0
+  },
+  "original_cleanup_sha256": "9e87a15d425b6df48efc595f87a2d1b2478eacc486e766c67a139913210cd17a",
+  "quiescence_stop_sha256": "c41345be64a4bf3c972e2c6d70e9fe755b283b8986e278818ddedda01a852cf7",
+  "remaining_before": [
+    2756327,
+    2756474,
+    2756815
+  ],
+  "signal": "SIGKILL",
+  "qualification": "Explicit cleanup of a retained failed native shutdown; not a passing graceful-stop result",
+  "remaining_after": [],
+  "gpu_after": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11990",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "cleanup_confirmed": true
+}
