@@ -75,6 +75,12 @@ def install_plugin_routes(app: FastAPI) -> None:
                 "lora_unsupported", "Managed LoRA requires the leased typed decision endpoint", 409
             )
         adapter = backend(request)
+        if runtime is not None:
+
+            async def managed_execute():
+                return asdict(await runtime.score_raw(ScoreInput(**body.model_dump())))
+
+            return await disconnect_guard(request, managed_execute())
         capabilities = await adapter.probe()
         if len(body.input_ids) + 1 > capabilities.max_context_tokens:
             raise JevError("context_budget", "Prompt exceeds the native engine context limit", 413)

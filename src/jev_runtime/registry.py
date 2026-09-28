@@ -14,6 +14,7 @@ from pathlib import Path
 
 from jev_runtime.adapters import AdapterArtifact, AdapterBinding
 from jev_runtime.errors import JevError
+from jev_runtime.quiescence import QuiescenceRegistry
 from jev_runtime.schema import Bundle
 
 REGISTRY_SCHEMA_SQL = """
@@ -39,6 +40,23 @@ REGISTRY_SCHEMA_SQL = """
                 CREATE TABLE IF NOT EXISTS workers (
                     owner TEXT PRIMARY KEY REFERENCES owners(owner),
                     backend TEXT NOT NULL, state TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS backend_controls (
+                    backend TEXT PRIMARY KEY, generation INTEGER NOT NULL,
+                    state TEXT NOT NULL CHECK(state IN ('OPEN','QUIESCING'))
+                );
+                CREATE TABLE IF NOT EXISTS worker_quiescence (
+                    owner TEXT PRIMARY KEY REFERENCES workers(owner), protocol INTEGER NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS raw_work (
+                    id TEXT PRIMARY KEY, backend TEXT NOT NULL,
+                    owner TEXT NOT NULL REFERENCES owners(owner),
+                    request_id TEXT NOT NULL, phase TEXT NOT NULL,
+                    UNIQUE(backend,request_id)
+                );
+                CREATE TABLE IF NOT EXISTS recovery_claims (
+                    resource TEXT PRIMARY KEY, backend TEXT NOT NULL,
+                    owner TEXT NOT NULL REFERENCES owners(owner)
                 );
                 CREATE TABLE IF NOT EXISTS worker_bundles (
                     owner TEXT NOT NULL REFERENCES workers(owner),
@@ -125,7 +143,7 @@ class StaleRoute(Exception):
     """Retry compilation under a durable lease when a tentative route changed."""
 
 
-class Registry:
+class Registry(QuiescenceRegistry):
     """Transactional bundle/route registry for a single-node deployment.
 
     Multiple API processes can use the same local SQLite database. Leases are
@@ -294,6 +312,7 @@ class Registry:
 
     def begin_prepare(self, reference: str, backend: str, request_id: str) -> tuple[Bundle, str]:
         with self._transaction() as db:
+            self._require_backend_open(db, backend)
             row = self._get(db, reference)
             self._adapter_ready(db, reference, backend)
             if row["state"] not in ("VALIDATED", "FAILED", "RETIRED"):
@@ -361,6 +380,8 @@ class Registry:
 
     def start_worker(self, backend: str, admission_limits: dict | None = None) -> None:
         with self._transaction() as db:
+            self._require_backend_open(db, backend, starting=True)
+            db.execute("INSERT OR IGNORE INTO backend_controls VALUES(?,0,'OPEN')", (backend,))
             policy = json.dumps(admission_limits, sort_keys=True)
             current = db.execute(
                 "SELECT policy FROM admission_policies WHERE backend=?", (backend,)
@@ -402,6 +423,7 @@ class Registry:
                 (self.owner, backend),
             )
             db.execute("DELETE FROM worker_bundles WHERE owner=?", (self.owner,))
+            db.execute("INSERT OR REPLACE INTO worker_quiescence VALUES(?,1)", (self.owner,))
             db.execute(
                 "INSERT INTO worker_admission VALUES(?,?) "
                 "ON CONFLICT(owner) DO UPDATE SET policy=excluded.policy",
@@ -429,6 +451,7 @@ class Registry:
     def serve_worker(self, backend: str) -> bool:
         """Join traffic only if every current route was validated by this worker."""
         with self._transaction() as db:
+            self._require_backend_open(db, backend)
             missing = db.execute(
                 "SELECT 1 FROM routes r JOIN bundles b ON b.ref=r.ref "
                 "LEFT JOIN worker_bundles w ON w.ref=b.ref AND w.owner=? AND w.digest=b.digest "
@@ -511,6 +534,7 @@ class Registry:
     def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
         with self._transaction() as db:
             bundle = self._get(db, reference)
+            self._require_backend_open(db, bundle["backend"])
             if bundle["state"] not in ("READY", "ACTIVE", "DRAINING"):
                 raise JevError("not_ready", "Only prepared bundles can receive traffic", 409)
             self._adapter_ready(db, reference, bundle["backend"])
@@ -612,6 +636,7 @@ class Registry:
         self, db, alias, request_id, reference, backend, tenant, resolved=None, digest=None
     ) -> Snapshot:
         """Join an owning transaction; recheck a tentative route before any writes."""
+        self._require_backend_open(db, backend)
         if db.execute("SELECT 1 FROM leases WHERE request_id=?", (request_id,)).fetchone():
             raise JevError("duplicate_request", "Request ID is already in flight", 409)
         row = self._route_row(db, alias)
@@ -736,6 +761,7 @@ class Registry:
     def pin_revalidation(self, reference: str, request_id: str, backend: str) -> tuple[Bundle, str]:
         """Probe an existing version without changing another worker's active route."""
         with self._transaction() as db:
+            self._require_backend_open(db, backend)
             row = self._get(db, reference)
             self._adapter_ready(db, reference, backend)
             if row["state"] not in {"READY", "ACTIVE", "DRAINING"} or row["backend"] != backend:
@@ -1029,6 +1055,8 @@ class Registry:
             row = db.execute("SELECT * FROM adapters WHERE ref=?", (reference,)).fetchone()
             if row is None:
                 raise JevError("adapter_not_found", "Unknown immutable adapter", 404)
+            if not recover or row["state"] not in {"LOADING", "UNLOADING", "UNKNOWN"}:
+                self._require_backend_open(db, backend)
             if row["backend"] != backend:
                 raise JevError("adapter_backend_mismatch", "Adapter belongs to another engine", 409)
             if row["state"] in {"LOADING", "UNLOADING"}:

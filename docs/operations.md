@@ -337,6 +337,11 @@ for the exact timing boundaries and missing-observation rules.
 
 ## Installed environments and tokenizer upgrades
 
+Use [backend quiescence and ordered shutdown](quiescence.md) before signalling a
+native process group. The product handshake preserves aliases, stops canaries on
+all local API workers and reports durable blockers; restart requires an explicit
+offline resume. Native chat traffic needs its own drain.
+
 Both engines have a scoped [installed-wheel gateway upgrade/rollback report](release-rollout-validation.md).
 The successful exercise preserves a registry route while replacing gateway processes;
 it includes a maintenance interruption and does not certify uninterrupted routing.

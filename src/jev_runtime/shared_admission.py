@@ -45,7 +45,7 @@ class SharedAdmission:
             ).fetchone()
         return {"scope": "shared_registry_engine", "limits": dict(self._limits), **dict(row)}
 
-    def _check_worker(self, db) -> None:
+    def _check_worker(self, db, *, draining=False) -> None:
         row = db.execute(
             "SELECT w.state,a.policy FROM workers w JOIN worker_admission a ON a.owner=w.owner "
             "WHERE w.owner=? AND w.backend=?",
@@ -57,7 +57,7 @@ class SharedAdmission:
         ).fetchone()
         if (
             not row
-            or row["state"] != "SERVING"
+            or row["state"] not in ({"SERVING", "DRAINING"} if draining else {"SERVING"})
             or row["policy"] != self._policy
             or not policy
             or policy["policy"] != self._policy
@@ -192,7 +192,7 @@ class SharedAdmission:
 
     def _poll(self, lease_id: str) -> bool:
         with self.registry._transaction() as db:
-            self._check_worker(db)
+            self._check_worker(db, draining=True)
             ticket = db.execute(
                 "SELECT t.state FROM admission_tickets t JOIN leases l ON l.id=t.lease_id "
                 "WHERE t.lease_id=? AND t.backend=? AND l.owner=?",

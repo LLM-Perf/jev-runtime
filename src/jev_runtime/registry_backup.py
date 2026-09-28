@@ -84,7 +84,14 @@ def summary(db: sqlite3.Connection) -> dict:
 
 def blockers(db: sqlite3.Connection) -> dict[str, int]:
     result = {}
-    for table in ("leases", "lease_work", "lease_tenants", "admission_tickets"):
+    for table in (
+        "leases",
+        "lease_work",
+        "lease_tenants",
+        "admission_tickets",
+        "raw_work",
+        "recovery_claims",
+    ):
         count = db.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
         if count:
             result[table] = count

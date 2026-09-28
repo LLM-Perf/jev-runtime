@@ -26,6 +26,43 @@ rollout_app = typer.Typer(help="Qualify and switch local gateway slots through H
 app.add_typer(rollout_app, name="rollout")
 registry_app = typer.Typer(help="Private SQLite snapshots and inactive, guarded restore staging")
 app.add_typer(registry_app, name="registry")
+backend_app = typer.Typer(help="Stop Jev work across local API workers without changing routes")
+app.add_typer(backend_app, name="backend")
+
+
+@backend_app.command("status")
+def backend_status(url: str):
+    admin_call(url, "/admin/quiescence")
+
+
+@backend_app.command("quiesce")
+def backend_quiesce(url: str, expected_generation: int, timeout_seconds: float = 30):
+    result = admin_request(
+        url,
+        "/admin/quiescence",
+        {
+            "expected_generation": expected_generation,
+            "timeout_seconds": timeout_seconds,
+        },
+    )
+    output(result)
+    if not result["drained"]:
+        raise typer.Exit(1)
+
+
+@registry_app.command("resume-backend")
+def registry_resume_backend(source: Path, backend: str, expected_generation: int):
+    """After stopping old workers, reopen admission before restarting/prewarming them."""
+    from jev_runtime.registry import Registry
+
+    if source.is_symlink() or not source.is_file():
+        raise typer.BadParameter("Registry must be an existing regular file")
+    registry = Registry(source)
+    try:
+        registry.resume_backend(backend, expected_generation)
+        output(registry.backend_control(backend))
+    finally:
+        registry.close()
 
 
 @registry_app.command("snapshot")

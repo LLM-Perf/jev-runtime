@@ -398,6 +398,34 @@ def stop(args):
         return
     if actual != identity:
         raise SystemExit("PID identity changed; refusing to signal an unrelated process")
+    # A native parent may stop its scheduler before ASGI lifespan cleanup.
+    # Complete the product quiescence protocol while the scheduler still runs.
+    import httpx
+
+    credentials = json.loads((args.run_dir / "keys.json").read_text())
+    prefix = "/plugins/jev-runtime" if record["mode"] == "native-plugin" else ""
+    with httpx.Client(
+        base_url=f"http://127.0.0.1:{record['port']}{prefix}",
+        headers={"Authorization": "Bearer " + credentials["admin"]},
+        timeout=65,
+        trust_env=False,
+    ) as client:
+        current = client.get("/admin/quiescence")
+        current.raise_for_status()
+        response = client.post(
+            "/admin/quiescence",
+            json={
+                "expected_generation": current.json()["generation"],
+                "timeout_seconds": 60,
+            },
+        )
+        response.raise_for_status()
+        drained = response.json()
+    (args.run_dir / "quiescence-stop.json").write_text(json.dumps(drained, indent=2) + "\n")
+    if not drained["drained"]:
+        raise SystemExit("Jev work is not drained; preserving the engine for recovery")
+    if process_identity(identity["pid"]) != identity:
+        raise SystemExit("PID identity changed during quiescence; refusing to signal")
     os.killpg(identity["pid"], signal.SIGTERM)
     print(json.dumps({"signal_sent": "SIGTERM", "identity": identity, "exit_confirmed": False}))
 

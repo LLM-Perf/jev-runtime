@@ -32,6 +32,11 @@ class Disable(Contract):
     expected_generation: int = Field(ge=0)
 
 
+class Quiesce(Contract):
+    expected_generation: int = Field(ge=0)
+    timeout_seconds: float = Field(default=30, ge=0, le=300)
+
+
 class Reference(Contract):
     reference: str
 
@@ -108,8 +113,15 @@ def install_routes(
         return instance
 
     async def recovery_write_guard(request: Request):
-        if request.method not in {"GET", "HEAD", "OPTIONS"} and request.scope["route"].path != (
-            prefix + "/admin/requests/{request_id}/recover"
+        if (
+            runtime(request).recovery_only
+            and request.method not in {"GET", "HEAD", "OPTIONS"}
+            and request.scope["route"].path
+            not in {
+                prefix + "/admin/requests/{request_id}/recover",
+                prefix + "/admin/raw-requests/{work_id}/recover",
+                prefix + "/admin/quiescence",
+            }
         ):
             runtime(request).require_serving_mode()
 
@@ -277,6 +289,7 @@ def install_routes(
     async def ready(request: Request):
         instance = runtime(request)
         instance.require_serving_mode()
+        instance.registry.require_backend_open(instance.backend_identity)
         if not instance.control_healthy:
             raise JevError("control_unavailable", "Worker cancellation control is unhealthy", 503)
         profile = instance.health_profile()
@@ -324,6 +337,29 @@ def install_routes(
     @management.get("/workers")
     async def workers(request: Request):
         return {"workers": runtime(request).registry.worker_status()}
+
+    @management.get("/quiescence")
+    async def quiescence_status(request: Request):
+        instance = runtime(request)
+        return instance.registry.quiescence_status(instance.backend_identity)
+
+    @management.post("/quiescence")
+    async def quiesce(body: Quiesce, request: Request):
+        return await runtime(request).quiesce(body.expected_generation, body.timeout_seconds)
+
+    @management.get("/raw-requests/recovery")
+    async def raw_recovery(request: Request):
+        instance = runtime(request)
+        return {"requests": instance.registry.raw_recovery_candidates(instance.backend_identity)}
+
+    @management.get("/recovery-operations")
+    async def recovery_operations(request: Request):
+        instance = runtime(request)
+        return {"operations": instance.registry.pending_recoveries(instance.backend_identity)}
+
+    @management.post("/raw-requests/{work_id}/recover")
+    async def recover_raw(work_id: str, request: Request):
+        return {"recovered": await runtime(request).recover_raw(work_id)}
 
     @management.get("/profile")
     async def profile(request: Request):

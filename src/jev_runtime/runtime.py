@@ -55,6 +55,10 @@ class Runtime:
         self._recovery_started = False
         self.adapter_store, self.adapter_timeout = adapter_store, adapter_timeout
         self._adapter_tasks: set[asyncio.Task] = set()
+        self._prepare_tasks: set[asyncio.Task] = set()
+        self._raw_tasks: set[asyncio.Task] = set()
+        self._quiescing = False
+        self._health_stop = asyncio.Event()
         self.admission = admission or SharedAdmission(registry, backend_identity)
         self.capabilities: Capabilities | None = None
         self._management_lock = asyncio.Lock()
@@ -163,6 +167,8 @@ class Runtime:
     async def check_health(self) -> None:
         async with self._health_lock:
             for reference in self.active_references():
+                if self._quiescing:
+                    return
                 try:
                     await self.prepare(
                         reference,
@@ -170,6 +176,8 @@ class Runtime:
                         timeout_seconds=self.health.settings.timeout_seconds,
                     )
                 except Exception as exc:
+                    if isinstance(exc, JevError) and exc.code == "backend_quiescing":
+                        return
                     self.health.failed(
                         reference, exc.code if isinstance(exc, JevError) else type(exc).__name__
                     )
@@ -177,8 +185,14 @@ class Runtime:
                     logger.warning("Jev engine canary failed for bundle %s", reference)
 
     async def _watch_health(self) -> None:
-        while True:
-            await asyncio.sleep(self.health.settings.interval_seconds)
+        while not self._health_stop.is_set():
+            try:
+                await asyncio.wait_for(
+                    self._health_stop.wait(), self.health.settings.interval_seconds
+                )
+                return
+            except TimeoutError:
+                pass
             try:
                 await self.check_health()
             except Exception:
@@ -188,6 +202,7 @@ class Runtime:
     async def _watch_cancellations(self) -> None:
         while True:
             try:
+                self._observe_quiescence()
                 for command in self.registry.pending_cancel_commands():
                     if self.registry.claim_cancel(command["id"]):
                         task = asyncio.create_task(self._perform_remote_cancel(command))
@@ -198,6 +213,33 @@ class Runtime:
                 self.control_healthy = False
                 logger.exception("Jev cancellation control polling failed")
             await asyncio.sleep(0.05)
+
+    def _observe_quiescence(self) -> None:
+        if self.registry.backend_control(self.backend_identity)["state"] != "QUIESCING":
+            return
+        self._quiescing = True
+        self._health_stop.set()
+        if (
+            not self._active
+            and not self._prepare_tasks
+            and not self._adapter_tasks
+            and not self._raw_tasks
+            and not self._cancel_jobs
+            and (self._health_task is None or self._health_task.done())
+        ):
+            self.registry.acknowledge_quiescence(self.backend_identity)
+
+    async def quiesce(self, expected_generation: int, timeout_seconds: float = 30) -> dict:
+        if not 0 <= timeout_seconds <= 300:
+            raise ValueError("Quiescence timeout must be between 0 and 300 seconds")
+        self.registry.begin_quiesce(self.backend_identity, expected_generation)
+        deadline = time.monotonic() + timeout_seconds
+        while True:
+            self._observe_quiescence()
+            result = self.registry.quiescence_status(self.backend_identity)
+            if result["drained"] or time.monotonic() >= deadline:
+                return result
+            await asyncio.sleep(0.025)
 
     def _cancel_job_done(self, task: asyncio.Task) -> None:
         self._cancel_jobs.discard(task)
@@ -230,6 +272,8 @@ class Runtime:
             raise JevError(
                 "recovery_only", "This runtime only permits inspection and explicit recovery", 503
             )
+        if self._quiescing:
+            raise JevError("backend_quiescing", "Backend is draining; new work is disabled", 503)
 
     def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
         self.require_serving_mode()
@@ -241,9 +285,19 @@ class Runtime:
         return self.registry.activate(alias, reference, expected_generation)
 
     async def close(self) -> None:
+        self._quiescing = True
+        self._health_stop.set()
         self.registry.drain_worker()
         self.control_healthy = False
-        tasks = [*self._active.values(), *self._cancel_jobs, *self._adapter_tasks]
+        tasks = list(
+            {
+                *self._active.values(),
+                *self._cancel_jobs,
+                *self._adapter_tasks,
+                *self._prepare_tasks,
+                *self._raw_tasks,
+            }
+        )
         if self._control_task is not None:
             tasks.append(self._control_task)
         if self._health_task is not None:
@@ -315,7 +369,8 @@ class Runtime:
         return self.registry.register_adapter(artifact, self.backend_identity)
 
     async def change_adapter(self, reference: str, action: str, recover: bool = False) -> dict:
-        self.require_serving_mode()
+        if not recover or self.recovery_only:
+            self.require_serving_mode()
         self._require_adapters()
         task = asyncio.current_task()
         self._adapter_tasks.add(task)
@@ -354,11 +409,18 @@ class Runtime:
         self, reference: str, *, monitoring: bool = False, timeout_seconds: float = 120
     ) -> dict:
         self.require_serving_mode()
-        async with asyncio.timeout(timeout_seconds):
-            return await self._prepare(reference, monitoring=monitoring)
+        task = asyncio.current_task()
+        self._prepare_tasks.add(task)
+        try:
+            async with asyncio.timeout(timeout_seconds):
+                return await self._prepare(reference, monitoring=monitoring)
+        finally:
+            self._prepare_tasks.discard(task)
 
     async def _prepare(self, reference: str, *, monitoring: bool) -> dict:
         async with self._management_lock:
+            self.require_serving_mode()
+            self.registry.require_backend_open(self.backend_identity)
             pending = self._health_pending.get(reference)
             if pending and self.registry.has_lease(pending):
                 raise JevError(
@@ -785,14 +847,61 @@ class Runtime:
         }
 
     async def recover_cancelled(self, request_id: str) -> bool:
-        snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)
-        if snapshot is None:
-            return False
-        for branch in snapshot["engine_request_ids"]:
+        resource = "lease:" + request_id
+        self.registry.claim_recovery(self.backend_identity, resource)
+        try:
+            snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)
+            if snapshot is None:
+                return False
+            for branch in snapshot["engine_request_ids"]:
+                async with asyncio.timeout(10):
+                    await self.backend.cancel(branch)
+            self.registry.release_recovered(snapshot)
+            return True
+        finally:
+            self.registry.finish_recovery(resource)
+
+    async def score_raw(self, sequence: ScoreInput) -> ScoreResult:
+        self.require_serving_mode()
+        if sequence.adapter_id:
+            raise JevError("lora_unsupported", "Managed LoRA requires a typed decision lease", 409)
+        work_id = self.registry.begin_raw_work(self.backend_identity, sequence.request_id)
+        task = asyncio.current_task()
+        self._raw_tasks.add(task)
+        unconfirmed: set[str] = set()
+        try:
+            async with asyncio.timeout(300):
+                capabilities = await self.backend.probe()
+                if len(sequence.input_ids) + 1 > capabilities.max_context_tokens:
+                    raise JevError("context_budget", "Prompt exceeds native context limit", 413)
+                if len(sequence.label_ids) > capabilities.max_label_tokens:
+                    raise JevError("label_budget", "Too many labels for native engine", 413)
+                return await self._score(sequence, unconfirmed)
+        finally:
+            try:
+                self.registry.finish_raw_work(work_id, unconfirmed=bool(unconfirmed))
+            finally:
+                self._raw_tasks.discard(task)
+
+    async def recover_raw(self, work_id: str) -> bool:
+        # Keep public raw IDs from being reused while an operator is cancelling
+        # an old incarnation, including concurrent recovery attempts.
+        resource = "raw:" + work_id
+        self.registry.claim_recovery(self.backend_identity, resource)
+        try:
+            if self.registry.backend_control(self.backend_identity)["state"] != "QUIESCING":
+                raise JevError(
+                    "quiescence_required", "Quiesce before recovering raw engine work", 409
+                )
+            snapshot = self.registry.raw_recovery_snapshot(self.backend_identity, work_id)
+            if snapshot is None:
+                return False
             async with asyncio.timeout(10):
-                await self.backend.cancel(branch)
-        self.registry.release_recovered(snapshot)
-        return True
+                await self.backend.cancel(snapshot["request_id"])
+            self.registry.release_raw_recovered(snapshot)
+            return True
+        finally:
+            self.registry.finish_recovery(resource)
 
     def pending_cancellations(self) -> list[dict]:
         return self.registry.recovery_candidates()
