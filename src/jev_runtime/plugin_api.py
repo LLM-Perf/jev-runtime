@@ -67,6 +67,9 @@ def install_plugin_routes(app: FastAPI) -> None:
 
     @router.post("/scores")
     async def score(body: ScoreWire, request: Request):
+        runtime = getattr(request.app.state, "jev_runtime", None)
+        if runtime is not None:
+            runtime.require_serving_mode()
         if body.adapter_id:
             raise JevError(
                 "lora_unsupported", "Managed LoRA requires the leased typed decision endpoint", 409

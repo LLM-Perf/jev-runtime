@@ -58,6 +58,7 @@ class Settings(Contract):
     dtype: str = "bfloat16"
     readout_dtype: FloatingDType | None = None
     batch_invariant: bool = False
+    recovery_only: bool = False
     quantization: str | None = None
     registry_path: str = ".jev/registry.db"
     host: str = "127.0.0.1"
@@ -207,11 +208,12 @@ async def build_runtime(
         adapter_store=store,
         adapter_timeout=settings.adapters.operation_timeout_seconds,
         health_settings=settings.health,
+        recovery_only=settings.recovery_only,
     )
 
 
 async def bootstrap(runtime: Runtime, settings: Settings) -> None:
-    if settings.bootstrap_alias is None:
+    if runtime.recovery_only or settings.bootstrap_alias is None:
         return
     bundle = Bundle(
         id=settings.bootstrap_bundle_id, version=1, model=model_identity(settings, runtime.compiler)

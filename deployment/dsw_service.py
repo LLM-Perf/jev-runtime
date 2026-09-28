@@ -93,6 +93,11 @@ def launch(args):
             "The pinned SGLang FP32 diagnostic profile requires --batch-invariant; "
             "its ordinary CUDA RMSNorm path cannot dispatch Float inputs"
         )
+    registry_path = getattr(args, "registry_path", None)
+    if registry_path is not None:
+        if registry_path.is_symlink() or not registry_path.is_file():
+            raise ValueError("An explicit registry path must be an existing regular file")
+        registry_path = registry_path.resolve(strict=True)
     indices = device_indices(args.gpu, args.gpus)
     root = args.run_dir.resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -131,9 +136,10 @@ def launch(args):
         "dtype": dtype,
         "readout_dtype": "float32" if args.readout_dtype == "float32" else dtype,
         "batch_invariant": getattr(args, "batch_invariant", False),
-        "registry_path": str(root / "registry.db"),
-        "bootstrap_alias": "decision-model",
+        "registry_path": str(registry_path or root / "registry.db"),
+        "bootstrap_alias": None if getattr(args, "no_bootstrap", False) else "decision-model",
         "bootstrap_bundle_id": "default",
+        "recovery_only": getattr(args, "recovery_only", False),
         "host": "127.0.0.1",
         "port": args.port,
         "workers": args.api_workers,
@@ -353,6 +359,8 @@ def launch(args):
         "dtype": dtype,
         "readout_dtype": config["readout_dtype"],
         "batch_invariant": config["batch_invariant"],
+        "recovery_only": config["recovery_only"],
+        "registry_path": config["registry_path"],
         "chat_template_source": template_source.model_dump() if template_source else None,
         "chat_template_snapshot": config.get("chat_template"),
         "created": time.time(),
@@ -408,6 +416,9 @@ def main():
     parser.add_argument("--dtype", choices=["bfloat16", "float32"], default="bfloat16")
     parser.add_argument("--readout-dtype", choices=["model", "float32"], default="model")
     parser.add_argument("--batch-invariant", action="store_true")
+    parser.add_argument("--recovery-only", action="store_true")
+    parser.add_argument("--no-bootstrap", action="store_true")
+    parser.add_argument("--registry-path", type=Path, help="Explicit existing local registry")
     parser.add_argument("--chat-template-path", type=Path)
     parser.add_argument("--chat-template-sha256")
     parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")

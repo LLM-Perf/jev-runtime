@@ -46,10 +46,13 @@ class Runtime:
         adapter_store: AdapterStore | None = None,
         adapter_timeout: int = 120,
         health_settings: HealthSettings | None = None,
+        recovery_only: bool = False,
     ):
         self.backend, self.compiler, self.registry = backend, compiler, registry
         self.backend_identity, self.model_id = backend_identity, model_id
         self.expected_model = expected_model
+        self.recovery_only = recovery_only
+        self._recovery_started = False
         self.adapter_store, self.adapter_timeout = adapter_store, adapter_timeout
         self._adapter_tasks: set[asyncio.Task] = set()
         self.admission = admission or SharedAdmission(registry, backend_identity)
@@ -69,10 +72,13 @@ class Runtime:
         self._health_pending: dict[str, str] = {}
 
     async def start(self) -> None:
-        if self._control_task is not None and not self._control_task.done():
+        if self._recovery_started or (
+            self._control_task is not None and not self._control_task.done()
+        ):
             raise RuntimeError("Runtime is already started")
         self._prepared.clear()
-        self.admission.start(self.registry, self.backend_identity)
+        if not self.recovery_only:
+            self.admission.start(self.registry, self.backend_identity)
         self.capabilities = await self.backend.probe()
         if self.expected_model is not None and self.capabilities.engine in {"sglang", "vllm"}:
             for expected_field, observed_field in (
@@ -99,6 +105,13 @@ class Runtime:
                     "configure and build a matching batch-invariance profile",
                     409,
                 )
+        if self.recovery_only:
+            if not self.capabilities.cancellation:
+                raise JevError("unsupported_engine", "Recovery requires engine cancellation", 503)
+            # Do not join admission/publication, revalidate active bundles, load
+            # adapters or dispatch canaries before the operator recovers work.
+            self._recovery_started = True
+            return
         if self.adapter_store is not None:
             if not self.capabilities.lora:
                 raise JevError(
@@ -212,7 +225,14 @@ class Runtime:
     def is_prepared(self, reference: str) -> bool:
         return reference in self._prepared
 
+    def require_serving_mode(self) -> None:
+        if self.recovery_only:
+            raise JevError(
+                "recovery_only", "This runtime only permits inspection and explicit recovery", 503
+            )
+
     def activate(self, alias: str, reference: str, expected_generation: int) -> dict:
+        self.require_serving_mode()
         if not self.is_prepared(reference):
             raise JevError(
                 "replica_not_ready", "Prepare this version on this API worker first", 503
@@ -270,6 +290,7 @@ class Runtime:
             )
 
     async def register_adapter(self, adapter_id: str, source: str) -> dict:
+        self.require_serving_mode()
         self._require_adapters()
         if self.expected_model is None:
             raise JevError("adapter_profile", "A frozen base-model identity is required", 409)
@@ -294,6 +315,7 @@ class Runtime:
         return self.registry.register_adapter(artifact, self.backend_identity)
 
     async def change_adapter(self, reference: str, action: str, recover: bool = False) -> dict:
+        self.require_serving_mode()
         self._require_adapters()
         task = asyncio.current_task()
         self._adapter_tasks.add(task)
@@ -331,6 +353,7 @@ class Runtime:
     async def prepare(
         self, reference: str, *, monitoring: bool = False, timeout_seconds: float = 120
     ) -> dict:
+        self.require_serving_mode()
         async with asyncio.timeout(timeout_seconds):
             return await self._prepare(reference, monitoring=monitoring)
 
@@ -527,6 +550,7 @@ class Runtime:
 
     def compile_preview(self, request: DecisionRequest) -> dict:
         """Export the actual worker's validated scoring inputs without GPU dispatch."""
+        self.require_serving_mode()
         snapshot = self.registry.acquire(
             request.model, "compile-" + uuid.uuid4().hex, request.bundle, self.backend_identity
         )
@@ -561,6 +585,7 @@ class Runtime:
         *,
         trace: DecisionTrace | None = None,
     ) -> DecisionResponse:
+        self.require_serving_mode()
         rid = request_id or request.request_id or "dec-" + uuid.uuid4().hex
         if rid in self._active:
             raise JevError("duplicate_request", "Request ID is already in flight", 409)

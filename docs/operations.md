@@ -228,6 +228,10 @@ jevctl recovery list config.yaml
 jevctl recovery recover config.yaml prepare-REQUEST_ID
 ```
 
+When native startup cannot expose its recovery endpoint because bundle preparation
+is incomplete, use the explicit [recovery-only startup mode](recovery-mode.md).
+It keeps Jev scoring/publication closed and requires a normal restart after recovery.
+
 The recovery CLI does not activate routes or clear unknown leases. It contacts the
 configured engine and applies the same owner, backend and abort checks as the API.
 Unit tests cover cross-instance recovery and fail-closed identity checks. A real

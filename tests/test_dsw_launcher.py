@@ -179,3 +179,26 @@ def test_sglang_ordinary_fp32_rejected_before_allocation(tmp_path):
     with pytest.raises(ValueError, match="requires --batch-invariant"):
         dsw_service.launch(args)
     assert not args.batch_invariant and not args.run_dir.exists()
+
+
+@pytest.mark.parametrize("kind", ["missing", "directory", "symlink"])
+def test_explicit_registry_rejects_unsafe_paths_before_allocation(tmp_path, kind):
+    from types import SimpleNamespace
+
+    path = tmp_path / "registry"
+    if kind == "directory":
+        path.mkdir()
+    elif kind == "symlink":
+        target = tmp_path / "target"
+        target.write_text("existing data")
+        path.symlink_to(target)
+    with pytest.raises(ValueError, match="existing regular file"):
+        dsw_service.launch(
+            SimpleNamespace(
+                dtype="bfloat16",
+                adapters_root=None,
+                registry_path=path,
+                run_dir=tmp_path / "run",
+            )
+        )
+    assert not (tmp_path / "run").exists()

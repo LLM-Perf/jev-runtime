@@ -107,6 +107,12 @@ def install_routes(
             raise JevError("not_ready", "Decision runtime is not ready", 503)
         return instance
 
+    async def recovery_write_guard(request: Request):
+        if request.method not in {"GET", "HEAD", "OPTIONS"} and request.scope["route"].path != (
+            prefix + "/admin/requests/{request_id}/recover"
+        ):
+            runtime(request).require_serving_mode()
+
     @app.exception_handler(JevError)
     async def jev_error_handler(request: Request, exc: JevError):
         trace = getattr(request.state, "jev_trace", None)
@@ -127,8 +133,12 @@ def install_routes(
         registry=metrics_registry,
         buckets=(0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30, 60),
     )
-    router = APIRouter(prefix=prefix, dependencies=[Depends(authorize)])
-    management = APIRouter(prefix=prefix + "/admin", dependencies=[Depends(admin)])
+    router = APIRouter(
+        prefix=prefix, dependencies=[Depends(authorize), Depends(recovery_write_guard)]
+    )
+    management = APIRouter(
+        prefix=prefix + "/admin", dependencies=[Depends(admin), Depends(recovery_write_guard)]
+    )
 
     stages = Histogram(
         "jev_runtime_stage_seconds",
@@ -264,6 +274,7 @@ def install_routes(
     @router.get("/ready")
     async def ready(request: Request):
         instance = runtime(request)
+        instance.require_serving_mode()
         if not instance.control_healthy:
             raise JevError("control_unavailable", "Worker cancellation control is unhealthy", 503)
         profile = instance.health_profile()
@@ -318,6 +329,7 @@ def install_routes(
         return {
             "worker_id": instance.registry.owner,
             "model": instance.expected_model,
+            "recovery_only": instance.recovery_only,
             "deployment": instance.registry.deployment_profile(),
             "auth_policy": auth_policy,
             "control_healthy": instance.control_healthy,
