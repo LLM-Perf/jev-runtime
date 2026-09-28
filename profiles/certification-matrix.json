@@ -69,6 +69,23 @@
         "native_parity_pairs_passed": 64,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
+      },
+      "development_full_fp32_numerical": {
+        "source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+        "status": "invariant_development_check_passed_ordinary_startup_failed",
+        "scope": "32 synthetic joint-label inputs; FP32 backbone/readout TP1/API1 eager; ordinary and batch-invariant attempts; reset/repeat/reversed-client-concurrency4; independent FP32 eager and SDPA references; no full release certification",
+        "evidence": "evidence/dsw/full-fp32-f2ccc2a/verified-summary.json",
+        "attempted_profiles": 2,
+        "completed_profiles": 1,
+        "startup_failed_profiles": 1,
+        "reference_comparisons_passed": 192,
+        "native_parity_pairs_passed": 32,
+        "enabled_mode_exact_repeat_vectors": 32,
+        "enabled_mode_exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "ordinary_registry_recovery_required": true,
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
       }
     },
     {
@@ -129,6 +146,23 @@
         "case_count": 32,
         "ordinary_eager_non_near_tie_argmax_mismatches": 1,
         "native_parity_pairs_passed": 64,
+        "full_gate_passed": false,
+        "prior_numerical_status_preserved": true
+      },
+      "development_full_fp32_numerical": {
+        "source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+        "status": "development_reference_check_passed",
+        "scope": "32 synthetic joint-label inputs; FP32 backbone/readout TP1/API1 eager; ordinary and batch-invariant attempts; reset/repeat/reversed-client-concurrency4; independent FP32 eager and SDPA references; no full release certification",
+        "evidence": "evidence/dsw/full-fp32-f2ccc2a/verified-summary.json",
+        "attempted_profiles": 2,
+        "completed_profiles": 2,
+        "startup_failed_profiles": 0,
+        "reference_comparisons_passed": 384,
+        "native_parity_pairs_passed": 64,
+        "enabled_mode_exact_repeat_vectors": 32,
+        "enabled_mode_exact_concurrent_vectors": 32,
+        "case_count": 32,
+        "ordinary_registry_recovery_required": false,
         "full_gate_passed": false,
         "prior_numerical_status_preserved": true
       }

@@ -1,0 +1,88 @@
+import hashlib,json,sys,tarfile,time,sqlite3
+from pathlib import Path
+from contextlib import closing
+from huggingface_hub import HfApi
+ROOT=Path('/root/jev-runtime');COMMIT='f2ccc2ab02e522cab7135243192f967aaeabefb0';source=ROOT/'full-fp32-sources'/COMMIT
+sys.path[:0]=[str(source),str(source/'src')]
+from deployment.dsw_service import process_identity,get_gpu
+from tests.integration.run_native_validation import group_members
+from jev_runtime.registry_backup import connect,blockers,summary,snapshot
+from jev_runtime.registry import Registry
+from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
+def read(p):return json.loads(p.read_text())
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+files={'campaign.json':ROOT/'full-fp32-campaign-f2ccc2a.json'};campaign=read(files['campaign.json']);assert campaign['complete'] and len(campaign['attempts'])==4
+attempts=campaign['attempts'];registries=[]
+reproduction=ROOT/'full-fp32-initial-audit-reproduction-f2ccc2a.json';receipt=read(reproduction)
+assert receipt['returncode']==1 and 'AssertionError' in receipt['stderr']
+files['initial-audit-reproduction.json']=reproduction
+prior=ROOT/'fp32-head-audit-55a1d26.json';records=[];seen=set()
+def add(name,i):
+ key=(i['boot_id'],i['pid'],i['start_ticks'])
+ if key not in seen:seen.add(key);records.append({'record':name,'identity':i})
+for r in read(prior)['records']:add(r['record'],r['identity'])
+for p in sorted((ROOT/'runs').rglob('process.json')):
+ r=read(p)
+ if r.get('identity'):add(str(p),r['identity'])
+for a in attempts:
+ assert a['cleanup']['passed'];run=Path(a['run_dir']);name=a['name']+('-initial' if a.get('failure') else '')
+ for child in a['children']:
+  assert not child.get('remaining_group');assert child.get('returncode') is not None;add(child['log'],child['identity'])
+ for path in run.glob('*.json'):
+  if path.name in ['keys.json','config.json']:continue
+  files[name+'/'+path.name]=path
+ for path in run.glob('*.db'):
+  with closing(connect(path)) as db:
+   outstanding=blockers(db);state=summary(db)
+   item={'path':str(path),'profile':a['name'],'blockers':outstanding,'summary':state}
+   if outstanding:
+    assert a['name']=='sglang-ordinary-full-fp32' and path.name=='registry.db' and a.get('failure')
+    assert outstanding=={'leases':1,'lease_work':1,'preparing_bundles':1}
+    db.row_factory=sqlite3.Row
+    item['owners']=[{'owner':row['owner'],'identity':json.loads(row['identity']),'status':Registry._owner_status(json.loads(row['identity']))} for row in db.execute('SELECT owner,identity FROM owners')]
+    assert len(item['owners'])==1 and item['owners'][0]['status']=='dead'
+    item['leases']=[dict(row) for row in db.execute('SELECT * FROM leases')]
+    item['lease_work']=[dict(row) for row in db.execute('SELECT * FROM lease_work')]
+    item['bundles']=[dict(row) for row in db.execute('SELECT ref,digest,state,backend,error FROM bundles')]
+  if outstanding:
+   destination=ROOT/'full-fp32-failed-registry-snapshot-f2ccc2a'
+   item['snapshot']=snapshot(path,destination)
+   assert item['snapshot']['summary']==state and item['snapshot']['restore_blockers_at_snapshot']==outstanding
+   for payload in destination.iterdir():files['failed-registry-snapshot/'+payload.name]=payload
+   with closing(connect(path)) as db:assert summary(db)==state and blockers(db)==outstanding
+   item['recovery_performed']=False;item['source_logical_content_unchanged']=True
+  registries.append(item)
+ # Retain engine logs as failure/selected-backend evidence. Credentials are only
+ # env values; the launcher does not put them in commands or log configuration.
+ for filename in ['engine.log','launch.log','collect.log','mode-check.log','precision-check.log','postcheck.log']:
+  path=run/filename
+  if path.exists():files[name+'/'+filename]=path
+for r in records:
+ i=r['identity'];r['matching_live_process']=process_identity(i['pid'])==i;r['live_group']=group_members(i['pid'])
+assert all(not r['matching_live_process'] and not r['live_group'] for r in records)
+assert len([r for r in registries if r['blockers']])==1
+gpu=get_gpu(7);assert gpu['uuid']=='GPU-b57fb933-0e5a-dd28-7041-a177da03405e' and int(gpu['free_mib'])==11990
+profiles=[]
+for engine in ['vllm','sglang']:
+ p=ROOT/'tokenizers'/f'Qwen3-0.6B-preserved-{engine}-cdd0caf';verify_tokenizer_profile(p);profiles.append({'path':str(p),'manifest_sha256':sha(p/'jev-tokenizer-profile.json'),'payload_verified':True})
+model=ROOT/'models/Qwen3-0.6B';identity=read(model/'jev-source.json');info=HfApi().model_info(identity['model_id'],revision=identity['revision'],files_metadata=True,token=False);assert info.sha==identity['revision'];remote={s.rfilename:s for s in info.siblings};model_files=[]
+for p in sorted(list(model.glob('*.safetensors'))+[model/n for n in ['config.json','generation_config.json','tokenizer.json','tokenizer_config.json','merges.txt','vocab.json'] if (model/n).exists()]):
+ before=p.stat();h=sha(p);after=p.stat();r=remote[p.name];assert before.st_mtime_ns==after.st_mtime_ns and before.st_size==after.st_size==r.size
+ if r.lfs is not None:assert h==r.lfs.sha256
+ else:assert hashlib.sha1(b'blob '+str(after.st_size).encode()+b'\0'+p.read_bytes()).hexdigest()==r.blob_id
+ model_files.append({'name':p.name,'sha256':h,'size_bytes':after.st_size,'hub_digest_verified':True})
+source_files_by_commit={}
+for commit in [COMMIT]:
+ checkout=ROOT/'full-fp32-sources'/commit;source_files_by_commit[commit]={str(p.relative_to(checkout)):sha(p) for p in checkout.rglob('*.py')}
+# Ensure raw captured logs/reports contain none of this campaign's credentials.
+secrets=[s for a in attempts for s in read(Path(a['run_dir'])/'keys.json').values() if isinstance(s,str)]
+assert all(not any(secret.encode() in p.read_bytes() for secret in secrets) for p in files.values())
+audit={'source_commit':COMMIT,'script_sha256':sha(Path(__file__)),'checked_at':time.time(),'prior_audit_sha256':sha(prior),'passed':False,'evidence_integrity_passed':True,'owned_process_exit_passed':True,'registries_drained':False,'registries':registries,'initial_audit_failure_retained':True,'recovery_performed':False,'records':records,'owned_records_checked':len(records),'gpu7':gpu,'profiles':profiles,'model':identity,'model_files':model_files,'source_files_by_commit':source_files_by_commit,'credential_values_absent_from_export':True}
+p=ROOT/'full-fp32-audit-f2ccc2a.json';assert not p.exists();p.write_text(json.dumps(audit,indent=2)+'\n');files['audit.json']=p
+manifest={'script_sha256':sha(Path(__file__)),'artifacts':{n:{'sha256':sha(p),'size_bytes':p.stat().st_size} for n,p in files.items()}}
+p=ROOT/'full-fp32-export-f2ccc2a.json';assert not p.exists();p.write_text(json.dumps(manifest,indent=2)+'\n');files['export-manifest.json']=p
+archive=ROOT/'full-fp32-evidence-f2ccc2a.tar.gz';assert not archive.exists()
+with tarfile.open(archive,'w:gz') as tar:
+ for n,p in sorted(files.items()):tar.add(p,arcname=n,recursive=False)
+print(json.dumps({'archive':str(archive),'sha256':sha(archive),'size_bytes':archive.stat().st_size,'owned_records_checked':len(records),'execution_complete':campaign['execution_complete']}))

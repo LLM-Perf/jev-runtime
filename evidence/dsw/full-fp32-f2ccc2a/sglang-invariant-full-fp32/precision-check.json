@@ -1,0 +1,79 @@
+{
+  "harness_source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+  "runtime_source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+  "started_at": 1790554375.2859287,
+  "qualification": "Targeted precision identity and rejection checks; not numerical accuracy",
+  "checks": {
+    "legacy_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-8206fc2bbcee4d9ea1e222052fa23abe@1"
+    },
+    "wrong_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model readout_dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-f0f11f17cdf44ebd8fb52abfae1e5a4d@1"
+    },
+    "wrong_backbone_bundle": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "model_mismatch",
+          "message": "Bundle model dtype differs from loaded profile"
+        }
+      },
+      "reference": "precision-eddfc1e110a74e6d9f763d53f5e5a15a@1"
+    },
+    "zero_leases_after_rejections": true,
+    "mismatched_attached_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured readout_dtype=bfloat16 differs from engine report float32; use an explicit verified engine precision profile"
+    },
+    "mismatched_backbone_runtime": {
+      "code": "engine_precision_mismatch",
+      "message": "Configured dtype=bfloat16 differs from engine report float32; use an explicit verified engine precision profile"
+    }
+  },
+  "model": {
+    "id": "Qwen/Qwen3-0.6B",
+    "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+    "tokenizer_digest": "sha256:292401387c35e0bb6d74b436de10b2b72cb93fa2681936283dce2e58294daefd",
+    "tokenizer_implementation_digest": "sha256:871466a28ca69fc737e5e467f409dc3297222733de577a261748b596c288d2d6",
+    "template_digest": "sha256:41d5929bf73796beb66809ac700b2cf3ff81694f933e5c14d52b7fd6963c947d",
+    "dtype": "float32",
+    "readout_dtype": "float32",
+    "batch_invariant": true,
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/Qwen3-0.6B",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "float32",
+    "readout_dtype": "float32",
+    "batch_invariant": true
+  },
+  "passed": true,
+  "finished_at": 1790554383.1046634
+}

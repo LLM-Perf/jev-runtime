@@ -1,0 +1,8 @@
+{
+  "scope": "Reproduction of the first audit failure; no GPU launch or database mutation",
+  "checked_at": 1790554909.4282598,
+  "script_sha256": "62808603c6ea48b4fded6616dde93e1f9dfd6d3526bc913b5b7a944c91abe622",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/root/jev-runtime/full-fp32-audit-export-f2ccc2a.py\", line 32, in <module>\n    with closing(connect(path)) as db:assert not blockers(db)\n                                             ^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

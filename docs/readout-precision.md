@@ -122,6 +122,12 @@ The subsequent [multi-input FP32 readout campaign](fp32-readout-validation.md)
 tests both ordinary and batch-invariant execution on Qwen3-0.6B. All four profiles
 retain independent-reference failures; FP32 readout is not a general numerical fix.
 
+The later [full-FP32 diagnostic](full-fp32-validation.md) passes the unchanged
+development check in three profiles, while SGLang ordinary execution fails
+startup and retains a preparation lease. It changes backbone execution and
+vLLM's attention backend; it does not certify the earlier BF16 profiles or
+FP32 performance.
+
 
 ## DSW validation, 2026-09-28 (Asia/Shanghai)
 

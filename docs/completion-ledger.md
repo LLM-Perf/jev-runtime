@@ -501,6 +501,19 @@ retained owned records are terminal; 432 local tests pass. Product code is
 unchanged, coverage stays 24/40 and no release gate is newly accepted. See
 [FP32 readout validation](fp32-readout-validation.md).
 
+At source `f2ccc2a`, explicit FP32 backbone/readout diagnostics complete in three
+of four attempted profiles: 288 scoring responses, 96 native/plugin pairs and
+576 independent eager/SDPA comparisons. Every completed comparison passes the
+unchanged development check; enabled modes retain all 32 vectors exactly across
+tested states. SGLang ordinary execution fails CUDA RMSNorm Float dispatch during
+startup and leaves one lease/work journal and one PREPARING bundle. Its failed
+audit and consistent private registry snapshot are retained; recovery is not
+performed. All 269 owned process records are terminal and GPU memory returns to
+baseline, which is separate from registry drain. Launcher guard `3233a80` rejects
+this known unsupported configuration before allocation; 443 local tests pass.
+Core/plugin code is unchanged, functional coverage remains 24/40 and BF16 failures
+and all broader release gates remain. See [full-FP32 diagnostics](full-fp32-validation.md).
+
 | Requirement | Status | Required next evidence |
 |---|---|---|
 | Private repository | Created, privacy verified | Verify pushed source and final visibility |
@@ -512,7 +525,7 @@ unchanged, coverage stays 24/40 and no release gate is newly accepted. See
 | Calibration and quality tooling | CLI, collection, binary/multiclass fitting implemented | Real held-out tasks and accuracy evidence |
 | Real business evaluation | Missing data | At least two approved tasks and grounded labels |
 | Performance certification | Not run | Defined 144-case matrix and controlled native baselines |
-| 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
+| 24h soak and fault injection | Gateway/native quota recovery and READY-LoRA native group crash/restart passed on both engines; soak not run | Preparation-stage startup crash recovery (retained SGLang FP32 lease), interrupted load/unload, worker-only/database/other fault profiles and complete 24h evidence |
 | LoRA lifecycle | Both native engines passed one frozen SmolLM2 BF16 TP1/API1 eager profile, its crash/restart and lifecycle recheck | Other fault phases and execution/model profiles require separate evidence |
 | SDKs and deployment productization | SDKs, immutable wheels/offline locks, and stable-proxy two-worker installed-wheel gateway upgrade/rollback pass on both engines | Expanded rollout faults/load, deployment images, migration/downgrade, handoff and final-source recertification |
 | Resource fairness/multiple tenants | Durable same-host budgets, targeted two-worker/two-tenant load and single-worker crash/restart quota retention pass on both engines | Representative mixed workloads, fault/load performance and multi-node quotas |

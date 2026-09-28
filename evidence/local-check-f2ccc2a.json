@@ -1,0 +1,15 @@
+{
+  "source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+  "local_tests": {
+    "passed": 442,
+    "duration_seconds": 13.39
+  },
+  "targeted_precision_launcher_numerical_tests": 58,
+  "ruff_check": "passed",
+  "format_check": "passed for 118 product/test/deployment Python files",
+  "typescript": "unchanged, not rerun",
+  "changes": "isolated launcher, numerical reference, precision binding harness, tests and docs",
+  "core_and_plugin_python_changes": false,
+  "wheel_build": "not rerun; packaged core/plugin sources unchanged; DSW executes source checkout",
+  "source_archive_sha256": "07ff946031820c4c19ea0be39ac088f9d0522e50d504f814376a620f2dcc26c3"
+}

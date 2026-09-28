@@ -1,0 +1,14 @@
+{
+  "source_commit": "3233a80c6533877891ced4d36ab98c0da16dc0ad",
+  "local_tests": {
+    "passed": 443,
+    "duration_seconds": 25.49
+  },
+  "targeted_launcher_tests": 30,
+  "ruff_check": "passed for src tests packages deployment benchmarks",
+  "format_check": "passed for 118 files under src tests packages deployment benchmarks",
+  "typescript": "unchanged, not rerun",
+  "wheel_build": "not rerun; packaged core/plugin source unchanged",
+  "dsw_scope": "GPU evidence is at f2ccc2a before the launcher guard; this guard is tested locally only",
+  "dsw_archive_sha256": "3986c068b6ea41374e0c68921f3f0768f2bbec21e1d5d4854272b29803e2537e"
+}

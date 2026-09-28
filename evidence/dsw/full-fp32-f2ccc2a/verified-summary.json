@@ -1,0 +1,259 @@
+{
+  "source_commit": "f2ccc2ab02e522cab7135243192f967aaeabefb0",
+  "profiles": {
+    "vllm-ordinary-full-fp32": {
+      "status": "development_reference_check_passed",
+      "batch_invariant": false,
+      "backbone_dtype": "float32",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 1,
+          "max_logprob_change": 3.4332275390625e-05,
+          "max_probability_change": 6.83925925482054e-06,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 7,
+          "max_logprob_change": 9.72747802734375e-05,
+          "max_probability_change": 1.4957815995142454e-05,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.0001773834228515625,
+          "max_probability_error": 1.3450058431063727e-05,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 2.765655517578125e-05,
+          "logprob_error_p95": 7.551908493041992e-05,
+          "probability_error_p95": 1.1540067426263345e-05
+        },
+        "sdpa": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.00012350082397460938,
+          "max_probability_error": 1.409933670526442e-05,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 3.516674041748047e-05,
+          "logprob_error_p95": 7.224082946777344e-05,
+          "probability_error_p95": 1.0051888216677796e-05
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "vllm-invariant-full-fp32": {
+      "status": "development_reference_check_passed",
+      "batch_invariant": true,
+      "backbone_dtype": "float32",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.032686710357666016,
+          "max_probability_error": 0.004162324344412105,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.009656727313995361,
+          "logprob_error_p95": 0.02650928497314453,
+          "probability_error_p95": 0.003632465175778893
+        },
+        "sdpa": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.03262758255004883,
+          "max_probability_error": 0.004157391011929024,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.00963139533996582,
+          "logprob_error_p95": 0.026572227478027344,
+          "probability_error_p95": 0.0036423730823775535
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          80,
+          96,
+          112
+        ],
+        "concurrent_reversed": [
+          0,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    "sglang-ordinary-full-fp32": {
+      "status": "startup_failed",
+      "failure": "CUDA RMSNorm cannot dispatch Float inputs",
+      "scoring_responses": 0,
+      "process_group_terminal": true,
+      "registry_drained": false,
+      "registry_blockers": {
+        "leases": 1,
+        "lease_work": 1,
+        "preparing_bundles": 1
+      }
+    },
+    "sglang-invariant-full-fp32": {
+      "status": "development_reference_check_passed",
+      "batch_invariant": true,
+      "backbone_dtype": "float32",
+      "readout_dtype": "float32",
+      "native_parity_passed": 32,
+      "native_parity_max_error": 0.0,
+      "states": {
+        "repeat_serial": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        },
+        "concurrent_reversed": {
+          "comparisons": 32,
+          "exact_vector_matches": 32,
+          "max_logprob_change": 0.0,
+          "max_probability_change": 0.0,
+          "argmax_changes": 0
+        }
+      },
+      "references": {
+        "eager": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.047011375427246094,
+          "max_probability_error": 0.006142032596872626,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.013313829898834229,
+          "logprob_error_p95": 0.0469212532043457,
+          "probability_error_p95": 0.004579032193396615
+        },
+        "sdpa": {
+          "passed": 96,
+          "total": 96,
+          "max_logprob_error": 0.047074317932128906,
+          "max_probability_error": 0.006144405835675548,
+          "argmax_mismatches": 0,
+          "near_tie_argmax_mismatches": 0,
+          "non_near_tie_argmax_mismatches": 0,
+          "logprob_error_p50": 0.013319730758666992,
+          "logprob_error_p95": 0.046975135803222656,
+          "probability_error_p95": 0.004578451345023105
+        }
+      },
+      "cache_counts": {
+        "reset_serial": [
+          0
+        ],
+        "repeat_serial": [
+          83,
+          84,
+          85,
+          86,
+          88,
+          89,
+          94,
+          95,
+          96,
+          97,
+          99,
+          100,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          118,
+          119
+        ],
+        "concurrent_reversed": [
+          0,
+          43,
+          44,
+          47,
+          48
+        ]
+      }
+    }
+  },
+  "full_release_gate_passed": false,
+  "scoring_responses": 288,
+  "native_parity_pairs": 96,
+  "reference_forwards": 192,
+  "reference_comparisons": 576,
+  "owned_records_terminal": 269,
+  "attempted_profiles": 4,
+  "completed_profiles": 3,
+  "startup_failed_profiles": 1,
+  "registries_drained": false,
+  "retained_registry_blockers": {
+    "leases": 1,
+    "lease_work": 1,
+    "preparing_bundles": 1
+  },
+  "recovery_performed": false,
+  "input_ids_equal_across_profiles": true,
+  "input_ids_equal_to_previous_bf16_backbone_campaign": true,
+  "reference_vectors_equal_between_modes": {
+    "vllm": true,
+    "sglang": "not_available_ordinary_startup_failed"
+  }
+}
