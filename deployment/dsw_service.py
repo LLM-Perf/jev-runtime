@@ -139,11 +139,14 @@ def launch(args):
         "registry_path": str(registry_path or root / "registry.db"),
         "bootstrap_alias": None if getattr(args, "no_bootstrap", False) else "decision-model",
         "bootstrap_bundle_id": "default",
-        "recovery_only": getattr(args, "recovery_only", False),
         "host": "127.0.0.1",
         "port": args.port,
         "workers": args.api_workers,
     }
+    # Ordinary launches retain config compatibility with versions predating
+    # recovery mode. Older versions must reject an explicitly enabled mode.
+    if getattr(args, "recovery_only", False):
+        config["recovery_only"] = True
     template_source = None
     if args.chat_template_path:
         from jev_runtime.templates import TemplateFile, read_template
@@ -359,7 +362,7 @@ def launch(args):
         "dtype": dtype,
         "readout_dtype": config["readout_dtype"],
         "batch_invariant": config["batch_invariant"],
-        "recovery_only": config["recovery_only"],
+        "recovery_only": config.get("recovery_only", False),
         "registry_path": config["registry_path"],
         "chat_template_source": template_source.model_dump() if template_source else None,
         "chat_template_snapshot": config.get("chat_template"),

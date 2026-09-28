@@ -124,6 +124,8 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
     expected = dtype if readout == "model" else readout
     assert record["dtype"] == dtype and command[command.index("--dtype") + 1] == dtype
     assert json.loads((args.run_dir / "config.json").read_text())["dtype"] == dtype
+    assert "recovery_only" not in json.loads((args.run_dir / "config.json").read_text())
+    assert record["recovery_only"] is False
     assert record["readout_dtype"] == expected
     tokenizer = args.tokenizer_path if explicit_tokenizer else model
     assert record["tokenizer_path"] == str(tokenizer)
