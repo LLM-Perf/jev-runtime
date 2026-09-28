@@ -15,7 +15,7 @@ from jev_runtime.compiler import CompiledQuestion, Compiler
 from jev_runtime.errors import JevError
 from jev_runtime.health import HealthSettings, ServingHealth
 from jev_runtime.lifecycle import cancel_and_drain
-from jev_runtime.registry import Registry
+from jev_runtime.registry import Registry, StaleRoute
 from jev_runtime.schema import (
     Answer,
     Bundle,
@@ -613,9 +613,57 @@ class Runtime:
         trace.switch("pin")
         try:
             async with asyncio.timeout(request.execution.timeout_ms / 1000):
-                snapshot = self.registry.acquire(
-                    request.model, rid, request.bundle, self.backend_identity, tenant
-                )
+                reservation = None
+                if isinstance(self.admission, SharedAdmission):
+                    try:
+                        resolved = self.registry.resolve(
+                            request.model, request.bundle, self.backend_identity
+                        )
+                        trace.switch("compile")
+                        compiled, sequences, total_tokens = self._compile_request(
+                            request, resolved.bundle, engine_rid
+                        )
+                    except JevError:
+                        # A speculative validation may observe a concurrent switch.
+                        # Re-evaluate it under an authoritative lease below.
+                        pass
+                    else:
+                        trace.switch("journal")
+                        branch_ids = [seq.request_id for seq in sequences]
+                        trace.switch("queue")
+                        try:
+                            snapshot, admitted = self.admission.reserve(
+                                resolved,
+                                request.model,
+                                rid,
+                                request.bundle,
+                                tenant,
+                                total_tokens,
+                                branch_ids,
+                            )
+                        except StaleRoute:
+                            # One fallback pins before compiling, so route churn
+                            # cannot cause unbounded speculative retries.
+                            pass
+                        else:
+                            reservation = self.admission.wait_reserved(snapshot.lease_id, admitted)
+                if snapshot is None:
+                    trace.switch("pin")
+                    snapshot = self.registry.acquire(
+                        request.model, rid, request.bundle, self.backend_identity, tenant
+                    )
+                    trace.switch("compile")
+                    compiled, sequences, total_tokens = self._compile_request(
+                        request, snapshot.bundle, engine_rid
+                    )
+                    trace.switch("journal")
+                    branch_ids = [seq.request_id for seq in sequences]
+                    admission_args = dict(branches=len(sequences), lease_id=snapshot.lease_id)
+                    if isinstance(self.admission, SharedAdmission):
+                        admission_args["branch_ids"] = branch_ids
+                    else:
+                        self.registry.record_branches(snapshot.lease_id, branch_ids)
+                    reservation = self.admission.acquire(total_tokens, tenant, **admission_args)
                 self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
                 progress.update(
@@ -623,21 +671,9 @@ class Runtime:
                     bundle_digest=bundle.digest,
                     generation=snapshot.generation,
                     lease_id=snapshot.lease_id,
+                    scoring_sequences=len(sequences),
                 )
-                trace.switch("compile")
-                compiled, sequences, total_tokens = self._compile_request(
-                    request, bundle, engine_rid
-                )
-                progress["scoring_sequences"] = len(sequences)
                 questions = tuple(item.question for item in compiled)
-                trace.switch("journal")
-                branch_ids = [seq.request_id for seq in sequences]
-                admission_args = dict(branches=len(sequences), lease_id=snapshot.lease_id)
-                if isinstance(self.admission, SharedAdmission):
-                    # The durable admission transaction also journals recovery IDs.
-                    admission_args["branch_ids"] = branch_ids
-                else:
-                    self.registry.record_branches(snapshot.lease_id, branch_ids)
                 logger.info(
                     "jev_scoring %s",
                     json.dumps(
@@ -652,7 +688,7 @@ class Runtime:
                     ),
                 )
                 trace.switch("queue")
-                async with self.admission.acquire(total_tokens, tenant, **admission_args):
+                async with reservation:
                     # Compilation and durable admission contain synchronous work.
                     # asyncio's timeout callback may not run until we next yield.
                     if time.monotonic() - started >= request.execution.timeout_ms / 1000:

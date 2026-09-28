@@ -127,7 +127,7 @@ async def test_admission_queue_checks_circuit_again_before_dispatch(runtime, que
         await release.wait()
         yield
 
-    runtime.admission.acquire = queued
+    runtime.admission.wait_reserved = queued
     task = asyncio.create_task(runtime.decide(body(question)))
     await asyncio.wait_for(entered.wait(), 1)
     runtime.health.failed(bundle.reference, "engine_score_failed")

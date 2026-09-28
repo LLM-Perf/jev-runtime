@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 from jev_runtime.admission import Admission
 from jev_runtime.errors import JevError
-from jev_runtime.registry import Registry
+from jev_runtime.registry import Registry, ResolvedRoute, Snapshot
 
 
 class SharedAdmission:
@@ -70,60 +70,83 @@ class SharedAdmission:
         self, lease_id: str, tenant: str, tokens: int, branches: int, branch_ids: list[str] | None
     ) -> bool:
         with self.registry._transaction() as db:
-            self._check_worker(db)
-            lease = db.execute(
-                "SELECT l.owner,b.backend,COALESCE(t.tenant,'default') AS tenant "
-                "FROM leases l JOIN bundles b ON b.ref=l.ref "
-                "LEFT JOIN lease_tenants t ON t.lease_id=l.id WHERE l.id=?",
-                (lease_id,),
-            ).fetchone()
-            if (
-                not lease
-                or lease["owner"] != self.registry.owner
-                or lease["backend"] != self.backend
-                or lease["tenant"] != tenant
-            ):
-                raise JevError(
-                    "admission_lease_mismatch",
-                    "Admission requires the owned tenant/engine lease",
-                    409,
-                )
-            if db.execute(
-                "SELECT 1 FROM admission_tickets WHERE lease_id=?", (lease_id,)
-            ).fetchone():
-                raise JevError("duplicate_admission", "Lease already has an admission ticket", 409)
-            queued = db.execute(
-                "SELECT COUNT(*) AS total,COALESCE(SUM(tenant=?),0) AS tenant_total "
-                "FROM admission_tickets WHERE backend=? AND state='QUEUED'",
-                (tenant, self.backend),
-            ).fetchone()
-            if (
-                queued["total"] >= self._limits["max_queue"]
-                or queued["tenant_total"] >= self._limits["max_tenant_queue"]
-            ):
-                raise JevError("queue_full", "Shared admission queue is full", 429)
-            # Remove idle tenant scheduling entries. Authenticated tenant names
-            # are configured, but long-lived deployments need not accumulate old ones.
-            db.execute(
-                "DELETE FROM admission_tenants WHERE backend=? AND tenant NOT IN "
-                "(SELECT tenant FROM admission_tickets WHERE backend=?)",
-                (self.backend, self.backend),
+            return self._enqueue_in_transaction(db, lease_id, tenant, tokens, branches, branch_ids)
+
+    def reserve(
+        self,
+        resolved: ResolvedRoute,
+        alias: str,
+        request_id: str,
+        reference: str | None,
+        tenant: str,
+        tokens: int,
+        branch_ids: list[str],
+    ) -> tuple[Snapshot, bool]:
+        """Pin, journal and reserve atomically after tentative compilation."""
+        self._validate_demand(tokens, len(branch_ids), branch_ids)
+        digest = resolved.bundle.digest  # Hash outside the writer transaction.
+        with self.registry._transaction() as db:
+            snapshot = self.registry._acquire(
+                db, alias, request_id, reference, self.backend, tenant, resolved, digest
             )
-            db.execute(
-                "INSERT OR IGNORE INTO admission_tenants SELECT ?,?,COALESCE(MAX(turn),0)+1 "
-                "FROM admission_tenants WHERE backend=?",
-                (self.backend, tenant, self.backend),
+            admitted = self._enqueue_in_transaction(
+                db, snapshot.lease_id, tenant, tokens, len(branch_ids), branch_ids
             )
-            db.execute(
-                "INSERT INTO admission_tickets(lease_id,backend,tenant,tokens,branches,state) "
-                "VALUES(?,?,?,?,?,'QUEUED')",
-                (lease_id, self.backend, tenant, tokens, branches),
+        return snapshot, admitted
+
+    def _enqueue_in_transaction(self, db, lease_id, tenant, tokens, branches, branch_ids):
+        self._check_worker(db)
+        lease = db.execute(
+            "SELECT l.owner,b.backend,COALESCE(t.tenant,'default') AS tenant "
+            "FROM leases l JOIN bundles b ON b.ref=l.ref "
+            "LEFT JOIN lease_tenants t ON t.lease_id=l.id WHERE l.id=?",
+            (lease_id,),
+        ).fetchone()
+        if (
+            not lease
+            or lease["owner"] != self.registry.owner
+            or lease["backend"] != self.backend
+            or lease["tenant"] != tenant
+        ):
+            raise JevError(
+                "admission_lease_mismatch",
+                "Admission requires the owned tenant/engine lease",
+                409,
             )
-            if branch_ids is not None:
-                # Recovery IDs and the reservation become durable together. Neither
-                # an admitted caller nor a queued waiter can dispatch before commit.
-                self.registry._record_branches(db, lease_id, branch_ids)
-            return self._try_admit(db, lease_id)
+        if db.execute("SELECT 1 FROM admission_tickets WHERE lease_id=?", (lease_id,)).fetchone():
+            raise JevError("duplicate_admission", "Lease already has an admission ticket", 409)
+        queued = db.execute(
+            "SELECT COUNT(*) AS total,COALESCE(SUM(tenant=?),0) AS tenant_total "
+            "FROM admission_tickets WHERE backend=? AND state='QUEUED'",
+            (tenant, self.backend),
+        ).fetchone()
+        if (
+            queued["total"] >= self._limits["max_queue"]
+            or queued["tenant_total"] >= self._limits["max_tenant_queue"]
+        ):
+            raise JevError("queue_full", "Shared admission queue is full", 429)
+        # Remove idle tenant scheduling entries. Authenticated tenant names
+        # are configured, but long-lived deployments need not accumulate old ones.
+        db.execute(
+            "DELETE FROM admission_tenants WHERE backend=? AND tenant NOT IN "
+            "(SELECT tenant FROM admission_tickets WHERE backend=?)",
+            (self.backend, self.backend),
+        )
+        db.execute(
+            "INSERT OR IGNORE INTO admission_tenants SELECT ?,?,COALESCE(MAX(turn),0)+1 "
+            "FROM admission_tenants WHERE backend=?",
+            (self.backend, tenant, self.backend),
+        )
+        db.execute(
+            "INSERT INTO admission_tickets(lease_id,backend,tenant,tokens,branches,state) "
+            "VALUES(?,?,?,?,?,'QUEUED')",
+            (lease_id, self.backend, tenant, tokens, branches),
+        )
+        if branch_ids is not None:
+            # Recovery IDs and the reservation become durable together. Neither
+            # an admitted caller nor a queued waiter can dispatch before commit.
+            self.registry._record_branches(db, lease_id, branch_ids)
+        return self._try_admit(db, lease_id)
 
     def _try_admit(self, db, lease_id: str) -> bool:
         usage = db.execute(
@@ -179,20 +202,7 @@ class SharedAdmission:
                 raise JevError("admission_lease_mismatch", "Admission lease no longer exists", 409)
             return ticket["state"] == "ADMITTED" or self._try_admit(db, lease_id)
 
-    @asynccontextmanager
-    async def acquire(
-        self,
-        tokens: int,
-        tenant: str = "default",
-        *,
-        branches: int = 1,
-        lease_id: str | None = None,
-        branch_ids: list[str] | None = None,
-    ):
-        if lease_id is None:
-            raise JevError(
-                "admission_lease_required", "Shared admission requires a durable lease", 409
-            )
+    def _validate_demand(self, tokens: int, branches: int, branch_ids: list[str] | None):
         if tokens <= 0:
             raise JevError("invalid_token_budget", "Token demand must be positive", 400)
         if tokens > min(self._limits["max_tokens"], self._limits["max_tenant_tokens"]):
@@ -213,10 +223,31 @@ class SharedAdmission:
             raise JevError(
                 "admission_branch_mismatch", "Expected one distinct engine ID per branch", 409
             )
-        queued = False
+
+    @asynccontextmanager
+    async def acquire(
+        self,
+        tokens: int,
+        tenant: str = "default",
+        *,
+        branches: int = 1,
+        lease_id: str | None = None,
+        branch_ids: list[str] | None = None,
+    ):
+        if lease_id is None:
+            raise JevError(
+                "admission_lease_required", "Shared admission requires a durable lease", 409
+            )
+        self._validate_demand(tokens, branches, branch_ids)
+        admitted = self._enqueue(lease_id, tenant, tokens, branches, branch_ids)
+        async with self.wait_reserved(lease_id, admitted):
+            yield
+
+    @asynccontextmanager
+    async def wait_reserved(self, lease_id: str, admitted: bool):
+        """Await a ticket already committed by acquire or reserve, without re-enqueueing."""
+        queued = not admitted
         try:
-            admitted = self._enqueue(lease_id, tenant, tokens, branches, branch_ids)
-            queued = not admitted
             while not admitted:
                 await asyncio.sleep(0.02)
                 admitted = self._poll(lease_id)

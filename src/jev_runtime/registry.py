@@ -113,6 +113,18 @@ class Snapshot:
     lease_id: str
 
 
+@dataclass(frozen=True)
+class ResolvedRoute:
+    """Tentative compilation input; owns no lease and cannot authorize dispatch."""
+
+    bundle: Bundle
+    generation: int
+
+
+class StaleRoute(Exception):
+    """Retry compilation under a durable lease when a tentative route changed."""
+
+
 class Registry:
     """Transactional bundle/route registry for a single-node deployment.
 
@@ -567,35 +579,59 @@ class Registry:
         tenant: str = "default",
     ) -> Snapshot:
         with self._transaction() as db:
-            if db.execute("SELECT 1 FROM leases WHERE request_id=?", (request_id,)).fetchone():
-                raise JevError("duplicate_request", "Request ID is already in flight", 409)
-            route = db.execute("SELECT * FROM routes WHERE alias=?", (alias,)).fetchone()
-            if not route or not route["ref"]:
-                raise JevError(
-                    "route_unavailable", "Model alias has no active decision bundle", 503
-                )
-            if reference is not None and reference != route["ref"]:
-                raise JevError(
-                    "bundle_not_active", "Requested bundle is not active for this alias", 409
-                )
-            row = self._get(db, route["ref"])
-            if row["state"] != "ACTIVE" or row["backend"] != backend:
-                raise JevError("bundle_not_ready", "Bundle is not prepared for this backend", 503)
-            self._adapter_ready(db, row["ref"], backend)
-            lease = uuid.uuid4().hex
-            db.execute(
-                "INSERT INTO leases VALUES(?,?,?,?,?)",
-                (
-                    lease,
-                    row["ref"],
-                    self.owner,
-                    request_id,
-                    time.time(),
-                ),
+            return self._acquire(db, alias, request_id, reference, backend, tenant)
+
+    @staticmethod
+    def _route_row(db, alias: str):
+        # One statement also gives tentative readers a consistent route/manifest
+        # pair when another connection changes the alias between statements.
+        return db.execute(
+            "SELECT b.*,r.generation FROM routes r LEFT JOIN bundles b ON b.ref=r.ref "
+            "WHERE r.alias=?",
+            (alias,),
+        ).fetchone()
+
+    def _validate_route(self, db, row, reference: str | None, backend: str) -> None:
+        if not row or not row["ref"]:
+            raise JevError("route_unavailable", "Model alias has no active decision bundle", 503)
+        if reference is not None and reference != row["ref"]:
+            raise JevError(
+                "bundle_not_active", "Requested bundle is not active for this alias", 409
             )
-            db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
-            db.execute("INSERT INTO lease_tenants VALUES(?,?)", (lease, tenant))
-            return Snapshot(Bundle.model_validate_json(row["manifest"]), route["generation"], lease)
+        if row["state"] != "ACTIVE" or row["backend"] != backend:
+            raise JevError("bundle_not_ready", "Bundle is not prepared for this backend", 503)
+        self._adapter_ready(db, row["ref"], backend)
+
+    def resolve(self, alias: str, reference: str | None, backend: str) -> ResolvedRoute:
+        with self._connection() as db:
+            row = self._route_row(db, alias)
+            self._validate_route(db, row, reference, backend)
+            return ResolvedRoute(Bundle.model_validate_json(row["manifest"]), row["generation"])
+
+    def _acquire(
+        self, db, alias, request_id, reference, backend, tenant, resolved=None, digest=None
+    ) -> Snapshot:
+        """Join an owning transaction; recheck a tentative route before any writes."""
+        if db.execute("SELECT 1 FROM leases WHERE request_id=?", (request_id,)).fetchone():
+            raise JevError("duplicate_request", "Request ID is already in flight", 409)
+        row = self._route_row(db, alias)
+        if resolved is not None and (
+            not row
+            or row["ref"] != resolved.bundle.reference
+            or row["generation"] != resolved.generation
+            or row["digest"] != digest
+        ):
+            raise StaleRoute()
+        self._validate_route(db, row, reference, backend)
+        bundle = resolved.bundle if resolved else Bundle.model_validate_json(row["manifest"])
+        lease = uuid.uuid4().hex
+        db.execute(
+            "INSERT INTO leases VALUES(?,?,?,?,?)",
+            (lease, row["ref"], self.owner, request_id, time.time()),
+        )
+        db.execute("INSERT INTO lease_work VALUES(?,?,'inflight')", (lease, "[]"))
+        db.execute("INSERT INTO lease_tenants VALUES(?,?)", (lease, tenant))
+        return Snapshot(bundle, row["generation"], lease)
 
     def release(self, lease_id: str) -> None:
         with self._transaction() as db:

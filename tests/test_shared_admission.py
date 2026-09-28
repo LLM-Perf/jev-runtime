@@ -219,7 +219,7 @@ async def test_atomic_admission_rejects_mismatched_branch_ids(tmp_path, bundle, 
         b.close()
 
 
-async def test_runtime_dispatch_requires_durable_journal_and_ticket_in_three_commits(
+async def test_runtime_dispatch_requires_durable_journal_and_ticket_in_two_commits(
     runtime, question, monkeypatch
 ):
     commits = []
@@ -242,14 +242,14 @@ async def test_runtime_dispatch_requires_durable_journal_and_ticket_in_three_com
         assert len(rows) == 1
         assert request.request_id in json.loads(rows[0][0])
         assert rows[0][1:] == ("ADMITTED", 1)
-        assert len(commits) == 2
+        assert len(commits) == 1
         return await score(request)
 
     monkeypatch.setattr(runtime.registry, "_transaction", counted_transaction)
     monkeypatch.setattr(runtime.backend, "score", checked_score)
     body = DecisionRequest(model="model", input=TextInput(text="refund"), questions=(question,))
     assert (await runtime.decide(body)).status == "completed"
-    assert len(commits) == 3
+    assert len(commits) == 2
     assert not runtime.registry.list()["leases"]
     assert runtime.admission.snapshot()["requests"] == 0
 
