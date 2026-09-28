@@ -44,6 +44,7 @@ def backend_quiesce(url: str, expected_generation: int, timeout_seconds: float =
             "expected_generation": expected_generation,
             "timeout_seconds": timeout_seconds,
         },
+        timeout=max(180, timeout_seconds + 15),
     )
     output(result)
     if not result["drained"]:
@@ -187,12 +188,12 @@ def admin_call(url: str, path: str, body: dict | None = None):
     output(admin_request(url, path, body))
 
 
-def admin_request(url: str, path: str, body: dict | None = None):
+def admin_request(url: str, path: str, body: dict | None = None, *, timeout: float = 180):
     key = os.environ.get("JEV_ADMIN_KEY")
     if not key:
         raise typer.BadParameter("Set JEV_ADMIN_KEY; secrets are not accepted in CLI arguments")
     with httpx.Client(
-        base_url=url, timeout=180, headers={"Authorization": f"Bearer {key}"}
+        base_url=url, timeout=timeout, headers={"Authorization": f"Bearer {key}"}
     ) as client:
         result = client.get(path) if body is None else client.post(path, json=body)
         result.raise_for_status()

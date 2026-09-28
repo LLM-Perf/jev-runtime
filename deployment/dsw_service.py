@@ -426,8 +426,19 @@ def stop(args):
         raise SystemExit("Jev work is not drained; preserving the engine for recovery")
     if process_identity(identity["pid"]) != identity:
         raise SystemExit("PID identity changed during quiescence; refusing to signal")
-    os.killpg(identity["pid"], signal.SIGTERM)
-    print(json.dumps({"signal_sent": "SIGTERM", "identity": identity, "exit_confirmed": False}))
+    # Let the native supervisor stop its API workers before engine children.
+    # A group-wide signal races their cleanup by killing the scheduler too.
+    os.kill(identity["pid"], signal.SIGTERM)
+    print(
+        json.dumps(
+            {
+                "signal_sent": "SIGTERM",
+                "target": "native_parent",
+                "identity": identity,
+                "exit_confirmed": False,
+            }
+        )
+    )
 
 
 def main():

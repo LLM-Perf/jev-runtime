@@ -25,7 +25,9 @@ native plugin. The following require the separate `JEV_ADMIN_KEY` environment va
    finish under their original snapshot; tenant-scoped cancellation remains available.
 4. Stop the owned API/native processes and verify process identities and complete exit.
    `deployment/dsw_service.py stop --run-dir ...` now performs this handshake before
-   SIGTERM and rechecks the exact PID/start-tick/boot identity after the handshake.
+   SIGTERM to the native parent and rechecks the exact PID/start-tick/boot identity
+   after the handshake. Do not signal the whole group: that kills the scheduler
+   concurrently with API workers that still need their host's shutdown machinery.
    Its output still distinguishes signal delivery from verified process exit.
 5. Before restarting, run
    `jevctl registry resume-backend REGISTRY_PATH BACKEND_ID GENERATION` locally.

@@ -20,7 +20,10 @@ def test_launcher_signals_only_after_drain_and_fresh_identity(
     identities = iter([identity, {**identity, "start_ticks": "222"} if changed else identity])
     monkeypatch.setattr(dsw_service, "process_identity", lambda pid: next(identities))
     signalled = []
-    monkeypatch.setattr(dsw_service.os, "killpg", lambda *args: signalled.append(args))
+    monkeypatch.setattr(dsw_service.os, "kill", lambda *args: signalled.append(args))
+    monkeypatch.setattr(
+        dsw_service.os, "killpg", lambda *args: pytest.fail("Do not signal the group")
+    )
 
     class Client:
         def __init__(self, **kwargs):
