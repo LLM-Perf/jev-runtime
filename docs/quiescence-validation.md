@@ -10,6 +10,11 @@ restart. Every owned process group is terminal at the final audit. This is a
 scoped Jev drain/process-reclamation result, **not full graceful native shutdown
 or a production release certificate**. Native shutdown warnings remain below.
 
+Follow-up: [positive native vLLM shutdown budget](vllm-shutdown-validation.md)
+records three later runs at `e3f82d7` without forced child cleanup, leaked-semaphore
+warnings or tracebacks. It does not revise the historical results below or resolve
+the SGLang native shutdown messages.
+
 ## Change and operator contract
 
 The [operator guide](quiescence.md) specifies the authenticated HTTP/CLI handshake,

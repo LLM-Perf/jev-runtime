@@ -1,0 +1,27 @@
+{
+  "source_commit": "e3f82d705b5db37504ec88f7c9ab89cf5a9c041c",
+  "script_sha256": "f5e6548d6fabe6615078b3bd4da73861aaaade4da1a1d8063127d3a84c658d84",
+  "started_at": 1790567611.7332869,
+  "qualification": "CPU engine doubles and HTTP/registry contract tests in the actual engine environments; no extra GPU execution",
+  "engines": {
+    "vllm": {
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_dsw_launcher.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_quiescence.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_quiescent_stop.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_recovery.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_recovery_mode.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_health.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_shared_admission.py",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/tests/test_registry_backup.py"
+      ],
+      "returncode": 0
+    }
+  },
+  "complete": true,
+  "finished_at": 1790567618.61475
+}

@@ -596,3 +596,19 @@ See [scoped validation](response-serialization-validation.md).
 ## Backend quiescence checkpoint (7fe8e72)
 
 At 919c859, a durable per-backend Jev quiescence protocol adds cross-worker admission gating, health-loop stop, raw-work journals, recovery claims and guarded offline resume without changing routes. The original group-SIGTERM campaign retains a failed second SGLang exit despite zero Jev work; an identity-checked SIGKILL remediation is separate. At 7fe8e72, parent-only signalling passes five colocated two-API-worker runs (two vLLM, three SGLang), including three preserved-route restarts. Eighteen typed responses answer 272 questions and two raw scores complete; 16 expected gate rejections are saved. Native shutdown warnings remain. Local tests: 490; 74 CPU contracts pass per actual engine environment per version; three source-matched wheels build. Verification covers 121 artifacts, 314 Python source files, nine snapshots of four registries and 304 terminal owned process groups. No model/numerical/quality/performance/soak/container/migration/release gate is newly accepted. See [implementation/operations](quiescence.md) and [failure-inclusive DSW validation](quiescence-validation.md). The original implementation plan and acceptance thresholds remain unchanged.
+
+## Positive native vLLM shutdown budget (e3f82d7)
+
+The isolated native launcher now defaults to a 30-second vLLM shutdown budget
+instead of the native zero/abort default, and records explicit overrides. Three
+DSW runs pass: default API1, API2 with in-flight Jev drain, and API2 preserving
+the registry on restart with a 45-second override. Eight typed responses answer
+135 questions, two raw scores complete, and eight expected gate rejections are
+retained. Owned groups exit in 4.3–6.4 seconds; no forced child cleanup, leaked
+semaphore or traceback occurs in these logs. One sibling-port shutdown warning
+remains. Exit codes are not captured. SGLang's historical shutdown tracebacks are
+not resolved by this vLLM flag. 497 local tests, 114 CPU contracts in the actual
+vLLM environment and three source-matched wheels pass. Verification covers 43
+artifacts, 165 Python files, three snapshots of two registries and 307 terminal
+owned groups; GPU 7 returns to baseline. All model/release gates stay unchanged.
+See [validation and limits](vllm-shutdown-validation.md).

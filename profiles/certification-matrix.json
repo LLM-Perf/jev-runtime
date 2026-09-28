@@ -2028,6 +2028,14 @@
         "corrected_runs": 2,
         "scope": "BF16, TP1, two API workers; Jev drain and process reclamation with preserved-route restart. Initial SGLang group-signal shutdown failure and explicit remediation retained. Native shutdown warnings remain; no release certification.",
         "release_gate_passed": false
+      },
+      "development_shutdown_budget": {
+        "source_commit": "e3f82d705b5db37504ec88f7c9ab89cf5a9c041c",
+        "report": "docs/vllm-shutdown-validation.md",
+        "evidence": "evidence/dsw/vllm-shutdown-e3f82d7/verified-summary.json",
+        "runs": 3,
+        "scope": "BF16 TP1 eager API1/API2; Jev drain, positive native shutdown budget and preserved-registry restart. No forced child cleanup, leaked semaphore or traceback observed; sibling-port warning remains. Exit codes not captured.",
+        "release_gate_passed": false
       }
     }
   ],

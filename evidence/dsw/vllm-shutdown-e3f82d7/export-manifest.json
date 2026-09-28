@@ -1,0 +1,176 @@
+{
+  "artifacts": {
+    "campaign.json": {
+      "sha256": "cb1d0846c3e004f6931263ee2bb2a8d2e29ee66ff190d4b59f62c5d39a87c3a8",
+      "size_bytes": 46054
+    },
+    "campaign.log": {
+      "sha256": "31c2e94ac6938ca668974d8367df0f4b871a8259d8d1fc807d962e719fc7489c",
+      "size_bytes": 564
+    },
+    "sources.json": {
+      "sha256": "cec2f2473e8ee5cf619ac178e2ce2f611cfe8598f679a1b223f12986d40d770a",
+      "size_bytes": 9213
+    },
+    "campaign.py": {
+      "sha256": "086c929e5c4300187df63c21a1eb14c1a4dca0e3e10859d7101a1baa76677a88",
+      "size_bytes": 10011
+    },
+    "export.py": {
+      "sha256": "13a00963a6da9f63a6b173fea61f18e28bc6c6be5413c723246f84fdef0d1a7e",
+      "size_bytes": 6395
+    },
+    "contracts.py": {
+      "sha256": "f5e6548d6fabe6615078b3bd4da73861aaaade4da1a1d8063127d3a84c658d84",
+      "size_bytes": 1567
+    },
+    "contracts.json": {
+      "sha256": "506e42fda3528be065dab5b78916654ec332bef4f3431fe5cb170fd0e64e7427",
+      "size_bytes": 1487
+    },
+    "contracts.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "contracts-vllm.log": {
+      "sha256": "06b70f2b500369aaa18d594a5d4afa4f74e45a505d379b951e7df61947367649",
+      "size_bytes": 180
+    },
+    "single/config.json": {
+      "sha256": "68406e4b767070f1fe5faf540c11f38cfc2fa50b1d74d2233fd1d7fa287c1922",
+      "size_bytes": 677
+    },
+    "single/health-settings.json": {
+      "sha256": "d4d634124fb24f45fdc6c2100c53fad764e12175ec06eed7db6c626978040af3",
+      "size_bytes": 69
+    },
+    "single/topology.json": {
+      "sha256": "538be304c6b1cd941aaaa8b59295d4e74f971be78ba780b0cbf5d4a02448a1c9",
+      "size_bytes": 469
+    },
+    "single/worker-registry.json": {
+      "sha256": "574a274999f9e2c073de440c09ee6b032108c0bd800dcefb7e8f2ccb37ea2dad",
+      "size_bytes": 1105
+    },
+    "single/registry-final.sqlite": {
+      "sha256": "1a7027cf359c138eb75e2d2b434371308f0d9b56f8c6bf9de44e38b46fca6f07",
+      "size_bytes": 225280
+    },
+    "single/process.json": {
+      "sha256": "b1a889daadb50a72b4e1438e9db345636794dc45b8da0c1d06e8ae604e185447",
+      "size_bytes": 1906
+    },
+    "single/cleanup.json": {
+      "sha256": "49b2679190286b9ca45ba4eaaf8ca11664e2cb8f12a0f6d78cd8ed8bae555c5f",
+      "size_bytes": 2446
+    },
+    "single/quiescence-stop.json": {
+      "sha256": "751a6fedc3afc93929bd508dbbedf296a08d228fc792d47500dd0b1c1b054053",
+      "size_bytes": 699
+    },
+    "single/launch.log": {
+      "sha256": "3e66489a44f22d7b202782aa9a777e869976ae4949106413e48863eb311d151c",
+      "size_bytes": 190
+    },
+    "single/engine.log": {
+      "sha256": "e9af2c34eb447a5e443d95216fdcdeab47d38c40b7da22b4820937548f82f662",
+      "size_bytes": 21125
+    },
+    "dual/config.json": {
+      "sha256": "97f79f6717dd865e1f43203754b80e7fba5653ad329a8444f488599b36bbd94f",
+      "size_bytes": 675
+    },
+    "dual/health-settings.json": {
+      "sha256": "d4d634124fb24f45fdc6c2100c53fad764e12175ec06eed7db6c626978040af3",
+      "size_bytes": 69
+    },
+    "dual/topology.json": {
+      "sha256": "4de93c00e8463b8ee68392698afcc6935badc2cd8285ca78a1cfc8317a9004ac",
+      "size_bytes": 469
+    },
+    "dual/check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "dual/worker-registry.json": {
+      "sha256": "d3041a4bddacb0d20684ab0099ca9391eb64fe4999614038db17310d2e749ca4",
+      "size_bytes": 2472
+    },
+    "dual/registry-final.sqlite": {
+      "sha256": "cb9b150fd0f4f2cc14640ab01bfb584209db76d4de5adb38c63d5b9346055c0b",
+      "size_bytes": 237568
+    },
+    "dual/process.json": {
+      "sha256": "7cae91de286d874e622b2e7e0714bc9224a397207c29831e574181c6a9295ae0",
+      "size_bytes": 1939
+    },
+    "dual/cleanup.json": {
+      "sha256": "cef7927bb8ee97278790708a93c82f546dfdabcb9f9a5138fc487199bcdd2f0a",
+      "size_bytes": 2482
+    },
+    "dual/quiescence-stop.json": {
+      "sha256": "007c0072783222ab3664e85da906e1bed82c98927865d2198a5c5bd662329f48",
+      "size_bytes": 1046
+    },
+    "dual/launch.log": {
+      "sha256": "2897b29c8d3244cf27b73f3e3bb5117dedebff2510df1d1d1470608f26a5f00e",
+      "size_bytes": 188
+    },
+    "dual/engine.log": {
+      "sha256": "128838255255fb74f37d0f42a0d1abca7b8697ece36eae392b364830bcdd369f",
+      "size_bytes": 37303
+    },
+    "dual/quiescence.json": {
+      "sha256": "f392ae487f2ea6321e6f443d341fc8080829eb276cf9e49852bc6c3fd5bc760e",
+      "size_bytes": 80429
+    },
+    "restart/config.json": {
+      "sha256": "4da9bf84be9a653c5d5a001082d621e17c54d80d480d068a5c7a25975a9e9978",
+      "size_bytes": 663
+    },
+    "restart/health-settings.json": {
+      "sha256": "d4d634124fb24f45fdc6c2100c53fad764e12175ec06eed7db6c626978040af3",
+      "size_bytes": 69
+    },
+    "restart/topology.json": {
+      "sha256": "1a0cce49690a52487c44d4bf3a50014569c68f6e01a0892886fc1d9d5761f5ec",
+      "size_bytes": 469
+    },
+    "restart/worker-registry.json": {
+      "sha256": "9ea329b24a0f6efff76a5ac965bd36ca6e25b3499900db14509ab0681b664157",
+      "size_bytes": 2472
+    },
+    "restart/registry-final.sqlite": {
+      "sha256": "cb9b150fd0f4f2cc14640ab01bfb584209db76d4de5adb38c63d5b9346055c0b",
+      "size_bytes": 237568
+    },
+    "restart/process.json": {
+      "sha256": "00dd975cd058b561d3c7f954ec5271643c2e9d6d0e223b7d0ac8184d1dd4eb5f",
+      "size_bytes": 1939
+    },
+    "restart/cleanup.json": {
+      "sha256": "df6c475653c85ecb9bbd58147ad39267288d9dd4bc104f3282601361891b2bf6",
+      "size_bytes": 2483
+    },
+    "restart/quiescence-stop.json": {
+      "sha256": "0810c9b8fc49df01de8f880503f957f0d200078caa9006e70c574c39f7955564",
+      "size_bytes": 1688
+    },
+    "restart/launch.log": {
+      "sha256": "9e88cd1e13888b93dc1893e28c1278e7cd6027d35bcfcd357f47424bb70f87b5",
+      "size_bytes": 191
+    },
+    "restart/engine.log": {
+      "sha256": "5dcda0397ebfcbd2c8dab19bdaa736f5224114e9ac9affcf0208f07297e6914d",
+      "size_bytes": 32780
+    },
+    "native-shutdown-excerpts.json": {
+      "sha256": "55bb70d4cadf707a33f98b34847b3c62bf110ff4da3ef34179127e5b5713ba08",
+      "size_bytes": 11174
+    },
+    "audit.json": {
+      "sha256": "a4e1b89dabb0658c637a501cb864269c0a6e8a6d23a4165303424fa1ab95f2c4",
+      "size_bytes": 114083
+    }
+  }
+}

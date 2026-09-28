@@ -1,0 +1,73 @@
+{
+  "engine/arg_utils.py": {
+    "sha256": "ead004ca266419cd25f54a7aefc0e20e1eb046f363b7f5cc977e14f52ee44bb1",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/engine/arg_utils.py",
+    "ranges": [
+      {
+        "first_line": 774,
+        "last_line": 784,
+        "text": "    )\n    enable_fault_tolerance: bool = ParallelConfig.enable_fault_tolerance\n\n    kv_offloading_size: float | None = CacheConfig.kv_offloading_size\n    kv_offloading_backend: KVOffloadingBackend = CacheConfig.kv_offloading_backend\n    tokens_only: bool = False\n\n    shutdown_timeout: int = 0\n\n    weight_transfer_config: WeightTransferConfig | None = get_field(\n        VllmConfig,"
+      },
+      {
+        "first_line": 1765,
+        "last_line": 1777,
+        "text": "            action=argparse.BooleanOptionalAction,\n        )\n\n        parser.add_argument(\n            \"--shutdown-timeout\",\n            type=int,\n            default=0,\n            help=\"Shutdown timeout in seconds. 0 = abort, >0 = wait.\",\n        )\n\n        parser.add_argument(\n            \"--gdn-prefill-backend\",\n            dest=\"gdn_prefill_backend\","
+      }
+    ]
+  },
+  "entrypoints/cli/serve.py": {
+    "sha256": "c182c88347f1eb3440a816986f1c2025a2ab2a13236cd68b0ad0146250d031ff",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/cli/serve.py",
+    "ranges": [
+      {
+        "first_line": 386,
+        "last_line": 419,
+        "text": "        # Set frontend processes to watch during engine startup.\n        # If any of these processes exit before the engines are up, the engine startup\n        # will be aborted with an error.\n        engine_launch.watched_frontend_processes = api_server_manager.processes\n\n    # Wait for API servers.\n    try:\n        wait_for_completion_or_failure(\n            api_server_manager=api_server_manager,\n            engine_manager=local_engine_manager,\n            coordinator=coordinator,\n        )\n    finally:\n        timeout = shutdown_by = None\n        if shutdown_requested:\n            timeout = vllm_config.shutdown_timeout\n            shutdown_by = time.monotonic() + timeout\n            logger.info(\"Waiting up to %d seconds for processes to exit\", timeout)\n\n        def to_timeout(deadline: float | None) -> float | None:\n            return (\n                deadline if deadline is None else max(deadline - time.monotonic(), 0.0)\n            )\n\n        api_server_manager.shutdown(timeout=timeout)\n        if local_engine_manager:\n            local_engine_manager.shutdown(timeout=to_timeout(shutdown_by))\n        if coordinator:\n            coordinator.shutdown(timeout=to_timeout(shutdown_by))"
+      }
+    ]
+  },
+  "entrypoints/launchers/launcher.py": {
+    "sha256": "6481ff42c76eaed37354db4875c80db429d465781e52d3185b9e876d3ad7e4be",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/entrypoints/launchers/launcher.py",
+    "ranges": [
+      {
+        "first_line": 127,
+        "last_line": 164,
+        "text": "        if shutdown_event.is_set():\n            return\n        logger.info_once(\"[shutdown] API server: shutdown triggered\")\n        shutdown_event.set()\n\n    async def dummy_shutdown() -> None:\n        pass\n\n    loop.add_signal_handler(signal.SIGINT, signal_handler)\n    loop.add_signal_handler(signal.SIGTERM, signal_handler)\n\n    async def handle_shutdown() -> None:\n        await shutdown_event.wait()\n\n        if engine_client is not None:\n            timeout = engine_client.vllm_config.shutdown_timeout\n            mode = \"abort\" if timeout == 0 else \"drain\"\n\n            logger.info(\n                \"[shutdown] API server: stopping engine client mode=%s timeout=%ss\",\n                mode,\n                timeout,\n            )\n\n            await loop.run_in_executor(\n                None, partial(engine_client.shutdown, timeout=timeout)\n            )\n            logger.info_once(\"[shutdown] API server: engine client stopped\")\n\n        server.should_exit = True\n        logger.info_once(\"[shutdown] API server: signalling HTTP server shutdown\")\n        server_task.cancel()\n        if watchdog_task is not None:\n            watchdog_task.cancel()\n        if ssl_cert_refresher:\n            ssl_cert_refresher.stop()\n\n    shutdown_task = loop.create_task(handle_shutdown())"
+      }
+    ]
+  },
+  "v1/utils.py": {
+    "sha256": "5b6015d60ea96ab24b0f2e0b7701abaa90d6107bca01b51ac3d4bc361fbdfcff",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/utils.py",
+    "ranges": [
+      {
+        "first_line": 605,
+        "last_line": 670,
+        "text": "        raise\n\n\n# Note(rob): shutdown function cannot be a bound method,\n# else the gc cannot collect the object.\ndef shutdown(procs: list[BaseProcess], timeout: float | None = None) -> None:\n    \"\"\"Shutdown processes with timeout.\n\n    Args:\n        procs: List of processes to shutdown\n        timeout: Maximum time in seconds to wait for graceful shutdown\n    \"\"\"\n    if timeout is None:\n        # Keep a small grace period for best-effort cleanup paths that do not\n        # have a user-configured shutdown timeout.\n        timeout = 5.0\n\n    logger.debug(\n        \"[shutdown] Process manager: start process_count=%d timeout=%ss names=%s\",\n        len(procs),\n        timeout,\n        (\",\").join([proc.name for proc in procs]),\n    )\n\n    # Shutdown the process.\n    for proc in procs:\n        if proc.is_alive():\n            logger.info(\n                \"[shutdown] Process manager: send sigterm to process %s\", proc.name\n            )\n            proc.terminate()\n\n    # Allow time for remaining procs to terminate.\n    deadline = time.monotonic() + timeout\n    for proc in procs:\n        remaining = deadline - time.monotonic()\n        if remaining <= 0:\n            break\n        if proc.is_alive():\n            proc.join(remaining)\n\n    remaining_procs = [\n        (proc.pid, proc.name)\n        for proc in procs\n        if proc.is_alive() and proc.pid is not None\n    ]\n    if remaining_procs:\n        logger.warning(\n            \"[shutdown] Process manager: force killing remaining processes count=%d\",\n            len(remaining_procs),\n        )\n    for pid, proc_name in remaining_procs:\n        logger.warning(\n            \"[shutdown] Process manager: force killing remaining process %s pid %d\",\n            proc_name,\n            pid,\n        )\n        kill_process_tree(pid)\n\n    logger.debug_once(\"[shutdown] Process manager: complete\")\n\n\ndef copy_slice(\n    from_tensor: torch.Tensor, to_tensor: torch.Tensor, length: int\n) -> torch.Tensor:\n    \"\"\""
+      }
+    ]
+  },
+  "v1/engine/utils.py": {
+    "sha256": "d09f86b107b3c63b62f40a6590036be5b711778ea997fc5a6af6de94fdd2ccd3",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/utils.py",
+    "ranges": [
+      {
+        "first_line": 35,
+        "last_line": 70,
+        "text": "from vllm.v1.utils import _SubprocessWrapper, get_engine_client_zmq_addr, shutdown\n\nif TYPE_CHECKING:\n    from ray.util.placement_group import PlacementGroup\n\nlogger = init_logger(__name__)\n\nSTARTUP_POLL_PERIOD_MS = 10000\nROCM_ENGINE_PROCESS_SHUTDOWN_TIMEOUT_S = 15.0\n\n\ndef get_engine_process_shutdown_timeout(\n    request_timeout: float | None,\n    process_timeout: float | None,\n) -> float | None:\n    \"\"\"Return the EngineCore process-manager shutdown timeout.\n\n    ``VllmConfig.shutdown_timeout`` controls how long in-flight requests may\n    drain. A value of zero therefore tells EngineCore to abort requests as soon\n    as it receives SIGTERM. The parent process manager still needs a separate\n    window in which the EngineCore can release device resources before it is\n    force-killed. ROCm teardown can take longer than the generic best-effort\n    window, and force-killing during teardown can leave VRAM resident.\n\n    ``process_timeout`` may be a remaining budget computed by an outer process\n    manager. Keep it unchanged unless both values are zero: a zero remaining\n    budget for a positive request timeout must not receive a fresh grace period\n    because EngineCore relies on that deadline to enforce request draining.\n    \"\"\"\n    if request_timeout == 0 and process_timeout == 0 and current_platform.is_rocm():\n        return ROCM_ENGINE_PROCESS_SHUTDOWN_TIMEOUT_S\n    return process_timeout\n\n\nclass CoreEngineState(Enum):\n    NEW = auto()"
+      }
+    ]
+  },
+  "v1/engine/core.py": {
+    "sha256": "268bf40534a853812867ae8e80040f190983cb364b41182b55969aace20c93f5",
+    "path": "/root/jev-runtime/envs/vllm/lib/python3.12/site-packages/vllm/v1/engine/core.py",
+    "ranges": [
+      {
+        "first_line": 1476,
+        "last_line": 1535,
+        "text": "\n        return model_executed\n\n    def _notify_idle_state_callbacks(self) -> None:\n        while self._idle_state_callbacks:\n            callback = self._idle_state_callbacks.pop()\n            callback(self)\n\n    def _handle_shutdown(self) -> bool:\n        # Check if shutdown was requested and handle it\n        if self.shutdown_state == EngineShutdownState.RUNNING:\n            return True\n\n        if self.shutdown_state == EngineShutdownState.REQUESTED:\n            shutdown_timeout = self.vllm_config.shutdown_timeout\n            mode = \"abort\" if shutdown_timeout == 0 else \"drain\"\n\n            logger.info(\n                \"[shutdown] EngineCore: start mode=%s timeout=%ds\",\n                mode,\n                shutdown_timeout,\n            )\n\n            if shutdown_timeout == 0:\n                num_requests = self.scheduler.get_num_unfinished_requests()\n                if num_requests > 0:\n                    logger.info(\n                        \"[shutdown] EngineCore: aborting in-flight requests count=%d\",\n                        num_requests,\n                    )\n                aborted_reqs = self.scheduler.finish_requests(\n                    None, RequestStatus.FINISHED_ABORTED\n                )\n                self._send_abort_outputs(aborted_reqs)\n            else:\n                num_requests = self.scheduler.get_num_unfinished_requests()\n                if num_requests > 0:\n                    logger.info(\n                        \"[shutdown] EngineCore: draining in-flight requests \"\n                        \"count=%d timeout=%ds\",\n                        num_requests,\n                        shutdown_timeout,\n                    )\n\n            self.shutdown_state = EngineShutdownState.SHUTTING_DOWN\n\n        # Exit when no work remaining\n        if not self.has_work():\n            logger.info(\n                \"[shutdown] EngineCore: request processing complete; \"\n                \"starting resource teardown\"\n            )\n            return False\n\n        return True\n\n    def _handle_client_request(\n        self, request_type: EngineCoreRequestType, request: Any\n    ) -> None:\n        \"\"\"Dispatch request from client.\"\"\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,1151 @@
+{
+  "sources": {
+    "commit": "e3f82d705b5db37504ec88f7c9ab89cf5a9c041c",
+    "base_commit": "7fe8e723d4b74db22fff12320a3073c85734cce0",
+    "archive_kind": "changed files over exact base source copy",
+    "archive_sha256": "343b2f999b9c9b9cb1a0781257770d1bd6aa4090f7d80fb364c18c23e76e0cd7",
+    "changed_paths": [
+      "deployment/dsw_service.py",
+      "docs/backlog.json",
+      "docs/completion-ledger.md",
+      "docs/engine-integration.md",
+      "docs/quiescence-validation.md",
+      "docs/quiescence.md",
+      "evidence/dsw/quiescence-7fe8e72/audit.json",
+      "evidence/dsw/quiescence-7fe8e72/campaign.json",
+      "evidence/dsw/quiescence-7fe8e72/campaign.log",
+      "evidence/dsw/quiescence-7fe8e72/campaign.py",
+      "evidence/dsw/quiescence-7fe8e72/contracts-sglang.log",
+      "evidence/dsw/quiescence-7fe8e72/contracts-vllm.log",
+      "evidence/dsw/quiescence-7fe8e72/contracts.json",
+      "evidence/dsw/quiescence-7fe8e72/contracts.log",
+      "evidence/dsw/quiescence-7fe8e72/contracts.py",
+      "evidence/dsw/quiescence-7fe8e72/export-manifest.json",
+      "evidence/dsw/quiescence-7fe8e72/export.py",
+      "evidence/dsw/quiescence-7fe8e72/initial/campaign.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/campaign.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/campaign.py",
+      "evidence/dsw/quiescence-7fe8e72/initial/contracts-sglang.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/contracts-vllm.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/contracts.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/contracts.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/contracts.py",
+      "evidence/dsw/quiescence-7fe8e72/initial/export.py",
+      "evidence/dsw/quiescence-7fe8e72/initial/remediate.py",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/check.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/config.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/process.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/quiescence.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-initial/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/cleanup-remediation.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/config.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/process.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sglang-restart/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/sources.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/check.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/config.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/process.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/quiescence.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-initial/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/config.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/process.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/initial/vllm-restart/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/check.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/config.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/process.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/quiescence.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-initial/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/config.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/process.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart-2/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/config.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/process.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/sglang-restart/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/sources.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/check.log",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/config.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/process.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/quiescence.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-initial/worker-registry.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/cleanup.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/config.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/engine.log",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/health-settings.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/launch.log",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/process.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/quiescence-stop.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/registry-final.sqlite",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/topology.json",
+      "evidence/dsw/quiescence-7fe8e72/vllm-restart/worker-registry.json",
+      "evidence/harnesses/verify_quiescence_7fe8e72.py",
+      "evidence/local-check-7fe8e72.json",
+      "evidence/local-check-919c859.json",
+      "profiles/certification-matrix.json",
+      "tests/test_dsw_launcher.py"
+    ]
+  },
+  "script_sha256": "086c929e5c4300187df63c21a1eb14c1a4dca0e3e10859d7101a1baa76677a88",
+  "started_at": 1790567564.9563565,
+  "attempts": [
+    {
+      "engine": "vllm",
+      "phase": "single",
+      "api_workers": 1,
+      "native_grace_seconds": 30,
+      "started_at": 1790567564.962189,
+      "preflight": {
+        "gpu7": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "owned_records_checked": 167,
+        "all_owned_groups_terminal": true,
+        "port_bindable": true
+      },
+      "run_dir": "/root/jev-runtime/runs/vllm-shutdown-single-e3f82d7",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-shutdown-single-e3f82d7",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--health-config",
+        "/root/jev-runtime/runs/vllm-shutdown-single-e3f82d7/health-settings.json"
+      ],
+      "ready": {
+        "ready": true,
+        "elapsed_seconds": 33.088642806746066
+      },
+      "raw_response": {
+        "request_id": "single-raw",
+        "logprobs": [
+          -0.2685697674751282,
+          -1.7685697078704834
+        ],
+        "prompt_tokens": 85,
+        "completion_tokens": 1,
+        "cached_tokens": 80,
+        "raw_logprobs": true
+      },
+      "serving_checks": {
+        "profiles": {
+          "28a7e61b04404357aecef44f888abf3d": {
+            "worker_id": "28a7e61b04404357aecef44f888abf3d",
+            "model": {
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "quantization": null,
+              "adapter_id": null,
+              "adapter_revision": null
+            },
+            "recovery_only": false,
+            "deployment": null,
+            "auth_policy": "9027bd33c113a4cbeb733d6568e345391a9034627123a29ae8dd4e2ca632a4d9",
+            "control_healthy": true,
+            "tokenizer_implementation_verified": true,
+            "engine_identity_verified": false,
+            "capabilities": {
+              "engine": "vllm",
+              "version": "0.30.0+cu129",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "max_label_tokens": 128,
+              "max_context_tokens": 2048,
+              "selected_logprobs": true,
+              "raw_logprobs": true,
+              "cancellation": true,
+              "lora": false,
+              "prefix_cache": true,
+              "api_workers": 1,
+              "verified": false,
+              "model_dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "batch_invariant": false
+            },
+            "compiler": {
+              "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+              "copied_from_host_pool": true,
+              "chat_template_source": "host",
+              "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+              "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+              "backend_class": "tokenizers.Tokenizer",
+              "cache_token_limit": 262144,
+              "cache_entry_limit": 256,
+              "continuation_encoder": "backend-ids-only",
+              "backend_ids_only_eligible": true,
+              "batch_size_limit": 32,
+              "contract": "full prompt plus each label; exact prefix and one-token checks"
+            },
+            "admission": {
+              "scope": "shared_registry_engine",
+              "limits": {
+                "max_requests": 64,
+                "max_tokens": 1048576,
+                "max_queue": 256,
+                "max_tenant_requests": 16,
+                "max_tenant_tokens": 262144,
+                "max_tenant_queue": 64,
+                "max_branches": 1024,
+                "max_tenant_branches": 256
+              },
+              "requests": 0,
+              "expanded_tokens": 0,
+              "expanded_branches": 0,
+              "queued_requests": 0
+            },
+            "health": {
+              "scope": "local_api_worker",
+              "settings": {
+                "interval_seconds": 1.0,
+                "timeout_seconds": 10.0,
+                "max_age_seconds": 30.0
+              },
+              "monitor_running": true,
+              "bundles": {
+                "default@1": {
+                  "ready": true,
+                  "last_success_age_seconds": 0.41527766827493906,
+                  "error": null,
+                  "prepared": true
+                }
+              }
+            }
+          }
+        },
+        "responses": [
+          {
+            "request_id": "dec-45550f8aec3540e489c151c8c99f736a",
+            "status": "completed",
+            "bundle": "default@1",
+            "bundle_digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4",
+            "generation": 1,
+            "engine": {
+              "name": "vllm",
+              "version": "0.30.0+cu129"
+            },
+            "answers": {
+              "q": {
+                "type": "boolean",
+                "status": "answered",
+                "value": true,
+                "probabilities": {
+                  "true": 0.8175744673038221,
+                  "false": 0.18242553269617778
+                },
+                "probability_semantics": "conditional_label_distribution",
+                "support": null,
+                "label_mass": 0.9350488747319979,
+                "calibration_status": "uncalibrated",
+                "abstained": false,
+                "reason": null,
+                "levels": null,
+                "error": null
+              }
+            },
+            "usage": {
+              "questions": 1,
+              "successful_questions": 1,
+              "scoring_sequences": 1,
+              "logical_prompt_tokens": 85,
+              "engine_prompt_tokens": 85,
+              "engine_completion_tokens": 1,
+              "cached_prompt_tokens": 32
+            },
+            "latency_ms": 45.989944599568844
+          }
+        ],
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ]
+      },
+      "complete": true,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2763315,
+            "start_ticks": "432310868",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--shutdown-timeout",
+            "30"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "batch_invariant": false,
+          "recovery_only": false,
+          "native_shutdown_timeout_seconds": 30,
+          "registry_path": "/root/jev-runtime/runs/vllm-shutdown-single-e3f82d7/registry.db",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790567569.3460772,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790567602.6529598,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "cleanup_elapsed_seconds": 4.300697822123766,
+      "native_log_counts": {
+        "force killing": 0,
+        "leaked semaphore": 0,
+        "Traceback (most recent call last)": 0,
+        "mode=abort": 0,
+        "mode=drain": 2,
+        "request processing complete; starting resource teardown": 1
+      },
+      "finished_at": 1790567606.9539158
+    },
+    {
+      "engine": "vllm",
+      "phase": "dual",
+      "api_workers": 2,
+      "native_grace_seconds": 30,
+      "started_at": 1790567606.9547129,
+      "preflight": {
+        "gpu7": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "owned_records_checked": 168,
+        "all_owned_groups_terminal": true,
+        "port_bindable": true
+      },
+      "run_dir": "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7",
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--health-config",
+        "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7/health-settings.json",
+        "--api-workers",
+        "2"
+      ],
+      "ready": {
+        "ready": true,
+        "elapsed_seconds": 42.075011825188994
+      },
+      "complete": true,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2764080,
+            "start_ticks": "432315038",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--shutdown-timeout",
+            "30",
+            "--api-server-count",
+            "2"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "batch_invariant": false,
+          "recovery_only": false,
+          "native_shutdown_timeout_seconds": 30,
+          "registry_path": "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7/registry.db",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790567611.0481372,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790567660.974873,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "cleanup_elapsed_seconds": 6.319191664457321,
+      "native_log_counts": {
+        "force killing": 0,
+        "leaked semaphore": 0,
+        "Traceback (most recent call last)": 0,
+        "mode=abort": 0,
+        "mode=drain": 3,
+        "request processing complete; starting resource teardown": 1
+      },
+      "finished_at": 1790567667.2943642
+    },
+    {
+      "engine": "vllm",
+      "phase": "restart",
+      "api_workers": 2,
+      "native_grace_seconds": 45,
+      "started_at": 1790567667.296814,
+      "preflight": {
+        "gpu7": {
+          "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+          "name": "NVIDIA L20Z",
+          "total_mib": "81559",
+          "free_mib": "11990",
+          "driver": "550.127.08",
+          "utilization": "0"
+        },
+        "owned_records_checked": 169,
+        "all_owned_groups_terminal": true,
+        "port_bindable": true
+      },
+      "run_dir": "/root/jev-runtime/runs/vllm-shutdown-restart-e3f82d7",
+      "resume": {
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "generation": 2,
+        "state": "OPEN"
+      },
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/quiescence-sources/e3f82d705b5db37504ec88f7c9ab89cf5a9c041c/deployment/dsw_service.py",
+        "launch",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-shutdown-restart-e3f82d7",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        ".07",
+        "--health-config",
+        "/root/jev-runtime/runs/vllm-shutdown-restart-e3f82d7/health-settings.json",
+        "--api-workers",
+        "2",
+        "--registry-path",
+        "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7/registry.db",
+        "--no-bootstrap",
+        "--vllm-shutdown-timeout",
+        "45"
+      ],
+      "ready": {
+        "ready": true,
+        "elapsed_seconds": 42.076282682828605
+      },
+      "serving_checks": {
+        "profiles": {
+          "069a8efc830144f3a3700a2eda0bb777": {
+            "worker_id": "069a8efc830144f3a3700a2eda0bb777",
+            "model": {
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "quantization": null,
+              "adapter_id": null,
+              "adapter_revision": null
+            },
+            "recovery_only": false,
+            "deployment": null,
+            "auth_policy": "23afad768ce41d7cfcfc7bcbeec2892ad9916ef2ff45471d119e87944f3ed8e4",
+            "control_healthy": true,
+            "tokenizer_implementation_verified": true,
+            "engine_identity_verified": false,
+            "capabilities": {
+              "engine": "vllm",
+              "version": "0.30.0+cu129",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "max_label_tokens": 128,
+              "max_context_tokens": 2048,
+              "selected_logprobs": true,
+              "raw_logprobs": true,
+              "cancellation": true,
+              "lora": false,
+              "prefix_cache": true,
+              "api_workers": 2,
+              "verified": false,
+              "model_dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "batch_invariant": false
+            },
+            "compiler": {
+              "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+              "copied_from_host_pool": true,
+              "chat_template_source": "host",
+              "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+              "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+              "backend_class": "tokenizers.Tokenizer",
+              "cache_token_limit": 262144,
+              "cache_entry_limit": 256,
+              "continuation_encoder": "backend-ids-only",
+              "backend_ids_only_eligible": true,
+              "batch_size_limit": 32,
+              "contract": "full prompt plus each label; exact prefix and one-token checks"
+            },
+            "admission": {
+              "scope": "shared_registry_engine",
+              "limits": {
+                "max_requests": 64,
+                "max_tokens": 1048576,
+                "max_queue": 256,
+                "max_tenant_requests": 16,
+                "max_tenant_tokens": 262144,
+                "max_tenant_queue": 64,
+                "max_branches": 1024,
+                "max_tenant_branches": 256
+              },
+              "requests": 0,
+              "expanded_tokens": 0,
+              "expanded_branches": 0,
+              "queued_requests": 0
+            },
+            "health": {
+              "scope": "local_api_worker",
+              "settings": {
+                "interval_seconds": 1.0,
+                "timeout_seconds": 10.0,
+                "max_age_seconds": 30.0
+              },
+              "monitor_running": true,
+              "bundles": {
+                "default@1": {
+                  "ready": true,
+                  "last_success_age_seconds": 0.9496406316757202,
+                  "error": null,
+                  "prepared": true
+                },
+                "quiescence@1": {
+                  "ready": true,
+                  "last_success_age_seconds": 0.9245703825727105,
+                  "error": null,
+                  "prepared": true
+                }
+              }
+            }
+          },
+          "3a2f1c0aac51407bb6a936eab65cebd2": {
+            "worker_id": "3a2f1c0aac51407bb6a936eab65cebd2",
+            "model": {
+              "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              "revision": "31b70e2e869a7173562077fd711b654946d38674",
+              "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+              "tokenizer_implementation_digest": "sha256:7cf7e20f716f7299e1207a5b0647918a20630ac9e77810526a7af732c98caa2e",
+              "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+              "dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "quantization": null,
+              "adapter_id": null,
+              "adapter_revision": null
+            },
+            "recovery_only": false,
+            "deployment": null,
+            "auth_policy": "23afad768ce41d7cfcfc7bcbeec2892ad9916ef2ff45471d119e87944f3ed8e4",
+            "control_healthy": true,
+            "tokenizer_implementation_verified": true,
+            "engine_identity_verified": false,
+            "capabilities": {
+              "engine": "vllm",
+              "version": "0.30.0+cu129",
+              "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+              "max_label_tokens": 128,
+              "max_context_tokens": 2048,
+              "selected_logprobs": true,
+              "raw_logprobs": true,
+              "cancellation": true,
+              "lora": false,
+              "prefix_cache": true,
+              "api_workers": 2,
+              "verified": false,
+              "model_dtype": "bfloat16",
+              "readout_dtype": "bfloat16",
+              "batch_invariant": false
+            },
+            "compiler": {
+              "tokenizer_class": "vllm.tokenizers.hf.get_cached_tokenizer.<locals>.CachedTokenizer",
+              "copied_from_host_pool": true,
+              "chat_template_source": "host",
+              "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+              "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+              "backend_class": "tokenizers.Tokenizer",
+              "cache_token_limit": 262144,
+              "cache_entry_limit": 256,
+              "continuation_encoder": "backend-ids-only",
+              "backend_ids_only_eligible": true,
+              "batch_size_limit": 32,
+              "contract": "full prompt plus each label; exact prefix and one-token checks"
+            },
+            "admission": {
+              "scope": "shared_registry_engine",
+              "limits": {
+                "max_requests": 64,
+                "max_tokens": 1048576,
+                "max_queue": 256,
+                "max_tenant_requests": 16,
+                "max_tenant_tokens": 262144,
+                "max_tenant_queue": 64,
+                "max_branches": 1024,
+                "max_tenant_branches": 256
+              },
+              "requests": 0,
+              "expanded_tokens": 0,
+              "expanded_branches": 0,
+              "queued_requests": 0
+            },
+            "health": {
+              "scope": "local_api_worker",
+              "settings": {
+                "interval_seconds": 1.0,
+                "timeout_seconds": 10.0,
+                "max_age_seconds": 30.0
+              },
+              "monitor_running": true,
+              "bundles": {
+                "default@1": {
+                  "ready": true,
+                  "last_success_age_seconds": 0.9669404607266188,
+                  "error": null,
+                  "prepared": true
+                },
+                "quiescence@1": {
+                  "ready": true,
+                  "last_success_age_seconds": 0.941724787466228,
+                  "error": null,
+                  "prepared": true
+                }
+              }
+            }
+          }
+        },
+        "responses": [
+          {
+            "request_id": "dec-e572b3c0569040e5a55d82376214553f",
+            "status": "completed",
+            "bundle": "default@1",
+            "bundle_digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4",
+            "generation": 1,
+            "engine": {
+              "name": "vllm",
+              "version": "0.30.0+cu129"
+            },
+            "answers": {
+              "q": {
+                "type": "boolean",
+                "status": "answered",
+                "value": true,
+                "probabilities": {
+                  "true": 0.8175744673038221,
+                  "false": 0.18242553269617778
+                },
+                "probability_semantics": "conditional_label_distribution",
+                "support": null,
+                "label_mass": 0.9350488747319979,
+                "calibration_status": "uncalibrated",
+                "abstained": false,
+                "reason": null,
+                "levels": null,
+                "error": null
+              }
+            },
+            "usage": {
+              "questions": 1,
+              "successful_questions": 1,
+              "scoring_sequences": 1,
+              "logical_prompt_tokens": 85,
+              "engine_prompt_tokens": 85,
+              "engine_completion_tokens": 1,
+              "cached_prompt_tokens": 32
+            },
+            "latency_ms": 34.15753040462732
+          },
+          {
+            "request_id": "dec-8032517d8a884ea7bf39443dd9a34d7d",
+            "status": "completed",
+            "bundle": "quiescence@1",
+            "bundle_digest": "sha256:7a584800d26cd9d9815a8b12683837d9401f0c6849c39329ab1575d1cf8f5cca",
+            "generation": 1,
+            "engine": {
+              "name": "vllm",
+              "version": "0.30.0+cu129"
+            },
+            "answers": {
+              "q": {
+                "type": "boolean",
+                "status": "answered",
+                "value": true,
+                "probabilities": {
+                  "true": 0.8175744673038221,
+                  "false": 0.18242553269617778
+                },
+                "probability_semantics": "conditional_label_distribution",
+                "support": null,
+                "label_mass": 0.9350488747319979,
+                "calibration_status": "uncalibrated",
+                "abstained": false,
+                "reason": null,
+                "levels": null,
+                "error": null
+              }
+            },
+            "usage": {
+              "questions": 1,
+              "successful_questions": 1,
+              "scoring_sequences": 1,
+              "logical_prompt_tokens": 85,
+              "engine_prompt_tokens": 85,
+              "engine_completion_tokens": 1,
+              "cached_prompt_tokens": 80
+            },
+            "latency_ms": 22.69887737929821
+          },
+          {
+            "request_id": "dec-d87cd7d715ef4ad5aa209c830e0f184e",
+            "status": "completed",
+            "bundle": "default@1",
+            "bundle_digest": "sha256:35f3793e8cd9b5a727b5d59e71f812448899b0ef813572448c41112aa68cb3f4",
+            "generation": 1,
+            "engine": {
+              "name": "vllm",
+              "version": "0.30.0+cu129"
+            },
+            "answers": {
+              "q": {
+                "type": "boolean",
+                "status": "answered",
+                "value": true,
+                "probabilities": {
+                  "true": 0.8175744673038221,
+                  "false": 0.18242553269617778
+                },
+                "probability_semantics": "conditional_label_distribution",
+                "support": null,
+                "label_mass": 0.9350488747319979,
+                "calibration_status": "uncalibrated",
+                "abstained": false,
+                "reason": null,
+                "levels": null,
+                "error": null
+              }
+            },
+            "usage": {
+              "questions": 1,
+              "successful_questions": 1,
+              "scoring_sequences": 1,
+              "logical_prompt_tokens": 85,
+              "engine_prompt_tokens": 85,
+              "engine_completion_tokens": 1,
+              "cached_prompt_tokens": 80
+            },
+            "latency_ms": 39.97098468244076
+          },
+          {
+            "request_id": "dec-c51235b1d77f4cf482c2e05d4df41fcf",
+            "status": "completed",
+            "bundle": "quiescence@1",
+            "bundle_digest": "sha256:7a584800d26cd9d9815a8b12683837d9401f0c6849c39329ab1575d1cf8f5cca",
+            "generation": 1,
+            "engine": {
+              "name": "vllm",
+              "version": "0.30.0+cu129"
+            },
+            "answers": {
+              "q": {
+                "type": "boolean",
+                "status": "answered",
+                "value": true,
+                "probabilities": {
+                  "true": 0.8175744673038221,
+                  "false": 0.18242553269617778
+                },
+                "probability_semantics": "conditional_label_distribution",
+                "support": null,
+                "label_mass": 0.9350488747319979,
+                "calibration_status": "uncalibrated",
+                "abstained": false,
+                "reason": null,
+                "levels": null,
+                "error": null
+              }
+            },
+            "usage": {
+              "questions": 1,
+              "successful_questions": 1,
+              "scoring_sequences": 1,
+              "logical_prompt_tokens": 85,
+              "engine_prompt_tokens": 85,
+              "engine_completion_tokens": 1,
+              "cached_prompt_tokens": 80
+            },
+            "latency_ms": 25.443983264267445
+          }
+        ],
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          },
+          {
+            "alias": "quiescence",
+            "ref": "quiescence@1",
+            "generation": 1
+          }
+        ]
+      },
+      "complete": true,
+      "cleanup": {
+        "process_record": {
+          "identity": {
+            "pid": 2765354,
+            "start_ticks": "432321124",
+            "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+          },
+          "engine": "vllm",
+          "mode": "native-plugin",
+          "command": [
+            "/root/jev-runtime/envs/vllm/bin/vllm",
+            "serve",
+            "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+            "--served-model-name",
+            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18795",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "2048",
+            "--max-num-seqs",
+            "4",
+            "--max-num-batched-tokens",
+            "512",
+            "--max-logprobs",
+            "128",
+            "--gpu-memory-utilization",
+            "0.07",
+            "--enforce-eager",
+            "--shutdown-timeout",
+            "45",
+            "--api-server-count",
+            "2"
+          ],
+          "model": {
+            "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+            "revision": "31b70e2e869a7173562077fd711b654946d38674",
+            "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+          },
+          "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+          "gpu_before": {
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          },
+          "gpus_before": [
+            {
+              "index": 7,
+              "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+              "name": "NVIDIA L20Z",
+              "total_mib": "81559",
+              "free_mib": "11990",
+              "driver": "550.127.08",
+              "utilization": "0"
+            }
+          ],
+          "tensor_parallel_size": 1,
+          "dtype": "bfloat16",
+          "readout_dtype": "bfloat16",
+          "batch_invariant": false,
+          "recovery_only": false,
+          "native_shutdown_timeout_seconds": 45,
+          "registry_path": "/root/jev-runtime/runs/vllm-shutdown-dual-e3f82d7/registry.db",
+          "chat_template_source": null,
+          "chat_template_snapshot": null,
+          "created": 1790567671.9134536,
+          "port": 18795,
+          "qualification": "colocated-functional-test",
+          "memory_budget_denominator": "total_mib"
+        },
+        "checked_at": 1790567714.2955985,
+        "remaining_process_group_members": [],
+        "gpus_after": [
+          {
+            "index": 7,
+            "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+            "name": "NVIDIA L20Z",
+            "total_mib": "81559",
+            "free_mib": "11990",
+            "driver": "550.127.08",
+            "utilization": "0"
+          }
+        ],
+        "gpu_uuids_match": true,
+        "passed": true
+      },
+      "cleanup_elapsed_seconds": 6.418651399202645,
+      "native_log_counts": {
+        "force killing": 0,
+        "leaked semaphore": 0,
+        "Traceback (most recent call last)": 0,
+        "mode=abort": 0,
+        "mode=drain": 3,
+        "request processing complete; starting resource teardown": 1
+      },
+      "finished_at": 1790567720.7145143
+    }
+  ],
+  "qualification": "Colocated native vLLM shutdown checks, not performance, quality or release certification",
+  "native_source_files": {
+    "engine/arg_utils.py": "ead004ca266419cd25f54a7aefc0e20e1eb046f363b7f5cc977e14f52ee44bb1",
+    "entrypoints/cli/serve.py": "c182c88347f1eb3440a816986f1c2025a2ab2a13236cd68b0ad0146250d031ff",
+    "entrypoints/launchers/launcher.py": "6481ff42c76eaed37354db4875c80db429d465781e52d3185b9e876d3ad7e4be",
+    "v1/utils.py": "5b6015d60ea96ab24b0f2e0b7701abaa90d6107bca01b51ac3d4bc361fbdfcff",
+    "v1/engine/utils.py": "d09f86b107b3c63b62f40a6590036be5b711778ea997fc5a6af6de94fdd2ccd3",
+    "v1/engine/core.py": "268bf40534a853812867ae8e80040f190983cb364b41182b55969aace20c93f5"
+  },
+  "versions": {
+    "vllm": "0.30.0+cu129",
+    "torch": "2.13.0+cu129",
+    "transformers": "5.17.0",
+    "tokenizers": "0.23.2"
+  },
+  "python": "3.12.11 (main, Nov  6 2025, 02:27:35) [GCC 13.3.0]",
+  "postflight": {
+    "gpu7": {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11990",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    "owned_records_checked": 170,
+    "all_owned_groups_terminal": true,
+    "port_bindable": true
+  },
+  "native_source_files_after": {
+    "engine/arg_utils.py": "ead004ca266419cd25f54a7aefc0e20e1eb046f363b7f5cc977e14f52ee44bb1",
+    "entrypoints/cli/serve.py": "c182c88347f1eb3440a816986f1c2025a2ab2a13236cd68b0ad0146250d031ff",
+    "entrypoints/launchers/launcher.py": "6481ff42c76eaed37354db4875c80db429d465781e52d3185b9e876d3ad7e4be",
+    "v1/utils.py": "5b6015d60ea96ab24b0f2e0b7701abaa90d6107bca01b51ac3d4bc361fbdfcff",
+    "v1/engine/utils.py": "d09f86b107b3c63b62f40a6590036be5b711778ea997fc5a6af6de94fdd2ccd3",
+    "v1/engine/core.py": "268bf40534a853812867ae8e80040f190983cb364b41182b55969aace20c93f5"
+  },
+  "complete": true,
+  "finished_at": 1790567724.4734275
+}
