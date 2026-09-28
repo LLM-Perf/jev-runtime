@@ -83,6 +83,16 @@ def launch(args):
         raise ValueError("The isolated launcher supports BF16 or FP32 model precision")
     if args.adapters_root and dtype != "bfloat16":
         raise ValueError("Managed adapters require the frozen BF16 backbone profile")
+    if (
+        dtype == "float32"
+        and args.engine == "sglang"
+        and not args.gateway
+        and not getattr(args, "batch_invariant", False)
+    ):
+        raise ValueError(
+            "The pinned SGLang FP32 diagnostic profile requires --batch-invariant; "
+            "its ordinary CUDA RMSNorm path cannot dispatch Float inputs"
+        )
     indices = device_indices(args.gpu, args.gpus)
     root = args.run_dir.resolve()
     root.mkdir(parents=True, exist_ok=True)

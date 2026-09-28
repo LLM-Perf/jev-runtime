@@ -45,6 +45,13 @@ bundle identity and process manifests retain the selected dtype. Managed LoRA
 continues to require the frozen BF16 backbone profile. A successful launch is
 not numerical, performance or cross-model certification.
 
+The DSW SGLang FP32 diagnostic launch additionally requires `--batch-invariant`.
+Its ordinary CUDA RMSNorm path was observed to reject Float inputs on the pinned
+environment; the launcher now rejects that combination before allocating a run
+directory or GPU process. It does not silently enable determinism. This guard is
+for the isolated native test launcher; gateway attachment leaves an existing
+engine's configuration unchanged. The failed ordinary attempt remains evidence.
+
 Native adapters report the model and output-layer dtype from engine model
 configuration. SGLang's HTTP adapter reads explicit startup configuration;
 `auto` is not guessed. Unknown or mismatched reported precision prevents a

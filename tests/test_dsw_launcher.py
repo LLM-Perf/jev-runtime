@@ -81,6 +81,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
         engine_run_dir=None,
         readout_dtype=readout,
         dtype=dtype,
+        batch_invariant=engine == "sglang" and dtype == "float32",
         chat_template_path=None,
         chat_template_sha256=None,
         chat_template_format="json",
@@ -151,6 +152,7 @@ def test_launch_binds_explicit_devices_to_engine_tp_and_saved_manifest(
             }
     else:
         assert ("--enable-fp32-lm-head" in command) == (readout == "float32")
+        assert ("--enable-deterministic-inference" in command) == args.batch_invariant
 
 
 def test_fp32_backbone_does_not_extend_managed_lora_profile(tmp_path):
@@ -161,3 +163,19 @@ def test_fp32_backbone_does_not_extend_managed_lora_profile(tmp_path):
             SimpleNamespace(dtype="float32", adapters_root=tmp_path, run_dir=tmp_path / "run")
         )
     assert not (tmp_path / "run").exists()
+
+
+def test_sglang_ordinary_fp32_rejected_before_allocation(tmp_path):
+    from types import SimpleNamespace
+
+    args = SimpleNamespace(
+        dtype="float32",
+        engine="sglang",
+        gateway=False,
+        adapters_root=None,
+        batch_invariant=False,
+        run_dir=tmp_path / "run",
+    )
+    with pytest.raises(ValueError, match="requires --batch-invariant"):
+        dsw_service.launch(args)
+    assert not args.batch_invariant and not args.run_dir.exists()
