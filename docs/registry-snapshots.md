@@ -8,8 +8,10 @@ adapter state. They do not reset generations, delete leases or mark workers dead
 Use this before a compatible deployment change and after a drained shutdown. A
 staged restore is an inactive copy of the exact latest stopped state in a **new**
 directory. It never replaces the source file, starts a worker or changes traffic.
-This is not a schema migration, recovery of a lost source database, cross-host
+The `stage-restore` command is not a schema migration, recovery of a lost source database, cross-host
 restoration or authorization to revert publications made after the snapshot.
+For explicit supported upgrades and code rollback, use the separate
+[versioned migration procedure](registry-schema.md).
 
 ## Create and verify
 
@@ -30,9 +32,10 @@ bounds backup copying/retries, not the subsequent integrity and table-hash scans
 
 The manifest binds the database bytes, exact supported schema, row counts and
 content hashes of every table. `integrity_check` and `foreign_key_check` must pass.
-The schema matches this tool's current registry DDL with `user_version=0`;
-unrecognized or altered schemas fail closed rather than receiving an automatic
-migration. Extracting the shared DDL constant did not change its SQL bytes.
+The tool recognizes the exact version-1 schema and two frozen unversioned legacy
+schemas. Unknown versions or altered structures fail closed. Snapshot/restore
+never converts schemas; ordinary startup requires the current format. Use the
+explicit migration procedure to change a supported format.
 
 Snapshots may be taken while serving. Their `restore_blockers_at_snapshot` counters
 identify work or process ownership observed then; those observations are not a
@@ -94,8 +97,9 @@ Restoring an old database while continuing from its generation numbers can reuse
 stale CAS tokens or discard acknowledged state; this tool rejects that operation.
 Compatible code rollback should preserve current state, not rewind its history.
 
-Actual DDL migrations/downgrades, backup encryption/retention automation, lost-host
-recovery, container replacement and final release acceptance remain open work.
+Explicit supported DDL transitions are provided by [stage-migration](registry-schema.md).
+Backup encryption/retention automation, lost-host recovery, container replacement
+and final release acceptance remain open work.
 The target engine, model, tokenizer, calibration and adapter artifacts must still
 match their existing compatibility contracts after a restore.
 

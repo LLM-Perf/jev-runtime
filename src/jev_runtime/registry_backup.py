@@ -9,10 +9,10 @@ import shutil
 import sqlite3
 import time
 from contextlib import closing
-from functools import lru_cache
 from pathlib import Path
 
-from jev_runtime.registry import REGISTRY_SCHEMA_SQL, Registry
+from jev_runtime.registry import Registry
+from jev_runtime.registry_schema import identify, schema
 
 
 def digest(path: Path) -> str:
@@ -22,19 +22,6 @@ def digest(path: Path) -> str:
 
 def canonical(value) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
-
-
-def schema(db: sqlite3.Connection) -> list:
-    return db.execute(
-        "SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name,tbl_name"
-    ).fetchall()
-
-
-@lru_cache(maxsize=1)
-def expected_schema() -> bytes:
-    with closing(sqlite3.connect(":memory:")) as db:
-        db.executescript(REGISTRY_SCHEMA_SQL)
-        return canonical(schema(db))
 
 
 def connect(path: Path, *, writable: bool = False) -> sqlite3.Connection:
@@ -51,9 +38,8 @@ def connect(path: Path, *, writable: bool = False) -> sqlite3.Connection:
 
 
 def summary(db: sqlite3.Connection) -> dict:
+    identify(db)
     structure = canonical(schema(db))
-    if structure != expected_schema() or db.execute("PRAGMA user_version").fetchone()[0] != 0:
-        raise ValueError("Registry schema is not supported by this backup tool version")
     if db.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Registry integrity check failed")
     if db.execute("PRAGMA foreign_key_check").fetchall():
@@ -84,6 +70,7 @@ def summary(db: sqlite3.Connection) -> dict:
 
 def blockers(db: sqlite3.Connection) -> dict[str, int]:
     result = {}
+    tables = {row[0] for row in db.execute("SELECT name FROM sqlite_schema WHERE type='table'")}
     for table in (
         "leases",
         "lease_work",
@@ -92,6 +79,8 @@ def blockers(db: sqlite3.Connection) -> dict[str, int]:
         "raw_work",
         "recovery_claims",
     ):
+        if table not in tables:
+            continue
         count = db.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
         if count:
             result[table] = count

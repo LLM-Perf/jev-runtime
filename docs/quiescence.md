@@ -33,7 +33,9 @@ native plugin. The following require the separate `JEV_ADMIN_KEY` environment va
    it with `--vllm-shutdown-timeout` at launch. Its native zero-timeout default means
    immediate abort, even after Jev has drained. The native budget starts after
    the Jev handshake; a container/service-manager stop deadline must cover both.
-5. Before restarting, run
+5. If upgrading an unversioned registry to the current runtime, first complete the
+   [offline schema migration](registry-schema.md) with all old processes stopped.
+   Before restarting a compatible registry, run
    `jevctl registry resume-backend REGISTRY_PATH BACKEND_ID GENERATION` locally.
    This CAS operation requires no retained work and every old worker STOPPED or
    verifiably dead. Unknown process identities fail closed. New workers revalidate

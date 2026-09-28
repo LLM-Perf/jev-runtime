@@ -74,6 +74,36 @@ def registry_snapshot(source: Path, destination: Path, timeout_seconds: float = 
     output(snapshot(source, destination, timeout_seconds))
 
 
+@registry_app.command("inspect")
+def registry_inspect(source: Path):
+    """Read the exact schema version and migration blockers without registering an owner."""
+    from jev_runtime.registry_migration import inspect
+
+    output(inspect(source))
+
+
+@registry_app.command("stage-migration")
+def registry_stage_migration(
+    snapshot_dir: Path,
+    manifest_sha256: str,
+    source: Path,
+    destination: Path,
+    target_format: str = "versioned-v1",
+):
+    """Stage an explicit stopped-state schema transition; keep the source unchanged."""
+    from jev_runtime.registry_migration import stage_migration
+
+    output(stage_migration(snapshot_dir, manifest_sha256, source, destination, target_format))
+
+
+@registry_app.command("verify-migration")
+def registry_verify_migration(directory: Path, receipt_sha256: str):
+    """Verify a completed migration artifact before its first startup."""
+    from jev_runtime.registry_migration import verify_migration
+
+    output(verify_migration(directory, receipt_sha256))
+
+
 @registry_app.command("verify-snapshot")
 def registry_verify_snapshot(directory: Path, manifest_sha256: str):
     """Check the exact snapshot payload, supported schema and database integrity."""
