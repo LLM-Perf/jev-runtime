@@ -1,0 +1,17 @@
+{
+  "source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+  "started_at": 1790707252.6248436,
+  "script_sha256": "c2303eabd49cbe52916b5bd92fdf26b09bb37f496a8fdc9a871a8417ede1044b",
+  "archives": {
+    "source.tar": "c93530fc6791155c1c54e3fa4ee05f5b792238268c0fb0bb41c0fbc387c4f1ed",
+    "upstream-contract.tar": "bfd1761a467af3edd448162c809335570d343eba2f1cf035501602f0d1882067"
+  },
+  "supervisor_identity": {
+    "pid": 2866954,
+    "start_ticks": "446279168",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "contracts": {},
+  "native": {},
+  "qualification": "CPU contracts plus simultaneous colocated SGLang/vLLM native GPU regression; TokenSpeed GPU not run"
+}

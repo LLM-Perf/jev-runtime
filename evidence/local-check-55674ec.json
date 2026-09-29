@@ -1,0 +1,92 @@
+{
+  "source_commit": "55674ecbe63850dc9c46da14893ffcad59d2506f",
+  "python_tests": {
+    "passed": 571,
+    "seconds": 16.71,
+    "scope": "CPU contracts; engine doubles are explicit"
+  },
+  "lint": "passed",
+  "format": "passed",
+  "wheel_manifest_sha256": "dd498df7b300c99845b0c713b185fdbf984467df432f196ec76615e2892f38ec",
+  "distributions": {
+    "jev-runtime-core": {
+      "name": "jev-runtime-core",
+      "requires": [
+        "fastapi<1,>=0.115",
+        "httpx<1,>=0.28",
+        "jinja2<4,>=3.1",
+        "numpy<3,>=1.26",
+        "prometheus-client<1,>=0.21",
+        "pydantic<3,>=2.10",
+        "pyyaml<7,>=6",
+        "safetensors<1,>=0.5",
+        "typer<1,>=0.15",
+        "uvicorn<1,>=0.32",
+        "build>=1.2; extra == 'dev'",
+        "hatchling>=1.26; extra == 'dev'",
+        "pytest-asyncio<2,>=0.25; extra == 'dev'",
+        "pytest<10,>=8; extra == 'dev'",
+        "ruff<1,>=0.9; extra == 'dev'",
+        "pyarrow<26,>=18; extra == 'quality-data'",
+        "torch>=2.6; extra == 'reference'",
+        "transformers<6,>=4.51; extra == 'reference'",
+        "tiktoken<1,>=0.9; extra == 'tokenizer-conversion'",
+        "transformers<6,>=4.51; extra == 'tokenizer-conversion'",
+        "transformers<6,>=4.51; extra == 'tokenizers'"
+      ],
+      "verified_python_files": 36,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl"
+    },
+    "jev-sglang": {
+      "name": "jev-sglang",
+      "requires": [
+        "jev-runtime-core==0.1.0a1"
+      ],
+      "verified_python_files": 4,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_sglang-0.1.0a1-py3-none-any.whl"
+    },
+    "jev-tokenspeed": {
+      "name": "jev-tokenspeed",
+      "requires": [
+        "jev-runtime-core==0.1.0a1"
+      ],
+      "verified_python_files": 4,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_tokenspeed-0.1.0a1-py3-none-any.whl"
+    },
+    "jev-vllm": {
+      "name": "jev-vllm",
+      "requires": [
+        "jev-runtime-core==0.1.0a1"
+      ],
+      "verified_python_files": 4,
+      "version": "0.1.0a1",
+      "wheel": "wheels/jev_vllm-0.1.0a1-py3-none-any.whl"
+    }
+  },
+  "wheel_files": {
+    "wheels/jev_runtime_core-0.1.0a1-py3-none-any.whl": {
+      "sha256": "e81872a9b2144a3ae5a9c26d487658cb4f7d33eefe213aec698dab350f7f0a54",
+      "size_bytes": 109590
+    },
+    "wheels/jev_sglang-0.1.0a1-py3-none-any.whl": {
+      "sha256": "f15d4c86cde1d52219beb3f0b464dc05167086ec9a30b671bd90ec405aee47e8",
+      "size_bytes": 3979
+    },
+    "wheels/jev_tokenspeed-0.1.0a1-py3-none-any.whl": {
+      "sha256": "00abb5d68d8d0d32bfe19720146b5e551a6b1a844de6f4e0c1c1bf9c0806a67f",
+      "size_bytes": 7266
+    },
+    "wheels/jev_vllm-0.1.0a1-py3-none-any.whl": {
+      "sha256": "b1f081ce513a63015c1974e3e66763c6518a50f0c0625cd143d2e76b0861a6f9",
+      "size_bytes": 3705
+    }
+  },
+  "native_gpu_core_checkpoint": "62340feddb4d73274c0902d68cead1012da94624",
+  "core_sglang_vllm_files_unchanged_from_native_checkpoint": true,
+  "tokenspeed_native_gpu_tested": false,
+  "hosted_ci": "not represented by local tests",
+  "typescript": "unchanged, not rerun"
+}

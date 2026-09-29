@@ -1,0 +1,334 @@
+{
+  "source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+  "credential_scan": "exact test API/admin values absent; keys.json excluded",
+  "files": {
+    "multi-engine-62340fe/campaign.json": {
+      "sha256": "8d32fcd647728237ea9596f269b3b08e7e17e6f227676134daab3237fab79b2f",
+      "bytes": 687
+    },
+    "multi-engine-62340fe/campaign.py": {
+      "sha256": "c2303eabd49cbe52916b5bd92fdf26b09bb37f496a8fdc9a871a8417ede1044b",
+      "bytes": 5448
+    },
+    "multi-engine-62340fe-r2/campaign.json": {
+      "sha256": "18962e1a3cd11b958b6e3dc1909b49785fd046dcadd27256410dbcb4312a839a",
+      "bytes": 7436
+    },
+    "multi-engine-62340fe-r2/campaign.py": {
+      "sha256": "fbba3f6a7a9277775ac08cced2a3c3cb544f4017d3b0f4e42fc2919974e690a3",
+      "bytes": 5456
+    },
+    "multi-engine-62340fe-r2/contracts-sglang.log": {
+      "sha256": "376b31f44bdcfd396dcc8851c0599888ebee69759ecd60e0f35659f4e3b3afe4",
+      "bytes": 260
+    },
+    "multi-engine-62340fe-r2/contracts-vllm.log": {
+      "sha256": "d05b936f640b4ff7fabd28f245e026060882f74684ed7bbfef8c15d0421811c8",
+      "bytes": 260
+    },
+    "multi-engine-62340fe-r2/provider-install.log": {
+      "sha256": "3af9a4504c89b87e2ae5e374b73729778655fd511f56775ed346bb29efa62aa0",
+      "bytes": 181
+    },
+    "multi-engine-62340fe-r2/sglang-native.log": {
+      "sha256": "a56e928925049e0addf55412bda4b9ac230b0293b1c7738299dd12f780ef9b88",
+      "bytes": 890
+    },
+    "multi-engine-62340fe-r2/tokenspeed-source-readout.json": {
+      "sha256": "2f640ce029737dbf1222a55a07c3d50bd44ecdc2603454524f71ef9df4ec9885",
+      "bytes": 1249
+    },
+    "multi-engine-62340fe-r2/tokenspeed-source-readout.log": {
+      "sha256": "f5352bba7f25050bc7f9df84e989efc89d0f3aa693e352c0a47094a73da35e03",
+      "bytes": 1017
+    },
+    "multi-engine-62340fe-r2/vllm-native.log": {
+      "sha256": "836eca8584bc840090c428a8c7a26ec97e8b2160a2aec5e2c1c6c06547fed265",
+      "bytes": 888
+    },
+    "multi-engine-62340fe-r3/campaign.json": {
+      "sha256": "f8e8e1f0b3d681a828f04d8536c4c297d64b7104b4ef2af26906c4020a7d5515",
+      "bytes": 7816
+    },
+    "multi-engine-62340fe-r3/campaign.py": {
+      "sha256": "8cb1d83177286d8e359a6d63202a9bf871345a0e46c51a53c4bbfa1caa554e3f",
+      "bytes": 4818
+    },
+    "multi-engine-62340fe-r3/export.py": {
+      "sha256": "9c3b391cf0bc14f023c6339b01965f7daa500b67069d09831a96ac56f1e2160a",
+      "bytes": 2982
+    },
+    "multi-engine-62340fe-r3/provider-install.log": {
+      "sha256": "53c3619e0e0da23925b5d69dc5fbb11fb9590095c1fff28bf07b733146807ed7",
+      "bytes": 181
+    },
+    "multi-engine-62340fe-r3/sglang-native.log": {
+      "sha256": "013ae8af738632e85b473e4e74cdc2f96676a3da1715bacc810f5cececd632f9",
+      "bytes": 934
+    },
+    "multi-engine-62340fe-r3/vllm-native.log": {
+      "sha256": "92ed71a189d3eb80ab54991eaf4ad6718ebe57963f49d6982b05b5ddcb56b5b3",
+      "bytes": 935
+    },
+    "runs/sglang-multi-engine-62340fe/cleanup.json": {
+      "sha256": "20d512e52d36e30c9d010e2197a781a3d22477dd0ea4be39bd3d91a7593efe71",
+      "bytes": 2520
+    },
+    "runs/sglang-multi-engine-62340fe/config.json": {
+      "sha256": "cdf8e01ae2ea3ba681a889fef8844972cdf790d9e21fae313f0b95b95d6ac9de",
+      "bytes": 573
+    },
+    "runs/sglang-multi-engine-62340fe/contract.json": {
+      "sha256": "eb9ada24ce3a11672793e75b9331649a5b0cda0bb63da41acba74b85fd4a1f0a",
+      "bytes": 16600
+    },
+    "runs/sglang-multi-engine-62340fe/contract.log": {
+      "sha256": "d49e4aed5c9d7f9b1c11ffd2050179f03ee4d8575b988b92760482fa76f17d14",
+      "bytes": 353
+    },
+    "runs/sglang-multi-engine-62340fe/engine.log": {
+      "sha256": "afe99b09792adbf234beadd846fbedbe2d8753cdff951dc441e79cc40c28fc4d",
+      "bytes": 568573
+    },
+    "runs/sglang-multi-engine-62340fe/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/sglang-multi-engine-62340fe/launch.log": {
+      "sha256": "d78e3b8f16ea3ded9de10894fe2ae78d8c7d387e16f088c11d4a78608ec7a958",
+      "bytes": 189
+    },
+    "runs/sglang-multi-engine-62340fe/precision-binding.json": {
+      "sha256": "1a1c7590bcb81cfb5a3a3c37343396bb81a3ba29f1afc53743e38cdf9aa34286",
+      "bytes": 2764
+    },
+    "runs/sglang-multi-engine-62340fe/precision_binding.log": {
+      "sha256": "161f7d0798a14f8bc02e3dbde39c775eb3775c827a89f8effcc6a45f566acc04",
+      "bytes": 104
+    },
+    "runs/sglang-multi-engine-62340fe/process.json": {
+      "sha256": "0fb9d8dfacf28bb23667fd315ff6ca0e73e26ad2bd3b6f66fd0d7fd5e7f1549f",
+      "bytes": 1976
+    },
+    "runs/sglang-multi-engine-62340fe/profile.json": {
+      "sha256": "2e92fa991b4c6c7ec9437a3d9ee75da78c5a9d41cf34ca172387f4c4429a789f",
+      "bytes": 2853
+    },
+    "runs/sglang-multi-engine-62340fe/quiescence-stop.json": {
+      "sha256": "ab655806118b8027253cfaf3a9128a2719a744b89c06b134965779ec1e851fa7",
+      "bytes": 765
+    },
+    "runs/sglang-multi-engine-62340fe/topology.json": {
+      "sha256": "8198cbffc6a6192a13f902e0ccdcb264781436bf8e817480fcbeda47c2dca831",
+      "bytes": 605
+    },
+    "runs/sglang-multi-engine-62340fe/validation.json": {
+      "sha256": "349d30169c81b18603d63aea96e2ce17b64648ce203c751715533d637462473a",
+      "bytes": 824
+    },
+    "runs/sglang-multi-engine-62340fe-r3/cleanup.json": {
+      "sha256": "9d9160801455610a14615605bc70a75b7364b192a3290512f68e15bde64d8ce4",
+      "bytes": 2523
+    },
+    "runs/sglang-multi-engine-62340fe-r3/config.json": {
+      "sha256": "dc7bd9004ecfc773e1e43244cfcfb04d5a7a0eb119a61f57812eb43eb7a8b6d0",
+      "bytes": 576
+    },
+    "runs/sglang-multi-engine-62340fe-r3/contract.json": {
+      "sha256": "fbd300ab5d2f5374ade06a0b176ed55a0a6d63b2f60538939af62ea718163bd7",
+      "bytes": 16590
+    },
+    "runs/sglang-multi-engine-62340fe-r3/contract.log": {
+      "sha256": "14e6b57b3da12a14c20f999dcc0e2b9355166590039305faef11f1c2d05a232a",
+      "bytes": 356
+    },
+    "runs/sglang-multi-engine-62340fe-r3/engine.log": {
+      "sha256": "b79f990fe8f84ad771204df9e788af3b3967ec6bd9a26a4debf8e7888702da3f",
+      "bytes": 602667
+    },
+    "runs/sglang-multi-engine-62340fe-r3/environment.json": {
+      "sha256": "8fd2cc830ed5155c298232b6e342e855a28dd610d6ac6f013f82e9a77c709d50",
+      "bytes": 685
+    },
+    "runs/sglang-multi-engine-62340fe-r3/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/sglang-multi-engine-62340fe-r3/launch.log": {
+      "sha256": "a4d0eaecd4a9c72427e163ce9371e027c7ecce5e1c57396172b3feaf00556d10",
+      "bytes": 192
+    },
+    "runs/sglang-multi-engine-62340fe-r3/postcheck.json": {
+      "sha256": "49826df95116955f4b7e0334013cbf7d8d8a41128a5046650a9a64a968c29f44",
+      "bytes": 302
+    },
+    "runs/sglang-multi-engine-62340fe-r3/precision-binding.json": {
+      "sha256": "7b3a44ac72d4640c7df7ff6f9130f3cb53a845ae4d19aa8a928f073d4726ec3c",
+      "bytes": 2764
+    },
+    "runs/sglang-multi-engine-62340fe-r3/precision_binding.log": {
+      "sha256": "fd2607b436ee4cb21cd2bae8bbd266e300bfd23cb626503dfe95c89c9ed4457b",
+      "bytes": 107
+    },
+    "runs/sglang-multi-engine-62340fe-r3/process.json": {
+      "sha256": "ae3e2e233c3d6a0c485557750331c9f087b2df86e85b987c91ec2c0afe2ee3b3",
+      "bytes": 1979
+    },
+    "runs/sglang-multi-engine-62340fe-r3/profile.json": {
+      "sha256": "a8e4cb01d485d8a8a14b4130ef8320b453a06fb79c6ee7db6a0a46a72d2f522b",
+      "bytes": 2854
+    },
+    "runs/sglang-multi-engine-62340fe-r3/quiescence-stop.json": {
+      "sha256": "05bdebb23aa886d96cdc50ac4ab4b9159d7dc2a65abd62236efc1cc490bdccca",
+      "bytes": 765
+    },
+    "runs/sglang-multi-engine-62340fe-r3/reference-cpu.json": {
+      "sha256": "2c7acbe131bcceaeb6a3eabc934906d54a970bd2f70008048abac55e4bff4b6d",
+      "bytes": 1457
+    },
+    "runs/sglang-multi-engine-62340fe-r3/reference-cpu.log": {
+      "sha256": "f70b7bbac35c5667fc588309b140ef266f9e397d2e07cf055c7396eaa08948af",
+      "bytes": 1478
+    },
+    "runs/sglang-multi-engine-62340fe-r3/topology.json": {
+      "sha256": "8198cbffc6a6192a13f902e0ccdcb264781436bf8e817480fcbeda47c2dca831",
+      "bytes": 605
+    },
+    "runs/sglang-multi-engine-62340fe-r3/validation.json": {
+      "sha256": "085ac0a38125be48aaa01ce5aecde8b31a45960623c042936bde6e13760464b8",
+      "bytes": 898
+    },
+    "runs/vllm-multi-engine-62340fe/cleanup.json": {
+      "sha256": "052c30463012652fa1576d6ff0e2260d2500faef5747842bf05a0b50d3b39781",
+      "bytes": 2443
+    },
+    "runs/vllm-multi-engine-62340fe/config.json": {
+      "sha256": "a3081a0f2201334d52189ce30b84fbf2c85b500bac727ce594aa2a624c415790",
+      "bytes": 569
+    },
+    "runs/vllm-multi-engine-62340fe/contract.json": {
+      "sha256": "208574ce4140d2939c1c45b2efb04911794b3f474d81589e45ec93eb19917c80",
+      "bytes": 16622
+    },
+    "runs/vllm-multi-engine-62340fe/contract.log": {
+      "sha256": "741e0ac39a43d9bcc9a230daabcfdb83158befed7d82236ff22ad9b7b443cb00",
+      "bytes": 351
+    },
+    "runs/vllm-multi-engine-62340fe/engine.log": {
+      "sha256": "3ff01879837d4cfe585f77a0e645c8d4fbe3b2ea112d50a09718c7b84d7cc4de",
+      "bytes": 197784
+    },
+    "runs/vllm-multi-engine-62340fe/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/vllm-multi-engine-62340fe/launch.log": {
+      "sha256": "a3af954254656931cca292900f432b35c655b2ce006b668ae1a324eea706838c",
+      "bytes": 187
+    },
+    "runs/vllm-multi-engine-62340fe/precision-binding.json": {
+      "sha256": "3b67fa6921004a46c95d00fb1f53ccd1117023ef9d0aef44e14c0141f0494ad1",
+      "bytes": 2763
+    },
+    "runs/vllm-multi-engine-62340fe/precision_binding.log": {
+      "sha256": "afebd01160723988495b76dae063670276fae08a580c332d75046d6506b31406",
+      "bytes": 102
+    },
+    "runs/vllm-multi-engine-62340fe/process.json": {
+      "sha256": "8fb81540e2ab65e02a338388a3359bedb47ce62e92ac96ce9087395338474d8d",
+      "bytes": 1903
+    },
+    "runs/vllm-multi-engine-62340fe/profile.json": {
+      "sha256": "c10f0e521483c27482c4113c8617e1c27c917948002383863904c4d78e3b03df",
+      "bytes": 2862
+    },
+    "runs/vllm-multi-engine-62340fe/quiescence-stop.json": {
+      "sha256": "92d6440c9550058a428979466aa28fed1c28777a6a7ecabcf14a0e72ec15e429",
+      "bytes": 761
+    },
+    "runs/vllm-multi-engine-62340fe/topology.json": {
+      "sha256": "028be3be117a10338779b2c12a6896c40a43fa64b1aaea246530c10517790ec9",
+      "bytes": 469
+    },
+    "runs/vllm-multi-engine-62340fe/validation.json": {
+      "sha256": "2ee982b36ab0c7ea5358ea0d5b2dbde60a2add7bdf5cf3db9e8215e15e6608da",
+      "bytes": 822
+    },
+    "runs/vllm-multi-engine-62340fe-r3/cleanup.json": {
+      "sha256": "d4e6477b34075fa837629911eaed12c56e789f3cbe22948898b1a17cadfaa560",
+      "bytes": 2445
+    },
+    "runs/vllm-multi-engine-62340fe-r3/config.json": {
+      "sha256": "07172133a9ff0f1bc6d8dcd7296deb7c7181f0e9fbaadb8cec4ae1ac6c0e4191",
+      "bytes": 572
+    },
+    "runs/vllm-multi-engine-62340fe-r3/contract.json": {
+      "sha256": "a62c4f2b57120eaefee0dd9c7f7a98a3ae476514385df13cccb5c4bb93804c29",
+      "bytes": 16621
+    },
+    "runs/vllm-multi-engine-62340fe-r3/contract.log": {
+      "sha256": "d7bd7a80b8f04664453980bf684aaff9401cccb88601ac280f68d584c79a2054",
+      "bytes": 354
+    },
+    "runs/vllm-multi-engine-62340fe-r3/engine.log": {
+      "sha256": "6318a93fa675f7c0ec8ec5e0a0e18c1dbc9751b9136e7b56f073a54dc401d9b3",
+      "bytes": 198112
+    },
+    "runs/vllm-multi-engine-62340fe-r3/environment.json": {
+      "sha256": "5d97a19aba921c9ff1070d7efc945a431b6776b1863fa3b7772dbc6492e6055f",
+      "bytes": 683
+    },
+    "runs/vllm-multi-engine-62340fe-r3/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/vllm-multi-engine-62340fe-r3/launch.log": {
+      "sha256": "2a0e3d37de572201da2e7fd12e357044dbdb9d61348aa6aab3f8eac01c9b57a1",
+      "bytes": 190
+    },
+    "runs/vllm-multi-engine-62340fe-r3/postcheck.json": {
+      "sha256": "dd6491baa9ab62533c3ff5d82dbdf48508f9464806f88b19245ef7492212483c",
+      "bytes": 302
+    },
+    "runs/vllm-multi-engine-62340fe-r3/precision-binding.json": {
+      "sha256": "e99bbf3d97d36aef6c360478e4fc96cebe188f57eb74b8b643cb23b372cfc529",
+      "bytes": 2764
+    },
+    "runs/vllm-multi-engine-62340fe-r3/precision_binding.log": {
+      "sha256": "4a59d0181fc52a361a04010abd22fd2cf27a8912c5f4c178abb3c7286cd659d7",
+      "bytes": 105
+    },
+    "runs/vllm-multi-engine-62340fe-r3/process.json": {
+      "sha256": "6cd79d085bdb51093e340cd7c99bd088a2a2472eb1df15c6cf82195c88c1ea29",
+      "bytes": 1905
+    },
+    "runs/vllm-multi-engine-62340fe-r3/profile.json": {
+      "sha256": "6acbf88a56727ea7949d321cd59fb7a955b9edeb5ab5a95bacec8c335ff93f2c",
+      "bytes": 2861
+    },
+    "runs/vllm-multi-engine-62340fe-r3/quiescence-stop.json": {
+      "sha256": "b7d437e216e36be2f42dd0db53568194020e2fe551ea50fa7a4caea3905cf1e9",
+      "bytes": 761
+    },
+    "runs/vllm-multi-engine-62340fe-r3/reference-cpu.json": {
+      "sha256": "0b23cda7662e5aa5725a89da6faf642b174b1125cbb9e06b3f0107e067979e5d",
+      "bytes": 1458
+    },
+    "runs/vllm-multi-engine-62340fe-r3/reference-cpu.log": {
+      "sha256": "056e5562023f3d8c48ad106211ff02354ca20990a83efbe544c80e68d1850ce7",
+      "bytes": 1479
+    },
+    "runs/vllm-multi-engine-62340fe-r3/topology.json": {
+      "sha256": "c828f512863a0e0d61d95fa20b652b270a3b29ca1deffd7aa2fc478bbd5d34d5",
+      "bytes": 469
+    },
+    "runs/vllm-multi-engine-62340fe-r3/validation.json": {
+      "sha256": "6c399e6253bfa01c11e495ae1e2c0fd02ce41eb6e5ab2d6c5206d9eaa938a320",
+      "bytes": 899
+    },
+    "source-files.json": {
+      "sha256": "937bc9633dbff20490e84a070aade09bcff2548932c459aa55f4ae48715a58d0",
+      "bytes": 16079
+    }
+  }
+}

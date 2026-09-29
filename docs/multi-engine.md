@@ -113,5 +113,6 @@ CPU 合同覆盖插件发现/冲突、四种类型和两种 readout 的拆分一
 这些 tests 使用显式测试替身。源码取分检查可以复核上游采样方法在 bias 前读取
 logits 的顺序；它不是完整 TokenSpeed GPU serving 验证。
 
-所有现有引擎仍须按最终源码复验。插件源码、CPU 合同、已构建 wheel、真实 GPU
+本轮实际结果见 [多框架验证与剩余门槛](multi-engine-validation.md)。
+所有引擎仍须按最终发布源码复验。插件源码、CPU 合同、已构建 wheel、真实 GPU
 运行、业务质量和受控性能分别报告，任何一项不能替代另一项。

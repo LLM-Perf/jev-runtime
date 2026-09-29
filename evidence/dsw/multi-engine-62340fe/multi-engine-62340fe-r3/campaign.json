@@ -1,0 +1,222 @@
+{
+  "source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+  "started_at": 1790707563.3079803,
+  "script_sha256": "8cb1d83177286d8e359a6d63202a9bf871345a0e46c51a53c4bbfa1caa554e3f",
+  "archives": {
+    "source.tar": "c93530fc6791155c1c54e3fa4ee05f5b792238268c0fb0bb41c0fbc387c4f1ed",
+    "upstream-contract.tar": "bfd1761a467af3edd448162c809335570d343eba2f1cf035501602f0d1882067"
+  },
+  "supervisor_identity": {
+    "pid": 2868785,
+    "start_ticks": "446310242",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "contracts": {
+    "vllm": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_backend_extensions.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_backends.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_compiler.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_scoring.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_shared_admission.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_quiescence.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_recovery.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_precision.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_execution_mode.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_plugin_lifespan.py"
+      ]
+    },
+    "sglang": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_backend_extensions.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_backends.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_compiler.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_scoring.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_shared_admission.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_quiescence.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_recovery.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_precision.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_execution_mode.py",
+        "/root/jev-runtime/multi-engine-62340fe-r2/source/tests/test_plugin_lifespan.py"
+      ]
+    }
+  },
+  "native": {
+    "vllm": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/multi-engine-62340fe-r3/62340feddb4d73274c0902d68cead1012da94624/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-multi-engine-62340fe-r3",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        "0.07",
+        "--switches",
+        "1000",
+        "--source-commit",
+        "62340feddb4d73274c0902d68cead1012da94624",
+        "--runtime-source-commit",
+        "62340feddb4d73274c0902d68cead1012da94624"
+      ],
+      "run_dir": "/root/jev-runtime/runs/vllm-multi-engine-62340fe-r3",
+      "validation": {
+        "harness_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+        "runtime_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+        "started_at": 1790707567.9118733,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 31.074013451114297
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 0,
+            "passed": true,
+            "max_absolute_error": 0.10743474960327148
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": true,
+        "cleanup_passed": true,
+        "passed": true,
+        "finished_at": 1790707626.2208018
+      }
+    },
+    "sglang": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/multi-engine-62340fe-r3/62340feddb4d73274c0902d68cead1012da94624/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-multi-engine-62340fe-r3",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "6",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        "0.65",
+        "--switches",
+        "1000",
+        "--source-commit",
+        "62340feddb4d73274c0902d68cead1012da94624",
+        "--runtime-source-commit",
+        "62340feddb4d73274c0902d68cead1012da94624"
+      ],
+      "run_dir": "/root/jev-runtime/runs/sglang-multi-engine-62340fe-r3",
+      "validation": {
+        "harness_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+        "runtime_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+        "started_at": 1790707567.9239721,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 29.10748544614762
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 0,
+            "passed": true,
+            "max_absolute_error": 0.08662056922912598
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": true,
+        "cleanup_passed": true,
+        "passed": true,
+        "finished_at": 1790707626.4980693
+      }
+    }
+  },
+  "qualification": "CPU contracts plus simultaneous colocated SGLang/vLLM native GPU regression; TokenSpeed GPU not run",
+  "prior_owned_groups_terminal": 178,
+  "gpus_before": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "prior_cpu_contracts_source": "/root/jev-runtime/multi-engine-62340fe-r2/campaign.json",
+  "source_readout_returncode": 0,
+  "gpus_after": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "finished_at": 1790707626.711705,
+  "passed": true
+}

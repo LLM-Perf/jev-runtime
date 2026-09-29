@@ -652,3 +652,20 @@ TokenSpeed GPU/model, quality, performance and soak gates remain **not run**.
 Its additional 20-model matrix is in `profiles/framework-support.json`; the original
 24/40 functional result and all original acceptance criteria remain unchanged.
 See [multi-engine implementation, missing work and operations](multi-engine.md).
+
+At 62340fe, both native engines run concurrently in isolated DSW environments and
+pass the final four-type/1,000-switch regression (491 vLLM and 588 SGLang strict
+traffic responses, zero mixed bundles). Single-position CPU reference errors are
+0.107435/0.086621 at the unchanged 0.15 threshold. The initial pre-launch harness
+error and second-attempt source-path postcheck failures remain. All four owned
+native groups exit with zero pending work; SGLang shutdown warnings and a prior
+vLLM EngineDeadError are retained. No independent performance claim is made.
+
+At 55674ec, TokenSpeed adds bounded in-process completion receipts for response
+loss and a score/cancel race regression. Core and existing engine plugins are
+byte-identical to the GPU checkpoint. 571 local tests, 151 CPU contracts in each
+actual engine environment, lint/format and four source-matched wheels pass.
+Upstream sampling-method CPU checks pass six cases but execute neither a real
+TokenSpeed engine nor GPU kernels. TokenSpeed GPU coverage remains 0/20;
+the existing 24/40 model coverage, numerical failures and release gates are
+unchanged. See [failure-inclusive validation](multi-engine-validation.md).

@@ -1,0 +1,49 @@
+{
+  "source_commit": "55674ecbe63850dc9c46da14893ffcad59d2506f",
+  "source_archive_sha256": "674fea1f10440fb1b964e1b6f6e1ffd14ae9035b8f855a26ca16635a8d694b14",
+  "script_sha256": "2535180b2ae3a33b40371f331de5af1e3ff232454930c67e91fcf77d88814c26",
+  "started_at": 1790708159.4273987,
+  "scope": "CPU contracts in actual SGLang/vLLM Python environments; no TokenSpeed native engine or GPU execution",
+  "engines": {
+    "vllm": {
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_backend_extensions.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_backends.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_compiler.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_scoring.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_shared_admission.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_quiescence.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_recovery.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_precision.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_execution_mode.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_plugin_lifespan.py"
+      ],
+      "returncode": 0
+    },
+    "sglang": {
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_backend_extensions.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_backends.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_compiler.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_scoring.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_shared_admission.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_quiescence.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_recovery.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_precision.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_execution_mode.py",
+        "/root/jev-runtime/multi-engine-55674ec/55674ecbe63850dc9c46da14893ffcad59d2506f/tests/test_plugin_lifespan.py"
+      ],
+      "returncode": 0
+    }
+  },
+  "passed": true,
+  "finished_at": 1790708168.3757136
+}

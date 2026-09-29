@@ -1,0 +1,22 @@
+{
+  "source_commit": "55674ecbe63850dc9c46da14893ffcad59d2506f",
+  "scope": "CPU contracts in actual SGLang/vLLM Python environments; no TokenSpeed native engine or GPU execution",
+  "files": {
+    "contracts.json": {
+      "sha256": "b5ab2acc12de60b776cbf47c77843ce8be6b934d38fc36bdd603ea3f02df793e",
+      "bytes": 3156
+    },
+    "contracts.py": {
+      "sha256": "2535180b2ae3a33b40371f331de5af1e3ff232454930c67e91fcf77d88814c26",
+      "bytes": 2145
+    },
+    "sglang.log": {
+      "sha256": "837adc277786d04abb77b3c8909a6a0d98d06d752c9019c297fef31acc4b9538",
+      "bytes": 260
+    },
+    "vllm.log": {
+      "sha256": "fcd04415d25a01119a67d7b1157b9d8304e4c3a0f7a327b0006ab44fabf2c41c",
+      "bytes": 260
+    }
+  }
+}

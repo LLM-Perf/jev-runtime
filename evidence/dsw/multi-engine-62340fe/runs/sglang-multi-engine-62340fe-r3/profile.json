@@ -1,0 +1,87 @@
+{
+  "worker_id": "3d63f131e90c4a3aa48ab3e2a8b0c4ca",
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "tokenizer_digest": "sha256:f3c73b891486f708ce557885595fc4608a3782da64e2a381b505f7edd7ca90ae",
+    "tokenizer_implementation_digest": "sha256:5495e3741560f70e6af5fabdca24d4ecc31a7a5c192e140ccf7e27dded27af84",
+    "template_digest": "sha256:dc126cf0155881b6f71b8e9a239956ae0ba45f68df08b016dadddf4c61120217",
+    "dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "quantization": null,
+    "adapter_id": null,
+    "adapter_revision": null
+  },
+  "recovery_only": false,
+  "deployment": null,
+  "auth_policy": "780c78e4eff20ef634a57246dd4a5459057e143ab4e82d57e5b4cbddcaf1a3b0",
+  "control_healthy": true,
+  "tokenizer_implementation_verified": true,
+  "engine_identity_verified": false,
+  "capabilities": {
+    "engine": "sglang",
+    "version": "0.5.19",
+    "model_id": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "max_label_tokens": 128,
+    "max_context_tokens": 2048,
+    "selected_logprobs": true,
+    "raw_logprobs": true,
+    "cancellation": true,
+    "lora": false,
+    "prefix_cache": true,
+    "api_workers": null,
+    "verified": false,
+    "model_dtype": "bfloat16",
+    "readout_dtype": "bfloat16",
+    "label_scoring": "joint",
+    "batch_invariant": false
+  },
+  "compiler": {
+    "tokenizer_class": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer",
+    "copied_from_host_pool": false,
+    "chat_template_source": "host",
+    "encode_implementation": "transformers.tokenization_utils_base.PreTrainedTokenizerBase.encode",
+    "encode_plus_implementation": "transformers.tokenization_utils_tokenizers.TokenizersBackend._encode_plus",
+    "backend_class": "tokenizers.Tokenizer",
+    "cache_token_limit": 262144,
+    "cache_entry_limit": 256,
+    "continuation_encoder": "backend-ids-only",
+    "backend_ids_only_eligible": true,
+    "batch_size_limit": 32,
+    "contract": "full prompt plus each label; exact prefix and one-token checks"
+  },
+  "admission": {
+    "scope": "shared_registry_engine",
+    "limits": {
+      "max_requests": 64,
+      "max_tokens": 1048576,
+      "max_queue": 256,
+      "max_tenant_requests": 16,
+      "max_tenant_tokens": 262144,
+      "max_tenant_queue": 64,
+      "max_branches": 1024,
+      "max_tenant_branches": 256
+    },
+    "requests": 0,
+    "expanded_tokens": 0,
+    "expanded_branches": 0,
+    "queued_requests": 0
+  },
+  "health": {
+    "scope": "local_api_worker",
+    "settings": {
+      "interval_seconds": 30,
+      "timeout_seconds": 10,
+      "max_age_seconds": 90
+    },
+    "monitor_running": true,
+    "bundles": {
+      "default@1": {
+        "ready": true,
+        "last_success_age_seconds": 17.433826530352235,
+        "error": null,
+        "prepared": true
+      }
+    }
+  }
+}

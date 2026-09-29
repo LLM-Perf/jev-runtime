@@ -1245,5 +1245,24 @@
   "observed_engine_versions": {
     "sglang": "0.5.19 (isolated CUDA 12.9 dependency lane for R550)",
     "vllm": "0.30.0+cu129"
+  },
+  "additional_frameworks": {
+    "status": "partial",
+    "source_commit": "55674ecbe63850dc9c46da14893ffcad59d2506f",
+    "provider_entry_points": true,
+    "tokenspeed": {
+      "package": "jev-tokenspeed",
+      "status": "experimental_single_label_readout",
+      "native_gpu_validated": false,
+      "high_performance_certified": false,
+      "open_gates": [
+        "Native GPU installation and model serving",
+        "Efficient selected-label gather",
+        "Cancellation receipts across process failure",
+        "Managed LoRA and wider parallel configurations",
+        "Numerical, model, quality and performance certification"
+      ]
+    },
+    "original_acceptance_gates_unchanged": true
   }
 }

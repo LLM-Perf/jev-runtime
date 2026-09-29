@@ -1,0 +1,31 @@
+{
+  "harness_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+  "runtime_source_commit": "62340feddb4d73274c0902d68cead1012da94624",
+  "started_at": 1790707335.1419969,
+  "qualification": "colocated functional validation; single-position numerical development check",
+  "stages": {
+    "readiness": {
+      "ready": true,
+      "elapsed_seconds": 32.087637117132545
+    },
+    "topology": {
+      "passed": true
+    },
+    "contract": {
+      "returncode": 0,
+      "passed": true
+    },
+    "precision_binding": {
+      "returncode": 0,
+      "passed": true
+    }
+  },
+  "failure": {
+    "stage": "postcheck",
+    "type": "RuntimeError",
+    "message": "Installed runtime/plugin does not match the declared source checkout"
+  },
+  "cleanup_passed": true,
+  "passed": false,
+  "finished_at": 1790707386.9314294
+}
