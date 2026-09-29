@@ -71,8 +71,11 @@ selected-ID gather，再保持同一合同进行对照验证。
 ## TokenSpeed 使用方法（实验性）
 
 先在**单独环境**安装上述提交及其匹配依赖，遵循上游安装方式。当前上游 NVIDIA
-Dockerfile 使用 CUDA 13.0 / Torch 2.14.0；本项目现有 DSW 是 CUDA 12.9 环境，
-尚无匹配的 TokenSpeed 安装，不能直接复用其历史 SGLang/vLLM 测试结论。
+Dockerfile 使用 CUDA 13.0 / Torch 2.14.0；上游也提供
+[实验性 CUDA 12.9 源码安装路径](https://github.com/lightseekorg/tokenspeed/blob/7fa8acb1e885389825c077a6aec0326fbbbd7116/docs/guides/hopper-cu129.md)，
+但明确针对 H100/H200、Python 3.11，构建 sm90a kernel。本项目现有 DSW 是
+L20Z、Python 3.12、CUDA 12.9，尚无匹配的 TokenSpeed 安装。适配其他环境需要
+单独的依赖/编译/内核验证，不能直接复用历史 SGLang/vLLM 测试结论。
 
 ```sh
 pip install -e '.[tokenizers]' -e packages/tokenspeed
@@ -89,15 +92,18 @@ jev-tokenspeed --config examples/tokenspeed.yaml \
 `TokenSpeedNative` 并在 host 所有的事件循环上提交，另行验证该宿主的退出顺序。
 
 另起 Jev gateway 时，将 `backend: tokenspeed` 和 `engine_url` 指向上述原生插件
-服务；配置 `engine_key_env` 对应其 JEV_API_KEY。bridge 保留同一逐标签能力标志。
+服务；gateway 应使用另一个监听端口（如 8795）和独立的 registry_path。
+配置 `engine_key_env` 对应其 JEV_API_KEY。bridge 保留同一逐标签能力标志。
 
 上传、prepare、activate、disable、回退复用现有 bundle API。代码安装和底层
 框架替换仍需要进程发布；热更新的是配置、模板、策略与校准 bundle。
 
 取消采用“停止等待结果，等待正在执行的一个 token 自然完成”的受限策略。
 上游按 ID abort 只移除 frontend 状态，没有 scheduler 完成确认，故这里不把
-abort 返回成功视为 drain。4.5 秒内无完成响应会保留 journal/lease；未知 ID 或
-进程重启后的请求也拒绝确认。不能自动回收这类孤儿记录，不能宣称完整恢复支持。
+abort 返回成功视为 drain。保留最多 4,096 个本进程完成凭据，使 HTTP 响应丢失后
+仍能确认已完成的请求；凭据保留期间拒绝复用该 ID。4.5 秒内无完成响应会保留
+journal/lease；未知 ID、已淘汰凭据或进程重启后的请求也拒绝确认。
+不能自动回收这类孤儿记录，不能宣称完整恢复支持。
 服务停止遇到不确定 drain 会报错并保留证据。
 
 ## 验证分层

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import math
+from collections import OrderedDict
 from dataclasses import dataclass
 
 from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult, reported_dtype
@@ -114,6 +115,7 @@ class TokenSpeedNative:
     def __init__(self, manager, version, submit):
         self.manager, self.version, self.submit = manager, version, submit
         self._attempts: dict[str, Attempt] = {}
+        self._completed: OrderedDict[str, None] = OrderedDict()
 
     async def probe(self) -> Capabilities:
         args, model = self.manager.server_args, self.manager.model_config
@@ -141,7 +143,7 @@ class TokenSpeedNative:
         from tokenspeed.runtime.engine.io_struct import GenerateReqInput
 
         payload = generate_payload(request)
-        if request.request_id in self._attempts:
+        if request.request_id in self._attempts or request.request_id in self._completed:
             raise JevError("duplicate_request", "Native scoring ID is already active", 409)
         attempt = Attempt()
         self._attempts[request.request_id] = attempt
@@ -160,17 +162,28 @@ class TokenSpeedNative:
         async def dispatch():
             # Engine.llm owns AsyncLLM's loop. submit runs receive there; no ZMQ
             # objects or asyncio locks move onto the HTTP server's event loop.
-            return await self.submit(receive())
+            try:
+                return await self.submit(receive())
+            finally:
+                if attempt.terminal:
+                    # Keep a bounded terminal receipt for a bridge whose HTTP
+                    # response was lost after native completion. Never accept
+                    # reuse while the old receipt could acknowledge a new ID.
+                    self._completed[request.request_id] = None
+                    if len(self._completed) > 4096:
+                        self._completed.popitem(last=False)
 
         attempt.task = asyncio.create_task(dispatch())
         attempt.task.add_done_callback(lambda task: None if task.cancelled() else task.exception())
         result = await asyncio.shield(attempt.task)
-        self._attempts.pop(request.request_id)
+        self._attempts.pop(request.request_id, None)
         return result
 
     async def cancel(self, request_id: str) -> None:
         attempt = self._attempts.get(request_id)
         if attempt is None:
+            if request_id in self._completed:
+                return
             # Native abort removes frontend state without a scheduler ack.
             # An unknown ID after a gateway/plugin restart is not drain proof.
             raise JevError("cancellation_unconfirmed", "No local terminal receipt for request", 503)

@@ -403,3 +403,57 @@ async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop
             assert result["usage"]["engine_completion_tokens"] == 2
             assert len(calls) == 4  # two preparation labels, two serving labels
     assert closed == [True]
+
+
+async def test_tokenspeed_lost_response_receipt_is_bounded_and_blocks_id_reuse(monkeypatch):
+    module = ModuleType("tokenspeed.runtime.engine.io_struct")
+    module.GenerateReqInput = lambda **kw: SimpleNamespace(**kw)
+    monkeypatch.setitem(sys.modules, module.__name__, module)
+
+    async def generate(obj):
+        yield native_output(obj.rid)
+
+    async def submit(coro):
+        return await coro
+
+    backend = TokenSpeedNative(SimpleNamespace(generate_request=generate), "fixture", submit)
+    result = await backend.score(request())
+    assert result.logprobs == (-2.0,) and not backend._attempts
+    # The HTTP client may have lost this successful response. A terminal
+    # receipt, rather than a successful no-op native abort, confirms drain.
+    await backend.cancel("r")
+    with pytest.raises(JevError) as exc:
+        await backend.score(request())
+    assert exc.value.code == "duplicate_request"
+    for index in range(4096):
+        await backend.score(replace(request(), request_id=f"next-{index}"))
+    assert len(backend._completed) == 4096 and not backend._attempts
+    with pytest.raises(JevError) as exc:
+        await backend.cancel("r")
+    assert exc.value.code == "cancellation_unconfirmed"
+    await backend.cancel("next-4095")
+
+
+async def test_tokenspeed_score_and_cancel_can_complete_concurrently(monkeypatch):
+    module = ModuleType("tokenspeed.runtime.engine.io_struct")
+    module.GenerateReqInput = lambda **kw: SimpleNamespace(**kw)
+    monkeypatch.setitem(sys.modules, module.__name__, module)
+    started, terminal = asyncio.Event(), asyncio.Event()
+
+    async def generate(obj):
+        started.set()
+        await terminal.wait()
+        yield native_output(obj.rid)
+
+    async def submit(coro):
+        return await coro
+
+    backend = TokenSpeedNative(SimpleNamespace(generate_request=generate), "fixture", submit)
+    score = asyncio.create_task(backend.score(request()))
+    await started.wait()
+    cancel = asyncio.create_task(backend.cancel("r"))
+    await asyncio.sleep(0)
+    terminal.set()
+    result, _ = await asyncio.gather(score, cancel)
+    assert result.logprobs == (-2.0,) and not backend._attempts
+    await backend.cancel("r")
