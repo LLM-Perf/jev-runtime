@@ -26,6 +26,7 @@ PACKAGES = {
     "jev-runtime-core": (".", "src/jev_runtime"),
     "jev-sglang": ("packages/sglang", "packages/sglang/src/jev_sglang"),
     "jev-vllm": ("packages/vllm", "packages/vllm/src/jev_vllm"),
+    "jev-tokenspeed": ("packages/tokenspeed", "packages/tokenspeed/src/jev_tokenspeed"),
 }
 
 
@@ -144,7 +145,21 @@ def build(repo: Path, ref: str, output: Path) -> dict:
     output.mkdir(parents=True, exist_ok=False)
     wheels = output / "wheels"
     wheels.mkdir()
-    paths = ["pyproject.toml", "README.md", "src", "packages/sglang", "packages/vllm"]
+    packages = dict(PACKAGES)
+    # Historical releases predate this optional adapter. Keep them buildable
+    # for rollback; current commits must include the complete package.
+    probe = subprocess.run(
+        ["git", "cat-file", "-e", commit + ":packages/tokenspeed/pyproject.toml"],
+        cwd=repo,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if probe.returncode:
+        packages.pop("jev-tokenspeed")
+    paths = ["pyproject.toml", "README.md", "src"] + [
+        directory for directory, _ in packages.values() if directory != "."
+    ]
     with tempfile.TemporaryDirectory(prefix="jev-build-") as temporary:
         work = Path(temporary)
         archive = work / "source.tar"
@@ -165,7 +180,7 @@ def build(repo: Path, ref: str, output: Path) -> dict:
                     destination = source / member.name
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     destination.write_bytes(tar.extractfile(member).read())
-        for directory, _ in PACKAGES.values():
+        for directory, _ in packages.values():
             run(
                 [
                     sys.executable,
@@ -184,9 +199,9 @@ def build(repo: Path, ref: str, output: Path) -> dict:
         for wheel_path in sorted(wheels.glob("*.whl")):
             info = wheel_info(wheel_path)
             name = info["name"]
-            if name not in PACKAGES or name in distributions:
+            if name not in packages or name in distributions:
                 raise ValueError("Unexpected or duplicate project wheel")
-            prefix = PACKAGES[name][1]
+            prefix = packages[name][1]
             expected = {
                 p.relative_to(source / prefix).as_posix(): p.read_bytes()
                 for p in (source / prefix).rglob("*.py")
@@ -200,16 +215,21 @@ def build(repo: Path, ref: str, output: Path) -> dict:
                 }
             if actual != expected:
                 raise ValueError("Wheel Python files differ from committed source")
+            if name == "jev-tokenspeed":
+                with zipfile.ZipFile(wheel_path) as wheel:
+                    profile_path = source / prefix / "source-profile.json"
+                    if wheel.read(root + "source-profile.json") != profile_path.read_bytes():
+                        raise ValueError("TokenSpeed source profile differs from commit")
             distributions[name] = {
                 **info,
                 "wheel": "wheels/" + wheel_path.name,
                 "verified_python_files": len(actual),
             }
         if (
-            set(distributions) != set(PACKAGES)
+            set(distributions) != set(packages)
             or len({d["version"] for d in distributions.values()}) != 1
         ):
-            raise ValueError("Release requires three matching package versions")
+            raise ValueError("Release requires all source-present packages at matching versions")
     manifest = {
         "schema_version": 1,
         "kind": "jev-wheels-v1",

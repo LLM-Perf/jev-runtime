@@ -30,6 +30,18 @@ def assemble(compiled: CompiledQuestion, results: list[ScoreResult], bundle: Bun
             raise JevError("invalid_scores", "Engine returned non-finite scores", 502)
         if actual.raw_logprobs and any(v > 1e-5 for v in actual.logprobs):
             raise JevError("score_contract", "A raw log probability cannot be positive", 502)
+    if compiled.label_groups:
+        if sum(compiled.label_groups) != len(results) or any(
+            len(result.logprobs) != 1 or not result.raw_logprobs for result in results
+        ):
+            raise JevError("score_contract", "Invalid single-label readout groups", 502)
+        grouped = []
+        start = 0
+        for count in compiled.label_groups:
+            group = results[start : start + count]
+            grouped.append(ScoreResult(group[0].request_id, tuple(r.logprobs[0] for r in group)))
+            start += count
+        results = grouped
     question = compiled.question
     calibration = bundle.calibration
     temperature = calibration.temperature if calibration else 1

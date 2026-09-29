@@ -40,7 +40,14 @@ class ControlledEngine:
         self.fail_cancel = False
 
     async def probe(self):
-        return Capabilities(engine="fixture", version="0", model_id="fixture", verified=False)
+        return Capabilities(
+            engine="fixture",
+            version="0",
+            model_id="fixture",
+            verified=False,
+            model_dtype="bfloat16",
+            readout_dtype="bfloat16",
+        )
 
     async def score(self, request):
         self.calls.append(request)

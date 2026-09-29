@@ -4,6 +4,10 @@ Development checks currently use SGLang 0.5.19 and vLLM 0.30.0 on CUDA 12.9.
 SGLang 0.5.20 retired the CUDA 12 lane and remains a separate certification target.
 Each engine uses its own environment. See `evidence/dsw/` for tested source commits.
 
+Additional backends now use the `jev_runtime.backends` installed-plugin entry point.
+The optional TokenSpeed package has a guarded, experimental single-label readout;
+it has no model GPU certification yet. See [multi-engine setup and limits](multi-engine.md).
+
 ## Gateway
 
 Install core with its tokenizer extra, copy `examples/gateway.yaml`, and replace

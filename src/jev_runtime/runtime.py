@@ -84,7 +84,7 @@ class Runtime:
         if not self.recovery_only:
             self.admission.start(self.registry, self.backend_identity)
         self.capabilities = await self.backend.probe()
-        if self.expected_model is not None and self.capabilities.engine in {"sglang", "vllm"}:
+        if self.expected_model is not None:
             for expected_field, observed_field in (
                 ("dtype", "model_dtype"),
                 ("readout_dtype", "readout_dtype"),
@@ -463,7 +463,7 @@ class Runtime:
                     questions = questions[:1]
                 async with asyncio.timeout(120):
                     for question in questions:
-                        compiled = self.compiler.compile("ready", question, bundle, request_id)
+                        compiled = self._compile_question("ready", question, bundle, request_id)
                         self._validate_sequences(compiled.sequences, bundle)
                         self.registry.record_branches(
                             lease_id, [seq.request_id for seq in compiled.sequences]
@@ -500,6 +500,14 @@ class Runtime:
                 self.registry.forget_worker_prepared(reference)
             self._prepared.add(reference)
             return {**self.registry.inspect(reference), "worker_id": self.registry.owner}
+
+    def _compile_question(self, text, question, bundle, request_id):
+        from jev_runtime.compiler import split_label_sequences
+
+        compiled = self.compiler.compile(text, question, bundle, request_id)
+        if self.capabilities is not None and self.capabilities.label_scoring == "single":
+            return split_label_sequences(compiled)
+        return compiled
 
     def _validate_sequences(self, sequences: tuple[ScoreInput, ...], bundle: Bundle) -> int:
         if self.capabilities is None:
@@ -604,7 +612,7 @@ class Runtime:
                 "question_budget", "Request must contain an allowed number of questions", 413
             )
         compiled = tuple(
-            self.compiler.compile(request.input.text, question, bundle, engine_rid)
+            self._compile_question(request.input.text, question, bundle, engine_rid)
             for question in questions
         )
         sequences = tuple(sequence for question in compiled for sequence in question.sequences)

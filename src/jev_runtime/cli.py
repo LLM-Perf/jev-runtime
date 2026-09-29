@@ -30,6 +30,14 @@ backend_app = typer.Typer(help="Stop Jev work across local API workers without c
 app.add_typer(backend_app, name="backend")
 
 
+@backend_app.command("list")
+def backend_list():
+    """List installed providers without importing their engine code."""
+    from jev_runtime.backends.discovery import backend_inventory
+
+    output(backend_inventory())
+
+
 @backend_app.command("status")
 def backend_status(url: str):
     admin_call(url, "/admin/quiescence")

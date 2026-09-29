@@ -41,6 +41,8 @@ def built(tmp_path_factory):
         module = repo / prefix
         module.mkdir(parents=True)
         (module / "__init__.py").write_text('SOURCE = "committed"\n')
+        if name == "jev-tokenspeed":
+            (module / "source-profile.json").write_text('{"files": {}}\n')
         package_root = Path(prefix).relative_to(directory) if directory != "." else Path(prefix)
         (repo / directory / "pyproject.toml").write_text(
             '[build-system]\nrequires=["hatchling>=1.26"]\nbuild-backend="hatchling.build"\n'

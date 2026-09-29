@@ -1,0 +1,13 @@
+{
+  "model": "/srv/models/SmolLM2-1.7B-Instruct",
+  "revision": "31b70e2e869a7173562077fd711b654946d38674",
+  "dtype": "bfloat16",
+  "sampling_backend": "triton_full",
+  "enable_output_logprobs": true,
+  "enforce_eager": true,
+  "world_size": 1,
+  "max_model_len": 4096,
+  "max_num_seqs": 16,
+  "gpu_memory_utilization": 0.5,
+  "enable_prefix_caching": true
+}

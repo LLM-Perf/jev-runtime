@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Literal, Protocol
 
 from pydantic import Field, StrictBool
 
@@ -29,6 +29,9 @@ class Capabilities(Contract):
     verified: bool = False
     model_dtype: FloatingDType | None = None
     readout_dtype: FloatingDType | None = None
+    # A single-label backend must expose every native request to admission,
+    # journaling and usage accounting; it must not hide K requests in score().
+    label_scoring: Literal["joint", "single"] = "joint"
     # Observed engine configuration, not a numerical/kernel certificate.
     batch_invariant: StrictBool | None = None
 

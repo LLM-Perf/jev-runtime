@@ -631,3 +631,24 @@ terminal recorded groups; GPU 7 returns to baseline. The source, boot ID and PID
 namespace remain available; lost-source/container recovery and all broader release
 gates stay open. See [operations](registry-schema.md) and
 [failure-inclusive validation](registry-migration-validation.md).
+
+## Additional backend interface and experimental TokenSpeed integration
+
+Installed `jev_runtime.backends` entry points now extend backend configuration
+without modifying the core engine enumeration. Discovery is lazy and rejects
+ambiguous providers and built-in replacement. New backends must satisfy the same
+precision checks. `ScoringHTTP` validates the explicit raw-score bridge contract.
+
+The optional `jev-tokenspeed` package provides a native Engine launcher and bridge,
+bound to 13 inspected source files at upstream `7fa8acb1e885389825c077a6aec0326fbbbd7116`.
+That upstream rejects selected-ID scoring; its triton_full sampler preserves
+pre-bias logits. The experimental adapter therefore requests one verified label
+per native generation. Lowering exposes all K requests to branch/token quotas,
+persistent journals and usage, and reassembles the original four typed readouts.
+Cancellation waits for a terminal native response and retains unknown/failed drain.
+It does not claim efficient one-prefill selected-label gathering or restart recovery.
+
+TokenSpeed GPU/model, quality, performance and soak gates remain **not run**.
+Its additional 20-model matrix is in `profiles/framework-support.json`; the original
+24/40 functional result and all original acceptance criteria remain unchanged.
+See [multi-engine implementation, missing work and operations](multi-engine.md).

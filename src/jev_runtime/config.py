@@ -3,15 +3,13 @@ from __future__ import annotations
 import asyncio
 import os
 from pathlib import Path
-from typing import Literal
 
 import yaml
 from pydantic import Field
 
 from jev_runtime.adapters import AdapterStore, validate_lora_base
 from jev_runtime.backends.base import reported_dtype
-from jev_runtime.backends.sglang import SGLangHTTP
-from jev_runtime.backends.vllm import VLLMHTTP
+from jev_runtime.backends.discovery import create_backend
 from jev_runtime.compiler import Compiler
 from jev_runtime.errors import JevError
 from jev_runtime.health import HealthSettings
@@ -47,7 +45,7 @@ class TokenizerOptions(Contract):
 
 
 class Settings(Contract):
-    backend: Literal["sglang", "vllm"]
+    backend: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,63}$")
     engine_url: str = "http://127.0.0.1:30000"
     model_id: str
     model_revision: str = Field(pattern=r"^(?:[a-fA-F0-9]{40,64}|local-sha256:[a-fA-F0-9]{64})$")
@@ -170,12 +168,8 @@ async def build_runtime(
             )
     if native_backend is not None:
         backend = native_backend
-    elif settings.backend == "sglang":
-        backend = SGLangHTTP(
-            settings.engine_url, settings.model_id, os.environ.get(settings.engine_key_env)
-        )
     else:
-        backend = VLLMHTTP(settings.engine_url, os.environ.get(settings.engine_key_env))
+        backend = create_backend(settings, os.environ.get(settings.engine_key_env))
     identity = (
         f"{settings.backend}:{settings.engine_url}:{settings.model_id}:{settings.model_revision}"
     )

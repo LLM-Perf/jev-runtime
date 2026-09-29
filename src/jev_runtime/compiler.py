@@ -19,6 +19,26 @@ class CompiledQuestion:
     mode: str
     keys: tuple[str, ...]
     sequences: tuple[ScoreInput, ...]
+    label_groups: tuple[int, ...] = ()
+
+
+def split_label_sequences(compiled: CompiledQuestion) -> CompiledQuestion:
+    """Expose one native request per label without changing the prompt/readout."""
+    from dataclasses import replace
+
+    if compiled.label_groups:
+        raise ValueError("Question has already been lowered to single-label requests")
+    groups = tuple(len(sequence.label_ids) for sequence in compiled.sequences)
+    sequences = tuple(
+        replace(
+            sequence,
+            request_id=f"{sequence.request_id}.label{index:08x}",
+            label_ids=(label,),
+        )
+        for sequence in compiled.sequences
+        for index, label in enumerate(sequence.label_ids)
+    )
+    return replace(compiled, sequences=sequences, label_groups=groups)
 
 
 def supports_backend_ids_only(tokenizer) -> bool:

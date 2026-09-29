@@ -1,6 +1,7 @@
 # Jev Runtime
 
-Private development repository for a typed decision runtime over SGLang and vLLM.
+Private development repository for a typed decision runtime over SGLang and vLLM,
+with an experimental TokenSpeed adapter and an extensible backend plugin interface.
 
 The target is a complete serving product: Choice, Boolean/Noul, Score and Rank;
 versioned decision bundles; online activation and draining; model capability checks;
@@ -10,6 +11,7 @@ quality/calibration tools; and reproducible GPU evaluation.
 not GPU compatibility, model quality, performance certification, or a production SLA.
 See [the implementation plan](docs/implementation-plan.md) and
 [the completion ledger](docs/completion-ledger.md) for the full scope and evidence.
+See [multi-engine status, remaining gaps and TokenSpeed setup](docs/multi-engine.md).
 
 Existing unversioned registries require the explicit
 [offline schema upgrade](docs/registry-schema.md) before starting the current runtime.
@@ -20,7 +22,7 @@ the same migration tool; it does not restore an old route-generation snapshot.
 
 ```sh
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm
+.venv/bin/python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm -e packages/tokenspeed
 .venv/bin/pytest
 .venv/bin/ruff check src tests packages deployment benchmarks
 ```

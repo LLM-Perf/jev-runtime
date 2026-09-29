@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jev-tokenspeed"
+version = "0.1.0a1"
+requires-python = ">=3.11"
+dependencies = ["jev-runtime-core==0.1.0a1"]
+
+[project.scripts]
+jev-tokenspeed = "jev_tokenspeed.launcher:main"
+
+[project.entry-points."jev_runtime.backends"]
+tokenspeed = "jev_tokenspeed.backend:create_backend"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jev_tokenspeed"]

@@ -1,10 +1,15 @@
 # Immutable packages and offline gateway installation
 
-`deployment/release.py` builds all three project wheels from an explicit Git
+`deployment/release.py` builds all four current project wheels from an explicit Git
 commit, verifies their Python files against that commit, and records SHA256 hashes
 and build-tool versions. It can resolve a platform-specific gateway wheelhouse,
 then create a fresh isolated environment using only that wheelhouse. It does not
-change an installed SGLang/vLLM environment or activate traffic automatically.
+change an installed engine environment or activate traffic automatically. Historical
+commits preceding the TokenSpeed package continue to build their original three wheels.
+The TokenSpeed wheel includes its source-profile hash manifest. The gateway resolver
+still installs core/tokenizer dependencies only; the optional TokenSpeed provider
+must be installed separately from the matching wheel before using that backend.
+This does not provide a locked TokenSpeed GPU environment.
 
 These are development release artifacts. Release acceptance still requires the
 model, numerical, business quality, performance and lifecycle gates in the plan.
