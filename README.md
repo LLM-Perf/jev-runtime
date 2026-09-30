@@ -27,13 +27,19 @@ python3.12 -m venv .venv
 .venv/bin/ruff check src tests packages deployment benchmarks
 ```
 
+No GPU handy? `python examples/demo_fixture.py` runs the full serving loop
+(registry, bundle lifecycle, gateway, SDK) against a deterministic engine
+double. It demonstrates the serving contract, not model quality.
+
 Engine adapters are separate distributions under `packages/` so the core does not
 install two competing GPU dependency stacks. Run each engine in its own environment.
 Model weights, credentials, private workload text, and unfiltered service logs are
 excluded. Selected isolated-test logs checked for campaign credentials are retained
 with their evidence manifests.
 
-See [engine setup](docs/engine-integration.md), [operations](docs/operations.md),
+The full documentation index lives at [docs/README.md](docs/README.md).
+Frequently needed pages: [API reference and error codes](docs/api-reference.md),
+[engine setup](docs/engine-integration.md), [operations](docs/operations.md),
 [immutable packages and offline installation](docs/release-packaging.md),
 [offline gateway image preparation](docs/container-images.md),
 [registry snapshots and guarded restore staging](docs/registry-snapshots.md),
