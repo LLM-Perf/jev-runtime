@@ -40,7 +40,10 @@ def verify_response(data: dict, request: dict, bundles: dict[str, Bundle], engin
         assert answer.levels == {option["id"]: option["value"] for option in question["options"]}
     sequences = len(candidates) if independent else 1
     assert result.usage.scoring_sequences == sequences, "sequence usage mismatch"
-    assert result.usage.engine_completion_tokens == sequences, "completion usage mismatch"
+    # SGLang uses max_new_tokens=0 selected-ID readout; vLLM generates one per branch.
+    assert engine in {"sglang", "vllm"}, "Unqualified live-traffic engine"
+    completions = 0 if engine == "sglang" else sequences
+    assert result.usage.engine_completion_tokens == completions, "completion usage mismatch"
     assert result.usage.logical_prompt_tokens > 0 and result.usage.engine_prompt_tokens > 0
     assert 0 <= result.usage.cached_prompt_tokens <= result.usage.engine_prompt_tokens
     return result

@@ -1,7 +1,12 @@
 # Engine canaries and readiness
 
-Each API worker periodically checks its active bundles against the actual scoring
-backend. Startup/manual preparation still validates all fixed questions. A
+Each API worker periodically checks its active bundles and locally prepared
+standbys in READY/ACTIVE/DRAINING state against the actual scoring backend.
+Active routes run first; otherwise a frequently switched version could be absent
+at every polling instant and expire after 90 seconds despite receiving traffic.
+Retired or unprepared versions are excluded. Monitoring always acquires a
+revalidation lease and cannot revive a concurrently retired/unloaded version.
+Startup/manual preparation still validates all fixed questions. A
 periodic check of an already prepared immutable version verifies the current
 capabilities and scores its first question with synthetic `ready` input; dynamic
 bundles use a small Boolean canary. The full score/assembly contract must pass.
@@ -16,7 +21,7 @@ health:
 
 These defaults apply to both native plugins and gateways. The maximum age must
 allow the interval, probe timeout and five-second cancellation deadline. Probes
-run serially per worker, with one interval between sweeps. For many active bundles
+run serially per worker, with one interval between sweeps. For many active/standby bundles
 or congested engines, size the maximum age and timeout for that workload. Probes
 hold durable bundle/adapter leases and journal branches before dispatch. Like
 manual preparation, they are privileged control-plane work outside tenant quota

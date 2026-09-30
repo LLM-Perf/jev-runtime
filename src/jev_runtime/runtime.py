@@ -164,9 +164,23 @@ class Runtime:
             },
         }
 
+    def health_references(self) -> list[str]:
+        listing = self.registry.list()
+        active = {route["ref"] for route in listing["routes"] if route["ref"]}
+        # A prepared standby may be inactive at every polling instant while
+        # receiving traffic between polls. Keep its canary fresh for hot switching.
+        eligible = {
+            bundle["ref"]
+            for bundle in listing["bundles"]
+            if bundle["backend"] == self.backend_identity
+            and bundle["state"] in {"READY", "ACTIVE", "DRAINING"}
+            and (bundle["ref"] in active or self.is_prepared(bundle["ref"]))
+        }
+        return sorted(eligible, key=lambda reference: (reference not in active, reference))
+
     async def check_health(self) -> None:
         async with self._health_lock:
-            for reference in self.active_references():
+            for reference in self.health_references():
                 if self._quiescing:
                     return
                 try:
@@ -438,7 +452,14 @@ class Runtime:
             # periodic canary. New worker/version preparation still checks all tasks.
             minimal = monitoring and self.is_prepared(reference)
             request_id = "prepare-" + uuid.uuid4().hex
-            fresh = self.registry.inspect(reference)["state"] in {"VALIDATED", "FAILED", "RETIRED"}
+            # A monitoring snapshot can race retirement or adapter unloading.
+            # Only explicit preparation may revive a version; periodic probes
+            # must acquire a revalidation lease against its current serving state.
+            fresh = not monitoring and self.registry.inspect(reference)["state"] in {
+                "VALIDATED",
+                "FAILED",
+                "RETIRED",
+            }
             if fresh:
                 bundle, lease_id = self.registry.begin_prepare(
                     reference, self.backend_identity, request_id

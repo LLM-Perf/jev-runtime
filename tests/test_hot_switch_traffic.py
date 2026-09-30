@@ -8,12 +8,14 @@ import pytest
 
 from jev_runtime.schema import TemplateSpec
 from tests.integration.hot_switch_traffic import exercise, verify_response
+from tests.integration.verify_traffic_evidence import verify
 
 
 class Target:
     """Explicit CPU HTTP-contract double; never used by the live runner."""
 
-    def __init__(self, bundle, corrupt=None):
+    def __init__(self, bundle, corrupt=None, engine="vllm"):
+        self.engine = engine
         self.bundles = (
             bundle,
             bundle.model_copy(
@@ -24,6 +26,7 @@ class Target:
         self.generation = 2
         path = Path(__file__).parents[1] / "evidence/dsw/vllm-deepseek15b-ad9b417-abstention.json"
         self.response = json.loads(path.read_text())["response"]
+        self.response["engine"]["name"] = engine
         self.response["answers"]["routing"].update(
             status="answered",
             value=["payments", "sales", "engineering"],
@@ -84,7 +87,7 @@ class Target:
             scoring_sequences=sequences,
             logical_prompt_tokens=20,
             engine_prompt_tokens=20 * sequences,
-            engine_completion_tokens=sequences,
+            engine_completion_tokens=0 if self.engine == "sglang" else sequences,
             cached_prompt_tokens=0,
         )
         await asyncio.sleep(0.001)
@@ -108,7 +111,7 @@ async def run(target, tmp_path, **options):
         payload=target.payload,
         bundles=target.bundles,
         generation=2,
-        engine="vllm",
+        engine=target.engine,
         output=tmp_path / "responses.jsonl.gz",
         checks=checks,
         **parameters,
@@ -117,10 +120,11 @@ async def run(target, tmp_path, **options):
 
 
 @pytest.mark.parametrize("requests,switches", [(100, 4), (4, 50)])
+@pytest.mark.parametrize("engine", ["vllm", "sglang"])
 async def test_both_minima_required_and_every_attempt_retained(
-    bundle, tmp_path, requests, switches
+    bundle, tmp_path, requests, switches, engine
 ):
-    target = Target(bundle)
+    target = Target(bundle, engine=engine)
     task, checks = await run(target, tmp_path, minimum_requests=requests, minimum_switches=switches)
     await task
     report = checks["hot_switch_under_traffic"]
@@ -134,6 +138,11 @@ async def test_both_minima_required_and_every_attempt_retained(
     assert len(requests) == target.attempted
     assert len({row["request"]["input"]["text"] for row in requests}) == len(requests)
     assert rows[-1]["passed"]
+    contract = tmp_path / "contract.json"
+    contract.write_text(json.dumps({"passed": True, "checks": checks}))
+    assert verify(tmp_path / "responses.jsonl.gz", contract)["strict_success_requests"] == len(
+        requests
+    )
 
 
 async def test_http_200_invalid_response_fails_without_retry(bundle, tmp_path):
@@ -197,3 +206,21 @@ async def test_identity_or_usage_corruption_never_counts_as_strict_success(bundl
         data["usage"]["engine_prompt_tokens"] = None
     with pytest.raises((AssertionError, ValueError, TypeError)):
         verify_response(data, request, {b.reference: b for b in target.bundles}, "vllm")
+
+
+@pytest.mark.parametrize("engine", ["vllm", "sglang"])
+@pytest.mark.parametrize("version", [1, 2])
+async def test_completion_usage_is_exact_for_each_native_readout(bundle, engine, version):
+    target = Target(bundle, engine=engine)
+    target.bundle = target.bundles[version - 1]
+    request = {
+        **target.payload,
+        "request_id": "unique",
+        "questions": target.payload["questions"][:1],
+    }
+    data = await target.call("/v1/decisions", request)
+    mapping = {b.reference: b for b in target.bundles}
+    verify_response(data, request, mapping, engine)
+    data["usage"]["engine_completion_tokens"] += 1
+    with pytest.raises(AssertionError, match="completion usage mismatch"):
+        verify_response(data, request, mapping, engine)
