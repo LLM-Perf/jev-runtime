@@ -1,0 +1,24 @@
+{
+  "engine": "sglang",
+  "strict_success_requests": 10006,
+  "unique_request_ids": 10006,
+  "unique_inputs": 10006,
+  "switches": 16451,
+  "requests_by_type": {
+    "choice": 2502,
+    "score": 2501,
+    "boolean": 2502,
+    "rank": 2501
+  },
+  "requests_by_bundle": {
+    "cert-36a14dd6919e@1": 4516,
+    "cert-36a14dd6919e@2": 5490
+  },
+  "elapsed_seconds": 145.24380881525576,
+  "latency_ms": {
+    "p50": 56.043749675154686,
+    "p99": 105.04193231463432,
+    "max": 140.8932777121663
+  },
+  "qualification": "observed colocated functional traffic; not controlled performance"
+}

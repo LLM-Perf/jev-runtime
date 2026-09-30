@@ -1,0 +1,73 @@
+{
+  "identity": {
+    "pid": 2876738,
+    "start_ticks": "453071862",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "engine": "vllm",
+  "mode": "native-plugin",
+  "command": [
+    "/root/jev-runtime/envs/vllm/bin/vllm",
+    "serve",
+    "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "--served-model-name",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18795",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "2048",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "512",
+    "--max-logprobs",
+    "128",
+    "--gpu-memory-utilization",
+    "0.07",
+    "--enforce-eager",
+    "--shutdown-timeout",
+    "30"
+  ],
+  "model": {
+    "model_id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "revision": "31b70e2e869a7173562077fd711b654946d38674",
+    "path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct"
+  },
+  "tokenizer_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+  "gpu_before": {
+    "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+    "name": "NVIDIA L20Z",
+    "total_mib": "81559",
+    "free_mib": "11744",
+    "driver": "550.127.08",
+    "utilization": "0"
+  },
+  "gpus_before": [
+    {
+      "index": 7,
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "tensor_parallel_size": 1,
+  "dtype": "bfloat16",
+  "readout_dtype": "bfloat16",
+  "batch_invariant": false,
+  "recovery_only": false,
+  "native_shutdown_timeout_seconds": 30,
+  "registry_path": "/root/jev-runtime/runs/vllm-strict-traffic-9da1813/registry.db",
+  "chat_template_source": null,
+  "chat_template_snapshot": null,
+  "created": 1790775179.2852871,
+  "port": 18795,
+  "qualification": "colocated-functional-test",
+  "memory_budget_denominator": "total_mib"
+}

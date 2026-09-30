@@ -1,0 +1,12 @@
+{
+  "source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "python_tests": 590,
+  "seconds": 17.96,
+  "targeted_regression_tests": 50,
+  "lint": "passed",
+  "format": "passed",
+  "initial_sandbox_failure": "24 launcher tests could not bind loopback; allowed-socket reruns passed",
+  "changes": "health canaries cover prepared standbys; monitoring cannot revive retired versions; engine-specific completion usage",
+  "wheel_manifest_sha256": "a16d88207b3f07d75c1d3565bbdb8b774f3b333f6d6f6277b991a64a8878e9ee",
+  "wheel_build": "four source-matched packages passed"
+}

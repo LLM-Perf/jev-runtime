@@ -1,0 +1,24 @@
+{
+  "tensor_parallel_size": 1,
+  "parent_cuda_visible_devices": "6",
+  "selected_gpus": [
+    {
+      "index": 6,
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "server_parallel_config": {
+    "tp_size": 1,
+    "pp_size": 1,
+    "dp_size": 1,
+    "dtype": "bfloat16",
+    "model_path": "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+    "context_length": 2048
+  },
+  "proof": "Live server parallel configuration and parent CUDA mapping"
+}

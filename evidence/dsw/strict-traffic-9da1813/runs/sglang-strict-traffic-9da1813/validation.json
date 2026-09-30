@@ -1,0 +1,36 @@
+{
+  "harness_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "runtime_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "started_at": 1790775179.08432,
+  "qualification": "colocated functional validation; single-position numerical development check",
+  "stages": {
+    "readiness": {
+      "ready": true,
+      "elapsed_seconds": 29.08708329126239
+    },
+    "topology": {
+      "passed": true
+    },
+    "contract": {
+      "returncode": 0,
+      "passed": true
+    },
+    "precision_binding": {
+      "returncode": 0,
+      "passed": true
+    },
+    "postcheck": {
+      "passed": true
+    },
+    "cpu_reference": {
+      "returncode": 0,
+      "passed": true,
+      "max_absolute_error": 0.00016123056411743164
+    }
+  },
+  "functional_passed": true,
+  "numerical_position_passed": true,
+  "cleanup_passed": true,
+  "passed": true,
+  "finished_at": 1790775372.7740667
+}

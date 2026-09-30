@@ -1,0 +1,221 @@
+{
+  "source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+  "source_archive_sha256": "7568ed70add8ef65280497c1f508551e6afe42ca5c73906c0ef271a649b71e49",
+  "script_sha256": "b45f3db11be1a70a45eea84fdb195ce9713dd20604fa4f2e47f5ad620375d9f9",
+  "supervisor_identity": {
+    "pid": 2875225,
+    "start_ticks": "453022903",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "started_at": 1790774689.8990445,
+  "minimum_requests_per_engine": 10000,
+  "minimum_switches_per_engine": 1000,
+  "concurrency_per_engine": 4,
+  "contracts": {
+    "vllm": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_hot_switch_traffic.py",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_integration_contract.py",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_native_validation_runner.py"
+      ]
+    },
+    "sglang": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_hot_switch_traffic.py",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_integration_contract.py",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/test_native_validation_runner.py"
+      ]
+    }
+  },
+  "native": {
+    "sglang": {
+      "returncode": 1,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-strict-traffic-4ee78ca",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "6",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        "0.65",
+        "--minimum-requests",
+        "10000",
+        "--switches",
+        "1000",
+        "--traffic-concurrency",
+        "4",
+        "--traffic-timeout",
+        "1200",
+        "--check-timeout",
+        "1500",
+        "--source-commit",
+        "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "--runtime-source-commit",
+        "4ee78cab97c62d3ae03c5486e628af5bee797a28"
+      ],
+      "run_dir": "/root/jev-runtime/runs/sglang-strict-traffic-4ee78ca",
+      "validation": {
+        "harness_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "runtime_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "started_at": 1790774696.61044,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 28.078705169260502
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 1,
+            "passed": false
+          }
+        },
+        "failure": {
+          "stage": "contract",
+          "type": "RuntimeError",
+          "message": "contract failed; inspect retained report"
+        },
+        "cleanup_passed": true,
+        "passed": false,
+        "finished_at": 1790774729.441926
+      }
+    },
+    "vllm": {
+      "returncode": 1,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/strict-traffic-4ee78ca/4ee78cab97c62d3ae03c5486e628af5bee797a28/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-strict-traffic-4ee78ca",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        "0.07",
+        "--minimum-requests",
+        "10000",
+        "--switches",
+        "1000",
+        "--traffic-concurrency",
+        "4",
+        "--traffic-timeout",
+        "1200",
+        "--check-timeout",
+        "1500",
+        "--source-commit",
+        "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "--runtime-source-commit",
+        "4ee78cab97c62d3ae03c5486e628af5bee797a28"
+      ],
+      "run_dir": "/root/jev-runtime/runs/vllm-strict-traffic-4ee78ca",
+      "validation": {
+        "harness_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "runtime_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+        "started_at": 1790774696.6165414,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 30.07678632531315
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 1,
+            "passed": false
+          }
+        },
+        "failure": {
+          "stage": "contract",
+          "type": "RuntimeError",
+          "message": "contract failed; inspect retained report"
+        },
+        "cleanup_passed": true,
+        "passed": false,
+        "finished_at": 1790774822.134837
+      }
+    }
+  },
+  "qualification": "simultaneous colocated native functional traffic; not performance or soak",
+  "prior_owned_groups_terminal": 180,
+  "protected_service_before": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "cmdline_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "gpus_before": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "gpus_after": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "protected_service_after": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "cmdline_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "protected_service_unchanged": true,
+  "finished_at": 1790774822.4132655,
+  "passed": false
+}

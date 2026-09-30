@@ -669,3 +669,22 @@ Upstream sampling-method CPU checks pass six cases but execute neither a real
 TokenSpeed engine nor GPU kernels. TokenSpeed GPU coverage remains 0/20;
 the existing 24/40 model coverage, numerical failures and release gates are
 unchanged. See [failure-inclusive validation](multi-engine-validation.md).
+
+## Expanded strict traffic and standby health (9da1813)
+
+The live harness now requires both 10,000 strictly valid requests and 1,000 hot
+switches, retains every response/activation and never retries failed traffic.
+The first vLLM attempt fails at 6,290/6,291 with an expired canary; the first
+SGLang attempt fails its four responses because the new harness incorrectly
+expected generated tokens from zero-output scoring. Both failed attempts remain.
+
+Runtime monitoring now refreshes prepared READY/ACTIVE/DRAINING standbys while
+prioritizing active versions. Revalidation cannot resurrect retired/unloaded
+versions. With the engine-specific usage assertion corrected, concurrent native
+DSW runs pass 10,004/10,004 vLLM and 10,006/10,006 SGLang requests, across all four
+types, with 15,276/16,451 switches and zero mixed versions or retries. Single-position
+numerical checks pass the original threshold. All four owned groups exit and all
+six work counters in each registry are zero; the protected service identity and
+command line remain unchanged. Local tests: 590; four source-matched wheels pass.
+No model, business-quality, controlled-performance or soak gate changes.
+See [complete results and original failures](strict-traffic-validation.md).

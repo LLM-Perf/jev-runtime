@@ -114,5 +114,7 @@ CPU 合同覆盖插件发现/冲突、四种类型和两种 readout 的拆分一
 logits 的顺序；它不是完整 TokenSpeed GPU serving 验证。
 
 本轮实际结果见 [多框架验证与剩余门槛](multi-engine-validation.md)。
+后续已完成 [每引擎超过一万次严格成功请求的 DSW 扩量验证](strict-traffic-validation.md)，
+并修复持续热切换下待切换版本 canary 过期的问题。
 所有引擎仍须按最终发布源码复验。插件源码、CPU 合同、已构建 wheel、真实 GPU
 运行、业务质量和受控性能分别报告，任何一项不能替代另一项。

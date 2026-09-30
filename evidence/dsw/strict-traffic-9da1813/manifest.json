@@ -1,0 +1,355 @@
+{
+  "final_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "failed_attempt_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+  "credential_scan": "API/admin exact values absent from plaintext and decompressed logs; keys.json excluded",
+  "files": {
+    "runs/sglang-strict-traffic-4ee78ca/cleanup.json": {
+      "sha256": "32f0acffeab4857ccae322eb7b72f5c820909263b186e28bb5566f783207a7f2",
+      "bytes": 2522
+    },
+    "runs/sglang-strict-traffic-4ee78ca/config.json": {
+      "sha256": "c06d48912f4ca712668ad0439f564d7c8e84a69a74334c374a2e514d0c88691b",
+      "bytes": 575
+    },
+    "runs/sglang-strict-traffic-4ee78ca/contract.json": {
+      "sha256": "2d19d74f897c6103e73faf493139962216d5a1624630b2ecf137408b5386d5c1",
+      "bytes": 17342
+    },
+    "runs/sglang-strict-traffic-4ee78ca/contract.log.gz": {
+      "sha256": "a6f1706e07890a6b40290c1f39b10c3adbc3c6f03eaf43c9103cc833ff4cf05b",
+      "bytes": 592
+    },
+    "runs/sglang-strict-traffic-4ee78ca/engine.log.gz": {
+      "sha256": "65d9c890964fb723744d5b2222398a3a033ffa3ebcd739ebbde93a72f4f197dd",
+      "bytes": 8759
+    },
+    "runs/sglang-strict-traffic-4ee78ca/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/sglang-strict-traffic-4ee78ca/launch.log.gz": {
+      "sha256": "93c0967ba120e752351df12df9dd7f1888ffa4df137206d55b4658f64ef3385c",
+      "bytes": 165
+    },
+    "runs/sglang-strict-traffic-4ee78ca/process.json": {
+      "sha256": "59811994f5ade2425e5f27e9dbf258f5132b1b0a4933e3bee7ca14c62df75c21",
+      "bytes": 1978
+    },
+    "runs/sglang-strict-traffic-4ee78ca/quiescence-stop.json": {
+      "sha256": "c214c4468aec0f2938472a2d5c8f06cf68a2119b00d526c935a0dc25e614341a",
+      "bytes": 765
+    },
+    "runs/sglang-strict-traffic-4ee78ca/topology.json": {
+      "sha256": "8198cbffc6a6192a13f902e0ccdcb264781436bf8e817480fcbeda47c2dca831",
+      "bytes": 605
+    },
+    "runs/sglang-strict-traffic-4ee78ca/traffic-progress.json": {
+      "sha256": "b3b8cd75489f3b92dd84be4c85d15092c4b787f81943881915677a4ca471ad18",
+      "bytes": 625
+    },
+    "runs/sglang-strict-traffic-4ee78ca/traffic-responses.jsonl.gz": {
+      "sha256": "adb2da05a5e9e62101d08fb6fde38c4113b091ce181d199539316c9e83812031",
+      "bytes": 2593
+    },
+    "runs/sglang-strict-traffic-4ee78ca/validation.json": {
+      "sha256": "fa700f35f46380eb58f99d96cfe1c57d76858ff9330d4bfe8d63e0d5142526b0",
+      "bytes": 715
+    },
+    "runs/sglang-strict-traffic-9da1813/cleanup.json": {
+      "sha256": "3dbb5d99ce389f630fe06549de4baacab7a6a13c4d671f67074e797795bfe449",
+      "bytes": 2521
+    },
+    "runs/sglang-strict-traffic-9da1813/config.json": {
+      "sha256": "31c92a6c6a9dfeff87563f01e86a6196b0fea5d2ae05512a7353cb771647bb9c",
+      "bytes": 575
+    },
+    "runs/sglang-strict-traffic-9da1813/contract.json": {
+      "sha256": "38566e682c7634dc3c7d1592d49064a5e551156deeeb1720ece6086698eaeadc",
+      "bytes": 17499
+    },
+    "runs/sglang-strict-traffic-9da1813/contract.log.gz": {
+      "sha256": "ea40eee90d380c86fdee12120e689c428d6598df0b3e142d92c780af791f99ad",
+      "bytes": 250
+    },
+    "runs/sglang-strict-traffic-9da1813/engine.log.gz": {
+      "sha256": "66087d0cefffe4a485ef60853408d02b5ecbaecd42fed9b9bbac6126fc5e008c",
+      "bytes": 466342
+    },
+    "runs/sglang-strict-traffic-9da1813/environment.json": {
+      "sha256": "80f3b134e2110d90646be377945f00b1603374fce427dec1a1b6ee6feac0db4e",
+      "bytes": 682
+    },
+    "runs/sglang-strict-traffic-9da1813/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/sglang-strict-traffic-9da1813/launch.log.gz": {
+      "sha256": "8caf200605b2d0d64d02b158c5730bdd1f51cbd2188991c5270daa2d0d8c2d87",
+      "bytes": 165
+    },
+    "runs/sglang-strict-traffic-9da1813/postcheck.json": {
+      "sha256": "fd630c861b3fe2c0719092ffd17b5e3bd63974e0bae3d89d3b09a39ba5974273",
+      "bytes": 303
+    },
+    "runs/sglang-strict-traffic-9da1813/precision-binding.json": {
+      "sha256": "a72e836e87f391e8648574f87fdce9dd97a2d9fd06a5fe95e7f408156ff5e5a0",
+      "bytes": 2761
+    },
+    "runs/sglang-strict-traffic-9da1813/precision_binding.log.gz": {
+      "sha256": "78f6b3890248ca4d12a2b705826a2895624d5332b9433a81d4ca751c4ead457c",
+      "bytes": 113
+    },
+    "runs/sglang-strict-traffic-9da1813/process.json": {
+      "sha256": "c24b4a8e8aa654363e634d0cc04a275f632d591d6c7653424fa0f2f3597c8e64",
+      "bytes": 1977
+    },
+    "runs/sglang-strict-traffic-9da1813/profile.json": {
+      "sha256": "27bdc71952877e1c81a352abf996b03c7c5ad220b94534b8072c4ac335ae2945",
+      "bytes": 2853
+    },
+    "runs/sglang-strict-traffic-9da1813/quiescence-stop.json": {
+      "sha256": "af21f67d6a703443c30be9ef885f08ca1a8c149f7aecf9fd85ec5c62af3eec15",
+      "bytes": 765
+    },
+    "runs/sglang-strict-traffic-9da1813/recount.json": {
+      "sha256": "ea2d91aed506f34f4ab542fa5d16632fd886ebf3c53b6c5161ad5e70d0372cf6",
+      "bytes": 584
+    },
+    "runs/sglang-strict-traffic-9da1813/reference-cpu.json": {
+      "sha256": "0e8523eae438497635c4fab080ba067b31156559927cb37a95a0d95b8e06e02e",
+      "bytes": 1464
+    },
+    "runs/sglang-strict-traffic-9da1813/reference-cpu.log.gz": {
+      "sha256": "3f2e6cbace29b1a266839a4d74bf03476e9714b7db5872c44682fdb8438cdee7",
+      "bytes": 843
+    },
+    "runs/sglang-strict-traffic-9da1813/topology.json": {
+      "sha256": "8198cbffc6a6192a13f902e0ccdcb264781436bf8e817480fcbeda47c2dca831",
+      "bytes": 605
+    },
+    "runs/sglang-strict-traffic-9da1813/traffic-progress.json": {
+      "sha256": "5d1da1ac56ad1612cd3f8d48e7bb076608004cf53ea6de2d233a8c8fe74ac2e2",
+      "bytes": 842
+    },
+    "runs/sglang-strict-traffic-9da1813/traffic-responses.jsonl.gz": {
+      "sha256": "57ca550ef8db7cdc55840256623eab2a9386e2656993e2b4b4bee7f0aa92c0b5",
+      "bytes": 1364890
+    },
+    "runs/sglang-strict-traffic-9da1813/validation.json": {
+      "sha256": "b52f22f6854893ac01dede512b7ebd30642104ad4ac102be4f64227f4d39e080",
+      "bytes": 899
+    },
+    "runs/vllm-strict-traffic-4ee78ca/cleanup.json": {
+      "sha256": "737590b5046a0b8206951ca51f458733fc1285306301808f33cc4280289a788a",
+      "bytes": 2445
+    },
+    "runs/vllm-strict-traffic-4ee78ca/config.json": {
+      "sha256": "3b7c9750eec5adad1f054b1b245b4903e00e01b1988d6498b7b8c315d1a37363",
+      "bytes": 571
+    },
+    "runs/vllm-strict-traffic-4ee78ca/contract.json": {
+      "sha256": "ee2392c0e8871aee40f84b2ce230072b4fe9101b7fd170fa20d201c414f078d5",
+      "bytes": 17636
+    },
+    "runs/vllm-strict-traffic-4ee78ca/contract.log.gz": {
+      "sha256": "91e7714dfbbec3756b7f8f9a19aa31e8853195716a27c9a1abf05d5ad33b065c",
+      "bytes": 591
+    },
+    "runs/vllm-strict-traffic-4ee78ca/engine.log.gz": {
+      "sha256": "35bc279435f7bcd7e91d31f00b4379a6785bd1e2bf4ea20c14a28f79e4a8d8b3",
+      "bytes": 20160
+    },
+    "runs/vllm-strict-traffic-4ee78ca/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/vllm-strict-traffic-4ee78ca/launch.log.gz": {
+      "sha256": "8c6d68fa247bd86ab4eb0ec7719ab51ca4bef46987af7eb9e53464a2728b16cb",
+      "bytes": 164
+    },
+    "runs/vllm-strict-traffic-4ee78ca/process.json": {
+      "sha256": "c05ab0bfedfd163afcb3642e0ed5be8a855d60c40e23026a157ad7cf23f5f101",
+      "bytes": 1905
+    },
+    "runs/vllm-strict-traffic-4ee78ca/quiescence-stop.json": {
+      "sha256": "0c188f03147642019accdbbf96ef16dd12968d6a3a62b955b36c1d71da9b2cba",
+      "bytes": 761
+    },
+    "runs/vllm-strict-traffic-4ee78ca/topology.json": {
+      "sha256": "3c478d7de8c0cfc5812fbbc75645607a65fdbd7f9538ccebcd91c3f07e2e7009",
+      "bytes": 469
+    },
+    "runs/vllm-strict-traffic-4ee78ca/traffic-progress.json": {
+      "sha256": "912753ee1ae982e40e84cbc7434898d21153ba44cba8a32ba3a816a34203e9fd",
+      "bytes": 840
+    },
+    "runs/vllm-strict-traffic-4ee78ca/traffic-responses.jsonl.gz": {
+      "sha256": "483bb4e79b594bec595b85446d8d90a380261e0ff2b9497da7245c388092c8f9",
+      "bytes": 857800
+    },
+    "runs/vllm-strict-traffic-4ee78ca/validation.json": {
+      "sha256": "313d336f93a4f24614cdfc7a659628b43f9c55e42a20e19c4faf23226766de68",
+      "bytes": 716
+    },
+    "runs/vllm-strict-traffic-9da1813/cleanup.json": {
+      "sha256": "6eb19439b6cfd012e5f71211f2e73b35a23a22ea2c984ae11387af4227ae2c1a",
+      "bytes": 2445
+    },
+    "runs/vllm-strict-traffic-9da1813/config.json": {
+      "sha256": "32b4dd20fb5e633182f9f0bbbf6dfe14bf60730ce4b2597cd0a5a49178451606",
+      "bytes": 571
+    },
+    "runs/vllm-strict-traffic-9da1813/contract.json": {
+      "sha256": "18e7ad102ae5e2a26085c831b62f6c00d707b0d3d7612115a82ad257dadaf0c1",
+      "bytes": 17540
+    },
+    "runs/vllm-strict-traffic-9da1813/contract.log.gz": {
+      "sha256": "81e1fdf77ab7068975b85840be19644453e8c9a14b59d2a49174a237140d4748",
+      "bytes": 248
+    },
+    "runs/vllm-strict-traffic-9da1813/engine.log.gz": {
+      "sha256": "7afc0bf5c0c4782996b55468b681ca11a6162815e74a77ba9fb4961d5b1c289c",
+      "bytes": 27385
+    },
+    "runs/vllm-strict-traffic-9da1813/environment.json": {
+      "sha256": "680396dceab2e3eacab6820eaf2bc291365470fccda1214966b993675d035ca2",
+      "bytes": 680
+    },
+    "runs/vllm-strict-traffic-9da1813/final-journals.json": {
+      "sha256": "d98b6d7d008ea8ff0d383e146337f2dfd989ae613999c865d3a594d54eec3b94",
+      "bytes": 126
+    },
+    "runs/vllm-strict-traffic-9da1813/launch.log.gz": {
+      "sha256": "a2de2502cf724b8096f3550b066fefcca15d1dc145ffabe5944b8686bfbf26b7",
+      "bytes": 164
+    },
+    "runs/vllm-strict-traffic-9da1813/postcheck.json": {
+      "sha256": "d823ef339b8fa66508eff7467c07071683e63bc6d0e8fcbd9b9a53061d9b7282",
+      "bytes": 303
+    },
+    "runs/vllm-strict-traffic-9da1813/precision-binding.json": {
+      "sha256": "ce7f2c9e4fa5904d27f49160b23bd47e9f46be172175fd4ce602fc49dc48cea3",
+      "bytes": 2764
+    },
+    "runs/vllm-strict-traffic-9da1813/precision_binding.log.gz": {
+      "sha256": "6699898c3647977f9e3e814a0e78aeb7b2e4f91550df53deea3588499f455cc0",
+      "bytes": 112
+    },
+    "runs/vllm-strict-traffic-9da1813/process.json": {
+      "sha256": "d1e3cc476b6b22d3cf721d254186b62a71a5f3925d7def5044ca81113cebe3fd",
+      "bytes": 1905
+    },
+    "runs/vllm-strict-traffic-9da1813/profile.json": {
+      "sha256": "e0fcfff2deebfa65011b1398bcd5ee53ba8fa0f649cb81bbce982bacce2cb0eb",
+      "bytes": 2861
+    },
+    "runs/vllm-strict-traffic-9da1813/quiescence-stop.json": {
+      "sha256": "e8901a11c8abd17668dd6d2a3d6402c3179630ecb8fb432fd8829cccdaa54838",
+      "bytes": 761
+    },
+    "runs/vllm-strict-traffic-9da1813/recount.json": {
+      "sha256": "646d928195c3ef0bbeac42bd129b555445cfe06d2898726d5e6adb13c7738121",
+      "bytes": 581
+    },
+    "runs/vllm-strict-traffic-9da1813/reference-cpu.json": {
+      "sha256": "636fbc6ace661ed3bc06ca7e7b2a28d79f23addcecd037de96583ce8cf120022",
+      "bytes": 1457
+    },
+    "runs/vllm-strict-traffic-9da1813/reference-cpu.log.gz": {
+      "sha256": "f6072a2839c99ea00f93749e5a48a645f5bc4bdd077b6b04b45765e43d461865",
+      "bytes": 854
+    },
+    "runs/vllm-strict-traffic-9da1813/topology.json": {
+      "sha256": "a15e8f99f2b1dd63f355ab8e00e16ffd399cb1978a06f15c31118ed3d73f943c",
+      "bytes": 469
+    },
+    "runs/vllm-strict-traffic-9da1813/traffic-progress.json": {
+      "sha256": "5a6bc4d97305759660c9fc38468a4afe2eebd6da257b5398d94eb03368e75120",
+      "bytes": 842
+    },
+    "runs/vllm-strict-traffic-9da1813/traffic-responses.jsonl.gz": {
+      "sha256": "8951006a70858de2fe7796576b16a0c5c4d8cb0664193a06cd261ee7e37b7562",
+      "bytes": 1342960
+    },
+    "runs/vllm-strict-traffic-9da1813/validation.json": {
+      "sha256": "ec93363908a5b1dcc7eb0425bef59abe1c32a968b838eab147481ea8887654f8",
+      "bytes": 898
+    },
+    "source-files.json": {
+      "sha256": "839e790967d3bee4cdaceff4eb472e5725a337fd1041d067bafceaf05c2ab17b",
+      "bytes": 34247
+    },
+    "strict-traffic-4ee78ca/campaign.json": {
+      "sha256": "84ad35c53b613280b167e40b24abe905ff388ee096ba93eae9983f0b7f539c93",
+      "bytes": 7161
+    },
+    "strict-traffic-4ee78ca/campaign.py": {
+      "sha256": "b45f3db11be1a70a45eea84fdb195ce9713dd20604fa4f2e47f5ad620375d9f9",
+      "bytes": 5607
+    },
+    "strict-traffic-4ee78ca/contracts-sglang.log.gz": {
+      "sha256": "f3e0598800667cb2ae8c2a4c62f2f48d7ee27fa69cd71534496fe66952333684",
+      "bytes": 52
+    },
+    "strict-traffic-4ee78ca/contracts-vllm.log.gz": {
+      "sha256": "ea89894d2623e4b626fda49268989ecd013eed437a1c9f3f0d5b2cf4f125d9c6",
+      "bytes": 52
+    },
+    "strict-traffic-4ee78ca/sglang-native.log.gz": {
+      "sha256": "507af2ec0b9b9c9367d427a8de9d6bf2d007b573139cf6d8f37288cf2e0fcd68",
+      "bytes": 465
+    },
+    "strict-traffic-4ee78ca/source.sha256": {
+      "sha256": "c4352a7758c6d93282c1713ce13a4e354462bb67465036e1710bd7ac1a57058a",
+      "bytes": 65
+    },
+    "strict-traffic-4ee78ca/supervisor.log.gz": {
+      "sha256": "12534e405546c1c6e610ea09a9be235e5ca76ff36224cf6bc9ea73e9c0b0f53c",
+      "bytes": 95
+    },
+    "strict-traffic-4ee78ca/vllm-native.log.gz": {
+      "sha256": "698cfac8a221fb26395d7bc7d6b8db496b1211957cd6539ece4adfb3b6017332",
+      "bytes": 467
+    },
+    "strict-traffic-9da1813/campaign.json": {
+      "sha256": "6b5dc4260c4e038a086b211d9fe39f628bd12b2a89b63e50e29ff687968b1233",
+      "bytes": 8344
+    },
+    "strict-traffic-9da1813/campaign.py": {
+      "sha256": "62cf0552b9cc7122a7cd47c6b6a5f8086f1a152a0556b8056d301936c6a497ba",
+      "bytes": 5674
+    },
+    "strict-traffic-9da1813/contracts-sglang.log.gz": {
+      "sha256": "b7d531ec03631fac00894aba659fd79ca20887af26d00412db1a52b960fef08a",
+      "bytes": 52
+    },
+    "strict-traffic-9da1813/contracts-vllm.log.gz": {
+      "sha256": "84d3e611892ed07b2a8f4ec3d0ebb100afe54d4149cfa84ed6d6ed65204e8c40",
+      "bytes": 52
+    },
+    "strict-traffic-9da1813/export-r2.py": {
+      "sha256": "b28be0b7874934a0c4b2b5adf8e74134ea67771a93e20c85e760f542f51385ce",
+      "bytes": 4603
+    },
+    "strict-traffic-9da1813/export.py": {
+      "sha256": "2077d456ef89f515961241e898050fbd29078a9b6c98194dfd13ad3d67f320a4",
+      "bytes": 4364
+    },
+    "strict-traffic-9da1813/sglang-native.log.gz": {
+      "sha256": "78581d8cc4b91690252ec9e30ccb09faaa1338430ba0e41854ba5afd1ae5d8f2",
+      "bytes": 484
+    },
+    "strict-traffic-9da1813/source.sha256": {
+      "sha256": "5c4d3c85f8ed89d0777409eb439a4ced5ee6a878d405ebc72c327efd875264fd",
+      "bytes": 65
+    },
+    "strict-traffic-9da1813/supervisor.log.gz": {
+      "sha256": "ed29be5bf3572640d9e9ba041c3167e65507976dbf87061d9e0b5ae6beee0d72",
+      "bytes": 96
+    },
+    "strict-traffic-9da1813/vllm-native.log.gz": {
+      "sha256": "4e15dfa5192a80801d54088e63651de26b8a63efad810ef0da67b8c749889a59",
+      "bytes": 483
+    }
+  }
+}
