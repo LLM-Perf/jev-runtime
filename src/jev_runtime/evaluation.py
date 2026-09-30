@@ -55,7 +55,7 @@ async def collect_scores(
             _, lease = runtime.registry.pin_revalidation(
                 bundle.reference, rid, runtime.backend_identity
             )
-            unconfirmed = set()
+            unconfirmed: set[str] = set()
             try:
                 compiled = [
                     runtime.compiler.compile(sample.input.text, question, bundle, rid)
@@ -83,13 +83,13 @@ async def collect_scores(
                     ),
                 ):
                     semaphore = asyncio.Semaphore(bundle.policy.max_parallel_branches)
-                    for item, target in zip(compiled, targets, strict=True):
+                    for item, label_index in zip(compiled, targets, strict=True):
                         _, scored = await runtime._question(item, bundle, semaphore, unconfirmed)
                         row = LabeledScores(
                             content_digest([sample.sample_id, item.question.id]),
                             sample.group_id,
                             scored[0].logprobs,
-                            target,
+                            label_index,
                             item.question.id,
                         )
                         row.validate()

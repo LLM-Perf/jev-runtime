@@ -40,7 +40,7 @@ def check_split(fit: list[LabeledScores], heldout: list[LabeledScores]) -> None:
         raise ValueError("Group leakage between calibration and held-out evaluation")
     if {r.task_id for r in fit} != {r.task_id for r in heldout}:
         raise ValueError("Fit and held-out sets must cover the same tasks")
-    dimensions = {}
+    dimensions: dict[str, int] = {}
     for row in fit + heldout:
         width = dimensions.setdefault(row.task_id, len(row.logprobs))
         if width != len(row.logprobs):
@@ -69,7 +69,10 @@ def quality_metrics(
         or bins < 1
     ):
         raise ValueError("Metrics require samples, positive temperature and bins")
-    confidence, correctness, nll, brier = [], [], [], []
+    confidence: list[float] = []
+    correctness: list[int] = []
+    nll: list[float] = []
+    brier: list[float] = []
     per_class: dict[tuple[str, int], list[int]] = {}
     for row in rows:
         row.validate()
@@ -86,20 +89,23 @@ def quality_metrics(
             counts[0] += int(predicted == label and row.label == label)
             counts[1] += int(predicted == label and row.label != label)
             counts[2] += int(predicted != label and row.label == label)
-    confidence = np.asarray(confidence)
-    correctness = np.asarray(correctness)
+    confidence_array = np.asarray(confidence)
+    correctness_array = np.asarray(correctness)
     histogram = []
     ece = 0.0
     for index in range(bins):
         lower, upper = index / bins, (index + 1) / bins
-        mask = (confidence >= lower) & (
-            confidence <= upper if index == bins - 1 else confidence < upper
+        mask = (confidence_array >= lower) & (
+            confidence_array <= upper if index == bins - 1 else confidence_array < upper
         )
         count = int(mask.sum())
-        accuracy = float(correctness[mask].mean()) if count else None
-        conf = float(confidence[mask].mean()) if count else None
         if count:
+            accuracy = float(correctness_array[mask].mean())
+            conf = float(confidence_array[mask].mean())
             ece += count / len(rows) * abs(accuracy - conf)
+        else:
+            accuracy = None
+            conf = None
         histogram.append(
             {
                 "lower": lower,
@@ -112,9 +118,9 @@ def quality_metrics(
     curves = []
     # Threshold selection belongs to a validation set, never this held-out report.
     for threshold in (0, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.99):
-        accepted = confidence >= threshold
+        accepted = confidence_array >= threshold
         count = int(accepted.sum())
-        errors = int((1 - correctness[accepted]).sum())
+        errors = int((1 - correctness_array[accepted]).sum())
         curves.append(
             {
                 "threshold": threshold,
@@ -130,8 +136,8 @@ def quality_metrics(
     ]
     return {
         "samples": len(rows),
-        "accuracy": float(correctness.mean()),
-        "accuracy_wilson_95": wilson_interval(int(correctness.sum()), len(rows)),
+        "accuracy": float(correctness_array.mean()),
+        "accuracy_wilson_95": wilson_interval(int(correctness_array.sum()), len(rows)),
         "macro_f1": float(np.mean(f1s)),
         "nll": float(np.mean(nll)),
         "brier_multiclass_sum": float(np.mean(brier)),

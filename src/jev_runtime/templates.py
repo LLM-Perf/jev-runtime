@@ -31,11 +31,13 @@ def read_template(spec: TemplateFile) -> str:
         value = raw.decode("utf-8")
         if spec.format == "json":
             document = json.loads(value)
-            value = document.get("chat_template") if isinstance(document, dict) else None
-        if not isinstance(value, str) or not value.strip():
+            template = document.get("chat_template") if isinstance(document, dict) else None
+        else:
+            template = value
+        if not isinstance(template, str) or not template.strip():
             raise ValueError("Expected a nonempty template string")
     except (UnicodeError, ValueError) as exc:
         raise JevError(
             "template_file_invalid", "Invalid UTF-8 chat template document", 409
         ) from exc
-    return value
+    return template

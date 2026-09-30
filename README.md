@@ -25,6 +25,9 @@ python3.12 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' -e packages/sglang -e packages/vllm -e packages/tokenspeed
 .venv/bin/pytest
 .venv/bin/ruff check src tests packages deployment benchmarks
+.venv/bin/python -m mypy
+.venv/bin/pytest --cov --cov-report=term-missing   # branch coverage, CI gate: 80%
+.venv/bin/python -m pip_audit
 ```
 
 Engine adapters are separate distributions under `packages/` so the core does not

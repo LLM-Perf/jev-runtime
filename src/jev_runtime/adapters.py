@@ -8,6 +8,7 @@ import re
 import stat
 import tempfile
 from pathlib import Path
+from typing import Any
 
 from pydantic import Field, TypeAdapter
 
@@ -100,7 +101,9 @@ class AdapterStore:
         config = json.loads(path.read_text())
         if not isinstance(config, dict):
             raise JevError("adapter_config", "Adapter configuration must be an object", 409)
-        rank, alpha = config.get("r"), config.get("lora_alpha")
+        # Untrusted JSON fields; the format gate below enforces their runtime types.
+        rank: Any = config.get("r")
+        alpha: Any = config.get("lora_alpha")
         targets = config.get("target_modules")
         if (
             config.get("peft_type") != "LORA"
@@ -123,7 +126,7 @@ class AdapterStore:
             or config.get("alpha_pattern")
         ):
             raise JevError("adapter_format", "Unsupported LoRA format or base-model binding", 409)
-        pairs = {}
+        pairs: dict[str, set[str]] = {}
         with safe_open(directory / "adapter_model.safetensors", framework="numpy") as tensors:
             for name in tensors.keys():
                 match = self.tensor_name.fullmatch(name)

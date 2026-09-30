@@ -101,7 +101,7 @@ def load_compiler(settings: Settings) -> Compiler:
 
     verify_tokenizer_profile(Path(settings.tokenizer or settings.model_id))
 
-    kwargs = {"trust_remote_code": False}
+    kwargs: dict[str, object] = {"trust_remote_code": False}
     kwargs.update(settings.tokenizer_options.model_dump(exclude_none=True))
     revision = settings.tokenizer_revision or settings.model_revision
     if not Path(settings.tokenizer or settings.model_id).is_dir():
@@ -143,7 +143,8 @@ async def build_runtime(
     settings: Settings, native_backend=None, compiler: Compiler | None = None
 ) -> Runtime:
     provided_compiler = compiler is not None
-    compiler = compiler or await asyncio.to_thread(load_compiler, settings)
+    if compiler is None:
+        compiler = await asyncio.to_thread(load_compiler, settings)
     from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
 
     await asyncio.to_thread(

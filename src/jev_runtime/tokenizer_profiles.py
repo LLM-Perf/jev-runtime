@@ -11,6 +11,7 @@ import re
 import tempfile
 from importlib.metadata import version
 from pathlib import Path
+from typing import cast
 
 GLM4_PATTERN = (
     r"(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}|"
@@ -184,14 +185,18 @@ def convert_glm4_tokenizer(model_dir: Path, output_dir: Path) -> dict:
         )
         texts = validation_texts(special)
         for text in texts[:20]:
+            # tokenize=False returns a rendered string by contract.
             texts.append(
-                loaded.apply_chat_template(
-                    [
-                        {"role": "system", "content": "Classify the supplied text."},
-                        {"role": "user", "content": text},
-                    ],
-                    tokenize=False,
-                    add_generation_prompt=True,
+                cast(
+                    str,
+                    loaded.apply_chat_template(
+                        [
+                            {"role": "system", "content": "Classify the supplied text."},
+                            {"role": "user", "content": text},
+                        ],
+                        tokenize=False,
+                        add_generation_prompt=True,
+                    ),
                 )
             )
         prefix = [special[token] for token in GLM4_PREFIX]
@@ -387,18 +392,18 @@ def preserve_fast_tokenizer(
 
         # Reject a library that silently ignores a declared named/default file.
         # Files take precedence over config exactly as in the standard loader.
-        declared = {}
+        declared: dict[str, str] = {}
         if "chat_template.jinja" in files:
             declared["default"] = files["chat_template.jinja"].decode("utf-8")
         for name, data in files.items():
             if name.startswith("additional_chat_templates/"):
                 declared[Path(name).stem] = data.decode("utf-8")
         if not declared:
-            declared = exported.get("chat_template")
-            if isinstance(declared, list):
-                declared = {entry["name"]: entry["template"] for entry in declared}
-            if isinstance(declared, str):
-                declared = {"default": declared}
+            configured = exported.get("chat_template")
+            if isinstance(configured, list):
+                declared = {entry["name"]: entry["template"] for entry in configured}
+            if isinstance(configured, str):
+                declared = {"default": configured}
         actual_templates = loaded.chat_template
         if isinstance(actual_templates, str):
             actual_templates = {"default": actual_templates}
@@ -420,11 +425,15 @@ def preserve_fast_tokenizer(
                 raise ValueError("Serialized chat templates must be nonempty strings")
             for text in ("Hello", "退款 9 ²,abc1①", "\t\n", "😀"):
                 for generation in (False, True):
-                    prompt = loaded.apply_chat_template(
-                        [{"role": "user", "content": text}],
-                        chat_template=template,
-                        tokenize=False,
-                        add_generation_prompt=generation,
+                    # tokenize=False returns a rendered string by contract.
+                    prompt = cast(
+                        str,
+                        loaded.apply_chat_template(
+                            [{"role": "user", "content": text}],
+                            chat_template=template,
+                            tokenize=False,
+                            add_generation_prompt=generation,
+                        ),
                     )
                     texts.append(prompt)
                     rendered.append(

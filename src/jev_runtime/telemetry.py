@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from collections import defaultdict
 from contextlib import contextmanager
-from typing import Literal
+from typing import Literal, cast
 
 Stage = Literal["pin", "compile", "journal", "queue", "execute", "finalize", "release", "total"]
 STAGES = ("pin", "compile", "journal", "queue", "execute", "finalize", "release", "total")
@@ -91,7 +91,7 @@ def parse_timing_header(value: str | None) -> dict[Stage, float]:
 
     if not value or len(value) > 2048:
         raise ValueError("Runtime timing header missing or oversized")
-    result = {}
+    result: dict[Stage, float] = {}
     for item in value.split(","):
         name, separator, duration = item.strip().partition(";dur=")
         stage = name.removeprefix("jev_")
@@ -100,7 +100,8 @@ def parse_timing_header(value: str | None) -> dict[Stage, float]:
         duration_ms = float(duration)
         if not math.isfinite(duration_ms) or duration_ms < 0:
             raise ValueError("Invalid runtime timing duration")
-        result[stage] = duration_ms
+        # The STAGES membership check above restricts stage to the Stage literals.
+        result[cast(Stage, stage)] = duration_ms
     if (
         "total" not in result
         or abs(result["total"] - sum(v for k, v in result.items() if k != "total")) > 0.00001

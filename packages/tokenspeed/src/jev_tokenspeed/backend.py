@@ -187,11 +187,13 @@ class TokenSpeedNative:
             # Native abort removes frontend state without a scheduler ack.
             # An unknown ID after a gateway/plugin restart is not drain proof.
             raise JevError("cancellation_unconfirmed", "No local terminal receipt for request", 503)
-        async with asyncio.timeout(4.5):
-            try:
-                await asyncio.shield(attempt.task)
-            except Exception:
-                pass
+        task = attempt.task
+        if task is not None:
+            async with asyncio.timeout(4.5):
+                try:
+                    await asyncio.shield(task)
+                except Exception:
+                    pass
         if not attempt.terminal:
             raise JevError(
                 "cancellation_unconfirmed", "TokenSpeed completion was not observed", 503
