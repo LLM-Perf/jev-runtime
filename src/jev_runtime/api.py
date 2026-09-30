@@ -299,9 +299,11 @@ def install_routes(
             not bundle["ready"] or not bundle["prepared"] for bundle in profile["bundles"].values()
         ):
             raise JevError("engine_unavailable", "Active bundles lack current engine canaries", 503)
+        capabilities = instance.capabilities
+        assert capabilities is not None  # runtime(request) above guarantees a probed engine
         return {
             "ready": True,
-            "engine": instance.capabilities.engine,
+            "engine": capabilities.engine,
             "prepared_bundles": sorted(profile["bundles"]),
             "worker_id": instance.registry.owner,
         }
@@ -364,6 +366,8 @@ def install_routes(
     @management.get("/profile")
     async def profile(request: Request):
         instance = runtime(request)
+        capabilities = instance.capabilities
+        assert capabilities is not None  # runtime(request) above guarantees a probed engine
         return {
             "worker_id": instance.registry.owner,
             "model": instance.expected_model,
@@ -374,8 +378,8 @@ def install_routes(
             "tokenizer_implementation_verified": (
                 instance.compiler.tokenizer_implementation_digest is not None
             ),
-            "engine_identity_verified": instance.capabilities.verified,
-            "capabilities": instance.capabilities,
+            "engine_identity_verified": capabilities.verified,
+            "capabilities": capabilities,
             "compiler": instance.compiler.profile(),
             "admission": instance.admission.snapshot(),
             "health": instance.health_profile(),
@@ -437,7 +441,12 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        current = instance or await build_runtime(settings)
+        if instance is not None:
+            current = instance
+        else:
+            # create_app() without an instance requires settings to build one.
+            assert settings is not None
+            current = await build_runtime(settings)
         app.state.jev_runtime = current
         try:
             await current.start()

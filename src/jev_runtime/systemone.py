@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal, cast
 
 from pydantic import Field
 
@@ -52,7 +52,8 @@ class SystemOneRequest(Contract):
                 questions.append(
                     Question(
                         id=qid,
-                        type=kind,
+                        # The membership gate above restricts kind to these two literals.
+                        type=cast(Literal["choice", "rank"], kind),
                         instruction=instruction,
                         options=tuple(Option(id=k, description=v) for k, v in criteria.items()),
                     )

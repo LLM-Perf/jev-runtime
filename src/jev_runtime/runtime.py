@@ -7,8 +7,9 @@ import time
 import uuid
 from contextlib import nullcontext
 from dataclasses import asdict
+from typing import Protocol, cast
 
-from jev_runtime.adapters import AdapterStore
+from jev_runtime.adapters import AdapterBinding, AdapterStore
 from jev_runtime.admission import Admission
 from jev_runtime.backends.base import Capabilities, EngineAdapter, ScoreInput, ScoreResult
 from jev_runtime.compiler import CompiledQuestion, Compiler
@@ -31,6 +32,13 @@ from jev_runtime.shared_admission import SharedAdmission
 from jev_runtime.telemetry import DecisionTrace
 
 logger = logging.getLogger(__name__)
+
+
+class _ManagedLoRA(Protocol):
+    """Managed-LoRA RPCs exposed by native backends reporting capabilities.lora."""
+
+    async def load_adapter(self, binding: AdapterBinding) -> None: ...
+    async def unload_adapter(self, binding: AdapterBinding) -> None: ...
 
 
 class Runtime:
@@ -346,13 +354,15 @@ class Runtime:
     async def register_adapter(self, adapter_id: str, source: str) -> dict:
         self.require_serving_mode()
         self._require_adapters()
+        store = self.adapter_store
+        assert store is not None  # guaranteed by _require_adapters()
         if self.expected_model is None:
             raise JevError("adapter_profile", "A frozen base-model identity is required", 409)
         # Registration copies files but never dispatches GPU work. A cancelled
         # filesystem copy can leave only an unreferenced immutable artifact.
         try:
             artifact = await asyncio.to_thread(
-                self.adapter_store.register,
+                store.register,
                 adapter_id,
                 source,
                 self.expected_model.id,
@@ -372,8 +382,13 @@ class Runtime:
         if not recover or self.recovery_only:
             self.require_serving_mode()
         self._require_adapters()
+        store = self.adapter_store
+        assert store is not None  # guaranteed by _require_adapters()
+        # capabilities.lora is set, so this native backend exposes the managed-LoRA RPCs.
+        backend = cast(_ManagedLoRA, self.backend)
         task = asyncio.current_task()
-        self._adapter_tasks.add(task)
+        if task is not None:
+            self._adapter_tasks.add(task)
         try:
             async with self._management_lock:
                 operation, binding = self.registry.begin_adapter_operation(
@@ -383,10 +398,10 @@ class Runtime:
                 try:
                     async with asyncio.timeout(self.adapter_timeout):
                         if action == "load":
-                            await asyncio.to_thread(self.adapter_store.verify, binding.artifact)
-                            await self.backend.load_adapter(binding)
+                            await asyncio.to_thread(store.verify, binding.artifact)
+                            await backend.load_adapter(binding)
                         else:
-                            await self.backend.unload_adapter(binding)
+                            await backend.unload_adapter(binding)
                 except BaseException as exc:
                     error = exc.code if isinstance(exc, JevError) else type(exc).__name__
                     if isinstance(exc, Exception) and not isinstance(exc, JevError):
@@ -410,7 +425,8 @@ class Runtime:
     ) -> dict:
         self.require_serving_mode()
         task = asyncio.current_task()
-        self._prepare_tasks.add(task)
+        if task is not None:
+            self._prepare_tasks.add(task)
         try:
             async with asyncio.timeout(timeout_seconds):
                 return await self._prepare(reference, monitoring=monitoring)
@@ -447,7 +463,9 @@ class Runtime:
                 bundle, lease_id = self.registry.pin_revalidation(
                     reference, request_id, self.backend_identity
                 )
-            self._active[request_id] = asyncio.current_task()
+            current = asyncio.current_task()
+            if current is not None:
+                self._active[request_id] = current
             unconfirmed: set[str] = set()
             error = None
             try:
@@ -660,7 +678,8 @@ class Runtime:
         if rid in self._active:
             raise JevError("duplicate_request", "Request ID is already in flight", 409)
         current = asyncio.current_task()
-        self._active[rid] = current
+        if current is not None:
+            self._active[rid] = current
         self._tenants[rid] = tenant
         # Engine IDs must not inherit caller-controlled prefixes: SGLang's abort
         # matches prefixes, so a caller ID must never overlap another request's
@@ -670,7 +689,7 @@ class Runtime:
         snapshot = None
         unconfirmed: set[str] = set()
         trace = trace or DecisionTrace()
-        progress = {
+        progress: dict[str, str | int | None] = {
             "request_id": rid,
             "tenant": tenant,
             "bundle": None,
@@ -728,12 +747,22 @@ class Runtime:
                     )
                     trace.switch("journal")
                     branch_ids = [seq.request_id for seq in sequences]
-                    admission_args = dict(branches=len(sequences), lease_id=snapshot.lease_id)
                     if isinstance(self.admission, SharedAdmission):
-                        admission_args["branch_ids"] = branch_ids
+                        reservation = self.admission.acquire(
+                            total_tokens,
+                            tenant,
+                            branches=len(sequences),
+                            lease_id=snapshot.lease_id,
+                            branch_ids=branch_ids,
+                        )
                     else:
                         self.registry.record_branches(snapshot.lease_id, branch_ids)
-                    reservation = self.admission.acquire(total_tokens, tenant, **admission_args)
+                        reservation = self.admission.acquire(
+                            total_tokens,
+                            tenant,
+                            branches=len(sequences),
+                            lease_id=snapshot.lease_id,
+                        )
                 self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
                 progress.update(
@@ -758,6 +787,8 @@ class Runtime:
                     ),
                 )
                 trace.switch("queue")
+                # Every path above binds a reservation together with the snapshot.
+                assert reservation is not None
                 async with reservation:
                     # Compilation and durable admission contain synchronous work.
                     # asyncio's timeout callback may not run until we next yield.
@@ -805,6 +836,8 @@ class Runtime:
                         return None
                     return sum(values)
 
+                capabilities = self.capabilities
+                assert capabilities is not None  # start() probes capabilities before serving
                 return DecisionResponse(
                     request_id=rid,
                     status="completed"
@@ -813,7 +846,7 @@ class Runtime:
                     bundle=bundle.reference,
                     bundle_digest=bundle.digest,
                     generation=snapshot.generation,
-                    engine={"name": self.capabilities.engine, "version": self.capabilities.version},
+                    engine={"name": capabilities.engine, "version": capabilities.version},
                     answers=answers,
                     usage=Usage(
                         questions=len(questions),
@@ -875,7 +908,8 @@ class Runtime:
             raise JevError("lora_unsupported", "Managed LoRA requires a typed decision lease", 409)
         work_id = self.registry.begin_raw_work(self.backend_identity, sequence.request_id)
         task = asyncio.current_task()
-        self._raw_tasks.add(task)
+        if task is not None:
+            self._raw_tasks.add(task)
         unconfirmed: set[str] = set()
         try:
             async with asyncio.timeout(300):

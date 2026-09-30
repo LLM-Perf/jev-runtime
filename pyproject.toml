@@ -18,7 +18,11 @@ dependencies = [
 tokenizers = ["transformers>=4.51,<6"]
 tokenizer-conversion = ["transformers>=4.51,<6", "tiktoken>=0.9,<1"]
 reference = ["torch>=2.6", "transformers>=4.51,<6"]
-dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.9,<1", "build>=1.2", "hatchling>=1.26"]
+dev = [
+  "pytest>=8,<10", "pytest-asyncio>=0.25,<2", "pytest-cov>=6,<8",
+  "ruff>=0.9,<1", "mypy>=1.15,<3", "pip-audit>=2.10,<3",
+  "build>=1.2", "hatchling>=1.26",
+]
 quality-data = ["pyarrow>=18,<26"]
 
 [project.scripts]
@@ -40,3 +44,22 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.mypy]
+# numpy 2.x stubs require a 3.12+ target to parse (PEP 695). Runtime 3.11
+# compatibility is enforced by the pytest 3.11 matrix, not by mypy.
+python_version = "3.12"
+files = ["src/jev_runtime", "packages"]
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+warn_unreachable = true
+
+[tool.coverage.run]
+source = ["src/jev_runtime", "packages"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = ['if TYPE_CHECKING:', '@(typing\.)?overload']

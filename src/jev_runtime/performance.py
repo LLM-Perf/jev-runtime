@@ -136,8 +136,13 @@ def summarize_cohort(
         for row in completed
         if row.engine_prompt_tokens is not None and row.cached_prompt_tokens is not None
     ]
-    observed_prompt = sum(row.engine_prompt_tokens for row in observed_cache)
-    observed_cached = sum(row.cached_prompt_tokens for row in observed_cache)
+    # observed_cache is pre-filtered for observed tokens; the filters only narrow.
+    observed_prompt = sum(
+        tokens for row in observed_cache if (tokens := row.engine_prompt_tokens) is not None
+    )
+    observed_cached = sum(
+        tokens for row in observed_cache if (tokens := row.cached_prompt_tokens) is not None
+    )
     observed_ratio = observed_cached / observed_prompt if observed_prompt else None
     compared = [row for row in completed if row.selected_candidate_matches_reference is not None]
     return {

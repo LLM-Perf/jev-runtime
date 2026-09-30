@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal, Protocol
+from typing import Literal, Protocol, cast
 
 from pydantic import Field, StrictBool
 
 from jev_runtime.schema import Contract, FloatingDType
 
 
-def reported_dtype(value) -> str | None:
+def reported_dtype(value) -> FloatingDType | None:
     """Normalize an observed engine dtype without guessing `auto` or quantized types."""
     name = str(value).removeprefix("torch.")
-    return name if name in {"float16", "bfloat16", "float32"} else None
+    # The membership gate restricts the result to the declared FloatingDType literals.
+    return cast(FloatingDType, name) if name in {"float16", "bfloat16", "float32"} else None
 
 
 class Capabilities(Contract):

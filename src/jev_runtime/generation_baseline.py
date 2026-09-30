@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from typing import Any, NoReturn
 
 import httpx
 
@@ -107,9 +108,10 @@ def parse_generation(
 ) -> tuple[dict, dict]:
     """Keep trustworthy cost observations even when output validation fails."""
     response.raise_for_status()
-    observations = {}
+    # JSON-derived observation bag passed through to the failure receipt and result.
+    observations: dict[str, Any] = {}
 
-    def fail(code):
+    def fail(code) -> NoReturn:
         raise InvalidBenchmarkResponse(response.status_code, code, observations.copy())
 
     try:
@@ -139,7 +141,8 @@ def parse_generation(
     reason = choice.get("finish_reason")
     if isinstance(reason, str) and len(reason) <= 64:
         observations["finish_reason"] = reason
-    message = choice.get("message")
+    # JSON payload field of unknown shape; the content guard below discriminates it.
+    message: Any = choice.get("message")
     content = message.get("content") if isinstance(message, dict) else None
     if isinstance(content, str):
         observations["response_content_bytes"] = len(content.encode())

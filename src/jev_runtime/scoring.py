@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from typing import Literal
 
 from jev_runtime.backends.base import ScoreResult
 from jev_runtime.compiler import CompiledQuestion
@@ -48,6 +49,7 @@ def assemble(compiled: CompiledQuestion, results: list[ScoreResult], bundle: Bun
     bias = calibration.bias if calibration and calibration.method == "platt" else 0
     support = None
     label_mass = None
+    semantics: Literal["conditional_label_distribution", "normalized_support"]
     independent = compiled.mode == "independent-candidate" and question.type != "boolean"
     if independent:
         scores = [
@@ -94,7 +96,12 @@ def assemble(compiled: CompiledQuestion, results: list[ScoreResult], bundle: Bun
             for i in sorted(range(len(probabilities)), key=lambda i: (-probabilities[i], i))
         )
     elif question.type == "score" and all(o.value is not None for o in question.options):
-        levels = {o.id: float(o.value) for o in question.options}
+        # The all() guard above keeps every option value; the filter only narrows.
+        levels = {
+            o.id: float(option_value)
+            for o in question.options
+            if (option_value := o.value) is not None
+        }
         value = math.fsum(
             p * levels[key] for key, p in zip(compiled.keys, probabilities, strict=True)
         )

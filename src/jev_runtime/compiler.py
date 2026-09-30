@@ -146,7 +146,8 @@ class Compiler:
         # skipping normalization/BPE. Chunking bounds temporary prompt copies.
         for start in range(0, len(labels), 32):
             texts = [prompt + label for label in labels[start : start + 32]]
-            backend = getattr(self.tokenizer, "backend_tokenizer", None)
+            # The tokenizer is dynamically typed; getattr probes its optional Rust backend.
+            backend: Any = getattr(self.tokenizer, "backend_tokenizer", None)
             if (
                 self._fast_ids
                 and backend.truncation is None
@@ -192,7 +193,7 @@ class Compiler:
         else:
             body = spec.system_prompt + "\n\n" + body
         messages.append({"role": "user", "content": body})
-        kwargs = {}
+        kwargs: dict[str, Any] = {}
         if self.explicit_chat_template is not None:
             kwargs["chat_template"] = self.explicit_chat_template
         if "enable_thinking" in str(self.chat_template):

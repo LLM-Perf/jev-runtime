@@ -4,12 +4,13 @@ import asyncio
 import json
 import os
 from pathlib import Path
+from typing import cast
 
 import httpx
 import typer
 
 from jev_runtime.config import build_runtime, load_settings, model_identity
-from jev_runtime.schema import Bundle, DecisionRequest
+from jev_runtime.schema import Bundle, DecisionRequest, ModelIdentity
 
 app = typer.Typer(help="Typed decisions, immutable bundles and reproducible engine validation")
 bundle_app = typer.Typer(help="Bundle build, prepare, activate, disable and retire")
@@ -351,7 +352,8 @@ def bundle_build_remote(
         ):
             raise typer.BadParameter("Adapter and serving base model differ")
         model.update(adapter_id=artifact["id"], adapter_revision=artifact["revision"])
-    bundle = Bundle(id=name, version=version, model=model)
+    # /admin/profile returns a model-identity mapping; Bundle validates it again.
+    bundle = Bundle(id=name, version=version, model=cast(ModelIdentity, model))
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("x") as file:
         file.write(bundle.model_dump_json(indent=2) + "\n")
