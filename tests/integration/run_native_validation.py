@@ -271,7 +271,21 @@ def validate(args) -> dict:
         save(run / "topology.json", topology(run, record))
         report["stages"][stage] = {"passed": True}
         for stage, script, output, extra in (
-            ("contract", "live_contract.py", "contract.json", ["--switches", str(args.switches)]),
+            (
+                "contract",
+                "live_contract.py",
+                "contract.json",
+                [
+                    "--switches",
+                    str(args.switches),
+                    "--minimum-requests",
+                    str(args.minimum_requests),
+                    "--traffic-concurrency",
+                    str(args.traffic_concurrency),
+                    "--traffic-timeout",
+                    str(args.traffic_timeout),
+                ],
+            ),
             ("precision_binding", "live_precision_binding.py", "precision-binding.json", []),
         ):
             require_owner(record)
@@ -373,8 +387,11 @@ def main():
     parser.add_argument("--chat-template-sha256")
     parser.add_argument("--chat-template-format", choices=["jinja", "json"], default="jinja")
     parser.add_argument("--switches", type=int, default=1000)
+    parser.add_argument("--minimum-requests", type=int, default=10000)
+    parser.add_argument("--traffic-concurrency", type=int, default=4)
+    parser.add_argument("--traffic-timeout", type=float, default=1200)
     parser.add_argument("--startup-timeout", type=float, default=600)
-    parser.add_argument("--check-timeout", type=float, default=600)
+    parser.add_argument("--check-timeout", type=float, default=1500)
     parser.add_argument("--reference-timeout", type=float, default=900)
     parser.add_argument("--reference-atol", type=float, default=0.15)
     parser.add_argument("--source-commit", required=True)
@@ -388,10 +405,23 @@ def main():
     ):
         parser.error("Full immutable source commits are required")
     if (
-        min(args.startup_timeout, args.check_timeout, args.reference_timeout, args.switches) <= 0
+        min(
+            args.startup_timeout,
+            args.check_timeout,
+            args.reference_timeout,
+            args.switches,
+            args.minimum_requests,
+            args.traffic_concurrency,
+            args.traffic_timeout,
+        )
+        <= 0
         or args.reference_atol < 0
     ):
         parser.error("Timeouts/switches must be positive and tolerance nonnegative")
+    if args.check_timeout < args.traffic_timeout + 180:
+        parser.error(
+            "check-timeout must allow traffic-timeout plus 180 seconds for setup and drain"
+        )
     report = validate(args)
     print(json.dumps(report))
     raise SystemExit(0 if report["passed"] else 1)
