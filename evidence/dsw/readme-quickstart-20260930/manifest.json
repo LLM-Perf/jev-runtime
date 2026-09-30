@@ -1,0 +1,65 @@
+{
+  "secrets_scan": "all exported files checked against four demo keys; key files excluded",
+  "files": [
+    {
+      "path": "report.json",
+      "sha256": "720da4661574aeb802741a16a524cf3dd46fd65aaba6ebc226f618e65c0c4549",
+      "bytes": 25676
+    },
+    {
+      "path": "smoke.py",
+      "sha256": "e4b8d98fe306daa288d24a1286644acc069ae6623ff67d1d57189a2c73c7983a",
+      "bytes": 8016
+    },
+    {
+      "path": "prepare_quickstart.py",
+      "sha256": "fd4dc86773643825db54192783242432ebab292db12dbc88da06f78914fd34aa",
+      "bytes": 3408
+    },
+    {
+      "path": "README.md",
+      "sha256": "870eea12f4efb24badb97fa77b00fcc10176a7f8c53066ece9222648c9314195",
+      "bytes": 17806
+    },
+    {
+      "path": "quickstart-sglang.md",
+      "sha256": "9a909fb78824363796235b75b812cbae6d2e7a4a585ef4c790445784cc44b574",
+      "bytes": 3719
+    },
+    {
+      "path": "request.json",
+      "sha256": "a8766740b4cf558dc67c92f6af922409515e98fef058d8a87599070b4883c768",
+      "bytes": 687
+    },
+    {
+      "path": "vllm-engine.log",
+      "sha256": "409c1674e0ec69add9359a116e7348352f2261c6e5ddd19ad6853e3005268c04",
+      "bytes": 22970
+    },
+    {
+      "path": "sglang-engine.log",
+      "sha256": "276d200ce91d5b0987541cf53fa741a92209053083b12e917c5928217ca11ef8",
+      "bytes": 27566
+    },
+    {
+      "path": "vllm-prepare.log",
+      "sha256": "9fb11a2645c1c1e7a3bccacc1d5af658b28000a121da08f38deefded5e426011",
+      "bytes": 157
+    },
+    {
+      "path": "sglang-prepare.log",
+      "sha256": "16cfc3b7459573ec1642eb96e80b74545dfb7f8db7f16d2028d0f70fc2a6895f",
+      "bytes": 161
+    },
+    {
+      "path": "vllm/config.json",
+      "sha256": "9c6a09205d0a9a2d74f213b89604902fae3199cc900a3bcb54611b731c572d25",
+      "bytes": 1485
+    },
+    {
+      "path": "sglang/config.json",
+      "sha256": "264b6e6cf691422d92aac81195e8483581914f3e8f6501888d5e607343c956b0",
+      "bytes": 1491
+    }
+  ]
+}

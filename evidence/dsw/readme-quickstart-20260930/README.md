@@ -140,26 +140,6 @@ requested. A completed response includes `answers.intent` and
 `probability_semantics`, plus `bundle`, `bundle_digest`, `generation`, `engine`
 and usage. Values depend on the model; handle abstention explicitly.
 
-Example excerpt from the [DSW quick-start check](docs/readme-validation.md)
-(metadata omitted, probabilities rounded):
-
-```json
-{
-  "bundle": "default@1",
-  "generation": 1,
-  "answers": {
-    "intent": {
-      "value": "billing",
-      "probabilities": {"billing": 0.7159, "technical": 0.1597, "other": 0.1244}
-    },
-    "refund_requested": {
-      "value": true,
-      "probabilities": {"true": 0.7982, "false": 0.2018}
-    }
-  }
-}
-```
-
 Any HTTP client can call the same endpoint:
 
 ```bash
@@ -205,10 +185,6 @@ read `bundle list` and use the current generation instead of copying `1` or `2`.
 Before stopping the server, follow [quiescence and ordered shutdown](docs/quiescence.md),
 including its offline resume step when restarting the preserved registry.
 
-These preparation, startup, request, activation and rollback steps passed on both
-DSW engine environments. The smoke reused installed dependencies and local weights;
-it did not test a fresh network installation. [Exact scope and evidence](docs/readme-validation.md).
-
 ## What is supported today?
 
 | Engine | Integration | GPU functional coverage | Current boundary |
@@ -240,7 +216,6 @@ means the cited material does not establish that capability.
 |---|---|---|---|---|
 | **Jev Runtime** | Complete selected-label scores; joint-label or independent-candidate mode | Native **vLLM + SGLang**; gateway; experimental TokenSpeed | Immutable bundles, prepare/activate/rollback, request pinning, local shared registry | Integrating decisions into GPU services; alpha, text only, incomplete certification |
 | [LLM2Jev](https://github.com/Yinsongxu/LLM2Jev#readme) | Prefill candidate scoring; staged prefix reuse | SGLang, Transformers, **MLX**; System One HTTP | Versioned bundle publication / native vLLM plugin not documented in cited README | Local text **and image** decisions, including Apple Silicon |
-| [AnyJev](https://github.com/nokia-applied-research/AnyJev#readme) | Label readout with rotation/debiasing and calibration; optional fitted hidden-state head | Transformers; vLLM generation/pooling endpoints | Per-question readout/head artifacts; atomic serving-bundle lifecycle not documented in cited README | Decision quality and calibration experiments; L2 needs labeled examples per question/model; SGLang L2 not yet supported |
 | [jev-bridge](https://github.com/TOSUKUi/jev-bridge#readme) | One-token `top_logprobs`, restricted label normalization | OpenAI-compatible servers/APIs, including SGLang and vLLM | Separate HTTP bridge; immutable bundle lifecycle not documented in cited README | Quick API integration; top-K coverage and backend behavior matter; missing labels receive a floor |
 | [OpenJev (kw2828)](https://github.com/kw2828/OpenJev#readme) | Single-token label scores; relative probabilities | Pinned local Qwen scorer; Apple Silicon setup; WebGPU demo | Native vLLM/SGLang bundle lifecycle not documented in cited README | Interactive local demos and learning experiments; uncalibrated scores, differing demo models/protocols |
 | [System One Adapter (TypeSafe)](https://github.com/typesafe-ai/system-one-adapter-python#readme) | LLM-generated structured probabilities or discrete answers | Python SDK: OpenAI-compatible, Anthropic, Gemini APIs | Client/provider adapter, not an engine plugin or bundle registry | Provider comparison through a familiar SDK; generated probabilities differ from label logprobs |

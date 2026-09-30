@@ -1,0 +1,736 @@
+{
+  "runtime_source": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "scope": "README command smoke in existing engine environments; offline model reuse; no fresh dependency install or Hub download",
+  "files": {
+    "prepare_quickstart.py": "fd4dc86773643825db54192783242432ebab292db12dbc88da06f78914fd34aa",
+    "request.json": "a8766740b4cf558dc67c92f6af922409515e98fef058d8a87599070b4883c768",
+    "quickstart-sglang.md": "9a909fb78824363796235b75b812cbae6d2e7a4a585ef4c790445784cc44b574",
+    "smoke.py": "e4b8d98fe306daa288d24a1286644acc069ae6623ff67d1d57189a2c73c7983a",
+    "README.md": "870eea12f4efb24badb97fa77b00fcc10176a7f8c53066ece9222648c9314195"
+  },
+  "protected_before": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "command_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "engines": {
+    "vllm": {
+      "gpu_before": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11744",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "port": 18795,
+      "memory_fraction": "0.07",
+      "prepare_returncode": 0,
+      "existing_output_rejected": true,
+      "start_command_from_document": "vllm serve \"$JEV_MODEL_PATH\" \\\n  --served-model-name \"$JEV_MODEL_ID\" --tokenizer \"$JEV_TOKENIZER_PATH\" \\\n  --host 127.0.0.1 --port \"$JEV_PORT\" --dtype bfloat16 \\\n  --max-model-len 2048 --max-num-seqs 4 --max-num-batched-tokens 512 \\\n  --max-logprobs 128 --gpu-memory-utilization 0.07 \\\n  --enforce-eager --shutdown-timeout 30",
+      "identity": {
+        "pid": 2878939,
+        "start_ticks": "453306059",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "ready": {
+        "ready": true,
+        "engine": "vllm",
+        "prepared_bundles": [
+          "default@1"
+        ],
+        "worker_id": "ef06489a30614e308ab51f6c0ebe4f73"
+      },
+      "startup_seconds": 108.11178079713136,
+      "bundle_before": {
+        "bundles": [
+          {
+            "ref": "default@1",
+            "digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "state": "ACTIVE",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "error": null,
+            "created": 1790777628.0653727
+          }
+        ],
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "leases": []
+      },
+      "decisions": [
+        {
+          "request_id": "dec-3018aecbc22340e1945cd0235b784e45",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.7158687584820338,
+                "technical": 0.15973191548573581,
+                "other": 0.12439932603223036
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.985872361184352,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867729389246,
+                "false": 0.2018132270610754
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9431666304804432,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 2,
+            "cached_prompt_tokens": 64
+          },
+          "latency_ms": 39.75106403231621
+        },
+        {
+          "request_id": "dec-4e9e068aec9e43c49fea4e9b5be16932",
+          "status": "completed",
+          "bundle": "demo@2",
+          "bundle_digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+          "generation": 2,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.704204611385319,
+                "technical": 0.15712928303285142,
+                "other": 0.1386661055818296
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9844731237281208,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867729389246,
+                "false": 0.2018132270610754
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9476010844230202,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 2,
+            "cached_prompt_tokens": 176
+          },
+          "latency_ms": 30.223230831325054
+        },
+        {
+          "request_id": "dec-cc138110b8514088834550e265b71280",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 3,
+          "engine": {
+            "name": "vllm",
+            "version": "0.30.0+cu129"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.704204611385319,
+                "technical": 0.15712928303285142,
+                "other": 0.1386661055818296
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9844731237281208,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867729389246,
+                "false": 0.2018132270610754
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9476010844230202,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 2,
+            "cached_prompt_tokens": 176
+          },
+          "latency_ms": 55.99565617740154
+        }
+      ],
+      "build": {
+        "path": "/root/jev-runtime/readme-quickstart-20260930/vllm/demo-v2.json",
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109"
+      },
+      "upload": {
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+        "state": "VALIDATED",
+        "backend": null,
+        "error": null,
+        "inflight": 0
+      },
+      "prepare": {
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+        "state": "READY",
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "error": null,
+        "inflight": 0,
+        "worker_id": "ef06489a30614e308ab51f6c0ebe4f73"
+      },
+      "activate": {
+        "alias": "decision-model",
+        "bundle": "demo@2",
+        "generation": 2
+      },
+      "rollback": {
+        "alias": "decision-model",
+        "bundle": "default@1",
+        "generation": 3
+      },
+      "direct_http_decision": {
+        "request_id": "dec-c9b35da071b6434e8aacd1df903da4cd",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+        "generation": 3,
+        "engine": {
+          "name": "vllm",
+          "version": "0.30.0+cu129"
+        },
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "status": "answered",
+            "value": "billing",
+            "probabilities": {
+              "billing": 0.704204611385319,
+              "technical": 0.15712928303285142,
+              "other": 0.1386661055818296
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9844731237281208,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          },
+          "refund_requested": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.7981867729389246,
+              "false": 0.2018132270610754
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9476010844230202,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 2,
+          "successful_questions": 2,
+          "scoring_sequences": 2,
+          "logical_prompt_tokens": 197,
+          "engine_prompt_tokens": 197,
+          "engine_completion_tokens": 2,
+          "cached_prompt_tokens": 176
+        },
+        "latency_ms": 22.20863848924637
+      },
+      "passed": true,
+      "quiescence": {
+        "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "generation": 1,
+        "state": "QUIESCING",
+        "scope": "single_host_registry_backend_jev_work",
+        "drained": true,
+        "outstanding": {
+          "leases": 0,
+          "raw_work": 0,
+          "adapter_operations": 0,
+          "recovery_operations": 0
+        },
+        "waiting_workers": [],
+        "workers": [
+          {
+            "worker_id": "ef06489a30614e308ab51f6c0ebe4f73",
+            "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "state": "QUIESCED",
+            "owner_status": "alive",
+            "prepared": [
+              "default@1",
+              "demo@2"
+            ]
+          }
+        ]
+      },
+      "exit_code": 0,
+      "remaining_group_members": [],
+      "gpu_after": {
+        "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "11744",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "registry_integrity": "ok"
+    },
+    "sglang": {
+      "gpu_before": {
+        "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10544",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "port": 18794,
+      "memory_fraction": "0.65",
+      "prepare_returncode": 0,
+      "existing_output_rejected": true,
+      "start_command_from_document": "python -m sglang.launch_server \\\n  --model-path \"$JEV_MODEL_PATH\" --served-model-name \"$JEV_MODEL_ID\" \\\n  --tokenizer-path \"$JEV_TOKENIZER_PATH\" \\\n  --host 127.0.0.1 --port \"$JEV_PORT\" --dtype bfloat16 \\\n  --context-length 2048 --max-running-requests 4 \\\n  --chunked-prefill-size 512 --max-total-tokens 2048 \\\n  --mem-fraction-static 0.65 --disable-cuda-graph --attention-backend triton",
+      "identity": {
+        "pid": 2879982,
+        "start_ticks": "453318357",
+        "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+      },
+      "ready": {
+        "ready": true,
+        "engine": "sglang",
+        "prepared_bundles": [
+          "default@1"
+        ],
+        "worker_id": "633b1ec4d89942b6887115a4b68ff195"
+      },
+      "startup_seconds": 31.040532641112804,
+      "bundle_before": {
+        "bundles": [
+          {
+            "ref": "default@1",
+            "digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+            "state": "ACTIVE",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "error": null,
+            "created": 1790777672.1877775
+          }
+        ],
+        "routes": [
+          {
+            "alias": "decision-model",
+            "ref": "default@1",
+            "generation": 1
+          }
+        ],
+        "leases": []
+      },
+      "decisions": [
+        {
+          "request_id": "dec-c0acfba621f04be18d06558ae82c3a42",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 1,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.7158687584820338,
+                "technical": 0.15973191548573581,
+                "other": 0.12439932603223036
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9859797850179515,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7981867777396212,
+                "false": 0.20181322226037882
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9436541812484399,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 70
+          },
+          "latency_ms": 971.1809335276484
+        },
+        {
+          "request_id": "dec-b1ca04e3af9c48a59f461e96b4394351",
+          "status": "completed",
+          "bundle": "demo@2",
+          "bundle_digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+          "generation": 2,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.7158687478660181,
+                "technical": 0.15973191311698243,
+                "other": 0.12439933901699952
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9855484122180918,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998663336157,
+                "false": 0.22270013366638422
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9408247639093732,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 195
+          },
+          "latency_ms": 30.98057582974434
+        },
+        {
+          "request_id": "dec-5a4408a8e3094fae98a55618dcacb277",
+          "status": "completed",
+          "bundle": "default@1",
+          "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+          "generation": 3,
+          "engine": {
+            "name": "sglang",
+            "version": "0.5.19"
+          },
+          "answers": {
+            "intent": {
+              "type": "choice",
+              "status": "answered",
+              "value": "billing",
+              "probabilities": {
+                "billing": 0.7158687478660181,
+                "technical": 0.15973191311698243,
+                "other": 0.12439933901699952
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9855484122180918,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            },
+            "refund_requested": {
+              "type": "boolean",
+              "status": "answered",
+              "value": true,
+              "probabilities": {
+                "true": 0.7772998663336157,
+                "false": 0.22270013366638422
+              },
+              "probability_semantics": "conditional_label_distribution",
+              "support": null,
+              "label_mass": 0.9408247639093732,
+              "calibration_status": "uncalibrated",
+              "abstained": false,
+              "reason": null,
+              "levels": null,
+              "error": null
+            }
+          },
+          "usage": {
+            "questions": 2,
+            "successful_questions": 2,
+            "scoring_sequences": 2,
+            "logical_prompt_tokens": 197,
+            "engine_prompt_tokens": 197,
+            "engine_completion_tokens": 0,
+            "cached_prompt_tokens": 195
+          },
+          "latency_ms": 26.2136310338974
+        }
+      ],
+      "build": {
+        "path": "/root/jev-runtime/readme-quickstart-20260930/sglang/demo-v2.json",
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109"
+      },
+      "upload": {
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+        "state": "VALIDATED",
+        "backend": null,
+        "error": null,
+        "inflight": 0
+      },
+      "prepare": {
+        "reference": "demo@2",
+        "digest": "sha256:abc45a73d5c66015e579be150c93dfa57f7d4994cba0ee174a39c414a4346109",
+        "state": "READY",
+        "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "error": null,
+        "inflight": 0,
+        "worker_id": "633b1ec4d89942b6887115a4b68ff195"
+      },
+      "activate": {
+        "alias": "decision-model",
+        "bundle": "demo@2",
+        "generation": 2
+      },
+      "rollback": {
+        "alias": "decision-model",
+        "bundle": "default@1",
+        "generation": 3
+      },
+      "direct_http_decision": {
+        "request_id": "dec-18e76ae7bc9a4be28ab4730b1154d540",
+        "status": "completed",
+        "bundle": "default@1",
+        "bundle_digest": "sha256:24c563102f9f977b6e560d27789fdb9439e577a565cd63053fa4fa3c7e893ee3",
+        "generation": 3,
+        "engine": {
+          "name": "sglang",
+          "version": "0.5.19"
+        },
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "status": "answered",
+            "value": "billing",
+            "probabilities": {
+              "billing": 0.7158687478660181,
+              "technical": 0.15973191311698243,
+              "other": 0.12439933901699952
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9855484122180918,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          },
+          "refund_requested": {
+            "type": "boolean",
+            "status": "answered",
+            "value": true,
+            "probabilities": {
+              "true": 0.7772998663336157,
+              "false": 0.22270013366638422
+            },
+            "probability_semantics": "conditional_label_distribution",
+            "support": null,
+            "label_mass": 0.9408247639093732,
+            "calibration_status": "uncalibrated",
+            "abstained": false,
+            "reason": null,
+            "levels": null,
+            "error": null
+          }
+        },
+        "usage": {
+          "questions": 2,
+          "successful_questions": 2,
+          "scoring_sequences": 2,
+          "logical_prompt_tokens": 197,
+          "engine_prompt_tokens": 197,
+          "engine_completion_tokens": 0,
+          "cached_prompt_tokens": 195
+        },
+        "latency_ms": 26.1330995708704
+      },
+      "passed": true,
+      "quiescence": {
+        "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+        "generation": 1,
+        "state": "QUIESCING",
+        "scope": "single_host_registry_backend_jev_work",
+        "drained": true,
+        "outstanding": {
+          "leases": 0,
+          "raw_work": 0,
+          "adapter_operations": 0,
+          "recovery_operations": 0
+        },
+        "waiting_workers": [],
+        "workers": [
+          {
+            "worker_id": "633b1ec4d89942b6887115a4b68ff195",
+            "backend": "sglang:http://127.0.0.1:18794:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+            "state": "QUIESCED",
+            "owner_status": "alive",
+            "prepared": [
+              "default@1",
+              "demo@2"
+            ]
+          }
+        ]
+      },
+      "exit_code": 0,
+      "remaining_group_members": [],
+      "gpu_after": {
+        "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+        "name": "NVIDIA L20Z",
+        "total_mib": "81559",
+        "free_mib": "10544",
+        "driver": "550.127.08",
+        "utilization": "0"
+      },
+      "registry_integrity": "ok"
+    }
+  },
+  "protected_after": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "command_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "passed": true
+}
