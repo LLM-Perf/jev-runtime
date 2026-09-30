@@ -32,7 +32,7 @@ class SharedAdmission:
         registry.start_worker(backend, self._limits)
 
     def snapshot(self) -> dict:
-        with self.registry._connection() as db:
+        with self.registry._read() as db:
             row = db.execute(
                 "SELECT COALESCE(SUM(state='ADMITTED'),0) AS requests, "
                 "COALESCE(SUM(CASE WHEN state='ADMITTED' THEN tokens ELSE 0 END),0) "
@@ -148,7 +148,12 @@ class SharedAdmission:
             self.registry._record_branches(db, lease_id, branch_ids)
         return self._try_admit(db, lease_id)
 
-    def _try_admit(self, db, lease_id: str) -> bool:
+    def _admission_decision(self, db, lease_id: str):
+        """Pure read: the queue head this lease would admit with, or None.
+
+        Shared by the polling fast path (read-only snapshot) and the writer
+        transaction, which re-evaluates it before applying any update.
+        """
         usage = db.execute(
             "SELECT tenant,COUNT(*) AS requests,SUM(tokens) AS tokens,SUM(branches) AS branches "
             "FROM admission_tickets WHERE backend=? AND state='ADMITTED' GROUP BY tenant",
@@ -156,7 +161,7 @@ class SharedAdmission:
         ).fetchall()
         total = {key: sum(row[key] for row in usage) for key in ("requests", "tokens", "branches")}
         if total["requests"] >= self._limits["max_requests"]:
-            return False
+            return None
         tenants = {row["tenant"]: dict(row) for row in usage}
         heads = db.execute(
             "SELECT t.*,o.identity FROM admission_tickets t "
@@ -178,29 +183,50 @@ class SharedAdmission:
             if not eligible or self.registry._owner_status(json.loads(head["identity"])) == "dead":
                 continue
             if head["lease_id"] != lease_id:
-                return False
-            db.execute(
-                "UPDATE admission_tickets SET state='ADMITTED' WHERE lease_id=?", (lease_id,)
-            )
-            db.execute(
-                "UPDATE admission_tenants SET turn=(SELECT COALESCE(MAX(turn),0)+1 "
-                "FROM admission_tenants WHERE backend=?) WHERE backend=? AND tenant=?",
-                (self.backend, self.backend, head["tenant"]),
-            )
-            return True
-        return False
+                return None
+            return head
+        return None
+
+    def _try_admit(self, db, lease_id: str) -> bool:
+        head = self._admission_decision(db, lease_id)
+        if head is None:
+            return False
+        db.execute("UPDATE admission_tickets SET state='ADMITTED' WHERE lease_id=?", (lease_id,))
+        db.execute(
+            "UPDATE admission_tenants SET turn=(SELECT COALESCE(MAX(turn),0)+1 "
+            "FROM admission_tenants WHERE backend=?) WHERE backend=? AND tenant=?",
+            (self.backend, self.backend, head["tenant"]),
+        )
+        return True
+
+    def _ticket_state(self, db, lease_id: str) -> str:
+        ticket = db.execute(
+            "SELECT t.state FROM admission_tickets t JOIN leases l ON l.id=t.lease_id "
+            "WHERE t.lease_id=? AND t.backend=? AND l.owner=?",
+            (lease_id, self.backend, self.registry.owner),
+        ).fetchone()
+        if ticket is None:
+            raise JevError("admission_lease_mismatch", "Admission lease no longer exists", 409)
+        return ticket["state"]
 
     def _poll(self, lease_id: str) -> bool:
+        # Fast path: a read-only WAL snapshot. Queued waiters previously opened
+        # a BEGIN IMMEDIATE write transaction every 20 ms each, serializing
+        # against real admissions and blocking the event loop on busy peers.
+        # A queued waiter only falls through to a writer transaction when its
+        # own admission looks possible, where the decision is re-evaluated.
+        with self.registry._read() as db:
+            self._check_worker(db, draining=True)
+            if self._ticket_state(db, lease_id) == "ADMITTED":
+                return True
+            if self._admission_decision(db, lease_id) is None:
+                return False
+        # Slow path: the writer transaction remains the admission
+        # linearization point; the worker check and ticket state are
+        # re-evaluated inside it.
         with self.registry._transaction() as db:
             self._check_worker(db, draining=True)
-            ticket = db.execute(
-                "SELECT t.state FROM admission_tickets t JOIN leases l ON l.id=t.lease_id "
-                "WHERE t.lease_id=? AND t.backend=? AND l.owner=?",
-                (lease_id, self.backend, self.registry.owner),
-            ).fetchone()
-            if ticket is None:
-                raise JevError("admission_lease_mismatch", "Admission lease no longer exists", 409)
-            return ticket["state"] == "ADMITTED" or self._try_admit(db, lease_id)
+            return self._ticket_state(db, lease_id) == "ADMITTED" or self._try_admit(db, lease_id)
 
     def _validate_demand(self, tokens: int, branches: int, branch_ids: list[str] | None):
         if tokens <= 0:
@@ -239,7 +265,11 @@ class SharedAdmission:
                 "admission_lease_required", "Shared admission requires a durable lease", 409
             )
         self._validate_demand(tokens, branches, branch_ids)
-        admitted = self._enqueue(lease_id, tenant, tokens, branches, branch_ids)
+        # Blocking writer transactions run off the event loop; the registry
+        # connection lock serializes them without freezing serving.
+        admitted = await asyncio.to_thread(
+            self._enqueue, lease_id, tenant, tokens, branches, branch_ids
+        )
         async with self.wait_reserved(lease_id, admitted):
             yield
 
@@ -250,13 +280,15 @@ class SharedAdmission:
         try:
             while not admitted:
                 await asyncio.sleep(0.02)
-                admitted = self._poll(lease_id)
+                admitted = await asyncio.to_thread(self._poll, lease_id)
                 queued = not admitted
             yield
         finally:
             if queued:
                 # Only never-dispatched waiters can be removed independently of
                 # the lease. An ADMITTED ticket survives even a failed abort.
+                # Synchronous by design: this delete must run even while the
+                # task is being cancelled or the loop is shutting down.
                 with self.registry._transaction() as db:
                     db.execute(
                         "DELETE FROM admission_tickets WHERE lease_id=? AND state='QUEUED' "

@@ -56,6 +56,8 @@ class Registry(QuiescenceRegistry):
         self._pid = os.getpid()
         self._connection_lock = threading.RLock()
         self._db: sqlite3.Connection | None = None
+        self._read_lock = threading.RLock()
+        self._read_db: sqlite3.Connection | None = None
         try:
             with self._connection() as db:
                 initialize(db)
@@ -130,11 +132,35 @@ class Registry(QuiescenceRegistry):
                 self._db.execute("PRAGMA synchronous=FULL")
             yield self._db
 
+    @contextmanager
+    def _read(self) -> Iterator[sqlite3.Connection]:
+        """Read-only connection; WAL readers never wait on a writer's lock.
+
+        Event-loop callers use this for every pure-read path so that a writer
+        transaction running in another thread (which may busy-wait on a peer
+        process's commit) cannot freeze serving. Writes through this connection
+        fail closed via query_only.
+        """
+        if os.getpid() != self._pid:
+            raise RuntimeError("Create a new Registry in each worker; never reuse one after fork")
+        with self._read_lock:
+            if self._read_db is None:
+                self._read_db = sqlite3.connect(
+                    self.path, timeout=5, isolation_level=None, check_same_thread=False
+                )
+                self._read_db.row_factory = sqlite3.Row
+                self._read_db.execute("PRAGMA query_only=ON")
+            yield self._read_db
+
     def close(self) -> None:
         with self._connection_lock:
             if self._db is not None:
                 self._db.close()
                 self._db = None
+        with self._read_lock:
+            if self._read_db is not None:
+                self._read_db.close()
+                self._read_db = None
 
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
@@ -371,7 +397,7 @@ class Registry(QuiescenceRegistry):
             db.execute("UPDATE workers SET state='DRAINING' WHERE owner=?", (self.owner,))
 
     def worker_status(self) -> list[dict]:
-        with self._connection() as db:
+        with self._read() as db:
             rows = db.execute(
                 "SELECT w.*,o.identity FROM workers w JOIN owners o ON o.owner=w.owner"
             ).fetchall()
@@ -398,7 +424,7 @@ class Registry(QuiescenceRegistry):
             )
 
     def deployment_profile(self) -> dict | None:
-        with self._connection() as db:
+        with self._read() as db:
             own = db.execute(
                 "SELECT * FROM worker_deployments WHERE owner=?", (self.owner,)
             ).fetchone()
@@ -526,7 +552,7 @@ class Registry(QuiescenceRegistry):
         self._adapter_ready(db, row["ref"], backend)
 
     def resolve(self, alias: str, reference: str | None, backend: str) -> ResolvedRoute:
-        with self._connection() as db:
+        with self._read() as db:
             row = self._route_row(db, alias)
             self._validate_route(db, row, reference, backend)
             return ResolvedRoute(Bundle.model_validate_json(row["manifest"]), row["generation"])
@@ -599,7 +625,7 @@ class Registry(QuiescenceRegistry):
             return command
 
     def pending_cancel_commands(self) -> list[dict]:
-        with self._connection() as db:
+        with self._read() as db:
             return [
                 dict(row)
                 for row in db.execute(
@@ -629,12 +655,12 @@ class Registry(QuiescenceRegistry):
             )
 
     def cancel_status(self, command: str) -> str | None:
-        with self._connection() as db:
+        with self._read() as db:
             row = db.execute("SELECT state FROM cancel_commands WHERE id=?", (command,)).fetchone()
             return row["state"] if row else None
 
     def has_lease(self, lease_id: str) -> bool:
-        with self._connection() as db:
+        with self._read() as db:
             return db.execute("SELECT 1 FROM leases WHERE id=?", (lease_id,)).fetchone() is not None
 
     def record_branches(self, lease_id: str, branches: list[str]) -> None:
@@ -686,7 +712,7 @@ class Registry(QuiescenceRegistry):
             self._event(db, "abort_pending", lease_id=lease_id, engine_request_ids=sorted(branches))
 
     def recovery_candidates(self) -> list[dict]:
-        with self._connection() as db:
+        with self._read() as db:
             rows = db.execute(
                 "SELECT l.*,w.branches,w.phase,o.identity,b.backend FROM leases l "
                 "LEFT JOIN lease_work w ON w.lease_id=l.id "
@@ -778,7 +804,7 @@ class Registry(QuiescenceRegistry):
         return self.inspect(reference)
 
     def inspect(self, reference: str) -> dict:
-        with self._connection() as db:
+        with self._read() as db:
             row = self._get(db, reference)
             count = db.execute("SELECT COUNT(*) FROM leases WHERE ref=?", (reference,)).fetchone()[
                 0
@@ -909,7 +935,7 @@ class Registry(QuiescenceRegistry):
         return self.inspect_adapter(artifact.reference)
 
     def inspect_adapter(self, reference: str) -> dict:
-        with self._connection() as db:
+        with self._read() as db:
             row = db.execute("SELECT * FROM adapters WHERE ref=?", (reference,)).fetchone()
             if row is None:
                 raise JevError("adapter_not_found", "Unknown immutable adapter", 404)
@@ -931,7 +957,7 @@ class Registry(QuiescenceRegistry):
             }
 
     def list_adapters(self) -> list[dict]:
-        with self._connection() as db:
+        with self._read() as db:
             references = [row["ref"] for row in db.execute("SELECT ref FROM adapters ORDER BY ref")]
         return [self.inspect_adapter(reference) for reference in references]
 
@@ -1042,7 +1068,7 @@ class Registry(QuiescenceRegistry):
             self._event(db, "adapter_settled", ref=reference, operation=operation, state=state)
 
     def list(self) -> dict:
-        with self._connection() as db:
+        with self._read() as db:
             return {
                 "bundles": [
                     dict(row)

@@ -23,11 +23,11 @@ class QuiescenceRegistry:
             raise JevError("backend_quiescing", "Backend is draining; new work is disabled", 503)
 
     def require_backend_open(self, backend):
-        with self._connection() as db:
+        with self._read() as db:
             self._require_backend_open(db, backend)
 
     def backend_control(self, backend):
-        with self._connection() as db:
+        with self._read() as db:
             row = db.execute(
                 "SELECT * FROM backend_controls WHERE backend=?", (backend,)
             ).fetchone()
@@ -119,7 +119,7 @@ class QuiescenceRegistry:
             )
 
     def quiescence_status(self, backend):
-        with self._connection() as db:
+        with self._read() as db:
             control = self.backend_control(backend)
             outstanding = self._outstanding(db, backend)
             workers = [row for row in self.worker_status() if row["backend"] == backend]
@@ -194,7 +194,7 @@ class QuiescenceRegistry:
                 db.execute("DELETE FROM raw_work WHERE id=? AND owner=?", (work_id, self.owner))
 
     def raw_recovery_candidates(self, backend):
-        with self._connection() as db:
+        with self._read() as db:
             rows = db.execute(
                 "SELECT r.*,o.identity FROM raw_work r JOIN owners o ON o.owner=r.owner "
                 "WHERE r.backend=?",
@@ -252,7 +252,7 @@ class QuiescenceRegistry:
             )
 
     def pending_recoveries(self, backend):
-        with self._connection() as db:
+        with self._read() as db:
             return [
                 dict(row)
                 for row in db.execute("SELECT * FROM recovery_claims WHERE backend=?", (backend,))
