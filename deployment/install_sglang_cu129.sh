@@ -19,7 +19,7 @@ fi
 git -C "$JEV_SOURCE" rev-parse HEAD > "$JEV_ROOT/evidence/sglang-source-revision.txt"
 "$JEV_PIP_PY" -m pip install --index-url https://pypi.org/simple \
   --extra-index-url https://download.pytorch.org/whl/cu129 \
-  'torch==2.13.0+cu129' 'torchaudio==2.11.0+cu129' 'torchvision==0.28.0+cu129' \
+  'torch==2.13.0+cu129' 'torchvision==0.28.0+cu129' \
   setuptools setuptools-rust setuptools-scm wheel
 "$JEV_PIP_PY" -m pip install --no-deps \
   'https://github.com/sgl-project/whl/releases/download/v0.4.6.post1/sglang_kernel-0.4.6.post1+cu129-cp310-abi3-manylinux2014_x86_64.whl' \
@@ -28,23 +28,8 @@ git -C "$JEV_SOURCE" rev-parse HEAD > "$JEV_ROOT/evidence/sglang-source-revision
   --no-deps 'sgl-deep-ep==0.1.2+cu129'
 # This dependency is a wheel stub with its own isolated build requirements.
 "$JEV_PIP_PY" -m pip install --index-url https://pypi.org/simple 'cuda-tile==1.6.0rc5'
-"$JEV_PIP_PY" - "$JEV_SOURCE/python/pyproject.toml" <<'PY'
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-text = path.read_text()
-for old, new in (
-    ("cuda-python>=13.0", "cuda-python>=12,<13"),
-    ("flashinfer_python[cu13]", "flashinfer_python[cu12]"),
-    ("nvidia-cutlass-dsl[cu13]", "nvidia-cutlass-dsl"),
-):
-    if old in text:
-        text = text.replace(old, new)
-    elif new not in text:
-        raise RuntimeError("Official CUDA 12 dependency substitutions no longer match")
-path.write_text(text)
-PY
+"$JEV_PYTHON" "$JEV_RELEASE/deployment/sglang_text_dependencies.py" \
+  "$JEV_SOURCE/python/pyproject.toml"
 git -C "$JEV_SOURCE" diff -- python/pyproject.toml \
   > "$JEV_ROOT/evidence/sglang-cu129-dependencies.patch"
 # The official setup.py supports this flag. Optional gRPC/multimodal Rust
@@ -54,4 +39,28 @@ SGLANG_BUILD_RUST_EXTS=none "$JEV_PIP_PY" -m pip install --no-build-isolation \
   -e "$JEV_SOURCE/python"
 "$JEV_PIP_PY" -m pip install -e "$JEV_RELEASE[tokenizers]" -e "$JEV_RELEASE/packages/sglang"
 "$JEV_PIP_PY" -m pip check
+"$JEV_PIP_PY" - <<'PY'
+from importlib.metadata import PackageNotFoundError, distribution
+
+unexpected = []
+for name in (
+    "anthropic",
+    "datasets",
+    "grpcio",
+    "modelscope",
+    "smg-grpc-servicer",
+    "soundfile",
+    "timm",
+    "torchaudio",
+    "torchcodec",
+):
+    try:
+        distribution(name)
+    except PackageNotFoundError:
+        continue
+    unexpected.append(name)
+if unexpected:
+    raise RuntimeError(f"Non-text dependencies were installed: {unexpected}")
+print("Verified text-only dependency boundary")
+PY
 "$JEV_PIP_PY" -m pip freeze > "$JEV_ROOT/evidence/sglang-requirements.txt"

@@ -17,7 +17,11 @@ python -m pip check
 For a fresh environment matching the tested CUDA 12.9 text-only lane, use the
 [installation script](../deployment/install_sglang_cu129.sh). It checks out SGLang
 v0.5.19, applies its documented CUDA 12 dependency substitutions and excludes
-optional Rust extensions. It does not change the driver or system SGLang.
+optional Rust extensions. It also removes upstream client, dataset, gRPC, audio,
+and unused multimodal dependencies from this pinned text-only profile. Pillow and
+torchvision remain because SGLang 0.5.19 imports them during ordinary server
+startup. The script fails closed if the upstream dependency list changes.
+It does not change the driver or system SGLang.
 It downloads/builds large dependencies and needs Git, network access and a working
 build toolchain.
 
@@ -32,7 +36,8 @@ python -m pip check
 ```
 
 Use a fresh `JEV_ROOT`. This is a text-serving environment; multimodal and gRPC are
-outside its validation scope. Check driver compatibility before starting the engine.
+outside its validation scope. The installer verifies those excluded distributions
+did not enter transitively. Check driver compatibility before starting the engine.
 
 ## 2. Prepare the model, tokenizer, config and keys
 

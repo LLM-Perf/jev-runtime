@@ -1,5 +1,8 @@
 # Managed LoRA lifecycle
 
+Install `jev-runtime-core[lora]` before enabling this optional feature. The base
+text-serving install intentionally does not include the safetensors reader.
+
 Managed LoRA is opt-in and initially limited to native plugins, BF16, no
 quantization, TP/PP/DP=1 and one API/tokenizer worker. The exposed checkpoint is
 `HuggingFaceTB/SmolLM2-1.7B-Instruct` at revision
