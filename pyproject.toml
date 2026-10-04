@@ -6,7 +6,21 @@ build-backend = "hatchling.build"
 name = "jev-runtime-core"
 version = "0.1.0a1"
 description = "Versioned typed decisions for SGLang and vLLM"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
+keywords = ["llm", "vllm", "sglang", "inference", "classification"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: GPU :: NVIDIA CUDA",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
   "pydantic>=2.10,<3", "httpx>=0.28,<1", "fastapi>=0.115,<1",
   "uvicorn>=0.32,<1", "typer>=0.15,<1", "PyYAML>=6,<7",
@@ -24,6 +38,12 @@ quality-data = ["pyarrow>=18,<26"]
 [project.scripts]
 jevctl = "jev_runtime.cli:app"
 jev-gateway = "jev_runtime.cli:serve_entrypoint"
+
+[project.urls]
+Homepage = "https://github.com/LLM-Perf/jev-runtime"
+Documentation = "https://github.com/LLM-Perf/jev-runtime#readme"
+Issues = "https://github.com/LLM-Perf/jev-runtime/issues"
+Source = "https://github.com/LLM-Perf/jev-runtime"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/jev_runtime"]

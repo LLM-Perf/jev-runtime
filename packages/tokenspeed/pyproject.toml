@@ -5,7 +5,18 @@ build-backend = "hatchling.build"
 [project]
 name = "jev-tokenspeed"
 version = "0.1.0a1"
+description = "Experimental TokenSpeed adapter for Jev typed decision serving"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
+keywords = ["llm", "tokenspeed", "inference", "classification"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: GPU :: NVIDIA CUDA",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = ["jev-runtime-core==0.1.0a1"]
 
 [project.scripts]
@@ -13,6 +24,11 @@ jev-tokenspeed = "jev_tokenspeed.launcher:main"
 
 [project.entry-points."jev_runtime.backends"]
 tokenspeed = "jev_tokenspeed.backend:create_backend"
+
+[project.urls]
+Homepage = "https://github.com/LLM-Perf/jev-runtime"
+Issues = "https://github.com/LLM-Perf/jev-runtime/issues"
+Source = "https://github.com/LLM-Perf/jev-runtime"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/jev_tokenspeed"]

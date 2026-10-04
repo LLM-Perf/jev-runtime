@@ -344,3 +344,13 @@ python evidence/harnesses/verify_strict_traffic_9da1813.py
 Some tests bind localhost ports. GPU validation is a separate workflow in
 [the native runner guide](docs/native-validation-runner.md). Use immutable model
 revisions, preserve failed attempts, and keep weights and credentials out of Git.
+
+## Contributing and security
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development
+workflow and [SECURITY.md](SECURITY.md) for private vulnerability reporting. Notable
+changes are tracked in [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+Jev Runtime is licensed under the [Apache License 2.0](LICENSE).

@@ -5,11 +5,27 @@ build-backend = "hatchling.build"
 [project]
 name = "jev-vllm"
 version = "0.1.0a1"
+description = "Native vLLM endpoint plugin for Jev typed decision serving"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
+keywords = ["llm", "vllm", "inference", "classification"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: GPU :: NVIDIA CUDA",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = ["jev-runtime-core==0.1.0a1"]
 
 [project.entry-points."vllm.endpoint_plugins"]
 jev_runtime_api = "jev_vllm.endpoint:JevEndpointPlugin"
+
+[project.urls]
+Homepage = "https://github.com/LLM-Perf/jev-runtime"
+Issues = "https://github.com/LLM-Perf/jev-runtime/issues"
+Source = "https://github.com/LLM-Perf/jev-runtime"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/jev_vllm"]
