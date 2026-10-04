@@ -10,6 +10,8 @@ are running. The model stays in its inference engine.
 [Quick start](#quick-start) · [Project comparison](#how-it-compares) ·
 [Measured results](#measured-results) · [Documentation](#documentation)
 
+![Jev Runtime turns text into typed decisions with probabilities and supports live bundle updates](docs/assets/jev-demo.gif)
+
 ```text
 Your text + typed questions
           │
