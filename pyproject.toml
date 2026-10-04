@@ -48,6 +48,9 @@ Source = "https://github.com/LLM-Perf/jev-runtime"
 [tool.hatch.build.targets.wheel]
 packages = ["src/jev_runtime"]
 
+[tool.hatch.build.targets.sdist]
+include = ["src", "LICENSE", "README.md", "pyproject.toml"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

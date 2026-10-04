@@ -320,7 +320,7 @@ report accuracy/calibration, strict success, latency and throughput together.
 | Run SGLang / attach an engine / try TokenSpeed | [SGLang quick start](docs/quickstart-sglang.md), [engine integration](docs/engine-integration.md), [multi-engine guide](docs/multi-engine.md) |
 | Integrate an application | [Example request](examples/request.json), [schema](src/jev_runtime/schema.py), [TypeScript client](packages/typescript/README.md) |
 | Evaluate models and probabilities | [Model matrix](profiles/certification-matrix.json), [public quality](docs/public-quality.md), [calibration](docs/calibration.md), [numerical diagnostics](docs/numerical-suite.md) |
-| Operate and upgrade | [Operations](docs/operations.md), [quiescence](docs/quiescence.md), [migration](docs/registry-schema.md), [packaging](docs/release-packaging.md), [rollout](docs/gateway-rollout.md) |
+| Operate and upgrade | [Operations](docs/operations.md), [quiescence](docs/quiescence.md), [migration](docs/registry-schema.md), [packaging](docs/release-packaging.md), [PyPI release](docs/pypi-release.md), [rollout](docs/gateway-rollout.md) |
 | Inspect remaining work | [Completion ledger](docs/completion-ledger.md), [implementation plan](docs/implementation-plan.md), [performance](docs/performance.md) |
 
 Release blockers include wider model/numerical certification, TokenSpeed GPU

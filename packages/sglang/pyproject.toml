@@ -6,6 +6,7 @@ build-backend = "hatchling.build"
 name = "jev-sglang"
 version = "0.1.0a1"
 description = "Native SGLang plugin for Jev typed decision serving"
+readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
