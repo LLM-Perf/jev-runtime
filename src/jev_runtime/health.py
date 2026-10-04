@@ -11,13 +11,17 @@ from jev_runtime.schema import Contract
 
 class HealthSettings(Contract):
     interval_seconds: float = Field(default=30, ge=1, le=300)
+    startup_grace_seconds: float = Field(default=60, ge=0, le=300)
     timeout_seconds: float = Field(default=10, ge=0.1, le=120)
     max_age_seconds: float = Field(default=90, ge=1, le=900)
 
     @model_validator(mode="after")
     def allow_probe_and_abort(self):
-        if self.max_age_seconds < self.interval_seconds + self.timeout_seconds + 5:
-            raise ValueError("Health max age must allow the interval, probe and five-second abort")
+        delay = max(self.interval_seconds, self.startup_grace_seconds)
+        if self.max_age_seconds < delay + self.timeout_seconds + 5:
+            raise ValueError(
+                "Health max age must allow the startup/interval delay, probe and five-second abort"
+            )
         return self
 
 

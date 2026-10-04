@@ -67,6 +67,7 @@ def create_app(settings, engine_options: dict) -> FastAPI:
             )
             await runtime.start()
             await bootstrap(runtime, settings)
+            runtime.start_health_monitor()
             app.state.jev_runtime = runtime
             yield
         finally:

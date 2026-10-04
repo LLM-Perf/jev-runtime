@@ -69,7 +69,7 @@ async def test_stale_canary_rejects_traffic_and_publication(runtime, question, b
     assert not runtime.registry.list()["leases"]
 
 
-async def test_unconfirmed_probe_is_not_retried_until_explicit_recovery(runtime, question, bundle):
+async def test_unconfirmed_probe_is_not_retried_until_automatic_recovery(runtime, question, bundle):
     runtime.health.settings = HealthSettings(interval_seconds=1, timeout_seconds=0.1)
     runtime.backend.gate.clear()
     runtime.backend.fail_cancel = True
@@ -82,9 +82,9 @@ async def test_unconfirmed_probe_is_not_retried_until_explicit_recovery(runtime,
     assert len(runtime.backend.calls) == calls
     assert runtime.registry.list()["leases"] == first
     assert runtime.pending_cancellations()[0]["phase"] == "abort_pending"
+    assert runtime.health.status(bundle.reference)["error"] == "health_cleanup_pending"
     runtime.backend.fail_cancel = False
     runtime.backend.gate.set()
-    await runtime.recover_cancelled(first[0]["request_id"])
     await runtime.check_health()
     assert runtime.health.status(bundle.reference)["ready"]
     assert (await runtime.decide(body(question))).status == "completed"
@@ -212,6 +212,42 @@ async def test_invalid_engine_scores_trip_circuit(runtime, bundle, question):
 def test_health_interval_timeout_and_expiry_are_consistent():
     with pytest.raises(ValidationError, match="max age"):
         HealthSettings(interval_seconds=30, timeout_seconds=10, max_age_seconds=40)
+    with pytest.raises(ValidationError, match="max age"):
+        HealthSettings(startup_grace_seconds=60, timeout_seconds=10, max_age_seconds=70)
+
+
+async def test_monitor_starts_explicitly_and_honors_startup_grace(tmp_path, compiler, monkeypatch):
+    from conftest import ControlledEngine
+
+    from jev_runtime.registry import Registry
+    from jev_runtime.runtime import Runtime
+
+    instance = Runtime(
+        ControlledEngine(),
+        compiler,
+        Registry(tmp_path / "monitor.db"),
+        "fixture:monitor",
+        "fixture",
+        health_settings=HealthSettings(startup_grace_seconds=2),
+    )
+    await instance.start()
+    assert instance._health_task is None
+
+    delays = []
+
+    async def wait_for(awaitable, wait_seconds):
+        awaitable.close()
+        delays.append(wait_seconds)
+        instance._health_stop.set()
+
+    monkeypatch.setattr(asyncio, "wait_for", wait_for)
+    instance.start_health_monitor()
+    first = instance._health_task
+    instance.start_health_monitor()
+    assert instance._health_task is first
+    await first
+    assert delays == [2]
+    await instance.close()
 
 
 async def test_inactive_prepared_versions_stay_fresh_across_expiry(runtime, bundle, monkeypatch):

@@ -68,6 +68,7 @@ class JevEndpointPlugin:
             try:
                 await runtime.start()
                 await bootstrap(runtime, settings)
+                runtime.start_health_monitor()
             except BaseException:
                 await runtime.close()
                 raise

@@ -116,6 +116,7 @@ async def runtime(tmp_path, compiler, bundle, request):
     instance.registry.upload(bundle)
     await instance.prepare(bundle.reference)
     instance.registry.activate("model", bundle.reference, 0)
+    instance.start_health_monitor()
     engine.calls.clear()
     engine.started.clear()
     yield instance

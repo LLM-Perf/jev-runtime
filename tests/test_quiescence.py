@@ -75,7 +75,7 @@ async def test_cross_worker_drain_preserves_routes_and_requires_offline_resume(r
         final = await other.quiesce(1, 1)
         assert final["drained"] and not final["waiting_workers"]
         assert all(row["state"] in {"QUIESCED", "STOPPED"} for row in final["workers"])
-        assert runtime._health_task.done() and other._health_task.done()
+        assert runtime._health_task.done() and other._health_task is None
         assert runtime.registry.list()["routes"] == routes
         with pytest.raises(JevError, match="Stop all previous"):
             runtime.registry.resume_backend(runtime.backend_identity, 1)
