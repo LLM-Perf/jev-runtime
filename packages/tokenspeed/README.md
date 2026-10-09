@@ -9,5 +9,9 @@ pip install jev-tokenspeed
 ```
 
 TokenSpeed support is experimental and is not yet GPU-certified. Read the
-[multi-engine guide](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/multi-engine.md)
+[TokenSpeed quick start](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/quickstart-tokenspeed.md)
 before deployment.
+
+Includes source/hardware preflight, native Engine loop dispatch, durable completion
+receipts and the shared typed-decision/bundle APIs. K labels currently require K
+native requests; efficient joint readout and GPU certification remain open.

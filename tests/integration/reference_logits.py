@@ -24,6 +24,11 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=Path, required=True)
+    parser.add_argument(
+        "--model-manifest",
+        type=Path,
+        help="Checkpoint identity manifest (default: model-path/jev-source.json)",
+    )
     parser.add_argument("--contract-report", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--atol", type=float, default=0.15)
@@ -40,7 +45,7 @@ def main():
         parser.error("--cpu-offload requires --device cuda")
     if args.output.exists():
         parser.error("Choose a new output path to retain previous reference attempts")
-    source = json.loads((args.model_path / "jev-source.json").read_text())
+    source = json.loads((args.model_manifest or args.model_path / "jev-source.json").read_text())
     report = json.loads(args.contract_report.read_text())
     assert source["revision"] == report["model"]["revision"]
     assert source["model_id"] == report["model"]["id"]

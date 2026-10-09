@@ -217,7 +217,7 @@ it did not test a fresh network installation. [Exact scope and evidence](docs/re
 |---|---|---:|---|
 | vLLM 0.30.0+cu129 | Native endpoint plugin; gateway via plugin scoring | 12/20 model profiles | Other versions/topologies need validation; a plain OpenAI endpoint is insufficient for gateway scoring |
 | SGLang 0.5.19 | Native plugin; HTTP gateway | 12/20 model profiles | CUDA 12.9 test lane; 0.5.20 not certified; 0.5.19 mixed traffic needs engine-side compatibility hooks |
-| TokenSpeed | Experimental adapter and bridge | 0/20 | No GPU certification; K labels currently need K native scoring calls |
+| TokenSpeed | Pinned native launcher, preflight, durable receipts and bridge | 0/20 | No GPU certification; K labels currently need K native scoring calls |
 | Additional engines | `jev_runtime.backends` entry point | Not measured | Must implement and validate the complete scoring/lifecycle contract |
 
 Coverage means checkpoint-specific functional evidence, **not** every model in an
@@ -319,7 +319,7 @@ report accuracy/calibration, strict success, latency and throughput together.
 
 | Goal | Start here |
 |---|---|
-| Run SGLang / attach an engine / try TokenSpeed | [SGLang quick start](docs/quickstart-sglang.md), [engine integration](docs/engine-integration.md), [multi-engine guide](docs/multi-engine.md) |
+| Run SGLang / attach an engine / try TokenSpeed | [SGLang quick start](docs/quickstart-sglang.md), [engine integration](docs/engine-integration.md), [TokenSpeed quick start](docs/quickstart-tokenspeed.md), [multi-engine guide](docs/multi-engine.md) |
 | Integrate an application | [Example request](examples/request.json), [schema](src/jev_runtime/schema.py), [TypeScript client](packages/typescript/README.md) |
 | Evaluate models and probabilities | [Model matrix](profiles/certification-matrix.json), [public quality](docs/public-quality.md), [calibration](docs/calibration.md), [numerical diagnostics](docs/numerical-suite.md) |
 | Operate and upgrade | [Operations](docs/operations.md), [quiescence](docs/quiescence.md), [migration](docs/registry-schema.md), [packaging](docs/release-packaging.md), [PyPI release](docs/pypi-release.md), [rollout](docs/gateway-rollout.md) |

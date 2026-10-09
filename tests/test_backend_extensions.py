@@ -320,11 +320,11 @@ async def test_remote_probe_identity_and_explicit_cancel_ack():
 
 
 async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop(
-    monkeypatch, tmp_path, compiler
+    monkeypatch, tmp_path, compiler, engine_owner_loop
 ):
     import threading
 
-    from jev_tokenspeed import plugin
+    from jev_tokenspeed import plugin, preflight
 
     from jev_runtime.config import Settings
 
@@ -335,6 +335,7 @@ async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop
         tokenizer=compiler.tokenizer,
     )
     manager.server_args.model = "fixture"
+    manager.server_args.tokenizer = "fixture"
     manager.server_args.revision = "a" * 40
     calls = []
 
@@ -355,7 +356,7 @@ async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop
     closed = []
     engine = SimpleNamespace(
         tokenizer_manager=manager,
-        llm=SimpleNamespace(run=asyncio.run),
+        llm=SimpleNamespace(_loop=engine_owner_loop),
         shutdown=lambda: closed.append(True),
     )
     modules = {
@@ -372,6 +373,7 @@ async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop
         vars(module).update(values)
         monkeypatch.setitem(sys.modules, name, module)
     monkeypatch.setattr(plugin, "verify_source", lambda root: "a" * 40)
+    monkeypatch.setattr(preflight, "check_hardware", lambda selected=0: {})
     monkeypatch.setenv("JEV_API_KEY", "test-key")
     monkeypatch.setenv("JEV_ADMIN_KEY", "test-admin")
     monkeypatch.delenv("JEV_CONFIG", raising=False)
@@ -402,7 +404,63 @@ async def test_tokenspeed_native_app_serves_typed_results_with_owned_engine_loop
             assert result["usage"]["scoring_sequences"] == 2
             assert result["usage"]["engine_completion_tokens"] == 2
             assert len(calls) == 4  # two preparation labels, two serving labels
+        # Exercise the same opt-in contract harness used on GPU targets. The
+        # backend here is explicitly a CPU double, not model-serving evidence.
+        from tests.integration.live_contract import certify
+
+        (tmp_path / "config.json").write_text(settings.model_dump_json())
+        original_client = httpx.AsyncClient
+
+        def client(**kwargs):
+            return original_client(transport=httpx.ASGITransport(app=application), **kwargs)
+
+        monkeypatch.setattr(httpx, "AsyncClient", client)
+        report = await certify(
+            tmp_path,
+            tmp_path / "contract.json",
+            4,
+            "a" * 40,
+            "a" * 40,
+            minimum_requests=24,
+            concurrency=4,
+            traffic_timeout=20,
+        )
+        assert report["passed"]
+        assert report["checks"]["hot_switch_under_traffic"]["strict_success_requests"] >= 24
+        assert report["checks"]["independent_candidate"]["usage"]["scoring_sequences"] == 20
     assert closed == [True]
+
+    async def broken_runtime(*args, **kwargs):
+        raise RuntimeError("injected initialization failure")
+
+    monkeypatch.setattr(plugin, "build_runtime", broken_runtime)
+    with pytest.raises(RuntimeError, match="initialization failure"):
+        async with application.router.lifespan_context(application):
+            pytest.fail("Initialization should fail before accepting requests")
+    assert closed == [True, True]
+
+    class BrokenDrain:
+        async def start(self):
+            pass
+
+        async def close(self):
+            raise RuntimeError("injected unconfirmed drain")
+
+        def start_health_monitor(self):
+            pass
+
+    async def runtime_with_broken_drain(*args, **kwargs):
+        return BrokenDrain()
+
+    async def no_bootstrap(*args):
+        pass
+
+    monkeypatch.setattr(plugin, "build_runtime", runtime_with_broken_drain)
+    monkeypatch.setattr(plugin, "bootstrap", no_bootstrap)
+    with pytest.raises(RuntimeError, match="unconfirmed drain"):
+        async with application.router.lifespan_context(application):
+            pass
+    assert closed == [True, True, True]
 
 
 async def test_tokenspeed_lost_response_receipt_is_bounded_and_blocks_id_reuse(monkeypatch):

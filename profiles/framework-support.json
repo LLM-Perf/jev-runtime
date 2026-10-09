@@ -16,7 +16,7 @@
     },
     "tokenspeed": {
       "implementation": "experimental_single_label_native_and_bridge",
-      "upstream_revision": "7fa8acb1e885389825c077a6aec0326fbbbd7116",
+      "upstream_revision": "f4ac1affe11ad404720bcd150970487f75fbf59a",
       "functional_models": 0,
       "model_denominator": 20,
       "release_certified": false,
@@ -162,7 +162,14 @@
           "numerical": "not_run",
           "performance": "not_run"
         }
-      ]
+      ],
+      "legacy_upstream_revisions": [
+        "7fa8acb1e885389825c077a6aec0326fbbbd7116"
+      ],
+      "source_preflight": true,
+      "persistent_completion_receipts": true,
+      "native_scheduler_abort_ack": false,
+      "joint_selected_id_readout": false
     }
   }
 }

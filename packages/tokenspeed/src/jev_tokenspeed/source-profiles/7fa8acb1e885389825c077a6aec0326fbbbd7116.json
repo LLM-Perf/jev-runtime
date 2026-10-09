@@ -1,0 +1,20 @@
+{
+  "upstream": "https://github.com/lightseekorg/tokenspeed",
+  "revision": "7fa8acb1e885389825c077a6aec0326fbbbd7116",
+  "files": {
+    "runtime/engine/input_processor.py": "7af169dbe3fa7acfe0154568269db0619534984a06eec6d3dc377efca54e363b",
+    "runtime/engine/io_struct.py": "762c20b90e4e8a2c5fa1f73f7559bb41006864513e9de4eed653dde750dd5e5c",
+    "runtime/engine/async_llm.py": "2b30e83578abeeb8cb6d9d1d96fb92c70745c39885063a7dedbc36b445a00e41",
+    "runtime/engine/llm.py": "7c2533e39cfcb892a6423faa5f3b4dd4d040d7b691b656c956bacfa127c7073a",
+    "runtime/engine/logprobs.py": "877d6639a3172915fa4eebeec3e6e0fbe8fbbb27021470d04b5a681f7068bc24",
+    "runtime/engine/output_processor.py": "e79f59a3ebe66ed8a32f5d9f3992111519285f3d2b2b85f1e7fa250802660bfd",
+    "runtime/engine/generation_output_processor.py": "4830488e3d4ce5fe46a13f479b428f48ddcd67033fc29953b02699e3b2b0214b",
+    "runtime/engine/collector.py": "33566d3361b34bb294e21b2fa1f780e4112e30e91a3077f5ba951fb88f59780c",
+    "runtime/entrypoints/engine.py": "949dbcf68cc47aed82dd5ba71a7c9c8772c88dd6e4ae5acba349fd7da88cfc04",
+    "runtime/sampling/backends/triton.py": "e340864c602d6ee38541f6492057e5779eaf3cc0ef39886a70798e7ad47981ea",
+    "runtime/sampling/backends/triton_full.py": "0db82e602ec93f1b7ddab2f3efbd0786bd67aac0e043ea8a5c4cb8f551ce2e62",
+    "runtime/sampling/sampling_params.py": "f163c2463349d0ffad688fab2f123caefb3e36bce420f33936ebf05d8a534777",
+    "runtime/layers/logits_processor.py": "f15e90417887b3bc017e4b5cdf050841ea5fa0b7182b9f9b7f45397c8402a8e9"
+  },
+  "gpu_validated": false
+}

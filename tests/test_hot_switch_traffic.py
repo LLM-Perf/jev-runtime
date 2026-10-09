@@ -81,6 +81,8 @@ class Target:
                 label_mass=None,
             )
         sequences = len(answer["probabilities"]) if independent else 1
+        if self.engine == "tokenspeed":
+            sequences = sequences * 2 if independent else len(answer["probabilities"])
         data["usage"].update(
             questions=1,
             successful_questions=1,
@@ -120,7 +122,7 @@ async def run(target, tmp_path, **options):
 
 
 @pytest.mark.parametrize("requests,switches", [(100, 4), (4, 50)])
-@pytest.mark.parametrize("engine", ["vllm", "sglang"])
+@pytest.mark.parametrize("engine", ["vllm", "sglang", "tokenspeed"])
 async def test_both_minima_required_and_every_attempt_retained(
     bundle, tmp_path, requests, switches, engine
 ):
@@ -208,7 +210,7 @@ async def test_identity_or_usage_corruption_never_counts_as_strict_success(bundl
         verify_response(data, request, {b.reference: b for b in target.bundles}, "vllm")
 
 
-@pytest.mark.parametrize("engine", ["vllm", "sglang"])
+@pytest.mark.parametrize("engine", ["vllm", "sglang", "tokenspeed"])
 @pytest.mark.parametrize("version", [1, 2])
 async def test_completion_usage_is_exact_for_each_native_readout(bundle, engine, version):
     target = Target(bundle, engine=engine)

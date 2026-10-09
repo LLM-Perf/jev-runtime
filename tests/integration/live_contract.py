@@ -11,9 +11,10 @@ import argparse
 import asyncio
 import json
 import math
+import os
 import time
 import uuid
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from pathlib import Path
 
 import httpx
@@ -61,7 +62,11 @@ async def certify(
     if await asyncio.to_thread(output.exists):
         raise ValueError("Choose a new output path to retain previous attempts")
     settings = load_settings(run_dir / "config.json")
-    keys = json.loads((run_dir / "keys.json").read_text())
+    keys = (
+        json.loads((run_dir / "keys.json").read_text())
+        if (run_dir / "keys.json").exists()
+        else {"api": os.environ[settings.api_key_env], "admin": os.environ[settings.admin_key_env]}
+    )
     prefix = "/plugins/jev-runtime"
     report = {
         "schema_version": 1,
@@ -159,21 +164,27 @@ async def certify(
             checks["four_types"] = response.model_dump(mode="json")
             verify_four_types(response)
 
-            chat = await client.post(
-                "/v1/chat/completions",
-                json={
-                    "model": settings.model_id,
-                    "messages": [{"role": "user", "content": "Say hello."}],
-                    "max_tokens": 8,
-                    "temperature": 0,
-                    "chat_template_kwargs": {"enable_thinking": False},
-                },
-            )
-            assert chat.status_code == 200, chat.text[:2000]
-            chat_data = chat.json()
-            assert chat_data["choices"][0]["finish_reason"] in {"stop", "length"}
-            assert chat_data["usage"]["completion_tokens"] > 0
-            checks["native_chat_coexists"] = {"usage": chat_data["usage"]}
+            if settings.backend == "tokenspeed":
+                checks["native_chat_coexists"] = {
+                    "status": "not_applicable",
+                    "reason": "standalone typed-scoring launcher",
+                }
+            else:
+                chat = await client.post(
+                    "/v1/chat/completions",
+                    json={
+                        "model": settings.model_id,
+                        "messages": [{"role": "user", "content": "Say hello."}],
+                        "max_tokens": 8,
+                        "temperature": 0,
+                        "chat_template_kwargs": {"enable_thinking": False},
+                    },
+                )
+                assert chat.status_code == 200, chat.text[:2000]
+                chat_data = chat.json()
+                assert chat_data["choices"][0]["finish_reason"] in {"stop", "length"}
+                assert chat_data["usage"]["completion_tokens"] > 0
+                checks["native_chat_coexists"] = {"usage": chat_data["usage"]}
 
             invalid = {**payload, "bundle": "nonexistent@999"}
             error = await call("/v1/decisions", invalid, expected=409)
@@ -194,11 +205,12 @@ async def certify(
                 management=True,
             )
             assert preview["bundle"]["model"] == profile["model"]
-            assert len(preview["sequences"]) == 1
+            assert len(preview["sequences"]) == (3 if settings.backend == "tokenspeed" else 1)
             sequence = preview["sequences"][0]
             seq = ScoreInput(
                 **{
                     **sequence,
+                    "request_id": uuid.uuid4().hex,
                     "input_ids": tuple(sequence["input_ids"]),
                     "label_ids": tuple(sequence["label_ids"]),
                 }
@@ -234,6 +246,25 @@ async def certify(
                 finally:
                     await adapter.close()
                 checks["native_attach_logprob_parity"] = {"max_abs_error": max(differences)}
+            elif settings.backend == "tokenspeed":
+                from jev_runtime.backends.remote import ScoringHTTP
+
+                adapter = ScoringHTTP(settings.engine_url, "tokenspeed", keys["api"])
+                try:
+                    capabilities = await adapter.probe()
+                    assert capabilities.label_scoring == "single"
+                    attached = await adapter.score(replace(seq, request_id=uuid.uuid4().hex))
+                    differences = [
+                        abs(a - b) for a, b in zip(raw["logprobs"], attached.logprobs, strict=True)
+                    ]
+                    assert max(differences) < 1e-4, differences
+                    await adapter.cancel(attached.request_id)
+                    checks["bridge_contract_parity"] = {
+                        "max_abs_error": max(differences),
+                        "qualification": "same backend, two clients; not an independent reference",
+                    }
+                finally:
+                    await adapter.close()
             else:
                 from jev_runtime.backends.sglang import SGLangHTTP
 
@@ -289,7 +320,9 @@ async def certify(
                 await call("/v1/decisions", {**payload, "model": case_id})
             ).model_dump(mode="json")
             assert indep_result["answers"]["intent"]["support"] is not None
-            assert indep_result["usage"]["scoring_sequences"] == 10
+            assert indep_result["usage"]["scoring_sequences"] == (
+                20 if settings.backend == "tokenspeed" else 10
+            )
             checks["independent_candidate"] = indep_result
 
             traffic_payload = {**payload, "model": case_id, "questions": payload["questions"][:1]}

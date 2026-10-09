@@ -1,5 +1,6 @@
 import asyncio
 import math
+import threading
 
 import pytest
 
@@ -9,6 +10,28 @@ from jev_runtime.registry import Registry
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, ModelIdentity, Option, Question
 from jev_runtime.shared_admission import SharedAdmission
+
+
+@pytest.fixture
+def engine_owner_loop():
+    loop = asyncio.new_event_loop()
+    ready = threading.Event()
+
+    def run():
+        asyncio.set_event_loop(loop)
+        loop.call_soon(ready.set)
+        loop.run_forever()
+        loop.close()
+
+    thread = threading.Thread(target=run, daemon=True)
+    thread.start()
+    assert ready.wait(2)
+    try:
+        yield loop
+    finally:
+        loop.call_soon_threadsafe(loop.stop)
+        thread.join(2)
+        assert not thread.is_alive()
 
 
 class CharacterTokenizer:

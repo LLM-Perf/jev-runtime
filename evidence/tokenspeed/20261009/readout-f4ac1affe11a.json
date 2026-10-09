@@ -1,0 +1,50 @@
+{
+  "upstream_revision": "f4ac1affe11ad404720bcd150970487f75fbf59a",
+  "scope": "upstream Python sample/write bodies with Torch CPU primitive doubles",
+  "native_tokenspeed_engine_executed": false,
+  "native_tokenspeed_kernels_executed": false,
+  "gpu_executed": false,
+  "model_executed": false,
+  "torch_version": "2.13.0+cu129",
+  "harness_sha256": "0234a84c35b2c6a7a1f46e6dd714daab57bfa7c6f8572dd2d522536bca0b0089",
+  "source_profile_sha256": "73cecbe8dae764db2266bcf0044a670fed4ac933fd8e6484b407450df30a01b4",
+  "cases": [
+    {
+      "dtype": "torch.float16",
+      "rows": 1,
+      "max_absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float16",
+      "rows": 3,
+      "max_absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "rows": 1,
+      "max_absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "rows": 3,
+      "max_absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float32",
+      "rows": 1,
+      "max_absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float32",
+      "rows": 3,
+      "max_absolute_error": 0.0,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

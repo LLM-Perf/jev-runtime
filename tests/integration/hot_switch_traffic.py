@@ -39,9 +39,13 @@ def verify_response(data: dict, request: dict, bundles: dict[str, Bundle], engin
     if question["type"] == "score":
         assert answer.levels == {option["id"]: option["value"] for option in question["options"]}
     sequences = len(candidates) if independent else 1
+    if engine == "tokenspeed":
+        # Each candidate prompt scores true/false separately; a joint prompt
+        # scores one native branch per option (two for a Boolean).
+        sequences = sequences * 2 if independent else len(candidates)
     assert result.usage.scoring_sequences == sequences, "sequence usage mismatch"
     # SGLang uses max_new_tokens=0 selected-ID readout; vLLM generates one per branch.
-    assert engine in {"sglang", "vllm"}, "Unqualified live-traffic engine"
+    assert engine in {"sglang", "vllm", "tokenspeed"}, "Unknown live-traffic engine"
     completions = 0 if engine == "sglang" else sequences
     assert result.usage.engine_completion_tokens == completions, "completion usage mismatch"
     assert result.usage.logical_prompt_tokens > 0 and result.usage.engine_prompt_tokens > 0
