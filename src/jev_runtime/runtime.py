@@ -138,8 +138,11 @@ class Runtime:
                             await self.prepare(bundle["ref"])
                 # Atomic against activation: a concurrently published route
                 # sends startup back through validation before joining traffic.
-                if self.registry.serve_worker(self.backend_identity):
+                # serve_worker is a writer transaction and runs off the loop;
+                # a refused join backs off instead of spinning synchronously.
+                if await asyncio.to_thread(self.registry.serve_worker, self.backend_identity):
                     break
+                await asyncio.sleep(0.05)
         self.control_healthy = True
         self._control_task = asyncio.create_task(self._watch_cancellations())
 
@@ -206,7 +209,7 @@ class Runtime:
                     self.health.failed(
                         reference, exc.code if isinstance(exc, JevError) else type(exc).__name__
                     )
-                    self.registry.forget_worker_prepared(reference)
+                    await asyncio.to_thread(self.registry.forget_worker_prepared, reference)
                     logger.warning("Jev engine canary failed for bundle %s", reference)
 
     async def _recover_health_probe(self, reference: str) -> None:
@@ -258,17 +261,26 @@ class Runtime:
     async def _watch_cancellations(self) -> None:
         while True:
             try:
-                self._observe_quiescence()
-                for command in self.registry.pending_cancel_commands():
-                    if self.registry.claim_cancel(command["id"]):
-                        task = asyncio.create_task(self._perform_remote_cancel(command))
-                        self._cancel_jobs.add(task)
-                        task.add_done_callback(self._cancel_job_done)
-                self.control_healthy = True
+                claimed = await asyncio.to_thread(self._poll_cancel_commands)
             except Exception:
                 self.control_healthy = False
                 logger.exception("Jev cancellation control polling failed")
+            else:
+                for command in claimed:
+                    task = asyncio.create_task(self._perform_remote_cancel(command))
+                    self._cancel_jobs.add(task)
+                    task.add_done_callback(self._cancel_job_done)
+                self.control_healthy = True
             await asyncio.sleep(0.05)
+
+    def _poll_cancel_commands(self) -> list[dict]:
+        """Synchronous cancellation poll; runs off the event loop every 50 ms."""
+        self._observe_quiescence()
+        return [
+            command
+            for command in self.registry.pending_cancel_commands()
+            if self.registry.claim_cancel(command["id"])
+        ]
 
     def _observe_quiescence(self) -> None:
         if self.registry.backend_control(self.backend_identity)["state"] != "QUIESCING":
@@ -285,14 +297,20 @@ class Runtime:
         ):
             self.registry.acknowledge_quiescence(self.backend_identity)
 
+    def _quiescence_snapshot(self) -> dict:
+        """Synchronous quiescence observation; runs off the event loop."""
+        self._observe_quiescence()
+        return self.registry.quiescence_status(self.backend_identity)
+
     async def quiesce(self, expected_generation: int, timeout_seconds: float = 30) -> dict:
         if not 0 <= timeout_seconds <= 300:
             raise ValueError("Quiescence timeout must be between 0 and 300 seconds")
-        self.registry.begin_quiesce(self.backend_identity, expected_generation)
+        await asyncio.to_thread(
+            self.registry.begin_quiesce, self.backend_identity, expected_generation
+        )
         deadline = time.monotonic() + timeout_seconds
         while True:
-            self._observe_quiescence()
-            result = self.registry.quiescence_status(self.backend_identity)
+            result = await asyncio.to_thread(self._quiescence_snapshot)
             if result["drained"] or time.monotonic() >= deadline:
                 return result
             await asyncio.sleep(0.025)
@@ -432,8 +450,12 @@ class Runtime:
         self._adapter_tasks.add(task)
         try:
             async with self._management_lock:
-                operation, binding = self.registry.begin_adapter_operation(
-                    reference, self.backend_identity, action, recover
+                operation, binding = await asyncio.to_thread(
+                    self.registry.begin_adapter_operation,
+                    reference,
+                    self.backend_identity,
+                    action,
+                    recover,
                 )
                 error = None
                 try:
@@ -453,10 +475,12 @@ class Runtime:
                         ) from exc
                     raise
                 finally:
+                    # Synchronous by design: settling the operation journal must
+                    # persist even if the adapter call above was cancelled.
                     self.registry.finish_adapter_operation(reference, operation, error)
                     for bundle in self.registry.inspect_adapter(reference)["bundles"]:
                         self._prepared.discard(bundle)
-                        self.registry.forget_worker_prepared(bundle)
+                        await asyncio.to_thread(self.registry.forget_worker_prepared, bundle)
                 return self.registry.inspect_adapter(reference)
         finally:
             self._adapter_tasks.discard(task)
@@ -503,12 +527,12 @@ class Runtime:
                 "RETIRED",
             }
             if fresh:
-                bundle, lease_id = self.registry.begin_prepare(
-                    reference, self.backend_identity, request_id
+                bundle, lease_id = await asyncio.to_thread(
+                    self.registry.begin_prepare, reference, self.backend_identity, request_id
                 )
             else:
-                bundle, lease_id = self.registry.pin_revalidation(
-                    reference, request_id, self.backend_identity
+                bundle, lease_id = await asyncio.to_thread(
+                    self.registry.pin_revalidation, reference, request_id, self.backend_identity
                 )
             self._active[request_id] = asyncio.current_task()
             unconfirmed: set[str] = set()
@@ -528,8 +552,10 @@ class Runtime:
                     for question in questions:
                         compiled = self._compile_question("ready", question, bundle, request_id)
                         self._validate_sequences(compiled.sequences, bundle)
-                        self.registry.record_branches(
-                            lease_id, [seq.request_id for seq in compiled.sequences]
+                        await asyncio.to_thread(
+                            self.registry.record_branches,
+                            lease_id,
+                            [seq.request_id for seq in compiled.sequences],
                         )
                         results = [
                             await self._score(seq, unconfirmed) for seq in compiled.sequences
@@ -542,7 +568,7 @@ class Runtime:
                 )
                 if not monitoring:
                     self._prepared.discard(reference)
-                self.registry.forget_worker_prepared(reference)
+                await asyncio.to_thread(self.registry.forget_worker_prepared, reference)
                 raise
             finally:
                 try:
@@ -557,10 +583,10 @@ class Runtime:
                     if self.registry.has_lease(lease_id):
                         self._health_pending[reference] = lease_id
             if self.health.generation(reference) == generation:
-                self.registry.record_worker_prepared(reference)
+                await asyncio.to_thread(self.registry.record_worker_prepared, reference)
                 self.health.passed(reference, generation)
             else:
-                self.registry.forget_worker_prepared(reference)
+                await asyncio.to_thread(self.registry.forget_worker_prepared, reference)
             self._prepared.add(reference)
             return {**self.registry.inspect(reference), "worker_id": self.registry.owner}
 
@@ -639,7 +665,7 @@ class Runtime:
             except Exception as exc:
                 if not isinstance(exc, JevError) or exc.status_code >= 500:
                     self.health.failed(bundle.reference, "engine_score_failed")
-                    self.registry.forget_worker_prepared(bundle.reference)
+                    await asyncio.to_thread(self.registry.forget_worker_prepared, bundle.reference)
                 raise
             finally:
                 semaphore.release()
@@ -653,7 +679,9 @@ class Runtime:
                 except JevError as exc:
                     if exc.status_code >= 500:
                         self.health.failed(bundle.reference, "engine_score_contract")
-                        self.registry.forget_worker_prepared(bundle.reference)
+                        await asyncio.to_thread(
+                            self.registry.forget_worker_prepared, bundle.reference
+                        )
                     raise
         finally:
             await cancel_and_drain(tasks)
@@ -765,7 +793,8 @@ class Runtime:
                         branch_ids = [seq.request_id for seq in sequences]
                         trace.switch("queue")
                         try:
-                            snapshot, admitted = self.admission.reserve(
+                            snapshot, admitted = await asyncio.to_thread(
+                                self.admission.reserve,
                                 resolved,
                                 request.model,
                                 rid,
@@ -782,8 +811,13 @@ class Runtime:
                             reservation = self.admission.wait_reserved(snapshot.lease_id, admitted)
                 if snapshot is None:
                     trace.switch("pin")
-                    snapshot = self.registry.acquire(
-                        request.model, rid, request.bundle, self.backend_identity, tenant
+                    snapshot = await asyncio.to_thread(
+                        self.registry.acquire,
+                        request.model,
+                        rid,
+                        request.bundle,
+                        self.backend_identity,
+                        tenant,
                     )
                     trace.switch("compile")
                     compiled, sequences, total_tokens = self._compile_request(
@@ -795,7 +829,9 @@ class Runtime:
                     if isinstance(self.admission, SharedAdmission):
                         admission_args["branch_ids"] = branch_ids
                     else:
-                        self.registry.record_branches(snapshot.lease_id, branch_ids)
+                        await asyncio.to_thread(
+                            self.registry.record_branches, snapshot.lease_id, branch_ids
+                        )
                     reservation = self.admission.acquire(total_tokens, tenant, **admission_args)
                 self._active_leases[rid] = snapshot.lease_id
                 bundle = snapshot.bundle
@@ -897,6 +933,9 @@ class Runtime:
             trace.switch("release")
             try:
                 if snapshot is not None:
+                    # Synchronous by design: the lease settlement must persist
+                    # even while this task is being cancelled or the event loop
+                    # is shutting down; each is a single short writer commit.
                     if unconfirmed:
                         self.registry.mark_abort_pending(snapshot.lease_id, unconfirmed)
                     else:
@@ -919,7 +958,7 @@ class Runtime:
 
     async def recover_cancelled(self, request_id: str) -> bool:
         resource = "lease:" + request_id
-        self.registry.claim_recovery(self.backend_identity, resource)
+        await asyncio.to_thread(self.registry.claim_recovery, self.backend_identity, resource)
         try:
             snapshot = self.registry.recovery_snapshot(request_id, self.backend_identity)
             if snapshot is None:
@@ -927,16 +966,20 @@ class Runtime:
             for branch in snapshot["engine_request_ids"]:
                 async with asyncio.timeout(10):
                     await self.backend.cancel(branch)
-            self.registry.release_recovered(snapshot)
+            await asyncio.to_thread(self.registry.release_recovered, snapshot)
             return True
         finally:
+            # Synchronous by design: releasing the recovery claim must persist
+            # even if this operation is cancelled mid-recovery.
             self.registry.finish_recovery(resource)
 
     async def score_raw(self, sequence: ScoreInput) -> ScoreResult:
         self.require_serving_mode()
         if sequence.adapter_id:
             raise JevError("lora_unsupported", "Managed LoRA requires a typed decision lease", 409)
-        work_id = self.registry.begin_raw_work(self.backend_identity, sequence.request_id)
+        work_id = await asyncio.to_thread(
+            self.registry.begin_raw_work, self.backend_identity, sequence.request_id
+        )
         task = asyncio.current_task()
         self._raw_tasks.add(task)
         unconfirmed: set[str] = set()
@@ -958,7 +1001,7 @@ class Runtime:
         # Keep public raw IDs from being reused while an operator is cancelling
         # an old incarnation, including concurrent recovery attempts.
         resource = "raw:" + work_id
-        self.registry.claim_recovery(self.backend_identity, resource)
+        await asyncio.to_thread(self.registry.claim_recovery, self.backend_identity, resource)
         try:
             if self.registry.backend_control(self.backend_identity)["state"] != "QUIESCING":
                 raise JevError(
@@ -969,7 +1012,7 @@ class Runtime:
                 return False
             async with asyncio.timeout(10):
                 await self.backend.cancel(snapshot["request_id"])
-            self.registry.release_raw_recovered(snapshot)
+            await asyncio.to_thread(self.registry.release_raw_recovered, snapshot)
             return True
         finally:
             self.registry.finish_recovery(resource)
@@ -980,7 +1023,9 @@ class Runtime:
     async def cancel(self, request_id: str, tenant: str = "default") -> bool:
         if request_id in self._active:
             return await self._cancel_local(request_id, tenant)
-        command = self.registry.request_cancel(request_id, tenant, self.backend_identity)
+        command = await asyncio.to_thread(
+            self.registry.request_cancel, request_id, tenant, self.backend_identity
+        )
         if command is None:
             return False
         try:

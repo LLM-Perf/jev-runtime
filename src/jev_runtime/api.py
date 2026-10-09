@@ -383,11 +383,14 @@ def install_routes(
 
     @management.post("/compile")
     async def compile_preview(body: DecisionRequest, request: Request):
-        return runtime(request).compile_preview(body)
+        instance = runtime(request)
+        # Writer transactions run off the event loop; see Registry._read.
+        return await asyncio.to_thread(instance.compile_preview, body)
 
     @management.post("/bundles")
     async def upload(body: Bundle, request: Request):
-        return runtime(request).registry.upload(body)
+        instance = runtime(request)
+        return await asyncio.to_thread(instance.registry.upload, body)
 
     @management.post("/bundles/prepare")
     async def prepare(body: Reference, request: Request):
@@ -395,15 +398,22 @@ def install_routes(
 
     @management.post("/bundles/activate")
     async def activate(body: Activation, request: Request):
-        return runtime(request).activate(body.alias, body.reference, body.expected_generation)
+        instance = runtime(request)
+        return await asyncio.to_thread(
+            instance.activate, body.alias, body.reference, body.expected_generation
+        )
 
     @management.post("/bundles/disable")
     async def disable(body: Disable, request: Request):
-        return runtime(request).registry.disable(body.alias, body.expected_generation)
+        instance = runtime(request)
+        return await asyncio.to_thread(
+            instance.registry.disable, body.alias, body.expected_generation
+        )
 
     @management.post("/bundles/retire")
     async def retire(body: Reference, request: Request):
-        return runtime(request).registry.retire(body.reference)
+        instance = runtime(request)
+        return await asyncio.to_thread(instance.registry.retire, body.reference)
 
     @management.get("/requests/recovery")
     async def recovery_requests(request: Request):
