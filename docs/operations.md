@@ -47,7 +47,7 @@ compatibility hook described in [engine integration](engine-integration.md).
 This environment omits optional Rust
 extensions. SGLang 0.5.20/CUDA 13 requires a separate compatible-host certification.
 
-## TokenSpeed operations (experimental)
+## TokenSpeed operations
 
 Use the [TokenSpeed quick start](quickstart-tokenspeed.md) for its pinned source,
 compatible GPU, generated model/tokenizer configs and `--check` preflight. The

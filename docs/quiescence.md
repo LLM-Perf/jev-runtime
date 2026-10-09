@@ -83,7 +83,7 @@ GPU shutdown certification yet. Use `jev-tokenspeed`, not the vLLM/SGLang-only
 drain, stop that parent through its owning terminal or supervisor and verify exit.
 A failed drain remains an error even though lifespan cleanup shuts down the owned
 Engine. Keep both its core registry and separate completion-receipt database;
-[unknown/pending requests are not confirmed by elapsed time](operations.md#tokenspeed-operations-experimental).
+[unknown/pending requests are not confirmed by elapsed time](operations.md#tokenspeed-operations).
 
 All participating API workers must run this protocol version against the same local
 registry. Known live legacy workers cause quiescence to fail. Do not start an older

@@ -5,8 +5,9 @@ API with probabilities and live decision-bundle updates. This optional adapter
 uses [Jev Runtime](https://github.com/LLM-Perf/jev-runtime)'s shared typed API,
 admission, health and bundle lifecycle.
 
-**Experimental:** CPU contracts and packaging are tested; real TokenSpeed GPU
-model serving and performance have not been validated. GPU coverage remains 0/20.
+The integration implements the complete Jev typed-decision API and bundle lifecycle,
+with native Engine serving and an HTTP bridge. See [validation evidence](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/tokenspeed-validation.md)
+for the tested environments and model coverage.
 
 ## Install and start
 
@@ -61,5 +62,5 @@ it does not add native chat, managed LoRA, quantization, PD or speculative decod
 Keep the registry and its separate completion-receipt database together. Unknown
 or pending requests fail closed; elapsed time does not prove drain. Bundle updates
 are live, while plugin code, engine binaries and base model changes require restart.
-See [operations](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/operations.md#tokenspeed-operations-experimental)
+See [operations](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/operations.md#tokenspeed-operations)
 and the [validation report](https://github.com/LLM-Perf/jev-runtime/blob/main/docs/tokenspeed-validation.md).

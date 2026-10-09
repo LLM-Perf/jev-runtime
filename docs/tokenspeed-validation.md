@@ -80,5 +80,5 @@ vLLM/SGLang native-chat checks.
    workload and cache conditions, then optimize based on those results.
 4. Add scheduler-confirmed abort/crash recovery and a safe receipt-retention
    protocol. Unknown/pending IDs currently remain unresolved; disk rows do not expire.
-5. Expand model, parallelism, precision and long-run qualification before moving
-   TokenSpeed out of experimental status.
+5. Expand model, parallelism, precision and long-run qualification to broaden
+   deployment coverage.

@@ -5,7 +5,7 @@
 > 当前实现与 618 项 CPU 测试见 [2026-10-09 验证记录](tokenspeed-validation.md)。
 > 下文“仅本进程凭据”等限制描述的是当时版本；真实 TokenSpeed GPU 验证仍未完成。
 
-本轮实现可扩展 backend provider、显式 raw-score HTTP bridge 和实验性 TokenSpeed
+本轮实现可扩展 backend provider、显式 raw-score HTTP bridge 和 TokenSpeed
 原生 Engine 插件。vLLM、SGLang 的真实 GPU 回归通过；TokenSpeed 仅完成源码合同
 检查和 CPU 测试，尚未执行真实模型 GPU 服务。原计划及其验收阈值保持不变。
 
@@ -67,7 +67,7 @@ GPU #6/#7 的可用显存分别回到本轮启动前的 10,544 / 11,744 MiB。
 ## TokenSpeed 验证到了哪一层
 
 绑定 upstream `7fa8acb1e885389825c077a6aec0326fbbbd7116` 的 13 个关键 Python
-文件。原生 selected-ID logprob 接口在该版本被拒绝；实验性实现使用
+文件。原生 selected-ID logprob 接口在该版本被拒绝；逐标签实现使用
 `triton_full` 保留的 bias 前 logits，每个标签提交一个生成 token 的请求。
 实际请求数量、重复 prompt、completion tokens 均计入配额、持久日志及 usage。
 
@@ -84,7 +84,7 @@ TokenSpeed 崩溃恢复**。最新 [DSW CPU 记录](../evidence/dsw/multi-engine
 在 vLLM 与 SGLang 环境分别通过 151 项；它们不是 TokenSpeed 原生环境。
 
 上游默认容器使用 CUDA 13/Torch 2.14，也提供针对 H100/H200、Python 3.11、
-sm90a 的实验性 CUDA 12.9 路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没有
+sm90a 的 CUDA 12.9 源码安装路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没有
 匹配的 TokenSpeed 安装，未修改现有服务依赖或驱动。具体限制和启动示例见
 [多框架操作说明](multi-engine.md)。
 

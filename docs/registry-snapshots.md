@@ -55,7 +55,7 @@ commands do not back up, validate or restore native completion receipts. Before
 a TokenSpeed deployment change, quiesce and stop affected writers, then preserve
 both stores with SQLite-aware backups. Keep the corresponding receipt database
 at the sibling path expected by the selected registry and retain the same engine
-identity. See [TokenSpeed operations](operations.md#tokenspeed-operations-experimental).
+identity. See [TokenSpeed operations](operations.md#tokenspeed-operations).
 Automatic coordinated snapshot/restore and receipt expiry are not implemented.
 
 ## Stage the latest stopped state

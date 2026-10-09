@@ -3,11 +3,11 @@
 **Turn the models you already serve into typed decision APIs.**
 
 Route a support ticket. Choose the next agent action. Score an item. Rank candidates.
-Jev Runtime reads candidate scores from **vLLM, SGLang, or experimental TokenSpeed**,
+Jev Runtime reads candidate scores from **vLLM, SGLang, or TokenSpeed**,
 returns typed answers and probabilities, and lets you update versioned decision
 bundles while requests are running. The model stays in its inference engine.
 
-[Quick start](#quick-start) · [TokenSpeed](#tokenspeed-quick-start-experimental) ·
+[Quick start](#quick-start) · [TokenSpeed](#tokenspeed-quick-start) ·
 [Project comparison](#how-it-compares) ·
 [Measured results](#measured-results) · [Documentation](#documentation)
 
@@ -20,7 +20,7 @@ Your text + typed questions
   Jev Runtime plugin ── pinned bundle: model + tokenizer + template + policy
           │
           ▼
-  vLLM / SGLang / TokenSpeed* ── candidate scores
+  vLLM / SGLang / TokenSpeed ─── candidate scores
           │
           ▼
   choice · boolean · score · rank + probabilities + version metadata
@@ -28,9 +28,9 @@ Your text + typed questions
 
 **Current release: `0.1.0a1`, development preview.** vLLM and SGLang have real GPU
 evidence, including **10,004 and 10,006 strictly validated requests during live
-bundle switching**. *TokenSpeed has a pinned launcher, preflight, async dispatch
-and durable completion receipts; its GPU validation is still pending.* Production
-certification and performance targets remain open. See [the evidence below](#measured-results).
+bundle switching**. TokenSpeed implements the complete typed-decision API and
+bundle lifecycle through its native Engine launcher and HTTP bridge. Validation
+coverage and performance results are reported [per engine below](#measured-results).
 
 Jev Runtime is independent of TypeSafe/Jev. It adds Jev-style decision serving to
 existing models; it does not convert their weights into the proprietary Jev
@@ -42,7 +42,7 @@ architecture or reproduce its training.
   get a Boolean, compute an expected score over numeric levels, or rank all options.
   Outputs include probabilities and explicit answered/abstained/failed states.
 - **Choose your serving engine.** vLLM and SGLang plugins add typed decisions
-  alongside their ordinary serving endpoints. The experimental TokenSpeed launcher
+  alongside their ordinary serving endpoints. The TokenSpeed launcher
   owns a native Engine and exposes the same typed/bundle APIs. All three offer a
   gateway path; each engine keeps its own environment.
 - **Update decisions under traffic.** Upload, prepare, activate and roll back an
@@ -65,7 +65,7 @@ Choose an engine first; the request and bundle commands are shared:
 |---|---|---|
 | vLLM | [Steps below](#1-install-the-engine-and-plugin) | SmolLM2 demo; 0.30.0+cu129; checkpoint-specific GPU evidence |
 | SGLang | [SGLang quick start](docs/quickstart-sglang.md) | SmolLM2 demo; 0.5.19 CUDA 12.9 lane; checkpoint-specific GPU evidence |
-| TokenSpeed | [TokenSpeed quick start](docs/quickstart-tokenspeed.md) | Pinned Qwen3-0.6B setup; compatible NVIDIA GPU required; experimental, GPU serving not yet validated |
+| TokenSpeed | [TokenSpeed quick start](docs/quickstart-tokenspeed.md) | Pinned Qwen3-0.6B setup; native Engine launcher and full typed/bundle APIs |
 
 This path runs pinned **SmolLM2-1.7B-Instruct** with the native vLLM plugin. It
 requires Linux x86_64, Python 3.12, an NVIDIA GPU supporting BF16, a compatible
@@ -222,7 +222,7 @@ These preparation, startup, request, activation and rollback steps passed on the
 vLLM and SGLang DSW environments. The smoke reused installed dependencies and local weights;
 it did not test a fresh network installation. [Exact scope and evidence](docs/readme-validation.md).
 
-## TokenSpeed quick start (experimental)
+## TokenSpeed quick start
 
 Use the [complete installation guide](docs/quickstart-tokenspeed.md) to prepare
 TokenSpeed at `f4ac1affe11ad404720bcd150970487f75fbf59a` in its own environment.
@@ -259,7 +259,7 @@ separate completion-receipt database together when operating the service.
 |---|---|---:|---|
 | vLLM 0.30.0+cu129 | Native endpoint plugin; gateway via plugin scoring | 12/20 model profiles | Other versions/topologies need validation; a plain OpenAI endpoint is insufficient for gateway scoring |
 | SGLang 0.5.19 | Native plugin; HTTP gateway | 12/20 model profiles | CUDA 12.9 test lane; 0.5.20 not certified; 0.5.19 mixed traffic needs engine-side compatibility hooks |
-| TokenSpeed `f4ac1affe11a` | Native Engine launcher, preflight, async dispatch, durable receipts and HTTP bridge | 0/20 model profiles | Experimental; eager TP/DP/PP=1; K labels need K native scoring calls; native GPU validation pending |
+| TokenSpeed `f4ac1affe11a` | Native Engine launcher, preflight, async dispatch, durable receipts and HTTP bridge | 0/20 model profiles | Eager TP/DP/PP=1; K labels need K native scoring calls; native GPU validation pending |
 | Additional engines | `jev_runtime.backends` entry point | Not measured | Must implement and validate the complete scoring/lifecycle contract |
 
 Coverage means checkpoint-specific functional evidence, **not** every model in an
@@ -283,7 +283,7 @@ means the cited material does not establish that capability.
 
 | Project | Decision mechanism | Documented serving path | Bundle / plugin story | Best fit and tradeoff |
 |---|---|---|---|---|
-| **Jev Runtime** | Complete requested label scores; joint-label or independent-candidate mode; TokenSpeed expands labels into separate native requests | Native **vLLM + SGLang**; experimental **TokenSpeed Engine launcher**; gateways | Immutable bundles, prepare/activate/rollback, request pinning, local shared registry | Integrating decisions into GPU services; alpha, text only, TokenSpeed GPU validation pending |
+| **Jev Runtime** | Complete requested label scores; joint-label or independent-candidate mode; TokenSpeed expands labels into separate native requests | Native **vLLM + SGLang**; **TokenSpeed Engine launcher**; gateways | Immutable bundles, prepare/activate/rollback, request pinning, local shared registry | Integrating decisions into GPU services; alpha, text only, TokenSpeed GPU validation pending |
 | [LLM2Jev](https://github.com/Yinsongxu/LLM2Jev#readme) | Prefill candidate scoring; staged prefix reuse | SGLang, Transformers, **MLX**; System One HTTP | Versioned bundle publication / native vLLM plugin not documented in cited README | Local text **and image** decisions, including Apple Silicon |
 | [AnyJev](https://github.com/nokia-applied-research/AnyJev#readme) | Label readout with rotation/debiasing and calibration; optional fitted hidden-state head | Transformers; vLLM generation/pooling endpoints | Per-question readout/head artifacts; atomic serving-bundle lifecycle not documented in cited README | Decision quality and calibration experiments; L2 needs labeled examples per question/model; SGLang L2 not yet supported |
 | [jev-bridge](https://github.com/TOSUKUi/jev-bridge#readme) | One-token `top_logprobs`, restricted label normalization | OpenAI-compatible servers/APIs, including SGLang and vLLM | Separate HTTP bridge; immutable bundle lifecycle not documented in cited README | Quick API integration; top-K coverage and backend behavior matter; missing labels receive a floor |

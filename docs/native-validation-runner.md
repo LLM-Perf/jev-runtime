@@ -3,7 +3,7 @@
 | Engine | Launch and validation path |
 |---|---|
 | vLLM / SGLang | Isolated `run_native_validation.py --engine ...` workflow below |
-| TokenSpeed (experimental) | `jev-tokenspeed` launcher, then `python -m tests.integration.live_contract` against that instance; [full commands](quickstart-tokenspeed.md#5-run-strict-functional-validation) |
+| TokenSpeed | `jev-tokenspeed` launcher, then `python -m tests.integration.live_contract` against that instance; [full commands](quickstart-tokenspeed.md#5-run-strict-functional-validation) |
 
 The isolated runner and `deployment/dsw_service.py` accept vLLM/SGLang only.
 Do not pass `--engine tokenspeed` to either. TokenSpeed's live contract runner

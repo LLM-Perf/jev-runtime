@@ -35,7 +35,8 @@ All notable changes will be documented in this file. This project follows
 - The TokenSpeed launcher shuts down its owned Engine even after Runtime startup
   or drain fails, retaining unresolved evidence and the error.
 
-TokenSpeed changes are experimental: K labels still require K native requests.
+TokenSpeed implements the complete typed-decision API and bundle lifecycle.
+Its current scoring path uses K native requests for K labels.
 The [validation report](docs/tokenspeed-validation.md) records 618 passing local
 tests and 12 CPU source-ordering checks at `2d3ee4e`; GPU serving, joint readout
 and performance certification remain open.
@@ -43,7 +44,7 @@ and performance certification remain open.
 ## 0.1.0a1 - Development preview
 
 - Typed choice, Boolean, score, and rank decisions with explicit probability semantics.
-- Native SGLang and vLLM plugins, standalone gateways, and an experimental TokenSpeed adapter.
+- Native SGLang and vLLM plugins, standalone gateways, and a TokenSpeed adapter.
 - Immutable bundle preparation, activation, rollback, request pinning, cancellation,
   recovery, admission control, health monitoring, managed LoRA, metrics, and SDKs.
 

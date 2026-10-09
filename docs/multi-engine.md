@@ -11,7 +11,7 @@ base URL 访问。不是在一个 Python 环境里安装所有 CUDA 框架，也
 |---|---|---|
 | vLLM | 原生插件、完整标签取分、四种类型、bundle 切换/回退、取消、同机多 worker、受限 LoRA | 模型功能覆盖 12/20，目标至少 18/20；独立数值与性能认证、完整稳定性/故障矩阵 |
 | SGLang | 原生插件和 HTTP 接入、同样的类型与生命周期能力 | 模型功能覆盖 12/20，目标至少 18/20；部分数值检查失败；原生退出仍有警告；完整性能和稳定性验收 |
-| TokenSpeed | 独立插件包、原生 Engine 启动器、HTTP bridge、逐标签 raw readout、启动预检、异步事件循环调度、持久化完成凭据、完整计费/配额/日志 | **实验性，尚无真实 TokenSpeed 模型 GPU 服务验证**；单次 prefill 批量取分优化、广泛模型/并行配置、原生取消确认/崩溃恢复、LoRA |
+| TokenSpeed | 独立插件包、原生 Engine 启动器、HTTP bridge、逐标签 raw readout、启动预检、异步事件循环调度、持久化完成凭据、完整计费/配额/日志 | 真实 TokenSpeed 模型 GPU 服务验证；单次 prefill 批量取分优化、广泛模型/并行配置、原生取消确认/崩溃恢复、LoRA |
 | 其他框架 | 新增已安装包 entry point 接入，无需修改核心 backend 枚举 | 每个框架仍需实现真实的分数/取消合同；仅兼容 OpenAI chat API 不够 |
 | 产品验收 | 版本化注册表、显式离线升级/回退、SDK、配额、校准、探活、证据工具 | 24 小时 soak、144 个受控性能用例、镜像实际构建/运行、两个业务数据验收、兼容副本故障转移、最终版本复验 |
 
@@ -70,7 +70,7 @@ selected-ID gather，再保持同一合同进行对照验证。
 关键 Python 文件的 SHA256；这只绑定检查过的代码合同，不是整个运行环境/权重
 的完整证明。CUDA kernel、依赖版本和模型 GPU 验证仍是独立门槛。
 
-## TokenSpeed 使用方法（实验性）
+## TokenSpeed 使用方法
 
 完整安装、配置生成、预检、调用与严格流量验证命令见
 [TokenSpeed quick start](quickstart-tokenspeed.md)。新增 helper 为固定 Qwen3-0.6B
@@ -111,7 +111,7 @@ abort 返回成功视为 drain。启动器将原生请求 reservation/terminal r
 
 独立完成凭据文件不在 `jevctl registry snapshot` 的核心注册表备份范围内；
 部署变更需要保留两个数据库。进程管理和备份边界见
-[TokenSpeed 运维说明](operations.md#tokenspeed-operations-experimental)。
+[TokenSpeed 运维说明](operations.md#tokenspeed-operations)。
 
 ## 验证分层
 

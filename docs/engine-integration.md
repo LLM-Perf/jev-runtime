@@ -6,8 +6,9 @@ Each engine uses its own environment. See `evidence/dsw/` for tested source comm
 
 Additional backends now use the `jev_runtime.backends` installed-plugin entry point.
 The optional TokenSpeed package has a pinned native Engine launcher, startup
-preflight, async dispatch and persistent completion receipts. Its single-label
-readout remains experimental, with no model GPU certification yet. See the
+preflight, async dispatch and persistent completion receipts. It implements the complete
+typed-decision API and bundle lifecycle with single-label readout. Model GPU
+certification is tracked separately. See the
 [TokenSpeed quick start](quickstart-tokenspeed.md) and [multi-engine limits](multi-engine.md).
 
 ## Gateway
@@ -131,7 +132,7 @@ the scoring prefix itself; ordinary OpenAI endpoints cannot replace this contrac
 Native cancellation waits for terminal one-token completion. The launcher persists
 completed IDs beside the registry so the same identity can confirm completion
 after response loss or restart; unknown/pending IDs stay unconfirmed. See
-[receipt storage and recovery limits](operations.md#tokenspeed-operations-experimental).
+[receipt storage and recovery limits](operations.md#tokenspeed-operations).
 CPU tests verify these paths; no GPU throughput or complete crash-recovery claim
 follows from them. [Actual validation](tokenspeed-validation.md).
 

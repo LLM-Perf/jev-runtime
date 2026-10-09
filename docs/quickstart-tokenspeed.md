@@ -4,11 +4,12 @@ Run Jev's Choice, Boolean, Score and Rank API on a pinned TokenSpeed native Engi
 The plugin adds bundle prepare/activate/rollback and a raw-scoring HTTP bridge.
 It does not modify TokenSpeed's source or add a chat proxy.
 
-**Status: experimental.** The current source profile is
+TokenSpeed implements the complete typed-decision API and bundle lifecycle.
+The current source profile is
 [`f4ac1affe11ad404720bcd150970487f75fbf59a`](https://github.com/lightseekorg/tokenspeed/tree/f4ac1affe11ad404720bcd150970487f75fbf59a).
 The previous `7fa8acb1e885389825c077a6aec0326fbbbd7116` profile remains accepted.
-Source checks and CPU contracts do not certify GPU inference. TokenSpeed still has
-**0/20 GPU-validated model cases** in this repository.
+CPU contract and packaging checks are recorded in the [validation report](tokenspeed-validation.md).
+GPU model coverage is currently 0/20; the report tracks those checks separately.
 
 ## 1. Install the engine in its own environment
 
@@ -19,7 +20,7 @@ decoding, PD and managed LoRA are separate integration targets.
 
 For **H100/H200, Linux, Python 3.11 and an installed CUDA Toolkit 12.9**, the
 pinned upstream provides an
-[experimental source installer](https://github.com/lightseekorg/tokenspeed/blob/f4ac1affe11ad404720bcd150970487f75fbf59a/docs/guides/hopper-cu129.md).
+[Hopper/CUDA 12.9 source installer](https://github.com/lightseekorg/tokenspeed/blob/f4ac1affe11ad404720bcd150970487f75fbf59a/docs/guides/hopper-cu129.md).
 It builds native components and needs a compatible driver, C++ compiler, OpenSSL
 development files and network access. The recipe uses Torch 2.14.0+cu126 with
 CUDA Toolkit 12.9 for native builds; it is not a generic CUDA 12.9 wheel install.
@@ -197,7 +198,7 @@ and completion receipts in `registry.tokenspeed-receipts.db` beside `registry.db
 
 Core registry snapshot/staging commands do not include this separate receipt
 store. Preserve both stores across compatible deployment changes; see
-[TokenSpeed backup and recovery operations](operations.md#tokenspeed-operations-experimental).
+[TokenSpeed backup and recovery operations](operations.md#tokenspeed-operations).
 
 Follow [quiescence and ordered shutdown](quiescence.md). A failed drain remains an
 error; the launcher still shuts down its own Engine in `finally` and keeps pending

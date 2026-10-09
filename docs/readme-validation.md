@@ -4,7 +4,7 @@ On 2026-09-30, the vLLM and SGLang native startup paths passed a DSW smoke check
 the new `examples/prepare_quickstart.py`. This validates the user workflow separately
 from the larger [strict traffic campaign](strict-traffic-validation.md).
 
-The README now also includes experimental TokenSpeed setup. That path is outside
+The README now also includes TokenSpeed setup. That path is outside
 this historical GPU smoke check: its current evidence is the
 [2026-10-09 CPU/source validation](tokenspeed-validation.md), with real TokenSpeed
 GPU serving still pending. The saved vLLM/SGLang launch commands remain unchanged.
