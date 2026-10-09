@@ -14,6 +14,7 @@ from jev_runtime.config import bootstrap, build_runtime, compiler_for_tokenizer
 from jev_runtime.errors import JevError
 from jev_runtime.plugin_api import install_plugin_routes
 from jev_tokenspeed.backend import TokenSpeedNative, validate_profile
+from jev_tokenspeed.receipts import DurableReceipts
 
 
 def verify_source(root: Path) -> str:
@@ -29,9 +30,21 @@ def verify_source(root: Path) -> str:
     return profile["revision"]
 
 
+def receipts_path(settings, engine_options: dict) -> Path:
+    """Durable completion receipts live next to the registry unless overridden."""
+    explicit = engine_options.get("receipts_path")
+    if explicit is not None:
+        return Path(explicit)
+    registry = Path(settings.registry_path)
+    return registry.with_name(registry.stem + ".receipts.sqlite3")
+
+
 def create_app(settings, engine_options: dict) -> FastAPI:
     if settings.backend != "tokenspeed" or settings.workers != 1 or settings.adapters.enabled:
         raise ValueError("TokenSpeed native plugin requires backend=tokenspeed, workers=1, no LoRA")
+    engine_options = dict(engine_options)
+    receipts = receipts_path(settings, engine_options)
+    engine_options.pop("receipts_path", None)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -52,13 +65,19 @@ def create_app(settings, engine_options: dict) -> FastAPI:
         # shut down here; embedding callers may use TokenSpeedNative separately.
         engine = Engine(server_args=args)
         runtime = None
+        store = DurableReceipts(receipts)
         try:
 
             async def submit(coro):
                 return await asyncio.to_thread(engine.llm.run, coro)
 
             manager = engine.tokenizer_manager
-            backend = TokenSpeedNative(manager, f"{__version__}+{revision[:12]}", submit)
+            backend = TokenSpeedNative(
+                manager,
+                f"{__version__}+{revision[:12]}",
+                submit,
+                receipts=store,
+            )
             app.state.jev_backend = backend
             runtime = await build_runtime(
                 settings,
@@ -75,6 +94,9 @@ def create_app(settings, engine_options: dict) -> FastAPI:
             # successful unload. The durable journals remain for diagnosis.
             if runtime is not None:
                 await runtime.close()
+            else:
+                # Startup failed before the runtime could own the backend.
+                store.close()
             engine.shutdown()
 
     app = FastAPI(title="Jev TokenSpeed native plugin", lifespan=lifespan)
