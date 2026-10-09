@@ -89,7 +89,7 @@ sm90a 的实验性 CUDA 12.9 路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没�
 |---|---|---|
 | P0 | TokenSpeed 原生模型 GPU 验证 | 尚未运行；先建立匹配的隔离环境，再执行 typed/raw parity、1,000 次切换、独立数值检查、drain/重启及资源清理 |
 | P0 | TokenSpeed 高效取分 | 当前 K 个标签需要 K 条原生请求；需实现单次 prefill selected-ID gather，跨 sampler/scheduler/output 传递，并做性能与原始分数对照 |
-| P0 | TokenSpeed 请求恢复 | 仅本进程有界完成凭据；还缺 native abort 完成确认、进程故障后的可验证完成状态及孤儿日志安全回收 |
+| P0 | TokenSpeed 请求恢复 | 完成凭据已持久化（registry 旁 SQLite，FULL 同步，4,096 条上限，CPU 合同覆盖跨重启确认与淘汰）；还缺 native abort 完成确认（上游 scheduler 不支持），孤儿 journal 仍须显式恢复，且一切尚未经真实 GPU 服务验证 |
 | P0 | 广泛模型覆盖 | 原 vLLM/SGLang 各 12/20，目标各至少 18/20；TokenSpeed 新增 20 个组合全部未做 GPU 验证 |
 | P0 | 数值与业务质量 | 历史较宽 BF16/量化/并行配置仍有失败；两个已批准业务数据集及错误准则尚未齐备 |
 | P0 | 高性能验收 | 144 个受控性能用例未运行；历史短程 matched plugin/native 约 81–86%，未达到 90% 目标；本轮功能回归没有新增性能达标证据 |

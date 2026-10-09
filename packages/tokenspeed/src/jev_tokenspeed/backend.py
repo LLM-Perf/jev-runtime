@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import math
-from collections import OrderedDict
 from dataclasses import dataclass
 
 from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult, reported_dtype
 from jev_runtime.backends.remote import ScoringHTTP
 from jev_runtime.errors import JevError
+from jev_tokenspeed.receipts import MemoryReceipts
 
 
 def create_backend(*, settings, api_key):
@@ -112,10 +112,12 @@ class Attempt:
 
 
 class TokenSpeedNative:
-    def __init__(self, manager, version, submit):
+    def __init__(self, manager, version, submit, receipts=None):
+        # receipts defaults to in-process storage; the launcher passes a
+        # DurableReceipts so completion proof survives a plugin restart.
         self.manager, self.version, self.submit = manager, version, submit
+        self._receipts = receipts or MemoryReceipts()
         self._attempts: dict[str, Attempt] = {}
-        self._completed: OrderedDict[str, None] = OrderedDict()
 
     async def probe(self) -> Capabilities:
         args, model = self.manager.server_args, self.manager.model_config
@@ -143,7 +145,9 @@ class TokenSpeedNative:
         from tokenspeed.runtime.engine.io_struct import GenerateReqInput
 
         payload = generate_payload(request)
-        if request.request_id in self._attempts or request.request_id in self._completed:
+        if request.request_id in self._attempts or await self._receipts.contains(
+            request.request_id
+        ):
             raise JevError("duplicate_request", "Native scoring ID is already active", 409)
         attempt = Attempt()
         self._attempts[request.request_id] = attempt
@@ -169,9 +173,7 @@ class TokenSpeedNative:
                     # Keep a bounded terminal receipt for a bridge whose HTTP
                     # response was lost after native completion. Never accept
                     # reuse while the old receipt could acknowledge a new ID.
-                    self._completed[request.request_id] = None
-                    if len(self._completed) > 4096:
-                        self._completed.popitem(last=False)
+                    await self._receipts.record(request.request_id)
 
         attempt.task = asyncio.create_task(dispatch())
         attempt.task.add_done_callback(lambda task: None if task.cancelled() else task.exception())
@@ -182,10 +184,10 @@ class TokenSpeedNative:
     async def cancel(self, request_id: str) -> None:
         attempt = self._attempts.get(request_id)
         if attempt is None:
-            if request_id in self._completed:
+            if await self._receipts.contains(request_id):
                 return
             # Native abort removes frontend state without a scheduler ack.
-            # An unknown ID after a gateway/plugin restart is not drain proof.
+            # An unknown ID without a durable receipt is not drain proof.
             raise JevError("cancellation_unconfirmed", "No local terminal receipt for request", 503)
         async with asyncio.timeout(4.5):
             try:
@@ -199,5 +201,17 @@ class TokenSpeedNative:
         self._attempts.pop(request_id, None)
 
     async def close(self) -> None:
+        # Every in-flight request gets its bounded drain wait, even when an
+        # earlier one cannot be confirmed; the first failure is re-raised so a
+        # failed drain is never advertised as a successful unload.
+        error = None
         for request_id in tuple(self._attempts):
-            await self.cancel(request_id)
+            try:
+                await self.cancel(request_id)
+            except JevError as exc:
+                error = error or exc
+        try:
+            self._receipts.close()
+        finally:
+            if error is not None:
+                raise error
