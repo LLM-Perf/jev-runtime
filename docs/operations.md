@@ -1,6 +1,6 @@
 # Operating the current development release
 
-Use separate Python environments for SGLang and vLLM. A gateway may attach to an
+Use separate Python environments for SGLang, vLLM and TokenSpeed. A gateway may attach to an
 already-running engine without owning its process. Native plugins share the host
 engine's lifetime. Do not use a plugin update to restart an unrelated service.
 
@@ -46,6 +46,50 @@ hook registry, including a version-scoped SGLang 0.5.19 host-logprob-row
 compatibility hook described in [engine integration](engine-integration.md).
 This environment omits optional Rust
 extensions. SGLang 0.5.20/CUDA 13 requires a separate compatible-host certification.
+
+## TokenSpeed operations (experimental)
+
+Use the [TokenSpeed quick start](quickstart-tokenspeed.md) for its pinned source,
+compatible GPU, generated model/tokenizer configs and `--check` preflight. The
+launcher owns one native Engine and one HTTP worker; it exposes typed/admin/raw
+routes, without native chat. The DSW launch/cleanup utility `deployment/dsw_service.py`
+supports vLLM/SGLang only, so do not pass it `--engine tokenspeed`. Start TokenSpeed
+with `jev-tokenspeed` and track the process you own for ordered shutdown.
+
+Persist two separate stores on local durable storage:
+
+| Store | Purpose | Recovery boundary |
+|---|---|---|
+| Configured `registry_path`, e.g. `registry.db` | Bundles, routes, leases, quota and work journals | Shared core registry lifecycle and explicit recovery rules |
+| Sibling receipt DB, e.g. `registry.tokenspeed-receipts.db` | Native request reservations and observed terminal completions | Completed IDs can be confirmed after restart; unknown/pending IDs remain unresolved |
+
+The receipt filename replaces the registry suffix with `.tokenspeed-receipts.db`.
+Its namespace binds model/tokenizer/template identity, upstream profile, engine
+options and engine URL. Preserve those identities when recovering the same service.
+It stores request IDs and states, not prompts. Same-namespace native IDs cannot be
+reused. The 4,096-entry in-memory cache is bounded; durable rows have no automatic
+expiry. Monitor disk growth and include the full-sync writes in performance tests.
+
+`jevctl registry snapshot`, staging and schema migration cover the **core registry
+only**, not the receipt store. Quiesce, stop all affected writers and preserve both
+databases using SQLite-aware backups before a deployment change. Do not copy a
+live database without its WAL, delete receipt rows to clear an error, or assume a
+core-registry backup alone preserves TokenSpeed completion evidence. Coordinated
+receipt snapshot/restore/retention tooling is not implemented.
+
+Cancellation waits up to 4.5 seconds for the native one-token request to complete.
+A terminal receipt permits confirmation after HTTP response loss, cache eviction
+or a same-identity restart. No receipt or a `pending` row returns
+`cancellation_unconfirmed`; it is not proof that GPU work stopped. Retain journals
+and leases, and inspect recovery state. There is no scheduler-confirmed abort or
+automatic recovery of unknown requests. The launcher closes its owned Engine even
+when Runtime drain fails, while preserving the failure and unresolved records.
+
+Follow the shared [quiescence protocol](quiescence.md) before stopping the owned
+parent; follow its offline resume step before reusing a quiesced registry. Hot
+updates apply to decision bundles; plugin/engine code or base weights require a
+process restart. The [618-test CPU suite and readout checks](tokenspeed-validation.md)
+do not certify a real TokenSpeed GPU deployment, crash recovery or performance.
 
 ## Keys, tenants and limits
 
@@ -125,7 +169,7 @@ code requires rolling a process; changing a manifest does not reload Python modu
 
 New bundles include `tokenizer_implementation_digest` when the tokenizer exposes
 its backend. This binds normalization, pretokenization and BPE rules, in addition
-to the vocabulary and template. Both native plugins derive compilation from the
+to the vocabulary and template. The native integrations derive compilation from the
 host's actual tokenizer. The verified standard vLLM pool may supply an
 identity-checked private copy so optimized encoding never bypasses the shared
 pool. A local AutoTokenizer can differ after engine adjustments, so

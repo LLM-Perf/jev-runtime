@@ -109,6 +109,10 @@ abort 返回成功视为 drain。启动器将原生请求 reservation/terminal r
 持久化开销尚未做性能测量。服务停止遇到不确定 drain 会报错、保留证据，
 并确保退出启动器自己拥有的 Engine。
 
+独立完成凭据文件不在 `jevctl registry snapshot` 的核心注册表备份范围内；
+部署变更需要保留两个数据库。进程管理和备份边界见
+[TokenSpeed 运维说明](operations.md#tokenspeed-operations-experimental)。
+
 ## 验证分层
 
 CPU 合同覆盖插件发现/冲突、四种类型和两种 readout 的拆分一致性、配额分母、
@@ -117,7 +121,7 @@ CPU 合同覆盖插件发现/冲突、四种类型和两种 readout 的拆分一
 logits 的顺序；它不是完整 TokenSpeed GPU serving 验证。
 
 本轮实际结果见 [多框架验证与剩余门槛](multi-engine-validation.md)。
-后续已完成 [每引擎超过一万次严格成功请求的 DSW 扩量验证](strict-traffic-validation.md)，
+后续 vLLM/SGLang 已完成 [每引擎超过一万次严格成功请求的 DSW 扩量验证](strict-traffic-validation.md)，
 并修复持续热切换下待切换版本 canary 过期的问题。
 所有引擎仍须按最终发布源码复验。插件源码、CPU 合同、已构建 wheel、真实 GPU
 运行、业务质量和受控性能分别报告，任何一项不能替代另一项。

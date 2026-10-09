@@ -6,6 +6,14 @@ cache states. All entries are currently **not run**. The 21.6 hours is a lower
 bound **per applicable measurement method**; baselines, loading, warmup and the
 24-hour soak add time. Small-model development runs do not fill this matrix.
 
+The frozen matrix and GPU measurements on this page cover vLLM/SGLang, not
+TokenSpeed. TokenSpeed still has no native GPU throughput measurements. Its
+asynchronous owner-loop dispatch and CPU concurrency regression do not establish
+a serving speedup. A future matched benchmark must include K native requests
+for K labels (two branches per independent candidate), cache behavior, and the
+durable receipt writes. The 10,000-request hot-switch harness is a functional
+gate, not a performance benchmark. See [TokenSpeed evidence and remaining work](tokenspeed-validation.md).
+
 The paired runner currently covers native selected-label HTTP scoring and the
 configured typed plugin or gateway. For independent-candidate mode it dispatches
 the native branches serially and records that distinction. Optional structured

@@ -62,6 +62,7 @@ The helper downloads **Qwen/Qwen3-0.6B** at revision
 
 - `config.json`: Jev configuration and bootstrap alias `decision-model`.
 - `engine.json`: the native TokenSpeed configuration.
+- `model-source.json`: configured checkpoint identity for the numerical-reference helper.
 - `env.sh`: separate API/admin credentials, readable by the current user only.
 - A private run directory for the registry and native completion receipts.
 
@@ -90,6 +91,8 @@ native sequences and a 0.5 memory fraction. Adjust capacity to the target host.
 `--check` checks source, visible GPU and resolved configuration without starting
 the Engine or loading weights; it does not certify kernels, free VRAM or serving.
 Actual startup validates the tokenizer, model precision and bootstrap canary.
+`base_gpu_id` defaults to visible index 0; if configured, preflight checks that
+selected index after `CUDA_VISIBLE_DEVICES` remapping.
 
 There is one HTTP worker. Native requests run on the Engine's owner event loop;
 waiting for GPU results does not reserve a thread in the HTTP executor pool.
@@ -112,15 +115,21 @@ Python and TypeScript SDKs use the same `JEV_URL`. Bundle activation and rollbac
 are live; replacing plugin code, engine binaries or model weights needs a restart.
 
 For a separate gateway, install this adapter there too, set `backend: tokenspeed`,
-point `engine_url` to `http://127.0.0.1:8796`, and set `JEV_ENGINE_API_KEY` to the
-native plugin API key. Use a different gateway listening port, registry and API/admin
-credentials. An ordinary TokenSpeed OpenAI endpoint does not implement this scoring
+point `engine_url` to `http://127.0.0.1:8796` without the plugin prefix, and set
+`JEV_ENGINE_API_KEY` to the native plugin API key. Use a different gateway listening
+port, registry and API/admin credentials. An ordinary TokenSpeed OpenAI endpoint does not implement this scoring
 contract and cannot serve as the bridge target.
 
 ## 5. Run strict functional validation
 
 On a dedicated test instance started above, the shared live harness supports the
-TokenSpeed launcher and reads the generated API/admin environment variables:
+TokenSpeed launcher and reads the generated API/admin environment variables.
+
+Use `live_contract` directly; `run_native_validation.py` and `dsw_service.py`
+currently accept only vLLM/SGLang. Track the TokenSpeed process you launch and
+verify its exit separately after the test and quiescence.
+
+Run from the Jev repository root:
 
 ```bash
 export JEV_TEST_COMMIT="$(git rev-parse HEAD)"
@@ -185,6 +194,10 @@ and completion receipts in `registry.tokenspeed-receipts.db` beside `registry.db
   Rows have no automatic expiry, so budget and monitor disk usage. Do not delete
   receipts while old gateway journals may still ask for cancellation. Full-sync
   SQLite writes have a cost; throughput has not been benchmarked.
+
+Core registry snapshot/staging commands do not include this separate receipt
+store. Preserve both stores across compatible deployment changes; see
+[TokenSpeed backup and recovery operations](operations.md#tokenspeed-operations-experimental).
 
 Follow [quiescence and ordered shutdown](quiescence.md). A failed drain remains an
 error; the launcher still shuts down its own Engine in `finally` and keeps pending

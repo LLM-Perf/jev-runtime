@@ -5,8 +5,10 @@ SGLang 0.5.20 retired the CUDA 12 lane and remains a separate certification targ
 Each engine uses its own environment. See `evidence/dsw/` for tested source commits.
 
 Additional backends now use the `jev_runtime.backends` installed-plugin entry point.
-The optional TokenSpeed package has a guarded, experimental single-label readout;
-it has no model GPU certification yet. See [multi-engine setup and limits](multi-engine.md).
+The optional TokenSpeed package has a pinned native Engine launcher, startup
+preflight, async dispatch and persistent completion receipts. Its single-label
+readout remains experimental, with no model GPU certification yet. See the
+[TokenSpeed quick start](quickstart-tokenspeed.md) and [multi-engine limits](multi-engine.md).
 
 ## Gateway
 
@@ -91,6 +93,47 @@ on both engines. Phi-3 mini and Phi-4 mini also passed native BF16 TP2/API1
 checks at `737d814`; see [the TP2 report](phi-tp2-validation.md) for model revisions,
 failed attempts and numerical limits. These checks do not certify other parallel
 configurations, TP2 managed LoRA, controlled performance or full model accuracy.
+
+## TokenSpeed native launcher and HTTP bridge
+
+After installing the pinned TokenSpeed source and dependencies in their own
+environment, run from the Jev checkout:
+
+```sh
+pip install -e '.[tokenizers]' -e packages/tokenspeed
+python examples/prepare_tokenspeed.py
+source .jev/quickstart-tokenspeed/env.sh
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG" --check
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG"
+```
+
+The current profile binds upstream `f4ac1affe11ad404720bcd150970487f75fbf59a`;
+the legacy `7fa8acb1e885389825c077a6aec0326fbbbd7116` profile remains accepted.
+GPU selection, source installation and exact configuration requirements are in
+the [quick start](quickstart-tokenspeed.md). The native launcher owns its Engine
+and exposes typed/admin/raw routes under `/plugins/jev-runtime`, with one HTTP
+worker. It does not wrap an already-running TokenSpeed OpenAI service or expose chat.
+
+Local `model_id` must match the Engine's absolute weight path, and `tokenizer`
+must match its tokenizer path, which may be separate. The helper generates both
+configs with these identities aligned. Requests submit asynchronously to the
+Engine's owner loop; each label receives its own native request and usage entry.
+`label_scoring: single` is retained across the HTTP bridge, so gateways account
+for every expanded branch. For independent-candidate mode, each candidate scores
+both true and false, requiring two branches.
+
+For a separate gateway, install `jev-tokenspeed` there too. Use `backend: tokenspeed`,
+set `engine_url` to the native launcher root (for example `http://127.0.0.1:8796`,
+**without** the plugin prefix), and supply its API key through `JEV_ENGINE_API_KEY`.
+Keep the gateway on its own listening port and local registry. The bridge appends
+the scoring prefix itself; ordinary OpenAI endpoints cannot replace this contract.
+
+Native cancellation waits for terminal one-token completion. The launcher persists
+completed IDs beside the registry so the same identity can confirm completion
+after response loss or restart; unknown/pending IDs stay unconfirmed. See
+[receipt storage and recovery limits](operations.md#tokenspeed-operations-experimental).
+CPU tests verify these paths; no GPU throughput or complete crash-recovery claim
+follows from them. [Actual validation](tokenspeed-validation.md).
 
 ## Bundle updates
 

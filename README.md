@@ -3,11 +3,12 @@
 **Turn the models you already serve into typed decision APIs.**
 
 Route a support ticket. Choose the next agent action. Score an item. Rank candidates.
-Jev Runtime reads candidate scores from **vLLM or SGLang**, returns typed answers
-and probabilities, and lets you update versioned decision bundles while requests
-are running. The model stays in its inference engine.
+Jev Runtime reads candidate scores from **vLLM, SGLang, or experimental TokenSpeed**,
+returns typed answers and probabilities, and lets you update versioned decision
+bundles while requests are running. The model stays in its inference engine.
 
-[Quick start](#quick-start) · [Project comparison](#how-it-compares) ·
+[Quick start](#quick-start) · [TokenSpeed](#tokenspeed-quick-start-experimental) ·
+[Project comparison](#how-it-compares) ·
 [Measured results](#measured-results) · [Documentation](#documentation)
 
 ![Jev Runtime turns text into typed decisions with probabilities and supports live bundle updates](docs/assets/jev-demo.gif)
@@ -19,16 +20,17 @@ Your text + typed questions
   Jev Runtime plugin ── pinned bundle: model + tokenizer + template + policy
           │
           ▼
-     vLLM / SGLang ──── candidate scores
+  vLLM / SGLang / TokenSpeed* ── candidate scores
           │
           ▼
   choice · boolean · score · rank + probabilities + version metadata
 ```
 
-**Current release: `0.1.0a1`, development preview.** Both native integrations have
-real GPU evidence, including **10,004 and 10,006 strictly validated requests during
-live bundle switching**. Production certification and performance targets remain
-open. TokenSpeed is experimental. See [the evidence below](#measured-results).
+**Current release: `0.1.0a1`, development preview.** vLLM and SGLang have real GPU
+evidence, including **10,004 and 10,006 strictly validated requests during live
+bundle switching**. *TokenSpeed has a pinned launcher, preflight, async dispatch
+and durable completion receipts; its GPU validation is still pending.* Production
+certification and performance targets remain open. See [the evidence below](#measured-results).
 
 Jev Runtime is independent of TypeSafe/Jev. It adds Jev-style decision serving to
 existing models; it does not convert their weights into the proprietary Jev
@@ -39,9 +41,10 @@ architecture or reproduce its training.
 - **A decision interface your application can consume.** Choose from stable IDs,
   get a Boolean, compute an expected score over numeric levels, or rank all options.
   Outputs include probabilities and explicit answered/abstained/failed states.
-- **Native engine integration.** Install a separate plugin package in your vLLM
-  or SGLang environment. Typed decisions coexist with ordinary serving endpoints.
-  A gateway mode is also available.
+- **Choose your serving engine.** vLLM and SGLang plugins add typed decisions
+  alongside their ordinary serving endpoints. The experimental TokenSpeed launcher
+  owns a native Engine and exposes the same typed/bundle APIs. All three offer a
+  gateway path; each engine keeps its own environment.
 - **Update decisions under traffic.** Upload, prepare, activate and roll back an
   immutable bundle. Each request keeps its original version through completion;
   generation checks prevent stale administrative updates.
@@ -56,13 +59,21 @@ before choosing application thresholds.
 
 ## Quick start
 
+Choose an engine first; the request and bundle commands are shared:
+
+| Engine | Start here | Setup and evidence |
+|---|---|---|
+| vLLM | [Steps below](#1-install-the-engine-and-plugin) | SmolLM2 demo; 0.30.0+cu129; checkpoint-specific GPU evidence |
+| SGLang | [SGLang quick start](docs/quickstart-sglang.md) | SmolLM2 demo; 0.5.19 CUDA 12.9 lane; checkpoint-specific GPU evidence |
+| TokenSpeed | [TokenSpeed quick start](docs/quickstart-tokenspeed.md) | Pinned Qwen3-0.6B setup; compatible NVIDIA GPU required; experimental, GPU serving not yet validated |
+
 This path runs pinned **SmolLM2-1.7B-Instruct** with the native vLLM plugin. It
 requires Linux x86_64, Python 3.12, an NVIDIA GPU supporting BF16, a compatible
 driver, and space for the model and GPU dependencies. Use a dedicated GPU for the
 example memory settings. Initial downloads and startup can take several minutes.
 
-Prefer SGLang? Follow the complete [SGLang quick start](docs/quickstart-sglang.md),
-then use the same request and bundle commands below. Use separate environments.
+Keep the engine environments separate. The vLLM installation commands below are
+specific to that engine; TokenSpeed uses its own pinned source and native dependencies.
 
 ### 1. Install the engine and plugin
 
@@ -207,9 +218,40 @@ read `bundle list` and use the current generation instead of copying `1` or `2`.
 Before stopping the server, follow [quiescence and ordered shutdown](docs/quiescence.md),
 including its offline resume step when restarting the preserved registry.
 
-These preparation, startup, request, activation and rollback steps passed on both
-DSW engine environments. The smoke reused installed dependencies and local weights;
+These preparation, startup, request, activation and rollback steps passed on the
+vLLM and SGLang DSW environments. The smoke reused installed dependencies and local weights;
 it did not test a fresh network installation. [Exact scope and evidence](docs/readme-validation.md).
+
+## TokenSpeed quick start (experimental)
+
+Use the [complete installation guide](docs/quickstart-tokenspeed.md) to prepare
+TokenSpeed at `f4ac1affe11ad404720bcd150970487f75fbf59a` in its own environment.
+The launcher accepts NVIDIA `sm90`, `sm100`, `sm103` or `sm107`; the existing L20Z
+DSW is outside this profile. The documented CUDA 12.9 recipe targets H100/H200
+with Python 3.11. Other supported architectures need their matching upstream stack.
+
+From the Jev repository root, **after activating that TokenSpeed environment**:
+
+```bash
+python -m pip install -e '.[tokenizers]' -e packages/tokenspeed
+python examples/prepare_tokenspeed.py
+source .jev/quickstart-tokenspeed/env.sh
+export CUDA_VISIBLE_DEVICES=0
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG" --check
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG"
+```
+
+The helper pins Qwen3-0.6B, preserves its tokenizer and creates matching configs
+plus separate API/admin keys. In a second terminal, activate the same environment,
+source the same `env.sh`, then use [the request](#4-make-your-first-decision) and
+[bundle update](#5-try-a-live-bundle-update) commands above. The endpoint prefix
+is `/plugins/jev-runtime`, with default port `8796` and alias `decision-model`.
+
+This path supports Choice, Boolean, Score, Rank and live bundle updates through
+the shared API. It currently uses **one native request per label**; it does not
+offer joint selected-ID gathering or a chat endpoint. Keep the registry and its
+separate completion-receipt database together when operating the service.
+[TokenSpeed limits and validation evidence](docs/tokenspeed-validation.md).
 
 ## What is supported today?
 
@@ -217,7 +259,7 @@ it did not test a fresh network installation. [Exact scope and evidence](docs/re
 |---|---|---:|---|
 | vLLM 0.30.0+cu129 | Native endpoint plugin; gateway via plugin scoring | 12/20 model profiles | Other versions/topologies need validation; a plain OpenAI endpoint is insufficient for gateway scoring |
 | SGLang 0.5.19 | Native plugin; HTTP gateway | 12/20 model profiles | CUDA 12.9 test lane; 0.5.20 not certified; 0.5.19 mixed traffic needs engine-side compatibility hooks |
-| TokenSpeed | Pinned native launcher, preflight, durable receipts and bridge | 0/20 | No GPU certification; K labels currently need K native scoring calls |
+| TokenSpeed `f4ac1affe11a` | Native Engine launcher, preflight, async dispatch, durable receipts and HTTP bridge | 0/20 model profiles | Experimental; eager TP/DP/PP=1; K labels need K native scoring calls; native GPU validation pending |
 | Additional engines | `jev_runtime.backends` entry point | Not measured | Must implement and validate the complete scoring/lifecycle contract |
 
 Coverage means checkpoint-specific functional evidence, **not** every model in an
@@ -234,13 +276,14 @@ to one host; multi-node atomic publication and failover are not certified.
 
 ## How it compares
 
-Primary project documentation checked **2026-09-30**. This compares documented
+Other projects' primary documentation was checked **2026-09-30**; the Jev Runtime
+row includes the **2026-10-09 TokenSpeed update**. This compares documented
 interfaces and implementation scope, not measured performance. “Not documented”
 means the cited material does not establish that capability.
 
 | Project | Decision mechanism | Documented serving path | Bundle / plugin story | Best fit and tradeoff |
 |---|---|---|---|---|
-| **Jev Runtime** | Complete selected-label scores; joint-label or independent-candidate mode | Native **vLLM + SGLang**; gateway; experimental TokenSpeed | Immutable bundles, prepare/activate/rollback, request pinning, local shared registry | Integrating decisions into GPU services; alpha, text only, incomplete certification |
+| **Jev Runtime** | Complete requested label scores; joint-label or independent-candidate mode; TokenSpeed expands labels into separate native requests | Native **vLLM + SGLang**; experimental **TokenSpeed Engine launcher**; gateways | Immutable bundles, prepare/activate/rollback, request pinning, local shared registry | Integrating decisions into GPU services; alpha, text only, TokenSpeed GPU validation pending |
 | [LLM2Jev](https://github.com/Yinsongxu/LLM2Jev#readme) | Prefill candidate scoring; staged prefix reuse | SGLang, Transformers, **MLX**; System One HTTP | Versioned bundle publication / native vLLM plugin not documented in cited README | Local text **and image** decisions, including Apple Silicon |
 | [AnyJev](https://github.com/nokia-applied-research/AnyJev#readme) | Label readout with rotation/debiasing and calibration; optional fitted hidden-state head | Transformers; vLLM generation/pooling endpoints | Per-question readout/head artifacts; atomic serving-bundle lifecycle not documented in cited README | Decision quality and calibration experiments; L2 needs labeled examples per question/model; SGLang L2 not yet supported |
 | [jev-bridge](https://github.com/TOSUKUi/jev-bridge#readme) | One-token `top_logprobs`, restricted label normalization | OpenAI-compatible servers/APIs, including SGLang and vLLM | Separate HTTP bridge; immutable bundle lifecycle not documented in cited README | Quick API integration; top-K coverage and backend behavior matter; missing labels receive a floor |
@@ -302,6 +345,25 @@ comparison must pin model/revision, scoring semantics, task data, input length,
 candidates/questions, cache state, concurrency, precision and hardware, then
 report accuracy/calibration, strict success, latency and throughput together.
 
+### TokenSpeed: adapter validation, GPU results pending
+
+At runtime commit `2d3ee4e` on **2026-10-09**, the full local suite passed
+**618 tests**, and both pinned upstream profiles passed **6/6 CPU readout-ordering
+checks each**. The TokenSpeed wheel and sdist built successfully. These checks
+cover source/adapter contracts; they do not execute a TokenSpeed model or native GPU kernels.
+
+| TokenSpeed check | Status |
+|---|---|
+| Four types, bundle switching, bridge contract, completed-ID recovery | Passed with explicit CPU engine doubles |
+| Native GPU model coverage | **0/20; not run** |
+| 10,000 strict GPU requests + 1,000 switches | Harness and commands available; **not run** |
+| Native numerical quality, throughput and soak | **Not run** |
+
+The vLLM/SGLang numbers above do not apply to TokenSpeed. Its K native requests
+per K labels and durable receipt writes must be included in future performance
+measurements. [Evidence and next gates](docs/tokenspeed-validation.md) ·
+[Run the strict check](docs/quickstart-tokenspeed.md#5-run-strict-functional-validation).
+
 ## Troubleshooting
 
 | Symptom | Check |
@@ -314,12 +376,18 @@ report accuracy/calibration, strict success, latency and throughput together.
 | Tokenizer/profile mismatch | Give the engine and runtime the same generated profile; build it in the serving environment. |
 | 409 `generation_conflict` | Read `jevctl bundle list --url "$JEV_URL"` and use the current generation. |
 | Reused registry stays quiesced | Follow [offline resume](docs/quiescence.md). |
+| TokenSpeed `tokenspeed_source_mismatch` | Use a supported pinned checkout; run `jev-tokenspeed --check-source /path/to/tokenspeed/python/tokenspeed`. |
+| TokenSpeed `tokenspeed_hardware` | Select a supported visible GPU; L20Z is outside this profile. See [hardware prerequisites](docs/quickstart-tokenspeed.md#1-install-the-engine-in-its-own-environment). |
+| TokenSpeed model/tokenizer mismatch | Match both configs, including absolute model path, separate tokenizer path and immutable revision. |
+| TokenSpeed `cancellation_unconfirmed` | Preserve journals and receipt DB; unknown/pending requests do not count as drained. See [recovery limits](docs/quickstart-tokenspeed.md#readout-drain-and-recovery-boundaries). |
 
 ## Documentation
 
 | Goal | Start here |
 |---|---|
-| Run SGLang / attach an engine / try TokenSpeed | [SGLang quick start](docs/quickstart-sglang.md), [engine integration](docs/engine-integration.md), [TokenSpeed quick start](docs/quickstart-tokenspeed.md), [multi-engine guide](docs/multi-engine.md) |
+| Start a native engine | [vLLM quick start](#quick-start), [SGLang quick start](docs/quickstart-sglang.md), [TokenSpeed quick start](docs/quickstart-tokenspeed.md) |
+| Attach a gateway or add a backend | [Engine integration](docs/engine-integration.md), [multi-engine guide](docs/multi-engine.md) |
+| Check TokenSpeed implementation and evidence | [Validation report](docs/tokenspeed-validation.md), [framework status](profiles/framework-support.json) |
 | Integrate an application | [Example request](examples/request.json), [schema](src/jev_runtime/schema.py), [TypeScript client](packages/typescript/README.md) |
 | Evaluate models and probabilities | [Model matrix](profiles/certification-matrix.json), [public quality](docs/public-quality.md), [calibration](docs/calibration.md), [numerical diagnostics](docs/numerical-suite.md) |
 | Operate and upgrade | [Operations](docs/operations.md), [quiescence](docs/quiescence.md), [migration](docs/registry-schema.md), [packaging](docs/release-packaging.md), [PyPI release](docs/pypi-release.md), [rollout](docs/gateway-rollout.md) |
@@ -339,7 +407,7 @@ source .venv/bin/activate
 python -m pip install -e '.[dev,tokenizers,tokenizer-conversion]' \
   -e packages/sglang -e packages/vllm -e packages/tokenspeed
 python -m pytest
-python -m ruff check src tests packages deployment benchmarks examples/prepare_quickstart.py
+python -m ruff check src tests packages deployment benchmarks examples
 python evidence/harnesses/verify_strict_traffic_9da1813.py
 ```
 

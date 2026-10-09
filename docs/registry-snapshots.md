@@ -49,6 +49,15 @@ backup storage and retention controls. They do not contain model/LoRA weights,
 credentials supplied only through environment variables or external tokenizer
 files. Preserve those artifacts separately with their immutable identities.
 
+TokenSpeed's separate `*.tokenspeed-receipts.db` is also outside this snapshot:
+it is not a table in the core registry. The snapshot, verification and staging
+commands do not back up, validate or restore native completion receipts. Before
+a TokenSpeed deployment change, quiesce and stop affected writers, then preserve
+both stores with SQLite-aware backups. Keep the corresponding receipt database
+at the sibling path expected by the selected registry and retain the same engine
+identity. See [TokenSpeed operations](operations.md#tokenspeed-operations-experimental).
+Automatic coordinated snapshot/restore and receipt expiry are not implemented.
+
 ## Stage the latest stopped state
 
 1. Remove traffic and observe HTTP and durable-work drain.

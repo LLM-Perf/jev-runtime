@@ -1239,7 +1239,7 @@
       "acceptance_complete": false
     }
   ],
-  "updated_at": "2026-09-28",
+  "updated_at": "2026-10-09",
   "release_accepted": false,
   "status_semantics": "Implementation status is separate from acceptance. Development GPU evidence does not satisfy the full release gates. Original estimates and dependencies remain unchanged.",
   "observed_engine_versions": {
@@ -1248,7 +1248,7 @@
   },
   "additional_frameworks": {
     "status": "partial",
-    "source_commit": "55674ecbe63850dc9c46da14893ffcad59d2506f",
+    "source_commit": "2d3ee4edbd80fc36a7a4d9810cd7c7dbd7bd086d",
     "provider_entry_points": true,
     "tokenspeed": {
       "package": "jev-tokenspeed",
@@ -1258,10 +1258,20 @@
       "open_gates": [
         "Native GPU installation and model serving",
         "Efficient selected-label gather",
-        "Cancellation receipts across process failure",
+        "Scheduler-confirmed abort and recovery of unknown or pending requests",
+        "Coordinated receipt backup, restore and safe retention",
         "Managed LoRA and wider parallel configurations",
         "Numerical, model, quality and performance certification"
-      ]
+      ],
+      "upstream_revision": "f4ac1affe11ad404720bcd150970487f75fbf59a",
+      "legacy_upstream_revisions": [
+        "7fa8acb1e885389825c077a6aec0326fbbbd7116"
+      ],
+      "source_hardware_config_preflight": true,
+      "async_owner_loop_dispatch": true,
+      "persistent_completion_receipts": true,
+      "strict_traffic_harness": "four types, both readout modes; 10000 requests and 1000 switches; GPU run pending",
+      "validation_report": "docs/tokenspeed-validation.md"
     },
     "original_acceptance_gates_unchanged": true
   }

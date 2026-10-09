@@ -1,5 +1,10 @@
 # 多框架接入验证与剩余门槛
 
+> 本页保留 `62340fe` / `55674ec` 阶段的历史验证结果。TokenSpeed 已在
+> `2d3ee4e` 增加新版源码 profile、启动预检、异步提交与持久化完成凭据；
+> 当前实现与 618 项 CPU 测试见 [2026-10-09 验证记录](tokenspeed-validation.md)。
+> 下文“仅本进程凭据”等限制描述的是当时版本；真实 TokenSpeed GPU 验证仍未完成。
+
 本轮实现可扩展 backend provider、显式 raw-score HTTP bridge 和实验性 TokenSpeed
 原生 Engine 插件。vLLM、SGLang 的真实 GPU 回归通过；TokenSpeed 仅完成源码合同
 检查和 CPU 测试，尚未执行真实模型 GPU 服务。原计划及其验收阈值保持不变。

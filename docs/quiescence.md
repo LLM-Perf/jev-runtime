@@ -77,6 +77,14 @@ generation is idempotent. Readiness returns 503 as soon as the durable gate clos
 
 ## Deployment boundaries
 
+The TokenSpeed launcher exposes these Jev administrative gates, but has no real
+GPU shutdown certification yet. Use `jev-tokenspeed`, not the vLLM/SGLang-only
+`deployment/dsw_service.py`, to start its owned process. After a successful Jev
+drain, stop that parent through its owning terminal or supervisor and verify exit.
+A failed drain remains an error even though lifespan cleanup shuts down the owned
+Engine. Keep both its core registry and separate completion-receipt database;
+[unknown/pending requests are not confirmed by elapsed time](operations.md#tokenspeed-operations-experimental).
+
 All participating API workers must run this protocol version against the same local
 registry. Known live legacy workers cause quiescence to fail. Do not start an older
 binary against the registry after closing the gate: old software does not implement
