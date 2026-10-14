@@ -37,7 +37,7 @@ async def test_strict_response_rejects_valid_200_with_wrong_contract(runtime, qu
         strict_response(body, request, "fixture", "0", routes)
 
 
-@pytest.mark.parametrize("mode", ["success", "invalid", "overload", "http_error"])
+@pytest.mark.parametrize("mode", ["success", "invalid", "overload", "http_error", "crashed_worker"])
 async def test_open_loop_keeps_full_denominator_and_excludes_bad_200s(
     runtime, question, tmp_path, monkeypatch, mode
 ):
@@ -48,6 +48,8 @@ async def test_open_loop_keeps_full_denominator_and_excludes_bad_200s(
     monkeypatch.setenv("JEV_TEST_KEY", "not-exported")
 
     async def respond(http_request):
+        if mode == "crashed_worker":
+            raise RuntimeError("Unexpected load-generator failure")
         if mode == "overload":
             await asyncio.sleep(0.05)
         if mode == "http_error":
@@ -71,6 +73,13 @@ async def test_open_loop_keeps_full_denominator_and_excludes_bad_200s(
         queue_size=1,
         timeout=1.0,
     )
+    if mode == "crashed_worker":
+        with pytest.raises(ExceptionGroup):
+            await asyncio.wait_for(run(args, transport=httpx.MockTransport(respond)), timeout=2)
+        result = json.loads((args.output / "summary.json").read_text())
+        assert not result["passed"] and not result["completed"]
+        assert result["unaccounted_requests"] > 0
+        return
     result = await run(args, transport=httpx.MockTransport(respond))
     assert result["accounted"] == result["planned"] == 10
     rows = (args.output / "requests.jsonl").read_text()

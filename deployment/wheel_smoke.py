@@ -34,7 +34,9 @@ def main():
         unk_token="[UNK]",
         chat_template="{% for m in messages %}{{ m.content }}{% endfor %}",
     )
-    tokens = tokenizer.apply_chat_template([{"role": "user", "content": "hello"}])
+    tokens = tokenizer.apply_chat_template(
+        [{"role": "user", "content": "hello"}], return_dict=False
+    )
     if tokens != [1]:
         raise RuntimeError("Installed tokenizer did not execute its chat template correctly")
     if {item["name"] for item in backend_inventory()} != {"vllm", "sglang", "tokenspeed"}:
