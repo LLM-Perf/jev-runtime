@@ -236,6 +236,21 @@ def register_owner(db: sqlite3.Connection, owner: str, identity: dict) -> None:
 
 
 def require_migration_publication(path: Path) -> None:
+    pair_intent = path.parent / "pair-restore-intent.json"
+    if pair_intent.exists():
+        declared_pair = json.loads(pair_intent.read_text())
+        if declared_pair.get("database_name") == path.name:
+            receipt_path = path.parent / "pair-restore.json"
+            native = path.with_suffix(".tokenspeed-receipts.db")
+            if not receipt_path.is_file() or not native.is_file() or not path.is_file():
+                raise ValueError("Paired restore is incomplete; both stores must be published")
+            receipt = json.loads(receipt_path.read_text())
+            if (
+                receipt.get("format") != "jev-paired-restore-v1"
+                or not declared_pair.get("operation_id")
+                or receipt.get("operation_id") != declared_pair["operation_id"]
+            ):
+                raise ValueError("Paired restore publication does not match intent")
     intent = path.parent / "migration-intent.json"
     if not intent.exists():
         return

@@ -56,7 +56,12 @@ a TokenSpeed deployment change, quiesce and stop affected writers, then preserve
 both stores with SQLite-aware backups. Keep the corresponding receipt database
 at the sibling path expected by the selected registry and retain the same engine
 identity. See [TokenSpeed operations](operations.md#tokenspeed-operations).
-Automatic coordinated snapshot/restore and receipt expiry are not implemented.
+For an executable stopped-state pair operation, use `snapshot-pair`, `verify-pair`
+and `stage-restore-pair` as described in [production operations](production.md).
+They hold writer reservations on both databases, reject live/unknown owners and
+pending receipts, and stage only the exact latest stopped state. An incomplete
+pair cannot start as a registry. Receipt expiry and lost-host recovery remain
+separate work; no pending receipt is discarded by these commands.
 
 ## Stage the latest stopped state
 

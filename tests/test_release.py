@@ -41,12 +41,14 @@ def built(tmp_path_factory):
         module = repo / prefix
         module.mkdir(parents=True)
         (module / "__init__.py").write_text('SOURCE = "committed"\n')
+        (repo / directory / "LICENSE").write_text("Test fixture license\n")
         if name == "jev-tokenspeed":
             (module / "source-profile.json").write_text('{"files": {}}\n')
         package_root = Path(prefix).relative_to(directory) if directory != "." else Path(prefix)
         (repo / directory / "pyproject.toml").write_text(
             '[build-system]\nrequires=["hatchling>=1.26"]\nbuild-backend="hatchling.build"\n'
             f'[project]\nname="{name}"\nversion="0.1.0a1"\nrequires-python=">=3.11"\n'
+            'license-files=["LICENSE"]\n'
             f'[tool.hatch.build.targets.wheel]\npackages=["{package_root}"]\n'
         )
     git(repo, "init")

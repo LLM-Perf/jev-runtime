@@ -6,11 +6,19 @@ base-image digest and emits a separate context manifest. The gateway contains no
 engine wheels or CUDA dependencies. Engine images and their dependency profiles
 remain separate deliverables.
 
-**Current evidence:** context integrity and startup/probe tests pass locally.
+**Historical evidence before the production qualification changes:** context integrity and startup/probe tests pass locally.
 Actual BuildKit image construction and container runtime validation have not run;
 no usable image tag or image digest is claimed. A build context is not an image.
 The existing DSW workload is already a container and must not host nested Docker.
 Use a separate Linux BuildKit/Docker builder for the remaining image checks.
+
+The new `Gateway container packaging` workflow and `deployment.container_smoke`
+run an actual offline image build plus non-root/persistent-volume checks on a
+Linux Docker builder. See [production operations](production.md). Consult the
+specific workflow result before treating these checks as passed; this CPU image
+check does not certify GPU serving, container replacement recovery or an engine
+image. The image context now may include all three plugin wheels when its gateway
+lock was resolved with `--include-plugins`.
 
 ## Prepare and build
 
