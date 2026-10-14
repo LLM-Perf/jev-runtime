@@ -1,0 +1,38 @@
+# Scrape every worker separately, or run one API worker per endpoint.
+# Provide deployment and registry labels in Prometheus target configuration.
+# Runtime outcomes exclude auth/body-validation failures; collect ingress metrics too.
+groups:
+  - name: jev-runtime
+    rules:
+      - record: jev:runtime_failure_ratio:5m
+        expr: sum by (deployment) (rate(jev_decisions_total{outcome!="completed"}[5m])) / clamp_min(sum by (deployment) (rate(jev_decisions_total[5m])), 0.000001)
+      - record: jev:registry_oldest_lease_seconds
+        expr: max by (deployment, registry) (jev_registry_state{quantity="oldest_lease_seconds"})
+      - alert: JevRuntimeFailureRate
+        expr: jev:runtime_failure_ratio:5m > 0.001
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Jev runtime failure ratio exceeds the initial 0.1% target
+      - alert: JevRetainedWork
+        expr: jev:registry_oldest_lease_seconds > 300
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Inspect retained work and native cancellation before releasing resources
+      - alert: JevCanaryUnready
+        expr: jev_worker_health{quantity="unready_bundles"} > 0 or jev_worker_health{quantity="monitor_running"} == 0 or jev_worker_health{quantity="active_bundles"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Worker lacks current serving readiness; inspect before restarting
+      - alert: JevRegistryStorageGrowth
+        expr: deriv(jev_registry_state{quantity="wal_bytes"}[15m]) > 1048576
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Registry WAL is growing faster than 1 MiB/s; inspect disk and readers

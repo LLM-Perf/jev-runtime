@@ -8,6 +8,8 @@ permissions:
   contents: read
 
 jobs:
+  contracts:
+    uses: ./.github/workflows/ci.yml
   build:
     if: github.repository == 'LLM-Perf/jev-runtime'
     runs-on: ubuntu-latest
@@ -59,8 +61,35 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  qualification:
+    needs: [build, contracts]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: python-distributions
+          path: dist/
+      - name: Download reviewed qualification evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          QUALIFICATION_SHA256: ${{ vars.JEV_QUALIFICATION_SHA256 }}
+        run: |
+          test -n "$QUALIFICATION_SHA256"
+          gh release download "$RELEASE_TAG" --pattern qualification.zip --dir qualification
+      - name: Enforce all three framework production gates
+        env:
+          QUALIFICATION_SHA256: ${{ vars.JEV_QUALIFICATION_SHA256 }}
+        run: |
+          python -m pip install dist/jev_runtime_core-*.whl
+          python -m deployment.qualify_release --bundle qualification/qualification.zip --bundle-sha256 "$QUALIFICATION_SHA256" --dist dist --source-commit "$(git rev-parse HEAD)"
+
   publish:
-    needs: build
+    needs: [build, qualification]
     runs-on: ubuntu-latest
     environment:
       name: pypi

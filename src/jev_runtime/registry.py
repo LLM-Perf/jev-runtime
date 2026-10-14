@@ -136,6 +136,28 @@ class Registry(QuiescenceRegistry):
                 self._db.close()
                 self._db = None
 
+    def operational_metrics(self) -> dict[str, float]:
+        """Registry-wide gauges; duplicate worker observations must not be summed."""
+        with self._connection() as db:
+            values = {
+                name: db.execute(f"SELECT count(*) FROM {name}").fetchone()[0]
+                for name in ("leases", "lease_work", "raw_work", "admission_tickets")
+            }
+            oldest = db.execute("SELECT min(created) FROM leases").fetchone()[0]
+            values["oldest_lease_seconds"] = max(0, time.time() - oldest) if oldest else 0
+            values["pending_cancel_commands"] = db.execute(
+                "SELECT count(*) FROM cancel_commands WHERE state IN ('PENDING','RUNNING')"
+            ).fetchone()[0]
+        for name, path in (
+            ("database_bytes", self.path),
+            ("wal_bytes", Path(str(self.path) + "-wal")),
+        ):
+            try:
+                values[name] = path.stat().st_size
+            except FileNotFoundError:
+                values[name] = 0
+        return values
+
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
         with self._connection() as db:

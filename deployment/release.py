@@ -160,6 +160,15 @@ def build(repo: Path, ref: str, output: Path) -> dict:
     paths = ["pyproject.toml", "README.md", "src"] + [
         directory for directory, _ in packages.values() if directory != "."
     ]
+    license_probe = subprocess.run(
+        ["git", "cat-file", "-e", commit + ":LICENSE"],
+        cwd=repo,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if license_probe.returncode == 0:
+        paths.append("LICENSE")
     with tempfile.TemporaryDirectory(prefix="jev-build-") as temporary:
         work = Path(temporary)
         archive = work / "source.tar"
@@ -248,7 +257,14 @@ def build(repo: Path, ref: str, output: Path) -> dict:
     }
 
 
-def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = None) -> dict:
+def resolve(
+    bundle: Path,
+    digest: str,
+    output: Path,
+    constraints: Path | None = None,
+    *,
+    include_plugins: bool = False,
+) -> dict:
     source = verify(bundle, digest, "jev-wheels-v1")
     output = output.absolute()
     output.mkdir(parents=True, exist_ok=False)
@@ -257,6 +273,12 @@ def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = 
     core = bundle.absolute() / source["distributions"]["jev-runtime-core"]["wheel"]
     extras = gateway_extras(core)
     pins = [str(core) + "[" + ",".join(extras) + "]", "pip==" + metadata.version("pip")]
+    plugins = {}
+    if include_plugins:
+        plugins = {
+            name: d for name, d in source["distributions"].items() if name != "jev-runtime-core"
+        }
+        pins.extend(str(bundle.absolute() / d["wheel"]) for d in plugins.values())
     try:
         pins.append("setuptools==" + metadata.version("setuptools"))
     except metadata.PackageNotFoundError:
@@ -300,6 +322,10 @@ def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = 
     copied_core = output / distributions["jev-runtime-core"]["wheel"]
     if sha(copied_core) != sha(core):
         raise ValueError("Resolved core wheel changed")
+    for name, distribution in plugins.items():
+        copied = output / distributions[name]["wheel"]
+        if sha(copied) != sha(bundle / distribution["wheel"]):
+            raise ValueError("Resolved plugin wheel changed")
     lock = "".join(
         f"{name}=={d['version']} --hash=sha256:{d['sha256']}\n"
         for name, d in sorted(distributions.items())
@@ -312,6 +338,7 @@ def resolve(bundle: Path, digest: str, output: Path, constraints: Path | None = 
         "source_manifest_sha256": digest,
         "source_core_sha256": sha(core),
         "requested_core_extras": extras,
+        "requested_plugins": sorted(plugins),
         "resolver_sha256": sha(Path(__file__)),
         "target": target(),
         "distributions": distributions,
@@ -441,13 +468,20 @@ def main() -> None:
             p.add_argument("--output", type=Path, required=True)
         if name == "resolve":
             p.add_argument("--constraints", type=Path)
+            p.add_argument("--include-plugins", action="store_true")
         if name == "inspect-install":
             p.add_argument("--environment", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "build":
         result = build(args.repo, args.ref, args.output)
     elif args.command == "resolve":
-        result = resolve(args.bundle, args.manifest_sha256, args.output, args.constraints)
+        result = resolve(
+            args.bundle,
+            args.manifest_sha256,
+            args.output,
+            args.constraints,
+            include_plugins=args.include_plugins,
+        )
     elif args.command == "install":
         result = install(args.bundle, args.manifest_sha256, args.output)
     elif args.command == "inspect-install":

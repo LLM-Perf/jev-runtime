@@ -364,6 +364,20 @@ per K labels and durable receipt writes must be included in future performance
 measurements. [Evidence and next gates](docs/tokenspeed-validation.md) ·
 [Run the strict check](docs/quickstart-tokenspeed.md#5-run-strict-functional-validation).
 
+## Production qualification
+
+Use a pinned deployment profile for each framework/model/hardware combination.
+The [production guide](docs/production.md) covers clean wheel installation,
+version-bound release gates, common open-loop traffic, coordinated TokenSpeed
+backups, liveness/readiness and operational alerts.
+
+`jevctl production qualify` rejects missing or mismatched evidence. Publishing
+requires all three frameworks to pass installation, functional, numerical,
+held-out quality, performance, recovery, container and 24-hour soak gates.
+The initial profiles in `profiles/production/` are **draft configuration records**;
+they are not completed qualification results. Existing GPU evidence retains its
+original source/configuration scope.
+
 ## Troubleshooting
 
 | Symptom | Check |

@@ -58,7 +58,7 @@ def serve(config: Path, descriptor: Path):
     )
 
 
-def healthcheck(config: Path, descriptor: Path):
+def healthcheck(config: Path, descriptor: Path, *, live: bool = False):
     settings = configuration(config, descriptor)
     key = os.environ.get(settings.api_key_env)
     if not key:
@@ -66,10 +66,15 @@ def healthcheck(config: Path, descriptor: Path):
     host = "[::1]" if ":" in settings.host else "127.0.0.1"
     with httpx.Client(timeout=5, trust_env=False) as client:
         response = client.get(
-            f"http://{host}:{settings.port}/ready", headers={"Authorization": "Bearer " + key}
+            f"http://{host}:{settings.port}/{'live' if live else 'ready'}",
+            headers={"Authorization": "Bearer " + key},
         )
     response.raise_for_status()
     data = response.json()
+    if live:
+        if data.get("live") is not True or not data.get("worker_id"):
+            raise ValueError("Worker liveness check failed")
+        return
     if (
         data.get("ready") is not True
         or data.get("engine") != settings.backend
@@ -81,14 +86,17 @@ def healthcheck(config: Path, descriptor: Path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("serve", "healthcheck"))
+    parser.add_argument("command", choices=("serve", "healthcheck", "livecheck"))
     parser.add_argument(
         "--config", type=Path, default=Path(os.environ.get("JEV_CONFIG", "/config/gateway.yaml"))
     )
     parser.add_argument("--descriptor", type=Path, default=Path("/opt/jev/image.json"))
     args = parser.parse_args()
     try:
-        (serve if args.command == "serve" else healthcheck)(args.config, args.descriptor)
+        if args.command == "serve":
+            serve(args.config, args.descriptor)
+        else:
+            healthcheck(args.config, args.descriptor, live=args.command == "livecheck")
     except Exception as exc:
         # Container engines persist probe output; omit bodies, paths and credentials.
         print(f"Gateway {args.command} failed ({type(exc).__name__})", file=sys.stderr)
