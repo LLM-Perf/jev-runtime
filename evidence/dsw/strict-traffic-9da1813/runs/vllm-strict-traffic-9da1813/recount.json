@@ -1,0 +1,24 @@
+{
+  "engine": "vllm",
+  "strict_success_requests": 10004,
+  "unique_request_ids": 10004,
+  "unique_inputs": 10004,
+  "switches": 15276,
+  "requests_by_type": {
+    "choice": 2501,
+    "boolean": 2501,
+    "rank": 2501,
+    "score": 2501
+  },
+  "requests_by_bundle": {
+    "cert-2cddebdb0120@1": 4854,
+    "cert-2cddebdb0120@2": 5150
+  },
+  "elapsed_seconds": 132.52193230949342,
+  "latency_ms": {
+    "p50": 51.763514056801796,
+    "p99": 94.48675997555256,
+    "max": 139.1537543386221
+  },
+  "qualification": "observed colocated functional traffic; not controlled performance"
+}

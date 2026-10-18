@@ -65,12 +65,17 @@ def validate(root: Path) -> dict:
             expected = torch.log_softmax(logits.float(), -1).gather(1, target[:, None]).squeeze(1)
             output = SimpleNamespace(next_token_logits=logits.clone())
             backend = SimpleNamespace(
-                config=SimpleNamespace(enable_nan_detection=False, enable_output_logprobs=True),
+                config=SimpleNamespace(
+                    enable_nan_detection=False, enable_output_logprobs=True, logprob_order="torch"
+                ),
                 _selected_logprob_out=torch.empty(rows),
                 _gumbel_out=torch.empty(rows, dtype=torch.int32),
                 _ones_buf=torch.ones(rows, dtype=torch.int32),
                 _zero_offsets_pool=torch.zeros(rows, dtype=torch.int32),
                 _req_pool_indices_for_kernels=lambda indices, size: indices,
+                _offsets_pool_for_kernels=lambda info, rows=rows: torch.zeros(
+                    rows, dtype=torch.int32
+                ),
                 _gumbel_sample_full_logits=lambda values, *args: values.argmax(-1),
                 maybe_broadcast=lambda values: None,
                 _accumulate_counts=lambda *args: None,
@@ -96,6 +101,10 @@ def validate(root: Path) -> dict:
             reports.append(
                 {"dtype": str(dtype), "rows": rows, "max_absolute_error": error, "passed": passed}
             )
+    package = Path(__import__("jev_tokenspeed.plugin", fromlist=["x"]).__file__).parent
+    source_profile = package / "source-profile.json"
+    if json.loads(source_profile.read_text())["revision"] != revision:
+        source_profile = package / "source-profiles" / f"{revision}.json"
     return {
         "upstream_revision": revision,
         "scope": "upstream Python sample/write bodies with Torch CPU primitive doubles",
@@ -105,11 +114,7 @@ def validate(root: Path) -> dict:
         "model_executed": False,
         "torch_version": torch.__version__,
         "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        "source_profile_sha256": hashlib.sha256(
-            Path(__import__("jev_tokenspeed.plugin", fromlist=["x"]).__file__)
-            .with_name("source-profile.json")
-            .read_bytes()
-        ).hexdigest(),
+        "source_profile_sha256": hashlib.sha256(source_profile.read_bytes()).hexdigest(),
         "cases": reports,
         "passed": all(row["passed"] for row in reports),
     }

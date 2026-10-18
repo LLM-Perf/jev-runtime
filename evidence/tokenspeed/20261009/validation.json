@@ -1,0 +1,235 @@
+{
+  "date": "2026-10-09",
+  "base_commit": "9ce7e9a7186d2d1bd9981ef5bbd2baed2d348997",
+  "qualification": "CPU contract/source checks and packaging; not TokenSpeed GPU serving or performance",
+  "pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "618",
+    "time": "17.576",
+    "timestamp": "2026-10-09T18:09:33.137494+08:00",
+    "hostname": "LCJ71QC3GR"
+  },
+  "pytest_scope": "all repository tests on local macOS; no real TokenSpeed model or kernels",
+  "python": "3.12.14",
+  "lint_command": "ruff check src tests packages deployment benchmarks examples",
+  "lint_passed": true,
+  "format_command": "ruff format --check src tests packages deployment benchmarks examples",
+  "format_passed": true,
+  "package_build": {
+    "wheel": "jev_tokenspeed-0.1.0a1-py3-none-any.whl",
+    "wheel_sha256": "ba6c362ee7d582f22acb276b23c767c18182b35f1b34fc11e84ce295860b667f",
+    "sdist": "jev_tokenspeed-0.1.0a1.tar.gz",
+    "source_bytes_match": true
+  },
+  "source_readout_checks": [
+    {
+      "upstream_revision": "7fa8acb1e885389825c077a6aec0326fbbbd7116",
+      "scope": "upstream Python sample/write bodies with Torch CPU primitive doubles",
+      "native_tokenspeed_engine_executed": false,
+      "native_tokenspeed_kernels_executed": false,
+      "gpu_executed": false,
+      "model_executed": false,
+      "torch_version": "2.13.0+cu129",
+      "harness_sha256": "0234a84c35b2c6a7a1f46e6dd714daab57bfa7c6f8572dd2d522536bca0b0089",
+      "source_profile_sha256": "d757cf99ac0d7989eee81b3b1e37d82b44367be1ae332b7be61d8842493349d5",
+      "cases": [
+        {
+          "dtype": "torch.float16",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float16",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.bfloat16",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.bfloat16",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float32",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float32",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "upstream_revision": "f4ac1affe11ad404720bcd150970487f75fbf59a",
+      "scope": "upstream Python sample/write bodies with Torch CPU primitive doubles",
+      "native_tokenspeed_engine_executed": false,
+      "native_tokenspeed_kernels_executed": false,
+      "gpu_executed": false,
+      "model_executed": false,
+      "torch_version": "2.13.0+cu129",
+      "harness_sha256": "0234a84c35b2c6a7a1f46e6dd714daab57bfa7c6f8572dd2d522536bca0b0089",
+      "source_profile_sha256": "73cecbe8dae764db2266bcf0044a670fed4ac933fd8e6484b407450df30a01b4",
+      "cases": [
+        {
+          "dtype": "torch.float16",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float16",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.bfloat16",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.bfloat16",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float32",
+          "rows": 1,
+          "max_absolute_error": 0.0,
+          "passed": true
+        },
+        {
+          "dtype": "torch.float32",
+          "rows": 3,
+          "max_absolute_error": 0.0,
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "source_readout_environment": "DSW existing vLLM Python environment; Torch CPU only, CUDA_VISIBLE_DEVICES empty; no packages installed or GPU service launched",
+  "tokenspeed_gpu_serving": {
+    "status": "not_run",
+    "models_passed": 0,
+    "model_denominator": 20,
+    "reason": "Available DSW has L20Z; outside pinned upstream NVIDIA capability profile"
+  },
+  "gpu_strict_traffic": {
+    "status": "not_run",
+    "required_minimum_requests": 10000,
+    "required_minimum_switches": 1000
+  },
+  "source_files_sha256": {
+    "packages/tokenspeed/src/jev_tokenspeed/receipts.py": "4fd3b18ec4d7d8e655a91c865ca8592b75cc10a6640a0cb5e6469096702631f7",
+    "packages/tokenspeed/src/jev_tokenspeed/backend.py": "db87a3c758001fbb8479f85a0dddcdfd02dc267b6d51e9f54101364e7883b603",
+    "packages/tokenspeed/src/jev_tokenspeed/__init__.py": "c74bc88e4d1ccf76535c35153336b2fede1dd2a5211c24d76d66afe26e8ddc23",
+    "packages/tokenspeed/src/jev_tokenspeed/plugin.py": "4868e5c3e9f15e61827dd9059506c507be1c686a6da08fec6f5094e6bc889672",
+    "packages/tokenspeed/src/jev_tokenspeed/launcher.py": "63b175ab2c3fca3b22aecff63f2f78edfea90ce62696c25af4388bfa68120ebd",
+    "packages/tokenspeed/src/jev_tokenspeed/source-profile.json": "73cecbe8dae764db2266bcf0044a670fed4ac933fd8e6484b407450df30a01b4",
+    "packages/tokenspeed/src/jev_tokenspeed/preflight.py": "8cfd9d53b9c024ccaaff97176f09cdeb9e07fe549788cdc342fc236dd5b08206",
+    "packages/tokenspeed/src/jev_tokenspeed/source-profiles/7fa8acb1e885389825c077a6aec0326fbbbd7116.json": "d757cf99ac0d7989eee81b3b1e37d82b44367be1ae332b7be61d8842493349d5",
+    "tests/test_release.py": "de1929121dd2e28d15adbc6e31b4609c8072f926be743e0c1c996feec9f1f0c0",
+    "tests/test_public_quality.py": "6d3ba284a0b86d1a1b00821e88874e9c16f022a4c17d6c19e9b533e46f744950",
+    "tests/test_hot_switch_traffic.py": "764614723cc9a48a06c915af4d342378af802692ebf9a6a7e0678a38065af5ec",
+    "tests/test_image_context.py": "3d0cc233d1a3064d3efdfc029522ed22d4c93034716bca2107ff89818866114b",
+    "tests/test_dsw_launcher.py": "9a903971d6648d3501326cd4de08b2b6c56b53df7a029ebc957007fc44fc7bd5",
+    "tests/test_lifecycle.py": "b4fd46d08d8a78222f18b9b4c25ebd568ba5f89223d71abb4703f4dbd05f0622",
+    "tests/test_bundle_cli.py": "c2c1698f962af0194050a1a81f96438e502f44b27028713f249e7a087661cfe9",
+    "tests/conftest.py": "5dbf8347d5737071881e717a760d9c39d5361dfcbeef547eee95661b823a08ad",
+    "tests/test_numerical_suite.py": "d6cba4a7dcea0aa4aff0d931743ddb99844f151134b55d6dc2d40edcdb0ebc69",
+    "tests/test_reference_device.py": "e066855bd0e6ca94db43e6cdb0e92ab0bf0ff2307abb7d8cd57290b816301ed2",
+    "tests/test_response_serialization.py": "84a29a5d5fe31f2b74f616a44821fbbb3be8ab4816af583a10c3ad25f0d4b0b6",
+    "tests/test_registry_backup.py": "5963889da6dc07511bbd05bde8e99d196282d0ac00bae4ebf912f76051650973",
+    "tests/test_precision.py": "aa0cb720a2d863deb5903a1ec93bd366502689904d40fb2add2f61d0f6bfa1e3",
+    "tests/test_plugin_lifespan.py": "bd520045a5b66394db893b391777973486325593f4ea4d2e2ba579d31ed0e5f3",
+    "tests/test_quiescence.py": "f6d59fe67feabef3885f4b3b1b968fbf601de903caa8087805424f583d8c7fa8",
+    "tests/test_integration_contract.py": "f6742794c5ac92411f4b08faeb2da7158cf9c1d93dd40f3d8cf63dd36e667108",
+    "tests/test_recovery_mode.py": "3f159937cdb32220269031da738ed35ec01bdc50b76c9969b6be4402c79c2108",
+    "tests/test_tokenizer_profiles.py": "52895d6e9d374a92f0a0d396ce882829c88bdcf5ae8835fe0247e76017f3c21e",
+    "tests/test_tokenizer_copy.py": "7ebf6908377d471314f2942278d464fb8d7309df3c7ded0f5cc8b10ed383bda3",
+    "tests/test_registry_migration.py": "52c2e88cc4494bd4f6935f8659293fadde80a6a385ff3ad39f31ecc1be7b72b1",
+    "tests/test_generation_baseline.py": "da61145bb635eb7ccf17675f0514046f3c94c7cdc3b3dea65e693af809cd3b70",
+    "tests/test_recovery.py": "52e12a66929c85d0969e84d574835bfdd806b3ef3d27a53fda6b7f4bc3719fc2",
+    "tests/test_compiler.py": "7c031a584b2e1187b3269885500913bf0e217b29330c3461f7788d665e2ee8b6",
+    "tests/test_sdk.py": "c5d6446e3dfeed100df69f19bb2a52373b80692db069c1704ecd46ef67ef1d02",
+    "tests/test_admission.py": "3bd8b1ed7b707af28122616cc51e1ebf03c1091a67560f686b9d56ac934ff05c",
+    "tests/test_scoring.py": "415500054c22e86e0e8e957a5c542e5a82d64f0d510fa7b806b79e490787319d",
+    "tests/test_readiness.py": "0efa0851889118198a698570281fe46330fb1354296d8756e95581001acde037",
+    "tests/test_serialized_tokenizer.py": "3acad972282246f723f287a291589bdb9b85e21c0c956490d6ec8c90faf289c3",
+    "tests/test_rollout.py": "c4e8eac8a3266620b426390e8a8168a86c57c25873b8b438e13545e0739193ed",
+    "tests/test_shared_admission.py": "8e49ea576bb9251a1216358d45361d4f239d56018895af91d78d06f0d1944853",
+    "tests/test_execution_mode.py": "80ba1f43a392ce00b1f623247967b7564f467a9b9fcad772fa65d11846fa00ab",
+    "tests/test_branch_identity.py": "661046d923df4a1008c122038be2d8f04c20d2d7f423f74201d94fa08f0f3455",
+    "tests/test_backend_extensions.py": "ac36664be409a348402fdf0e42991eb56ba5c3d62892d097b5452efa84bd81d4",
+    "tests/test_rollout_progress.py": "8c12458ed9e8cb1859a0fedf85d4d1d4b943a142ae1a2ef9108743e641348c3a",
+    "tests/test_evaluation.py": "d7f3d292e20eac8cd712f031718de54742b2301d10becf4bf1ef2550c718d6bb",
+    "tests/test_performance.py": "f7ebc1e17bb36ff863d12b6ee3219e540e8dcddb79cefa46540fa3601e58d9af",
+    "tests/test_adapter_lifecycle.py": "b19838df9cbaead694aef2f1ed5b7ded29d633c1f8d79a8e10a6cfc67893fab5",
+    "tests/test_calibration.py": "9c1d6cdd71492c2ebfde61872fb246ad78ee37da897113fe0eaab28408c04582",
+    "tests/test_backends.py": "28b55b9460a0149c421fb7fb020363f9b4a6d2055e41d6bcfe85530911fc2eb9",
+    "tests/test_health.py": "9a04509c10dad6eb7e1d8414c65525fabefa1097120438f08a61261958b5605e",
+    "tests/test_combined_reservation.py": "7d14d0bc2c8f020b036ec99a5c22676dd347da9d100c3a7f4aad67310193cea3",
+    "tests/test_adapter_artifacts.py": "c2ee0097fcb1a18f46f22b69cec461505d9b7a9cee803733cf64774049528d45",
+    "tests/test_api.py": "5da870eb87c88745d2887a108ed755f99569e3612c39482841c5d60c8ff7f7cd",
+    "tests/test_sglang_text_dependencies.py": "ecb0094d3c1f99a194dbee331df73c1b1f556f0a445279afc5170336d929b4ec",
+    "tests/test_template_override.py": "68fa997dddf8e61cf090c664d27f2f0092b730a41cb58563baa60941c057015d",
+    "tests/test_native_validation_runner.py": "cbeb33698ebc90619e3387d0f7b982da41f968278ee7d3a22a916e98595d55cb",
+    "tests/test_sglang_logprob_rows.py": "32f6086648d710c3f632a26fb8d5b84ecc7a2ce58f975f0e653366a82707b34f",
+    "tests/test_telemetry.py": "bf1ef83bf1103e03efafa984722ea7e11d940507e853079a1c933f7706db4e7e",
+    "tests/test_remote_cancel.py": "7a31a71510b9d03a30287996ef9f32b1c54ce5c096427a17b7bfdaf4f14d31f9",
+    "tests/test_calibration_cli.py": "0449fc8d0c3a2049037cb32814c62fa1dbcbd902d3b07a8fc66668aaa486e0fb",
+    "tests/test_quiescent_stop.py": "d76784ce36c634bb9f4e9ef3a68a0b126fabb753a1628f24e0ab6f4e9a3fcffc",
+    "tests/test_tokenspeed_support.py": "3c914e52477ff25f1258a9bfea9ad4f4f2257be5137cd1f570b01977e58762e2",
+    "tests/test_registry_connections.py": "a9e8180fa8ccd820045da31bbeb81c5a4f40af35a3bfe96dee5eb4b87735a94a",
+    "tests/integration/reference_logits.py": "2ac83b811f24e39b06211b0c186bc1d28da37d2fdabdd9c41c40ab9b04e7a83c",
+    "tests/integration/live_shared_admission.py": "385a679e04bda4ff6f8be800bfe1be89ef8a6fd7c7c76283b1da95eea6a6842f",
+    "tests/integration/check_reference_offload.py": "0f26279b49c7137c54e0ac8b6b69d6d14ecc9eadf70680eea107d72b0b5ea0be",
+    "tests/integration/live_remote_cancel.py": "2c28bd1d007919a565c4969dfcc328d6f9b526973816aa331ff549319eb487d5",
+    "tests/integration/live_multiworker.py": "d4f0adee6fa1eaee87a27b2098ae763179c0277709675fccc06ad7aa6c9dc92a",
+    "tests/integration/live_sglang_mixed.py": "51ef921209f6829c845432aece42b5b993f4fd2e48a363f313a47ee0e77b8302",
+    "tests/integration/live_gateway.py": "ee5db23d982b46551394959c254ab19b010db3f97f80ca002fb02e70703402b8",
+    "tests/integration/live_crash_recovery.py": "807cac1f8d0fdbc87f1bf00e028640f2b9dfe6c20879a5ee344b0d70295f0f55",
+    "tests/integration/live_lora.py": "cdc5dbd4c7773561d9dca502ebb57b2c3a530859a2d3eb374fe71b917550e6f3",
+    "tests/integration/live_health.py": "2e55cf7f8e2db53881e9bca440533ba8a03a1822050cdfb324669d7a61c08444",
+    "tests/integration/lora_fixture.py": "ea18f68ae5118eec1c6e5600273032763f72845aeb05986a43d58e67b8044f04",
+    "tests/integration/live_quiescence.py": "0f2177179a91a61b9fe27f3c8af9a72c311741d6ea5b81bafe039a647d90a537",
+    "tests/integration/rollout_fixture.py": "79c62a4e16ad9adaae1538ae67234416ed99be7fe5374df45351d6b49ae5de32",
+    "tests/integration/live_precision_binding.py": "8d9c8213ec7f76c6aed1a610489cbc7cfc0aeadb0304ee2e63c48f6ab1a30e6c",
+    "tests/integration/live_abort_prefix.py": "b1efe89617b23bd038b26c5e502a7892570b927b293929dd275fc958706ba366",
+    "tests/integration/sglang_logprob_rows.py": "3db861e42b4b47c17dd7d72f13528f87e2a4d9bc4d787e6de33c7252e3687a54",
+    "tests/integration/numerical_suite.py": "3f0383760670289ee4bf85543ea5c2513862208424ae4fe7d52a647ab8e48e8e",
+    "tests/integration/live_contract.py": "8f1e31ca625d14e09996d3a8ee745a62d32ba8f69081b2c2177e8bad25ffea72",
+    "tests/integration/replay_saved_responses.py": "c8be50e67a1c5977ff76967e83ecadc29fd6a4f7d12526b20f84aa9ac26d9dd0",
+    "tests/integration/tokenizer_contract.py": "2a88d8428fb80dd9d8ff2771b730361773df9dacb3f6185128b0171b8050d860",
+    "tests/integration/verify_traffic_evidence.py": "ea1d79fb99b25f6a6cfd2eee156d54633b1cd86fe462306a39ab6c581e76520f",
+    "tests/integration/live_lora_crash.py": "0767669c28b5e388b4c45322786d15787c911bb286ef709560db9c2626d4bcaa",
+    "tests/integration/hot_switch_traffic.py": "9b572a6bee30bfea4f6f3b7b06ce4965a0fcb2fe46a28b971a199cb31d94eaec",
+    "tests/integration/verify_tokenspeed_readout.py": "0234a84c35b2c6a7a1f46e6dd714daab57bfa7c6f8572dd2d522536bca0b0089",
+    "tests/integration/live_rollout.py": "04da65ce7f46d3e1aa0626cb5be73e367a04d90970db3311a99bbc1c3a1dc8ab",
+    "tests/integration/rollout_native_cancel.py": "536d53ae4a99aaf518f20e6defd1debbe4d66f1e5e0ddfde4f8a624f8f8380e5",
+    "tests/integration/reference_device.py": "432c57f0ed78bf4cbeb5058109218fc3767f363db5521a732f126bfb1b43cfbb",
+    "tests/integration/run_native_validation.py": "e2af712ac9e4b6d4036bc5f8aeb48df5bd0a89a4ee861602c866624735743e31",
+    "tests/integration/live_execution_mode.py": "ee78b7cfd9ddcdfc717276d46fe76a7c8f4e6b9134e6997ae6c8fd513b10ef1c",
+    "tests/fixtures/decision-responses.json": "da37aae3565b09f08b498f80acd945e7fda62c07b8158978f7257b8edffc3d09",
+    "examples/prepare_tokenspeed.py": "74c39a822a6791c04464df18e724dbb556eea8b520ca390ab756a7fccba16d33"
+  }
+}

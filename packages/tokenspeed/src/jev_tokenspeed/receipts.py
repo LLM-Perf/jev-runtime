@@ -1,125 +1,75 @@
-"""Bounded terminal-completion receipts for the pinned TokenSpeed readout.
-
-A receipt only asserts one thing: a verified terminal engine output for this
-exact request ID was observed, so no in-flight work remains. Receipts never
-prove that an unknown ID completed, and a missing receipt never confirms an
-abort. The durable variant survives a plugin restart, which lets explicit
-administrative recovery confirm pre-crash completions instead of retaining
-every orphan journal forever.
-"""
+"""Durable native completion evidence; pending rows never imply cancellation."""
 
 from __future__ import annotations
 
-import asyncio
-import os
 import sqlite3
-import threading
-import time
-from collections import OrderedDict
+from contextlib import closing
 from pathlib import Path
 
 from jev_runtime.errors import JevError
 
-BOUND = 4096
 
-
-class MemoryReceipts:
-    """In-process receipts for embedded hosts without a durability requirement."""
-
-    def __init__(self, bound: int = BOUND):
-        self._bound = bound
-        self._completed: OrderedDict[str, None] = OrderedDict()
-
-    async def record(self, request_id: str) -> None:
-        self._completed[request_id] = None
-        while len(self._completed) > self._bound:
-            self._completed.popitem(last=False)
-
-    async def contains(self, request_id: str) -> bool:
-        return request_id in self._completed
-
-    def close(self) -> None:
-        pass
-
-
-class DurableReceipts:
-    """SQLite-backed receipts; one short FULL-synchronous commit per completion."""
-
-    def __init__(self, path: str | Path, bound: int = BOUND):
-        if bound < 1:
-            raise ValueError("Receipt bound must be positive")
-        self.path, self._bound = Path(path), bound
-        self._pid = os.getpid()
-        self._lock = threading.RLock()
-        self._closed = False
+class CompletionReceipts:
+    def __init__(self, path: Path, namespace: str):
+        self.path = path.resolve()
+        self.namespace = namespace
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._db = sqlite3.connect(
-            self.path, timeout=5, isolation_level=None, check_same_thread=False
-        )
+        with closing(self.connect()) as db, db:
+            version = db.execute("PRAGMA user_version").fetchone()[0]
+            if version not in {0, 1}:
+                raise ValueError("Unsupported TokenSpeed receipt schema")
+            if version == 0:
+                tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+                if tables:
+                    raise ValueError("Receipt path must be a new database or a receipt store")
+            else:
+                columns = db.execute("PRAGMA table_info(receipts)").fetchall()
+                if [(row[1], row[2], row[3], row[5]) for row in columns] != [
+                    ("namespace", "TEXT", 1, 1),
+                    ("request_id", "TEXT", 1, 2),
+                    ("state", "TEXT", 1, 0),
+                ]:
+                    raise ValueError("Receipt path is not a compatible receipt store")
+            db.execute("PRAGMA journal_mode=WAL")
+            db.execute("BEGIN IMMEDIATE")
+            db.execute(
+                "CREATE TABLE IF NOT EXISTS receipts ("
+                "namespace TEXT NOT NULL, request_id TEXT NOT NULL, "
+                "state TEXT NOT NULL CHECK(state IN ('pending','completed')), "
+                "PRIMARY KEY(namespace, request_id))"
+            )
+            db.execute("PRAGMA user_version=1")
+
+    def connect(self):
+        db = sqlite3.connect(self.path, timeout=10)
+        db.execute("PRAGMA synchronous=FULL")
+        return db
+
+    def reserve(self, request_id: str) -> None:
         try:
-            self._db.execute("PRAGMA synchronous=FULL")
-            self._db.execute(
-                "CREATE TABLE IF NOT EXISTS receipts("
-                "request_id TEXT PRIMARY KEY, created REAL NOT NULL)"
-            )
-        except BaseException:
-            self._db.close()
-            raise
-
-    def _record(self, request_id: str) -> None:
-        with self._lock:
-            self._require_open()
-            with self._db:
-                self._db.execute(
-                    "INSERT OR IGNORE INTO receipts VALUES(?,?)", (request_id, time.time())
+            with closing(self.connect()) as db, db:
+                db.execute(
+                    "INSERT INTO receipts VALUES (?, ?, 'pending')",
+                    (self.namespace, request_id),
                 )
-                # Deterministic FIFO bound, identical to the in-memory store.
-                self._db.execute(
-                    "DELETE FROM receipts WHERE request_id NOT IN "
-                    "(SELECT request_id FROM receipts ORDER BY created DESC, rowid DESC LIMIT ?)",
-                    (self._bound,),
-                )
-
-    def _contains(self, request_id: str) -> bool:
-        with self._lock:
-            self._require_open()
-            return (
-                self._db.execute(
-                    "SELECT 1 FROM receipts WHERE request_id=?", (request_id,)
-                ).fetchone()
-                is not None
-            )
-
-    def _require_open(self) -> None:
-        if os.getpid() != self._pid:
-            raise RuntimeError("Create new DurableReceipts in each process; never reuse after fork")
-        if self._closed:
+        except sqlite3.IntegrityError as exc:
             raise JevError(
-                "receipt_store_unavailable", "The completion receipt store is closed", 503
-            )
-
-    async def record(self, request_id: str) -> None:
-        try:
-            await asyncio.to_thread(self._record, request_id)
-        except JevError:
-            raise
-        except Exception as exc:
-            raise JevError(
-                "receipt_store_unavailable", "Could not persist the completion receipt", 503
+                "duplicate_request", "Native scoring ID was already dispatched", 409
             ) from exc
 
-    async def contains(self, request_id: str) -> bool:
-        try:
-            return await asyncio.to_thread(self._contains, request_id)
-        except JevError:
-            raise
-        except Exception as exc:
-            raise JevError(
-                "receipt_store_unavailable", "Could not read the completion receipts", 503
-            ) from exc
+    def complete(self, request_id: str) -> None:
+        with closing(self.connect()) as db, db:
+            count = db.execute(
+                "UPDATE receipts SET state='completed' WHERE namespace=? AND request_id=?",
+                (self.namespace, request_id),
+            ).rowcount
+            if count != 1:
+                raise ValueError("Cannot confirm an unreserved TokenSpeed request")
 
-    def close(self) -> None:
-        with self._lock:
-            if not self._closed:
-                self._closed = True
-                self._db.close()
+    def completed(self, request_id: str) -> bool:
+        with closing(self.connect()) as db:
+            row = db.execute(
+                "SELECT state FROM receipts WHERE namespace=? AND request_id=?",
+                (self.namespace, request_id),
+            ).fetchone()
+            return row == ("completed",)

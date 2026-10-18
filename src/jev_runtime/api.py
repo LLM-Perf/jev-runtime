@@ -443,6 +443,7 @@ def create_app(
             await current.start()
             if settings:
                 await bootstrap(current, settings)
+            current.start_health_monitor()
             yield
         finally:
             await current.close()

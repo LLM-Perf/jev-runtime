@@ -1,0 +1,27 @@
+{
+  "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+  "generation": 1,
+  "state": "QUIESCING",
+  "scope": "single_host_registry_backend_jev_work",
+  "drained": true,
+  "outstanding": {
+    "leases": 0,
+    "raw_work": 0,
+    "adapter_operations": 0,
+    "recovery_operations": 0
+  },
+  "waiting_workers": [],
+  "workers": [
+    {
+      "worker_id": "c5d5af7c21d347779cd0f55886f33397",
+      "backend": "vllm:http://127.0.0.1:18795:HuggingFaceTB/SmolLM2-1.7B-Instruct:31b70e2e869a7173562077fd711b654946d38674",
+      "state": "QUIESCED",
+      "owner_status": "alive",
+      "prepared": [
+        "cert-290615e58520@1",
+        "cert-290615e58520@2",
+        "default@1"
+      ]
+    }
+  ]
+}

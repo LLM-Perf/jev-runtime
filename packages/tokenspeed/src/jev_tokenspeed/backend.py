@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import asyncio
 import math
+from collections import OrderedDict
 from dataclasses import dataclass
 
 from jev_runtime.backends.base import Capabilities, ScoreInput, ScoreResult, reported_dtype
 from jev_runtime.backends.remote import ScoringHTTP
 from jev_runtime.errors import JevError
-from jev_tokenspeed.receipts import MemoryReceipts
+from jev_tokenspeed.receipts import CompletionReceipts
 
 
 def create_backend(*, settings, api_key):
@@ -94,12 +95,15 @@ def validate_profile(args) -> None:
         and args.mapping.world_size == 1
         and args.rl_control_port is None
         and args.numerics == "auto"
+        # The legacy pinned profile predates the explicit selector.
+        and getattr(args, "logprob_order", "torch") == "torch"
         and args.skip_tokenizer_init is False
     )
     if not valid:
         raise JevError(
             "tokenspeed_profile",
-            "TokenSpeed requires triton_full, output logprobs, eager, TP/DP/PP=1; "
+            "TokenSpeed requires triton_full, torch logprob order, output logprobs, "
+            "eager, TP/DP/PP=1; "
             "no quantization, speculation, disaggregation or weight-update control",
             409,
         )
@@ -109,15 +113,16 @@ def validate_profile(args) -> None:
 class Attempt:
     task: asyncio.Task | None = None
     terminal: bool = False
+    dispatched: bool = False
+    recorded: bool = False
 
 
 class TokenSpeedNative:
-    def __init__(self, manager, version, submit, receipts=None):
-        # receipts defaults to in-process storage; the launcher passes a
-        # DurableReceipts so completion proof survives a plugin restart.
+    def __init__(self, manager, version, submit, *, receipts: CompletionReceipts | None = None):
         self.manager, self.version, self.submit = manager, version, submit
-        self._receipts = receipts or MemoryReceipts()
+        self.receipts = receipts
         self._attempts: dict[str, Attempt] = {}
+        self._completed: OrderedDict[str, None] = OrderedDict()
 
     async def probe(self) -> Capabilities:
         args, model = self.manager.server_args, self.manager.model_config
@@ -145,9 +150,7 @@ class TokenSpeedNative:
         from tokenspeed.runtime.engine.io_struct import GenerateReqInput
 
         payload = generate_payload(request)
-        if request.request_id in self._attempts or await self._receipts.contains(
-            request.request_id
-        ):
+        if request.request_id in self._attempts or request.request_id in self._completed:
             raise JevError("duplicate_request", "Native scoring ID is already active", 409)
         attempt = Attempt()
         self._attempts[request.request_id] = attempt
@@ -167,28 +170,42 @@ class TokenSpeedNative:
             # Engine.llm owns AsyncLLM's loop. submit runs receive there; no ZMQ
             # objects or asyncio locks move onto the HTTP server's event loop.
             try:
+                if self.receipts is not None:
+                    await asyncio.to_thread(self.receipts.reserve, request.request_id)
+                attempt.dispatched = True
                 return await self.submit(receive())
             finally:
                 if attempt.terminal:
+                    if self.receipts is not None:
+                        await asyncio.to_thread(self.receipts.complete, request.request_id)
                     # Keep a bounded terminal receipt for a bridge whose HTTP
                     # response was lost after native completion. Never accept
                     # reuse while the old receipt could acknowledge a new ID.
-                    await self._receipts.record(request.request_id)
+                    self._completed[request.request_id] = None
+                    if len(self._completed) > 4096:
+                        self._completed.popitem(last=False)
+                    attempt.recorded = True
 
         attempt.task = asyncio.create_task(dispatch())
         attempt.task.add_done_callback(lambda task: None if task.cancelled() else task.exception())
-        result = await asyncio.shield(attempt.task)
-        self._attempts.pop(request.request_id, None)
-        return result
+        try:
+            return await asyncio.shield(attempt.task)
+        finally:
+            if attempt.task.done() and (attempt.recorded or not attempt.dispatched):
+                self._attempts.pop(request.request_id, None)
 
     async def cancel(self, request_id: str) -> None:
         attempt = self._attempts.get(request_id)
         if attempt is None:
-            if await self._receipts.contains(request_id):
+            if request_id in self._completed:
+                return
+            if self.receipts is not None and await asyncio.to_thread(
+                self.receipts.completed, request_id
+            ):
                 return
             # Native abort removes frontend state without a scheduler ack.
-            # An unknown ID without a durable receipt is not drain proof.
-            raise JevError("cancellation_unconfirmed", "No local terminal receipt for request", 503)
+            # An unknown ID after a gateway/plugin restart is not drain proof.
+            raise JevError("cancellation_unconfirmed", "No terminal receipt for request", 503)
         async with asyncio.timeout(4.5):
             try:
                 await asyncio.shield(attempt.task)
@@ -198,20 +215,17 @@ class TokenSpeedNative:
             raise JevError(
                 "cancellation_unconfirmed", "TokenSpeed completion was not observed", 503
             )
+        if self.receipts is not None and not attempt.recorded:
+            await asyncio.to_thread(self.receipts.complete, request_id)
+            attempt.recorded = True
         self._attempts.pop(request_id, None)
 
     async def close(self) -> None:
-        # Every in-flight request gets its bounded drain wait, even when an
-        # earlier one cannot be confirmed; the first failure is re-raised so a
-        # failed drain is never advertised as a successful unload.
-        error = None
+        failure: BaseException | None = None
         for request_id in tuple(self._attempts):
             try:
                 await self.cancel(request_id)
-            except JevError as exc:
-                error = error or exc
-        try:
-            self._receipts.close()
-        finally:
-            if error is not None:
-                raise error
+            except Exception as exc:
+                failure = failure or exc
+        if failure is not None:
+            raise failure

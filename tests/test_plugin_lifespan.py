@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from types import ModuleType, SimpleNamespace
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock
 
 from fastapi import FastAPI
 from jev_sglang.plugin import _configure_uvicorn_workers
@@ -59,7 +59,10 @@ async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp
 
     from jev_vllm import endpoint
 
+    events = []
     runtime = AsyncMock()
+    runtime.start.side_effect = lambda: events.append("runtime-start")
+    runtime.start_health_monitor = Mock(side_effect=lambda: events.append("health-start"))
 
     async def build(settings, native_backend, compiler):
         assert compiler.tokenizer is engine.renderer.tokenizer
@@ -79,7 +82,9 @@ async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp
     monkeypatch.setenv("JEV_CONFIG", str(config))
     monkeypatch.setattr(endpoint, "version", lambda name: "fixture")
     monkeypatch.setattr(endpoint, "build_runtime", build)
-    monkeypatch.setattr(endpoint, "bootstrap", AsyncMock())
+    monkeypatch.setattr(
+        endpoint, "bootstrap", AsyncMock(side_effect=lambda *args: events.append("bootstrap"))
+    )
     host = ModuleType("vllm")
     host.envs = SimpleNamespace(VLLM_BATCH_INVARIANT=True)
     monkeypatch.setitem(sys.modules, "vllm", host)
@@ -88,6 +93,8 @@ async def test_vllm_plugin_uses_actual_host_tokenizer(monkeypatch, compiler, tmp
     assert state.jev_runtime is runtime
     assert state.jev_backend.batch_invariant is True
     runtime.start.assert_awaited_once()
+    runtime.start_health_monitor.assert_called_once_with()
+    assert events == ["runtime-start", "bootstrap", "health-start"]
 
 
 def test_sglang_spawn_target_preserves_other_uvicorn_apps():
@@ -125,6 +132,7 @@ async def test_sglang_worker_wraps_lifespan_before_manager_exists(monkeypatch, c
         monkeypatch.setitem(sys.modules, name, ModuleType(name))
     sys.modules["sglang.srt.entrypoints"].http_server = host
     runtime = AsyncMock()
+    runtime.start_health_monitor = Mock()
     runtime.start.side_effect = lambda: events.append("runtime-start")
     runtime.close.side_effect = lambda: events.append("runtime-close")
 
@@ -135,6 +143,8 @@ async def test_sglang_worker_wraps_lifespan_before_manager_exists(monkeypatch, c
 
     async def bootstrap(*args):
         events.append("bootstrap")
+
+    runtime.start_health_monitor.side_effect = lambda: events.append("health-start")
 
     monkeypatch.setattr(plugin, "build_runtime", build)
     monkeypatch.setattr(plugin, "bootstrap", bootstrap)
@@ -152,5 +162,12 @@ async def test_sglang_worker_wraps_lifespan_before_manager_exists(monkeypatch, c
     assert global_state is None
     async with wrapper(host.app):
         assert host.app.state.jev_runtime is runtime
-        assert events == ["host-start", "runtime-start", "bootstrap"]
-    assert events == ["host-start", "runtime-start", "bootstrap", "runtime-close", "host-stop"]
+        assert events == ["host-start", "runtime-start", "bootstrap", "health-start"]
+    assert events == [
+        "host-start",
+        "runtime-start",
+        "bootstrap",
+        "health-start",
+        "runtime-close",
+        "host-stop",
+    ]

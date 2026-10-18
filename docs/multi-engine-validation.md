@@ -1,6 +1,11 @@
 # 多框架接入验证与剩余门槛
 
-本轮实现可扩展 backend provider、显式 raw-score HTTP bridge 和实验性 TokenSpeed
+> 本页保留 `62340fe` / `55674ec` 阶段的历史验证结果。TokenSpeed 已在
+> `2d3ee4e` 增加新版源码 profile、启动预检、异步提交与持久化完成凭据；
+> 当前实现与 618 项 CPU 测试见 [2026-10-09 验证记录](tokenspeed-validation.md)。
+> 下文“仅本进程凭据”等限制描述的是当时版本；真实 TokenSpeed GPU 验证仍未完成。
+
+本轮实现可扩展 backend provider、显式 raw-score HTTP bridge 和 TokenSpeed
 原生 Engine 插件。vLLM、SGLang 的真实 GPU 回归通过；TokenSpeed 仅完成源码合同
 检查和 CPU 测试，尚未执行真实模型 GPU 服务。原计划及其验收阈值保持不变。
 
@@ -62,7 +67,7 @@ GPU #6/#7 的可用显存分别回到本轮启动前的 10,544 / 11,744 MiB。
 ## TokenSpeed 验证到了哪一层
 
 绑定 upstream `7fa8acb1e885389825c077a6aec0326fbbbd7116` 的 13 个关键 Python
-文件。原生 selected-ID logprob 接口在该版本被拒绝；实验性实现使用
+文件。原生 selected-ID logprob 接口在该版本被拒绝；逐标签实现使用
 `triton_full` 保留的 bias 前 logits，每个标签提交一个生成 token 的请求。
 实际请求数量、重复 prompt、completion tokens 均计入配额、持久日志及 usage。
 
@@ -79,7 +84,7 @@ TokenSpeed 崩溃恢复**。最新 [DSW CPU 记录](../evidence/dsw/multi-engine
 在 vLLM 与 SGLang 环境分别通过 151 项；它们不是 TokenSpeed 原生环境。
 
 上游默认容器使用 CUDA 13/Torch 2.14，也提供针对 H100/H200、Python 3.11、
-sm90a 的实验性 CUDA 12.9 路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没有
+sm90a 的 CUDA 12.9 源码安装路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没有
 匹配的 TokenSpeed 安装，未修改现有服务依赖或驱动。具体限制和启动示例见
 [多框架操作说明](multi-engine.md)。
 
@@ -89,7 +94,7 @@ sm90a 的实验性 CUDA 12.9 路径。当前 DSW L20Z/Python 3.12/CUDA 12.9 没�
 |---|---|---|
 | P0 | TokenSpeed 原生模型 GPU 验证 | 尚未运行；先建立匹配的隔离环境，再执行 typed/raw parity、1,000 次切换、独立数值检查、drain/重启及资源清理 |
 | P0 | TokenSpeed 高效取分 | 当前 K 个标签需要 K 条原生请求；需实现单次 prefill selected-ID gather，跨 sampler/scheduler/output 传递，并做性能与原始分数对照 |
-| P0 | TokenSpeed 请求恢复 | 完成凭据已持久化（registry 旁 SQLite，FULL 同步，4,096 条上限，CPU 合同覆盖跨重启确认与淘汰）；还缺 native abort 完成确认（上游 scheduler 不支持），孤儿 journal 仍须显式恢复，且一切尚未经真实 GPU 服务验证 |
+| P0 | TokenSpeed 请求恢复 | 仅本进程有界完成凭据；还缺 native abort 完成确认、进程故障后的可验证完成状态及孤儿日志安全回收 |
 | P0 | 广泛模型覆盖 | 原 vLLM/SGLang 各 12/20，目标各至少 18/20；TokenSpeed 新增 20 个组合全部未做 GPU 验证 |
 | P0 | 数值与业务质量 | 历史较宽 BF16/量化/并行配置仍有失败；两个已批准业务数据集及错误准则尚未齐备 |
 | P0 | 高性能验收 | 144 个受控性能用例未运行；历史短程 matched plugin/native 约 81–86%，未达到 90% 目标；本轮功能回归没有新增性能达标证据 |

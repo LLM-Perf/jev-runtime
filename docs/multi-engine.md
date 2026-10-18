@@ -11,7 +11,7 @@ base URL 访问。不是在一个 Python 环境里安装所有 CUDA 框架，也
 |---|---|---|
 | vLLM | 原生插件、完整标签取分、四种类型、bundle 切换/回退、取消、同机多 worker、受限 LoRA | 模型功能覆盖 12/20，目标至少 18/20；独立数值与性能认证、完整稳定性/故障矩阵 |
 | SGLang | 原生插件和 HTTP 接入、同样的类型与生命周期能力 | 模型功能覆盖 12/20，目标至少 18/20；部分数值检查失败；原生退出仍有警告；完整性能和稳定性验收 |
-| TokenSpeed | 新增独立插件包、原生 Engine 启动器、HTTP bridge、逐标签 raw readout、完整计费/配额/日志、完成响应驱动的 drain、跨重启的持久化完成凭据 | **实验性，尚无真实 TokenSpeed 模型 GPU 服务验证**；单次 prefill 批量取分优化、广泛模型/并行配置、原生 abort 完成确认、LoRA |
+| TokenSpeed | 独立插件包、原生 Engine 启动器、HTTP bridge、逐标签 raw readout、启动预检、异步事件循环调度、持久化完成凭据、完整计费/配额/日志 | 真实 TokenSpeed 模型 GPU 服务验证；单次 prefill 批量取分优化、广泛模型/并行配置、原生取消确认/崩溃恢复、LoRA |
 | 其他框架 | 新增已安装包 entry point 接入，无需修改核心 backend 枚举 | 每个框架仍需实现真实的分数/取消合同；仅兼容 OpenAI chat API 不够 |
 | 产品验收 | 版本化注册表、显式离线升级/回退、SDK、配额、校准、探活、证据工具 | 24 小时 soak、144 个受控性能用例、镜像实际构建/运行、两个业务数据验收、兼容副本故障转移、最终版本复验 |
 
@@ -47,9 +47,11 @@ raw 标志、有限非正 logprob、用量及显式取消确认。普通生成�
 
 ## TokenSpeed 为什么需要独立实现
 
-检查的上游提交为
-[`7fa8acb1e885389825c077a6aec0326fbbbd7116`](https://github.com/lightseekorg/tokenspeed/tree/7fa8acb1e885389825c077a6aec0326fbbbd7116)。
-其 InputProcessor 明确拒绝 `token_ids_logprob`、top-k 和 prompt logprob。
+当前源码 profile 更新到
+[`f4ac1affe11ad404720bcd150970487f75fbf59a`](https://github.com/lightseekorg/tokenspeed/tree/f4ac1affe11ad404720bcd150970487f75fbf59a)，
+同时保留旧版 `7fa8acb1e885389825c077a6aec0326fbbbd7116`。
+当前 InputProcessor 仍拒绝 `token_ids_logprob` 和 top-k；新增的 prompt logprob
+不能替代指定标签集合在答案位置的取分。
 控制 HTTP 层在缺少实际 logprob 时还可能补 0.0 占位值。因此本插件不用该 HTTP
 兼容层取分，也不把 TokenSpeed 当成 SGLang 别名。
 
@@ -64,25 +66,24 @@ raw 标志、有限非正 logprob、用量及显式取消确认。普通生成�
 selected-ID gather，再保持同一合同进行对照验证。
 
 本版本仅允许 `triton_full + enable_output_logprobs + eager + TP/DP/PP=1`，不支持
-量化、speculation、PD、在线权重更新或 managed LoRA。启动前核对 13 个上游
+量化、speculation、PD、在线权重更新或 managed LoRA。启动前核对当前 profile 的 24 个（旧版 13 个）上游
 关键 Python 文件的 SHA256；这只绑定检查过的代码合同，不是整个运行环境/权重
 的完整证明。CUDA kernel、依赖版本和模型 GPU 验证仍是独立门槛。
 
-## TokenSpeed 使用方法（实验性）
+## TokenSpeed 使用方法
 
-先在**单独环境**安装上述提交及其匹配依赖，遵循上游安装方式。当前上游 NVIDIA
-Dockerfile 使用 CUDA 13.0 / Torch 2.14.0；上游也提供
-[实验性 CUDA 12.9 源码安装路径](https://github.com/lightseekorg/tokenspeed/blob/7fa8acb1e885389825c077a6aec0326fbbbd7116/docs/guides/hopper-cu129.md)，
-但明确针对 H100/H200、Python 3.11，构建 sm90a kernel。本项目现有 DSW 是
-L20Z、Python 3.12、CUDA 12.9，尚无匹配的 TokenSpeed 安装。适配其他环境需要
-单独的依赖/编译/内核验证，不能直接复用历史 SGLang/vLLM 测试结论。
+完整安装、配置生成、预检、调用与严格流量验证命令见
+[TokenSpeed quick start](quickstart-tokenspeed.md)。新增 helper 为固定 Qwen3-0.6B
+生成相互匹配的模型/独立 tokenizer 路径、engine 配置及独立凭证。
+当前 profile 限定 NVIDIA sm90/sm100/sm103/sm107；现有 L20Z DSW 不在范围内。
+本次仍未启动真实 TokenSpeed GPU 服务，不能复用 SGLang/vLLM 的 GPU 结论。
 
 ```sh
 pip install -e '.[tokenizers]' -e packages/tokenspeed
-jevctl backend list
-# 通过环境/secret manager 设置 JEV_API_KEY 和 JEV_ADMIN_KEY。
-jev-tokenspeed --config examples/tokenspeed.yaml \
-  --engine-config examples/tokenspeed-engine.json
+python examples/prepare_tokenspeed.py
+source .jev/quickstart-tokenspeed/env.sh
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG" --check
+jev-tokenspeed --config "$JEV_CONFIG" --engine-config "$JEV_ENGINE_CONFIG"
 ```
 
 示例中的路径、revision、显存预算必须对应实际部署。只启动一个 HTTP worker；
@@ -100,15 +101,17 @@ jev-tokenspeed --config examples/tokenspeed.yaml \
 
 取消采用“停止等待结果，等待正在执行的一个 token 自然完成”的受限策略。
 上游按 ID abort 只移除 frontend 状态，没有 scheduler 完成确认，故这里不把
-abort 返回成功视为 drain。完成凭据最多保留 4,096 条：默认写入 registry 旁的
-`<registry 主名>.receipts.sqlite3`（可用 engine 配置的 `receipts_path` 覆盖），
-FULL 同步落盘，插件进程重启后仍能确认重启前已完成的请求；凭据保留期间拒绝
-复用该 ID。嵌入宿主可注入自己的 receipts 存储；未注入时退化为本进程内存凭据，
-重启即失效。4.5 秒内无完成响应会保留 journal/lease；未知 ID、已淘汰凭据的请求
-仍拒绝确认。原生 abort 缺少完成确认，凭据只证明“已观察到此 ID 的终态输出”，
-不能据此自动回收孤儿记录，恢复仍须走显式管理面操作。
-服务停止时每个在途请求都会获得有界 drain 等待；任一请求不确定 drain
-都会报错并保留证据。
+abort 返回成功视为 drain。启动器将原生请求 reservation/terminal receipt 持久化到
+独立 SQLite 文件，并保留最多 4,096 条内存缓存。相同模型和 engine 配置下，
+已落盘完成的请求可以在响应丢失、缓存淘汰或进程重启后确认 drain；已用 ID 拒绝复用。
+4.5 秒内无完成响应、未知 ID 和未完成的 pending 凭据仍保留 journal/lease，
+不能宣称完整崩溃恢复。凭据与 registry 必须共同保留，无自动过期机制；
+持久化开销尚未做性能测量。服务停止遇到不确定 drain 会报错、保留证据，
+并确保退出启动器自己拥有的 Engine。
+
+独立完成凭据文件不在 `jevctl registry snapshot` 的核心注册表备份范围内；
+部署变更需要保留两个数据库。进程管理和备份边界见
+[TokenSpeed 运维说明](operations.md#tokenspeed-operations)。
 
 ## 验证分层
 
@@ -118,5 +121,9 @@ CPU 合同覆盖插件发现/冲突、四种类型和两种 readout 的拆分一
 logits 的顺序；它不是完整 TokenSpeed GPU serving 验证。
 
 本轮实际结果见 [多框架验证与剩余门槛](multi-engine-validation.md)。
+后续 vLLM/SGLang 已完成 [每引擎超过一万次严格成功请求的 DSW 扩量验证](strict-traffic-validation.md)，
+并修复持续热切换下待切换版本 canary 过期的问题。
 所有引擎仍须按最终发布源码复验。插件源码、CPU 合同、已构建 wheel、真实 GPU
 运行、业务质量和受控性能分别报告，任何一项不能替代另一项。
+
+2026-10-09 的适配更新与 CPU 验证见 [TokenSpeed 验证记录](tokenspeed-validation.md)。

@@ -1,0 +1,245 @@
+{
+  "source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+  "source_archive_sha256": "fd9733d3050d8200db2d869f12dc46da4aa77ed3026e4c71e0310a450d507281",
+  "script_sha256": "62cf0552b9cc7122a7cd47c6b6a5f8086f1a152a0556b8056d301936c6a497ba",
+  "supervisor_identity": {
+    "pid": 2876693,
+    "start_ticks": "453070556",
+    "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+  },
+  "started_at": 1790775166.4268818,
+  "minimum_requests_per_engine": 10000,
+  "minimum_switches_per_engine": 1000,
+  "concurrency_per_engine": 4,
+  "contracts": {
+    "vllm": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_hot_switch_traffic.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_integration_contract.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_native_validation_runner.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_health.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_quiescence.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_plugin_lifespan.py"
+      ]
+    },
+    "sglang": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_hot_switch_traffic.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_integration_contract.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_native_validation_runner.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_health.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_quiescence.py",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/test_plugin_lifespan.py"
+      ]
+    }
+  },
+  "native": {
+    "vllm": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/vllm/bin/python",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/vllm-strict-traffic-9da1813",
+        "--engine",
+        "vllm",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "7",
+        "--port",
+        "18795",
+        "--memory-fraction",
+        "0.07",
+        "--minimum-requests",
+        "10000",
+        "--switches",
+        "1000",
+        "--traffic-concurrency",
+        "4",
+        "--traffic-timeout",
+        "1200",
+        "--check-timeout",
+        "1500",
+        "--source-commit",
+        "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "--runtime-source-commit",
+        "9da181342326793f6edddbd3f3ada4b0f7dbb320"
+      ],
+      "run_dir": "/root/jev-runtime/runs/vllm-strict-traffic-9da1813",
+      "validation": {
+        "harness_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "runtime_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "started_at": 1790775179.0862076,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 30.077184817753732
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 0,
+            "passed": true,
+            "max_absolute_error": 0.10743474960327148
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": true,
+        "cleanup_passed": true,
+        "passed": true,
+        "finished_at": 1790775361.268263
+      }
+    },
+    "sglang": {
+      "returncode": 0,
+      "command": [
+        "/root/jev-runtime/envs/sglang/bin/python",
+        "/root/jev-runtime/strict-traffic-9da1813/9da181342326793f6edddbd3f3ada4b0f7dbb320/tests/integration/run_native_validation.py",
+        "--run-dir",
+        "/root/jev-runtime/runs/sglang-strict-traffic-9da1813",
+        "--engine",
+        "sglang",
+        "--model-path",
+        "/root/jev-runtime/models/SmolLM2-1.7B-Instruct",
+        "--gpus",
+        "6",
+        "--port",
+        "18794",
+        "--memory-fraction",
+        "0.65",
+        "--minimum-requests",
+        "10000",
+        "--switches",
+        "1000",
+        "--traffic-concurrency",
+        "4",
+        "--traffic-timeout",
+        "1200",
+        "--check-timeout",
+        "1500",
+        "--source-commit",
+        "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "--runtime-source-commit",
+        "9da181342326793f6edddbd3f3ada4b0f7dbb320"
+      ],
+      "run_dir": "/root/jev-runtime/runs/sglang-strict-traffic-9da1813",
+      "validation": {
+        "harness_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "runtime_source_commit": "9da181342326793f6edddbd3f3ada4b0f7dbb320",
+        "started_at": 1790775179.08432,
+        "qualification": "colocated functional validation; single-position numerical development check",
+        "stages": {
+          "readiness": {
+            "ready": true,
+            "elapsed_seconds": 29.08708329126239
+          },
+          "topology": {
+            "passed": true
+          },
+          "contract": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision_binding": {
+            "returncode": 0,
+            "passed": true
+          },
+          "postcheck": {
+            "passed": true
+          },
+          "cpu_reference": {
+            "returncode": 0,
+            "passed": true,
+            "max_absolute_error": 0.00016123056411743164
+          }
+        },
+        "functional_passed": true,
+        "numerical_position_passed": true,
+        "cleanup_passed": true,
+        "passed": true,
+        "finished_at": 1790775372.7740667
+      }
+    }
+  },
+  "qualification": "simultaneous colocated native functional traffic; not performance or soak",
+  "prior_owned_groups_terminal": 182,
+  "protected_service_before": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "cmdline_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "gpus_before": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "gpus_after": [
+    {
+      "uuid": "GPU-b028ddfd-c58e-76d1-863b-21ec06f99dbe",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "10544",
+      "driver": "550.127.08",
+      "utilization": "0"
+    },
+    {
+      "uuid": "GPU-b57fb933-0e5a-dd28-7041-a177da03405e",
+      "name": "NVIDIA L20Z",
+      "total_mib": "81559",
+      "free_mib": "11744",
+      "driver": "550.127.08",
+      "utilization": "0"
+    }
+  ],
+  "protected_service_after": {
+    "identity": {
+      "pid": 2851725,
+      "start_ticks": "442475094",
+      "boot_id": "76d809ca-ebca-412d-9bf3-09ddd580b372"
+    },
+    "cmdline_sha256": "cc336da6ac256557c5de9dc50c24254ded118d39adcdfe33e9729c10035fefdf"
+  },
+  "protected_service_unchanged": true,
+  "finished_at": 1790775373.0405238,
+  "passed": true
+}

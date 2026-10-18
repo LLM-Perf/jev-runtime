@@ -69,7 +69,7 @@ async def test_stale_canary_rejects_traffic_and_publication(runtime, question, b
     assert not runtime.registry.list()["leases"]
 
 
-async def test_unconfirmed_probe_is_not_retried_until_explicit_recovery(runtime, question, bundle):
+async def test_unconfirmed_probe_is_not_retried_until_automatic_recovery(runtime, question, bundle):
     runtime.health.settings = HealthSettings(interval_seconds=1, timeout_seconds=0.1)
     runtime.backend.gate.clear()
     runtime.backend.fail_cancel = True
@@ -82,9 +82,9 @@ async def test_unconfirmed_probe_is_not_retried_until_explicit_recovery(runtime,
     assert len(runtime.backend.calls) == calls
     assert runtime.registry.list()["leases"] == first
     assert runtime.pending_cancellations()[0]["phase"] == "abort_pending"
+    assert runtime.health.status(bundle.reference)["error"] == "health_cleanup_pending"
     runtime.backend.fail_cancel = False
     runtime.backend.gate.set()
-    await runtime.recover_cancelled(first[0]["request_id"])
     await runtime.check_health()
     assert runtime.health.status(bundle.reference)["ready"]
     assert (await runtime.decide(body(question))).status == "completed"
@@ -148,7 +148,7 @@ async def test_minimal_monitor_preserves_full_initial_task_validation(runtime, b
     runtime.activate("model", second.reference, 1)
     runtime.backend.calls.clear()
     await runtime.check_health()
-    assert [call.question_id for call in runtime.backend.calls] == [question.id]
+    assert [call.question_id for call in runtime.backend.calls] == [question.id, "canary"]
 
 
 async def test_monitor_shutdown_waits_for_probe_abort(runtime, bundle):
@@ -212,3 +212,93 @@ async def test_invalid_engine_scores_trip_circuit(runtime, bundle, question):
 def test_health_interval_timeout_and_expiry_are_consistent():
     with pytest.raises(ValidationError, match="max age"):
         HealthSettings(interval_seconds=30, timeout_seconds=10, max_age_seconds=40)
+    with pytest.raises(ValidationError, match="max age"):
+        HealthSettings(startup_grace_seconds=60, timeout_seconds=10, max_age_seconds=70)
+
+
+async def test_monitor_starts_explicitly_and_honors_startup_grace(tmp_path, compiler, monkeypatch):
+    from conftest import ControlledEngine
+
+    from jev_runtime.registry import Registry
+    from jev_runtime.runtime import Runtime
+
+    instance = Runtime(
+        ControlledEngine(),
+        compiler,
+        Registry(tmp_path / "monitor.db"),
+        "fixture:monitor",
+        "fixture",
+        health_settings=HealthSettings(startup_grace_seconds=2),
+    )
+    await instance.start()
+    assert instance._health_task is None
+
+    delays = []
+
+    async def wait_for(awaitable, wait_seconds):
+        awaitable.close()
+        delays.append(wait_seconds)
+        instance._health_stop.set()
+
+    monkeypatch.setattr(asyncio, "wait_for", wait_for)
+    instance.start_health_monitor()
+    first = instance._health_task
+    instance.start_health_monitor()
+    assert instance._health_task is first
+    await first
+    assert delays == [2]
+    await instance.close()
+
+
+async def test_inactive_prepared_versions_stay_fresh_across_expiry(runtime, bundle, monkeypatch):
+    clock = [runtime.health.observations[bundle.reference].last_success]
+    monkeypatch.setattr("jev_runtime.health.monotonic", lambda: clock[0])
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    await runtime.prepare(second.reference)
+    # Polls always observe v1. v2 must still be probed despite never being active.
+    for _ in range(4):
+        clock[0] += 30
+        await runtime.check_health()
+        assert runtime.health.status(second.reference)["ready"]
+    assert runtime.activate("model", second.reference, 1)["generation"] == 2
+    assert bundle.reference in runtime.health_references()  # DRAINING is eligible for rollback.
+
+
+async def test_monitor_skips_unprepared_and_retired_versions(runtime, bundle):
+    second = bundle.model_copy(update={"version": 2})
+    third = bundle.model_copy(update={"version": 3})
+    runtime.registry.upload(second)
+    runtime.registry.upload(third)
+    await runtime.prepare(second.reference)
+    runtime.registry.retire(second.reference)
+    assert runtime.health_references() == [bundle.reference]
+    runtime.backend.calls.clear()
+    await runtime.check_health()
+    assert len(runtime.backend.calls) == 1
+    assert runtime.registry.inspect(second.reference)["state"] == "RETIRED"
+    assert runtime.registry.inspect(third.reference)["state"] == "VALIDATED"
+
+
+async def test_monitor_snapshot_cannot_resurrect_concurrently_retired_standby(runtime, bundle):
+    second = bundle.model_copy(update={"version": 2})
+    runtime.registry.upload(second)
+    await runtime.prepare(second.reference)
+    entered, release = asyncio.Event(), asyncio.Event()
+    original = runtime.backend.probe
+
+    async def blocked():
+        entered.set()
+        await release.wait()
+        return await original()
+
+    runtime.backend.probe = blocked
+    runtime.backend.calls.clear()
+    task = asyncio.create_task(runtime.check_health())
+    await asyncio.wait_for(entered.wait(), 1)
+    runtime.registry.retire(second.reference)
+    release.set()
+    await task
+    assert runtime.registry.inspect(second.reference)["state"] == "RETIRED"
+    assert len(runtime.backend.calls) == 1
+    assert not runtime.registry.list()["leases"]

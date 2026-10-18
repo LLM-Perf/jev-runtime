@@ -1,0 +1,33 @@
+{
+  "minimum_requests": 10000,
+  "minimum_switches": 1000,
+  "concurrency": 4,
+  "timeout_seconds": 1200.0,
+  "attempted_requests": 10004,
+  "response_validated_requests": 10004,
+  "strict_success_requests": 10004,
+  "failed_requests": 0,
+  "switches": 15276,
+  "mixed_bundle_responses": 0,
+  "retries": 0,
+  "passed": true,
+  "qualification": "four rotating question types; unique synthetic inputs; functional only",
+  "started_at": 1790775210.323967,
+  "versions_seen": [
+    "cert-2cddebdb0120@1",
+    "cert-2cddebdb0120@2"
+  ],
+  "requests_by_type": {
+    "choice": 2501,
+    "boolean": 2501,
+    "rank": 2501,
+    "score": 2501
+  },
+  "requests_by_bundle": {
+    "cert-2cddebdb0120@1": 4854,
+    "cert-2cddebdb0120@2": 5150
+  },
+  "unaccounted_requests": 0,
+  "elapsed_seconds": 132.52211707364768,
+  "finished_at": 1790775342.8459003
+}

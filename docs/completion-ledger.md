@@ -632,7 +632,11 @@ namespace remain available; lost-source/container recovery and all broader relea
 gates stay open. See [operations](registry-schema.md) and
 [failure-inclusive validation](registry-migration-validation.md).
 
-## Additional backend interface and experimental TokenSpeed integration
+## Additional backend interface and TokenSpeed integration
+
+This section retains the initial `62340fe` / `55674ec` implementation snapshot.
+For the current source profiles, persistent receipts and remaining GPU gates, see
+the [2026-10-09 TokenSpeed validation](tokenspeed-validation.md).
 
 Installed `jev_runtime.backends` entry points now extend backend configuration
 without modifying the core engine enumeration. Discovery is lazy and rejects
@@ -642,7 +646,7 @@ precision checks. `ScoringHTTP` validates the explicit raw-score bridge contract
 The optional `jev-tokenspeed` package provides a native Engine launcher and bridge,
 bound to 13 inspected source files at upstream `7fa8acb1e885389825c077a6aec0326fbbbd7116`.
 That upstream rejects selected-ID scoring; its triton_full sampler preserves
-pre-bias logits. The experimental adapter therefore requests one verified label
+pre-bias logits. The adapter therefore requests one verified label
 per native generation. Lowering exposes all K requests to branch/token quotas,
 persistent journals and usage, and reassembles the original four typed readouts.
 Cancellation waits for a terminal native response and retains unknown/failed drain.
@@ -669,3 +673,55 @@ Upstream sampling-method CPU checks pass six cases but execute neither a real
 TokenSpeed engine nor GPU kernels. TokenSpeed GPU coverage remains 0/20;
 the existing 24/40 model coverage, numerical failures and release gates are
 unchanged. See [failure-inclusive validation](multi-engine-validation.md).
+
+## Expanded strict traffic and standby health (9da1813)
+
+The live harness now requires both 10,000 strictly valid requests and 1,000 hot
+switches, retains every response/activation and never retries failed traffic.
+The first vLLM attempt fails at 6,290/6,291 with an expired canary; the first
+SGLang attempt fails its four responses because the new harness incorrectly
+expected generated tokens from zero-output scoring. Both failed attempts remain.
+
+Runtime monitoring now refreshes prepared READY/ACTIVE/DRAINING standbys while
+prioritizing active versions. Revalidation cannot resurrect retired/unloaded
+versions. With the engine-specific usage assertion corrected, concurrent native
+DSW runs pass 10,004/10,004 vLLM and 10,006/10,006 SGLang requests, across all four
+types, with 15,276/16,451 switches and zero mixed versions or retries. Single-position
+numerical checks pass the original threshold. All four owned groups exit and all
+six work counters in each registry are zero; the protected service identity and
+command line remain unchanged. Local tests: 590; four source-matched wheels pass.
+No model, business-quality, controlled-performance or soak gate changes.
+See [complete results and original failures](strict-traffic-validation.md).
+
+
+## TokenSpeed source profiles, startup and completion evidence (2d3ee4e)
+
+The current profile binds 24 critical files at upstream
+`f4ac1affe11ad404720bcd150970487f75fbf59a`; the previous 13-file
+`7fa8acb1e885389825c077a6aec0326fbbbd7116` profile remains accepted. The launcher
+adds source/hardware/configuration preflight, fixes separate model/tokenizer
+binding, and submits directly to the native Engine's owner loop. A Qwen3-0.6B
+helper generates aligned configs and separate API/admin credentials.
+
+Reservations and observed terminal completions now persist in a sibling SQLite
+receipt store. Completed IDs can be confirmed after response loss, memory-cache
+eviction or a same-identity restart. Unknown/pending requests still fail closed;
+full scheduler-confirmed abort and crash recovery remain open. Runtime failures
+no longer skip shutdown of the launcher's owned Engine. Core registry snapshot
+commands do not include the receipt database; coordinated backup/restore and
+safe retention remain separate work.
+
+The full local suite passes 618 tests; current and legacy upstream Python readout
+bodies each pass six Torch CPU primitive cases. Wheel/sdist builds and maintained
+source lint/format pass. The strict live harness now understands TokenSpeed's
+per-label accounting, with commands for at least 10,000 strict requests and
+1,000 switches. That GPU traffic run has **not** executed. The existing L20Z DSW
+is outside the pinned upstream NVIDIA hardware profile.
+
+TokenSpeed implements the complete typed-decision API and bundle lifecycle.
+GPU model coverage remains 0/20. K labels still cost
+K native requests; neither joint selected-ID performance nor production readiness
+is claimed. See the [quick start](quickstart-tokenspeed.md),
+[operations](operations.md#tokenspeed-operations) and
+[retained evidence](tokenspeed-validation.md). Historical vLLM/SGLang model,
+quality, performance and release denominators are unchanged.

@@ -1,0 +1,27 @@
+{
+  "harness_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+  "runtime_source_commit": "4ee78cab97c62d3ae03c5486e628af5bee797a28",
+  "started_at": 1790774696.61044,
+  "qualification": "colocated functional validation; single-position numerical development check",
+  "stages": {
+    "readiness": {
+      "ready": true,
+      "elapsed_seconds": 28.078705169260502
+    },
+    "topology": {
+      "passed": true
+    },
+    "contract": {
+      "returncode": 1,
+      "passed": false
+    }
+  },
+  "failure": {
+    "stage": "contract",
+    "type": "RuntimeError",
+    "message": "contract failed; inspect retained report"
+  },
+  "cleanup_passed": true,
+  "passed": false,
+  "finished_at": 1790774729.441926
+}

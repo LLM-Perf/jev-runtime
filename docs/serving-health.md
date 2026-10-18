@@ -1,7 +1,12 @@
 # Engine canaries and readiness
 
-Each API worker periodically checks its active bundles against the actual scoring
-backend. Startup/manual preparation still validates all fixed questions. A
+Each API worker periodically checks its active bundles and locally prepared
+standbys in READY/ACTIVE/DRAINING state against the actual scoring backend.
+Active routes run first; otherwise a frequently switched version could be absent
+at every polling instant and expire after 90 seconds despite receiving traffic.
+Retired or unprepared versions are excluded. Monitoring always acquires a
+revalidation lease and cannot revive a concurrently retired/unloaded version.
+Startup/manual preparation still validates all fixed questions. A
 periodic check of an already prepared immutable version verifies the current
 capabilities and scores its first question with synthetic `ready` input; dynamic
 bundles use a small Boolean canary. The full score/assembly contract must pass.
@@ -10,13 +15,16 @@ This establishes current scoring availability, not task accuracy or weight hashe
 ```yaml
 health:
   interval_seconds: 30
+  startup_grace_seconds: 60
   timeout_seconds: 10
   max_age_seconds: 90
 ```
 
 These defaults apply to both native plugins and gateways. The maximum age must
-allow the interval, probe timeout and five-second cancellation deadline. Probes
-run serially per worker, with one interval between sweeps. For many active bundles
+allow the larger of startup grace or interval, the probe timeout and five-second
+cancellation deadline. The monitor starts only after bootstrap finishes, then
+waits through the startup grace before its first periodic probe. Probes
+run serially per worker, with one interval between sweeps. For many active/standby bundles
 or congested engines, size the maximum age and timeout for that workload. Probes
 hold durable bundle/adapter leases and journal branches before dispatch. Like
 manual preparation, they are privileged control-plane work outside tenant quota
@@ -46,13 +54,14 @@ evidence requires preparing it again. Bundle aliases and route generations do no
 change during temporary health failures or recovery.
 
 If probe cancellation cannot be confirmed, its durable lease remains visible in
-`/admin/requests/recovery`. That worker does not issue another canary for the same
-bundle until explicit recovery confirms cancellation and releases the old lease.
-This bounds automatic probe accumulation without treating a timeout as GPU drain.
-The existing authenticated recovery operation is available even while readiness
-is false. A changed engine capability profile stays unavailable until the service
-is restarted and the configured profile validated. Unchanged reported metadata
-does not prove unchanged weights or tokenizer files on a remote engine.
+`/admin/requests/recovery`. The next health sweep retries cancellation and only
+releases the lease after the engine confirms it; no new canary is issued while
+confirmation fails. This bounds automatic probe accumulation without treating a
+timeout as GPU drain. The authenticated manual recovery operation remains
+available even while readiness is false. A changed engine capability profile stays
+unavailable until the service is restarted and the configured profile validated.
+Unchanged reported metadata does not prove unchanged weights or tokenizer files on
+a remote engine.
 
 The privileged raw scoring bridge and the engine's native generation API are
 outside the typed bundle circuit. A standalone gateway can report an unresponsive

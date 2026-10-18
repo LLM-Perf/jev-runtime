@@ -1,0 +1,22 @@
+{
+  "minimum_requests": 10000,
+  "minimum_switches": 1000,
+  "concurrency": 4,
+  "timeout_seconds": 1200.0,
+  "attempted_requests": 4,
+  "response_validated_requests": 0,
+  "strict_success_requests": 0,
+  "failed_requests": 4,
+  "switches": 6,
+  "mixed_bundle_responses": 0,
+  "retries": 0,
+  "passed": false,
+  "qualification": "four rotating question types; unique synthetic inputs; functional only",
+  "started_at": 1790774726.0178533,
+  "versions_seen": [],
+  "requests_by_type": {},
+  "requests_by_bundle": {},
+  "unaccounted_requests": 0,
+  "elapsed_seconds": 0.08011658862233162,
+  "finished_at": 1790774726.0978913
+}

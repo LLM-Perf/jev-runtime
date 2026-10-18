@@ -6,10 +6,18 @@ and build-tool versions. It can resolve a platform-specific gateway wheelhouse,
 then create a fresh isolated environment using only that wheelhouse. It does not
 change an installed engine environment or activate traffic automatically. Historical
 commits preceding the TokenSpeed package continue to build their original three wheels.
-The TokenSpeed wheel includes its source-profile hash manifest. The gateway resolver
+The TokenSpeed wheel includes the current source-profile hash manifest and the
+retained legacy profile under `source-profiles/`. The gateway resolver
 still installs core/tokenizer dependencies only; the optional TokenSpeed provider
 must be installed separately from the matching wheel before using that backend.
 This does not provide a locked TokenSpeed GPU environment.
+
+For native TokenSpeed, match the Engine checkout to one of the packaged profiles
+and use the [TokenSpeed preflight and startup guide](quickstart-tokenspeed.md).
+Its source-only preflight does not load CUDA or model weights; passing it verifies
+the guarded source files, not an entire GPU stack. Retain the separate receipt
+database alongside the registry during a compatible deployment change;
+[core registry snapshot tools do not include it](registry-snapshots.md).
 
 These are development release artifacts. Release acceptance still requires the
 model, numerical, business quality, performance and lifecycle gates in the plan.

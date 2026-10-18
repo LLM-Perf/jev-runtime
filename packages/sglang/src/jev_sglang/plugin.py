@@ -41,6 +41,7 @@ def configure_http_app():
                     )
                     await runtime.start()
                     await bootstrap(runtime, settings)
+                    runtime.start_health_monitor()
                     fastapi_app.state.jev_runtime = runtime
                 yield
             finally:

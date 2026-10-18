@@ -142,7 +142,17 @@ class Runtime:
                     break
         self.control_healthy = True
         self._control_task = asyncio.create_task(self._watch_cancellations())
-        self._health_task = asyncio.create_task(self._watch_health())
+
+    def start_health_monitor(self) -> None:
+        """Start periodic canaries after the caller finishes bootstrap."""
+        self.require_serving_mode()
+        if self._control_task is None or self._control_task.done():
+            raise RuntimeError("Runtime must be started before its health monitor")
+        if self._health_task is not None and not self._health_task.done():
+            return
+        self._health_task = asyncio.create_task(
+            self._watch_health(self.health.settings.startup_grace_seconds)
+        )
 
     def active_references(self) -> list[str]:
         listing = self.registry.list()
@@ -164,12 +174,27 @@ class Runtime:
             },
         }
 
+    def health_references(self) -> list[str]:
+        listing = self.registry.list()
+        active = {route["ref"] for route in listing["routes"] if route["ref"]}
+        # A prepared standby may be inactive at every polling instant while
+        # receiving traffic between polls. Keep its canary fresh for hot switching.
+        eligible = {
+            bundle["ref"]
+            for bundle in listing["bundles"]
+            if bundle["backend"] == self.backend_identity
+            and bundle["state"] in {"READY", "ACTIVE", "DRAINING"}
+            and (bundle["ref"] in active or self.is_prepared(bundle["ref"]))
+        }
+        return sorted(eligible, key=lambda reference: (reference not in active, reference))
+
     async def check_health(self) -> None:
         async with self._health_lock:
-            for reference in self.active_references():
+            for reference in self.health_references():
                 if self._quiescing:
                     return
                 try:
+                    await self._recover_health_probe(reference)
                     await self.prepare(
                         reference,
                         monitoring=True,
@@ -184,12 +209,42 @@ class Runtime:
                     self.registry.forget_worker_prepared(reference)
                     logger.warning("Jev engine canary failed for bundle %s", reference)
 
-    async def _watch_health(self) -> None:
+    async def _recover_health_probe(self, reference: str) -> None:
+        lease_id = self._health_pending.get(reference)
+        if lease_id is None:
+            return
+        if not self.registry.has_lease(lease_id):
+            self._health_pending.pop(reference, None)
+            return
+        candidate = next(
+            (
+                row
+                for row in self.registry.recovery_candidates()
+                if row["lease_id"] == lease_id and row["reference"] == reference
+            ),
+            None,
+        )
+        if candidate is None or candidate["phase"] != "abort_pending":
+            raise JevError("health_cleanup_pending", "Prior canary is not safely recoverable", 503)
+        try:
+            await self.recover_cancelled(candidate["request_id"])
+        except Exception as exc:
+            raise JevError(
+                "health_cleanup_pending",
+                "Prior canary cancellation is still unconfirmed",
+                503,
+            ) from exc
+        if self.registry.has_lease(lease_id):
+            raise JevError(
+                "health_cleanup_pending", "Prior canary cancellation is still pending", 503
+            )
+        self._health_pending.pop(reference, None)
+
+    async def _watch_health(self, first_delay: float | None = None) -> None:
+        delay = self.health.settings.interval_seconds if first_delay is None else first_delay
         while not self._health_stop.is_set():
             try:
-                await asyncio.wait_for(
-                    self._health_stop.wait(), self.health.settings.interval_seconds
-                )
+                await asyncio.wait_for(self._health_stop.wait(), delay)
                 return
             except TimeoutError:
                 pass
@@ -198,6 +253,7 @@ class Runtime:
             except Exception:
                 # Expiring canary evidence fails closed even if registry access fails.
                 logger.exception("Jev engine health polling failed")
+            delay = self.health.settings.interval_seconds
 
     async def _watch_cancellations(self) -> None:
         while True:
@@ -438,7 +494,14 @@ class Runtime:
             # periodic canary. New worker/version preparation still checks all tasks.
             minimal = monitoring and self.is_prepared(reference)
             request_id = "prepare-" + uuid.uuid4().hex
-            fresh = self.registry.inspect(reference)["state"] in {"VALIDATED", "FAILED", "RETIRED"}
+            # A monitoring snapshot can race retirement or adapter unloading.
+            # Only explicit preparation may revive a version; periodic probes
+            # must acquire a revalidation lease against its current serving state.
+            fresh = not monitoring and self.registry.inspect(reference)["state"] in {
+                "VALIDATED",
+                "FAILED",
+                "RETIRED",
+            }
             if fresh:
                 bundle, lease_id = self.registry.begin_prepare(
                     reference, self.backend_identity, request_id
