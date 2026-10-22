@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import closing
@@ -9,7 +10,7 @@ from typer.testing import CliRunner
 from jev_runtime import registry_migration
 from jev_runtime.cli import app
 from jev_runtime.registry import Registry
-from jev_runtime.registry_backup import connect, digest, snapshot, summary
+from jev_runtime.registry_backup import connect, digest, snapshot, summary, verify_snapshot
 from jev_runtime.registry_migration import inspect, stage_migration, verify_migration
 from jev_runtime.registry_schema import (
     CURRENT_FORMAT,
@@ -206,6 +207,35 @@ def test_stale_backup_and_wrong_transition_do_not_allocate(tmp_path, bundle, mon
     with pytest.raises(ValueError, match="changed since snapshot"):
         stage_migration(backup, snap["manifest_sha256"], path, tmp_path / "stale")
     assert not (tmp_path / "invalid").exists() and not (tmp_path / "stale").exists()
+
+
+@pytest.mark.parametrize("alias", ["direct", "hardlink", "symlink"])
+@pytest.mark.parametrize("fate", ["changed", "deleted"])
+def test_snapshot_alias_is_not_an_independent_source(tmp_path, bundle, monkeypatch, alias, fate):
+    stopped(monkeypatch)
+    path = old_registry(tmp_path, bundle)
+    backup = tmp_path / "backup"
+    snap = snapshot(path, backup)
+    snapshot_database = backup / "registry.sqlite3"
+    snapshot_digest = digest(snapshot_database)
+    if fate == "changed":
+        with sqlite3.connect(path) as db:
+            db.execute("UPDATE routes SET generation=99")
+    else:
+        path.unlink()
+    if alias == "direct":
+        source = snapshot_database
+    else:
+        source = tmp_path / "alias.db"
+        if alias == "hardlink":
+            os.link(snapshot_database, source)
+        else:
+            source.symlink_to(snapshot_database)
+    with pytest.raises(ValueError, match="independent of the snapshot"):
+        stage_migration(backup, snap["manifest_sha256"], source, tmp_path / "migrated")
+    assert not (tmp_path / "migrated").exists()
+    assert digest(snapshot_database) == snapshot_digest
+    verify_snapshot(backup, snap["manifest_sha256"])
 
 
 @pytest.mark.parametrize("phase", ["receipt", "database-publication"])
