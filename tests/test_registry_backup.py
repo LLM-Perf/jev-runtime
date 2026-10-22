@@ -76,6 +76,34 @@ def test_staged_restore_preserves_every_table_and_generations(runtime, tmp_path,
     reopened.close()
 
 
+@pytest.mark.parametrize("alias", ["direct", "hardlink", "symlink"])
+def test_restore_rejects_snapshot_as_source(runtime, tmp_path, monkeypatch, alias):
+    registry = runtime.registry
+    dead(monkeypatch)
+    directory = tmp_path / "snapshot"
+    record = snapshot(registry.path, directory)
+    # The real source has advanced; comparing the backup to itself would accept
+    # stale generations instead of checking the current registry state.
+    registry.disable("model", 1)
+    before = registry.list()
+    database = directory / "registry.sqlite3"
+    source = database
+    if alias == "hardlink":
+        source = tmp_path / "linked-registry.db"
+        source.hardlink_to(database)
+    elif alias == "symlink":
+        source = tmp_path / "linked-registry.db"
+        source.symlink_to(database)
+    destination = tmp_path / "restore"
+
+    with pytest.raises(ValueError, match="independent of the backup snapshot"):
+        stage_restore(directory, record["manifest_sha256"], source, destination)
+
+    assert not destination.exists()
+    assert registry.list() == before
+    verify_snapshot(directory, record["manifest_sha256"])
+
+
 @pytest.mark.parametrize("owner_state", ["alive", "unknown"])
 def test_stopped_flag_does_not_override_live_or_unknown_process(
     runtime, tmp_path, monkeypatch, owner_state
