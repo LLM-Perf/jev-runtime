@@ -5,7 +5,7 @@ import uuid
 from dataclasses import asdict
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, StrictBool, StrictStr
 
 from jev_runtime.calibration import LabeledScores
 from jev_runtime.config import Settings, build_runtime
@@ -16,7 +16,7 @@ class EvaluationSample(Contract):
     sample_id: str = Field(min_length=1)
     group_id: str = Field(min_length=1)
     input: TextInput
-    labels: dict[str, str | bool]
+    labels: dict[str, StrictStr | StrictBool]
 
 
 def read_samples(path: Path) -> list[EvaluationSample]:
