@@ -8,7 +8,7 @@ from types import ModuleType, SimpleNamespace
 
 import pytest
 from jev_tokenspeed import preflight
-from jev_tokenspeed.backend import TokenSpeedNative, validate_profile
+from jev_tokenspeed.backend import Attempt, TokenSpeedNative, validate_profile
 from jev_tokenspeed.plugin import submit_to_engine, validate_binding, verify_source
 from jev_tokenspeed.receipts import CompletionReceipts
 
@@ -148,6 +148,23 @@ async def test_receipt_write_failure_retains_request_until_durable_drain(
     monkeypatch.setattr(store, "complete", complete)
     await backend.cancel("r")
     assert store.completed("r") and not backend._attempts
+
+
+async def test_close_drains_every_inflight_request_before_raising():
+    backend = TokenSpeedNative(SimpleNamespace(), "fixture", None, receipts=None)
+    backend._attempts = {"a": Attempt(), "b": Attempt()}
+    seen = []
+
+    async def cancel(request_id):
+        seen.append(request_id)
+        if request_id == "a":
+            raise JevError("cancellation_unconfirmed", "No terminal receipt for request", 503)
+
+    backend.cancel = cancel
+    with pytest.raises(JevError) as exc:
+        await backend.close()
+    assert seen == ["a", "b"] and exc.value.code == "cancellation_unconfirmed"
+    assert set(backend._attempts) == {"a", "b"}
 
 
 async def test_wrong_terminal_identity_never_confirms_receipt(tmp_path, generate_input):

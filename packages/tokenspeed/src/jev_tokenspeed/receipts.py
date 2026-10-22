@@ -45,17 +45,41 @@ class CompletionReceipts:
         db.execute("PRAGMA synchronous=FULL")
         return db
 
+    def _retired(self, db: sqlite3.Connection, request_id: str) -> bool:
+        present = db.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='retired_receipts'"
+        ).fetchone()
+        if present is None:
+            return False
+        return (
+            db.execute(
+                "SELECT 1 FROM retired_receipts WHERE namespace=? AND request_id=?",
+                (self.namespace, request_id),
+            ).fetchone()
+            is not None
+        )
+
     def reserve(self, request_id: str) -> None:
-        try:
-            with closing(self.connect()) as db, db:
+        with closing(self.connect()) as db:
+            db.execute("BEGIN IMMEDIATE")
+            try:
+                if self._retired(db, request_id):
+                    raise JevError(
+                        "duplicate_request", "Native scoring ID was already dispatched", 409
+                    )
                 db.execute(
                     "INSERT INTO receipts VALUES (?, ?, 'pending')",
                     (self.namespace, request_id),
                 )
-        except sqlite3.IntegrityError as exc:
-            raise JevError(
-                "duplicate_request", "Native scoring ID was already dispatched", 409
-            ) from exc
+                db.commit()
+            except sqlite3.IntegrityError as exc:
+                db.rollback()
+                raise JevError(
+                    "duplicate_request", "Native scoring ID was already dispatched", 409
+                ) from exc
+            except BaseException:
+                db.rollback()
+                raise
 
     def complete(self, request_id: str) -> None:
         with closing(self.connect()) as db, db:

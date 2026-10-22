@@ -8,7 +8,9 @@ change an installed engine environment or activate traffic automatically. Histor
 commits preceding the TokenSpeed package continue to build their original three wheels.
 The TokenSpeed wheel includes the current source-profile hash manifest and the
 retained legacy profile under `source-profiles/`. The gateway resolver
-still installs core/tokenizer dependencies only; the optional TokenSpeed provider
+installs core/tokenizer dependencies by default. Use `resolve --include-plugins`
+to include all source-present Jev plugin wheels in the same hash lock, including
+the TokenSpeed HTTP provider. Without that flag the optional TokenSpeed provider
 must be installed separately from the matching wheel before using that backend.
 This does not provide a locked TokenSpeed GPU environment.
 

@@ -221,5 +221,13 @@ class TokenSpeedNative:
         self._attempts.pop(request_id, None)
 
     async def close(self) -> None:
+        # Every in-flight request gets its drain wait. The first failure is
+        # re-raised so a partial drain is never reported as a clean unload.
+        failure: BaseException | None = None
         for request_id in tuple(self._attempts):
-            await self.cancel(request_id)
+            try:
+                await self.cancel(request_id)
+            except Exception as exc:
+                failure = failure or exc
+        if failure is not None:
+            raise failure

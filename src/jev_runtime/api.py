@@ -199,6 +199,18 @@ def install_routes(
         ["quantity"],
         registry=metrics_registry,
     )
+    registry_state = Gauge(
+        "jev_registry_state",
+        "Registry-wide state; do not sum across workers",
+        ["quantity"],
+        registry=metrics_registry,
+    )
+    health_state = Gauge(
+        "jev_worker_health",
+        "Current worker canary state",
+        ["quantity"],
+        registry=metrics_registry,
+    )
 
     def observe(trace, outcome, response):
         count.labels(outcome).inc()
@@ -285,6 +297,11 @@ def install_routes(
         http_response.headers["X-Jev-Worker"] = instance.registry.owner
         return {"cancelled": await instance.cancel(request_id, request.state.jev_tenant)}
 
+    @router.get("/live")
+    async def live(request: Request):
+        # Event-loop liveness must remain independent of GPU readiness and load.
+        return {"live": True, "worker_id": runtime(request).registry.owner}
+
     @router.get("/ready")
     async def ready(request: Request):
         instance = runtime(request)
@@ -308,11 +325,31 @@ def install_routes(
 
     @router.get("/metrics")
     async def metrics(request: Request):
-        current = runtime(request).admission.snapshot()
+        instance = runtime(request)
+        current = instance.admission.snapshot()
         metric = shared_admission if current["scope"] == "shared_registry_engine" else admission
         for quantity in ("requests", "expanded_tokens", "expanded_branches", "queued_requests"):
             metric.labels(quantity).set(current[quantity])
-        return Response(generate_latest(metrics_registry), media_type="text/plain; version=0.0.4")
+        for quantity, value in (
+            await asyncio.to_thread(instance.registry.operational_metrics)
+        ).items():
+            registry_state.labels(quantity).set(value)
+        health = instance.health_profile()
+        states = list(health["bundles"].values())
+        health_state.labels("active_bundles").set(len(states))
+        health_state.labels("unready_bundles").set(sum(not s["ready"] for s in states))
+        health_state.labels("monitor_running").set(int(health["monitor_running"]))
+        ages = [
+            s["last_success_age_seconds"]
+            for s in states
+            if s["last_success_age_seconds"] is not None
+        ]
+        health_state.labels("max_canary_age_seconds").set(max(ages, default=0))
+        return Response(
+            generate_latest(metrics_registry),
+            media_type="text/plain; version=0.0.4",
+            headers={"X-Jev-Worker": instance.registry.owner},
+        )
 
     @management.get("/bundles")
     async def list_bundles(request: Request):

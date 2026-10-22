@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 
 from jev_runtime.admission import Admission
 from jev_runtime.errors import JevError
+from jev_runtime.owner_fence import gone
 from jev_runtime.registry import Registry, ResolvedRoute, Snapshot
 
 
@@ -175,7 +176,7 @@ class SharedAdmission:
                 and total["branches"] + head["branches"] <= self._limits["max_branches"]
                 and used["branches"] + head["branches"] <= self._limits["max_tenant_branches"]
             )
-            if not eligible or self.registry._owner_status(json.loads(head["identity"])) == "dead":
+            if not eligible or gone(self.registry._status(json.loads(head["identity"]))):
                 continue
             if head["lease_id"] != lease_id:
                 return False

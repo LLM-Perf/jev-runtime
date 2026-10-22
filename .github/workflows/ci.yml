@@ -2,12 +2,14 @@ name: Core and plugin contracts
 on:
   push:
   pull_request:
+  workflow_call:
 permissions:
   contents: read
 jobs:
   contracts:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ['3.11', '3.12']
     steps:
@@ -23,6 +25,16 @@ jobs:
       - run: python -m build packages/sglang
       - run: python -m build packages/vllm
       - run: python -m build packages/tokenspeed
+      - name: Install only built wheels in a clean environment
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/jev-wheel-env"
+          core=(dist/jev_runtime_core-*.whl)
+          "$RUNNER_TEMP/jev-wheel-env/bin/python" -m pip install "${core[0]}[tokenizers,tokenizer-conversion]" packages/{vllm,sglang,tokenspeed}/dist/*.whl
+          "$RUNNER_TEMP/jev-wheel-env/bin/python" -m pip check
+          "$RUNNER_TEMP/jev-wheel-env/bin/python" -I deployment/wheel_smoke.py
+          "$RUNNER_TEMP/jev-wheel-env/bin/jevctl" backend list
+          "$RUNNER_TEMP/jev-wheel-env/bin/jev-tokenspeed" --help
   typescript:
     runs-on: ubuntu-latest
     steps:

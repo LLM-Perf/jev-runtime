@@ -56,7 +56,14 @@ a TokenSpeed deployment change, quiesce and stop affected writers, then preserve
 both stores with SQLite-aware backups. Keep the corresponding receipt database
 at the sibling path expected by the selected registry and retain the same engine
 identity. See [TokenSpeed operations](operations.md#tokenspeed-operations).
-Automatic coordinated snapshot/restore and receipt expiry are not implemented.
+For an executable stopped-state pair operation, use `snapshot-pair`, `verify-pair`
+and `stage-restore-pair` as described in [production operations](production.md).
+They hold writer reservations on both databases, reject live/unknown owners and
+pending receipts, and stage only the exact latest stopped state. An incomplete
+pair cannot start as a registry. Explicit lost-host fencing and completed-receipt
+retirement are separate commands (`fence-owners`, `retire-receipts`); no pending
+receipt is discarded by these commands. Fenced owners do not block a stopped
+snapshot. A retired receipt remains a tombstone inside the paired snapshot.
 
 ## Stage the latest stopped state
 
@@ -98,10 +105,12 @@ Do not serve original and restored copies concurrently as independent quota pool
 
 ## Limits and remaining release work
 
-The current restore gate requires the original registry, Linux host, boot ID and
-PID namespace to remain available for exact-state and owner-death checks. A host
-reboot, container namespace change, destroyed database or unknown owner fails
-closed. Those cases require separately implemented fencing/recovery procedures.
+The current restore gate requires the original registry to still be present for
+the exact-state comparison. A host reboot or container namespace change leaves
+owners `unknown` and fails closed until `jevctl registry fence-owners` records
+an explicit fence; see [production operation](production.md). A destroyed
+database still cannot be restored from nothing. Fencing does not delete work
+and does not stop a process that is serving a different copy of the file.
 Restoring an old database while continuing from its generation numbers can reuse
 stale CAS tokens or discard acknowledged state; this tool rejects that operation.
 Compatible code rollback should preserve current state, not rewind its history.

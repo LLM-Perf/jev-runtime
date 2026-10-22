@@ -28,6 +28,33 @@ registry_app = typer.Typer(help="Private SQLite snapshots and inactive, guarded 
 app.add_typer(registry_app, name="registry")
 backend_app = typer.Typer(help="Stop Jev work across local API workers without changing routes")
 app.add_typer(backend_app, name="backend")
+production_app = typer.Typer(help="Validate pinned production profiles and qualification evidence")
+app.add_typer(production_app, name="production")
+
+
+@production_app.command("validate-profile")
+def production_validate_profile(profile: Path):
+    from jev_runtime.production import ProductionProfile, read_json, sha256
+
+    parsed = ProductionProfile.model_validate(read_json(profile))
+    output(
+        {
+            "profile_id": parsed.profile_id,
+            "status": parsed.status,
+            "profile_sha256": sha256(profile),
+            "release_eligible": False,
+        }
+    )
+
+
+@production_app.command("qualify")
+def production_qualify(profile: Path, evidence: Path, source_commit: str, dist: Path):
+    from jev_runtime.production import qualify
+
+    result = qualify(profile, evidence, source_commit, dist)
+    output(result)
+    if not result["passed"]:
+        raise typer.Exit(1)
 
 
 @backend_app.command("list")
@@ -80,6 +107,54 @@ def registry_snapshot(source: Path, destination: Path, timeout_seconds: float = 
     from jev_runtime.registry_backup import snapshot
 
     output(snapshot(source, destination, timeout_seconds))
+
+
+@registry_app.command("snapshot-pair")
+def registry_snapshot_pair(source: Path, destination: Path):
+    """Snapshot a stopped registry and its TokenSpeed receipts under both writer locks."""
+    from jev_runtime.paired_backup import snapshot_pair
+
+    output(snapshot_pair(source, destination))
+
+
+@registry_app.command("verify-pair")
+def registry_verify_pair(directory: Path, manifest_sha256: str):
+    from jev_runtime.paired_backup import verify_pair
+
+    output(verify_pair(directory, manifest_sha256))
+
+
+@registry_app.command("stage-restore-pair")
+def registry_restore_pair(directory: Path, manifest_sha256: str, source: Path, destination: Path):
+    """Stage the exact latest stopped pair; unknown owners and pending work block restore."""
+    from jev_runtime.paired_backup import restore_pair
+
+    output(restore_pair(directory, manifest_sha256, source, destination))
+
+
+@registry_app.command("fence-owners")
+def registry_fence_owners(source: Path, reason: str, acknowledgement: str):
+    """Fence unknown owners after the previous deployment is confirmed stopped.
+
+    Refuses while any owner is verifiably alive. Does not delete leases or receipts.
+    The acknowledgement must be previous-deployment-stopped. Reason is lost_host,
+    container_namespace, or unverifiable_identity.
+    """
+    from jev_runtime.owner_fence import fence_stale_owners
+
+    output(fence_stale_owners(source, reason, acknowledgement))
+
+
+@registry_app.command("retire-receipts")
+def registry_retire_receipts(source: Path, namespace: str, limit: int, acknowledgement: str):
+    """Move completed, unreferenced TokenSpeed receipts into a tombstone table.
+
+    Pending receipts stay. The registry must already be stopped and drained.
+    The acknowledgement must be retire-completed-unreferenced-receipts.
+    """
+    from jev_runtime.receipt_retirement import retire_completed_receipts
+
+    output(retire_completed_receipts(source, namespace, limit, acknowledgement))
 
 
 @registry_app.command("inspect")

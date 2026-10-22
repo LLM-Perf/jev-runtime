@@ -220,22 +220,43 @@ def initialize(db: sqlite3.Connection) -> None:
         raise
 
 
-def register_owner(db: sqlite3.Connection, owner: str, identity: dict) -> None:
+def register_owner(db: sqlite3.Connection, owner: str, identity: dict) -> int:
     # This deferred FK and trigger form the client compatibility handshake.
     # Legacy constructors insert into owners directly and fail before joining
     # admission or issuing any engine work. Existing clients must be stopped
     # before migration; a database cannot revoke code already holding GPU work.
+    # The fence generation is read under the same writer lock as the insert.
+    from jev_runtime.owner_fence import current_fence_generation
+
     db.execute("BEGIN IMMEDIATE")
     try:
+        stamped = dict(identity)
+        stamped["fence_generation"] = current_fence_generation(db)
         db.execute("INSERT INTO owner_protocols VALUES(?,1)", (owner,))
-        db.execute("INSERT INTO owners VALUES(?,?,?)", (owner, json.dumps(identity), time.time()))
+        db.execute("INSERT INTO owners VALUES(?,?,?)", (owner, json.dumps(stamped), time.time()))
         db.commit()
+        return stamped["fence_generation"]
     except BaseException:
         db.rollback()
         raise
 
 
 def require_migration_publication(path: Path) -> None:
+    pair_intent = path.parent / "pair-restore-intent.json"
+    if pair_intent.exists():
+        declared_pair = json.loads(pair_intent.read_text())
+        if declared_pair.get("database_name") == path.name:
+            receipt_path = path.parent / "pair-restore.json"
+            native = path.with_suffix(".tokenspeed-receipts.db")
+            if not receipt_path.is_file() or not native.is_file() or not path.is_file():
+                raise ValueError("Paired restore is incomplete; both stores must be published")
+            receipt = json.loads(receipt_path.read_text())
+            if (
+                receipt.get("format") != "jev-paired-restore-v1"
+                or not declared_pair.get("operation_id")
+                or receipt.get("operation_id") != declared_pair["operation_id"]
+            ):
+                raise ValueError("Paired restore publication does not match intent")
     intent = path.parent / "migration-intent.json"
     if not intent.exists():
         return
