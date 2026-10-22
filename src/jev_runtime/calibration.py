@@ -20,6 +20,10 @@ class LabeledScores:
     def validate(self) -> None:
         if not self.sample_id or not self.group_id or not self.task_id:
             raise ValueError("Sample and leakage-group identifiers are required")
+        # Python ints keep dataset digests JSON-serializable. Booleans and NumPy
+        # scalars are not supported class indices.
+        if isinstance(self.label, bool) or not isinstance(self.label, int):
+            raise ValueError("Label must be a Python integer class index")
         if len(self.logprobs) < 2 or not 0 <= self.label < len(self.logprobs):
             raise ValueError("A target index must refer to one of at least two classes")
         if not all(math.isfinite(value) for value in self.logprobs):

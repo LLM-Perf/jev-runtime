@@ -113,7 +113,10 @@ def stage_migration(
     target_format: str = CURRENT_FORMAT,
 ) -> dict:
     manifest = verify_snapshot(snapshot_dir, manifest_sha256)
-    if source.resolve() == (snapshot_dir / "registry.sqlite3").resolve():
+    # Pathname equality misses hard-link aliases: an alias resolves to its own
+    # path but shares the snapshot inode, so the unchanged/stopped source checks
+    # below would compare the snapshot against itself.
+    if source.samefile(snapshot_dir / "registry.sqlite3"):
         raise ValueError("Source registry must be independent of the snapshot")
     identity = (source.stat().st_dev, source.stat().st_ino)
     with closing(connect(source, writable=True)) as original:
