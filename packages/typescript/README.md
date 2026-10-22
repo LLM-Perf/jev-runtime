@@ -22,7 +22,10 @@ console.log(result.answers.refund);
 For a standalone gateway omit the plugin path from `baseURL`. Use a server-side
 credential; do not put an administrative or shared engine key in browser bundles.
 Pass `{signal: controller.signal}` to cancel the HTTP request. The server propagates
-disconnect cancellation to engine scoring. No automatic retries are made.
+disconnect cancellation to engine scoring. No automatic retries are made. Cancellation
+and `timeoutMs` also apply while the response body is streaming: an abort after headers
+have arrived rejects with the original abort reason (a `TimeoutError` DOMException for
+the client timeout), never a mislabeled `invalid_response`/`http_error`.
 
 Inspect `status`, `calibration_status`, and `probability_semantics`; a typed answer
 does not imply calibrated confidence. Partial/failing responses retain their status.

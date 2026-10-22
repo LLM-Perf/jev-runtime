@@ -244,6 +244,9 @@ export class JevClient {
       let payload: unknown;
       try { payload = await response.json(); }
       catch {
+        // An abort after headers rejects body consumption; surface the original
+        // reason instead of mislabeling it as a response-contract failure.
+        if (controller.signal.aborted) throw controller.signal.reason;
         if (!response.ok) throw new JevAPIError(response.status, "http_error", `Jev request failed (${response.status})`);
         invalid("Server response is not JSON");
       }
