@@ -7,7 +7,7 @@ from jev_runtime.schema import DecisionRequest, DecisionResponse
 
 
 def _payload(response: httpx.Response):
-    if response.is_error:
+    if not response.is_success:
         try:
             body = response.json()
             error = body.get("error", {}) if isinstance(body, dict) else {}

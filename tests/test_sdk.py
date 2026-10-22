@@ -92,3 +92,54 @@ async def test_public_clients_preserve_prefix_and_validate_cancellation(asynchro
             await client.close()
         else:
             client.close()
+
+
+@pytest.mark.parametrize("asynchronous", [False, True], ids=["sync", "async"])
+@pytest.mark.parametrize("method", ["decide", "cancel"])
+@pytest.mark.parametrize("scenario", ["success_body", "error_envelope", "non_json"])
+async def test_redirects_are_never_treated_as_success(asynchronous, method, scenario):
+    argument = (
+        {"model": "fixture", "input": {"text": "sample"}} if method == "decide" else "owned:request"
+    )
+    success = CASES["valid"]["boolean"] if method == "decide" else {"cancelled": True}
+    location = {"Location": "http://localhost/elsewhere"}
+    expected = (307, "http_error", "Decision service returned an error")
+    if scenario == "success_body":
+        response = httpx.Response(307, json=success, headers=location)
+    elif scenario == "error_envelope":
+        response = httpx.Response(
+            307,
+            json={"error": {"code": "redirect_rejected", "message": "Refusing redirect"}},
+            headers=location,
+        )
+        expected = (307, "redirect_rejected", "Refusing redirect")
+    else:
+        response = httpx.Response(307, content=b"temporary redirect", headers=location)
+    calls = []
+
+    def handle(request):
+        calls.append(request)
+        return response
+
+    base = "http://localhost/plugins/jev-runtime"
+    client = AsyncJevClient(base) if asynchronous else JevClient(base)
+    try:
+        if asynchronous:
+            await client.close()
+            client.http = httpx.AsyncClient(base_url=base, transport=httpx.MockTransport(handle))
+        else:
+            client.close()
+            client.http = httpx.Client(base_url=base, transport=httpx.MockTransport(handle))
+        with pytest.raises(JevError) as exc:
+            value = getattr(client, method)(argument)
+            if asynchronous:
+                await value
+        assert (exc.value.status_code, exc.value.code, exc.value.message) == expected
+        suffix = "/v1/decisions" if method == "decide" else "/v1/requests/owned:request/cancel"
+        # The Location header is never followed and mutations are not retried.
+        assert [call.url.path for call in calls] == [f"/plugins/jev-runtime{suffix}"]
+    finally:
+        if asynchronous:
+            await client.close()
+        else:
+            client.close()

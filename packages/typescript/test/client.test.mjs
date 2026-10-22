@@ -45,3 +45,49 @@ test("timeout aborts the HTTP fetch", async () => {
     })});
   await assert.rejects(client.decide({model: "x", input: {text: "x"}}), (e) => e.name === "TimeoutError");
 });
+
+// Headers resolve immediately; the body stream errors when the request aborts,
+// mirroring how fetch tears down an in-flight response body.
+const abortedBodyFetch = (status, onCall) => async (_, init) => {
+  onCall?.();
+  return new Response(new ReadableStream({start(c) {
+    // Fetch body readers can reject with AbortError even for a custom signal
+    // reason or timeout; the client must retain the reason from its signal.
+    init.signal.addEventListener("abort", () => c.error(new DOMException("Body aborted", "AbortError")), {once: true});
+  }}), {status, headers: {"Content-Type": "application/json"}});
+};
+
+test("caller cancellation during body consumption preserves the custom reason", async () => {
+  for (const status of [200, 503]) {
+    let calls = 0;
+    const client = new JevClient({baseURL: "http://localhost", fetch: abortedBodyFetch(status, () => calls++)});
+    const caller = new AbortController();
+    const reason = { message: "caller gave up" };
+    const pending = client.decide({model: "x", input: {text: "x"}}, {signal: caller.signal});
+    await new Promise((resolve) => setImmediate(resolve)); // headers arrived, body in flight
+    caller.abort(reason);
+    await assert.rejects(pending, (e) => e === reason);
+    assert.equal(calls, 1);
+  }
+});
+
+test("timeout during body consumption surfaces the TimeoutError", async () => {
+  for (const status of [200, 503]) {
+    let calls = 0;
+    const client = new JevClient({baseURL: "http://localhost", timeoutMs: 10,
+      fetch: abortedBodyFetch(status, () => calls++)});
+    await assert.rejects(client.decide({model: "x", input: {text: "x"}}),
+      (e) => e instanceof DOMException && e.name === "TimeoutError" && e.message === "Jev request timed out");
+    assert.equal(calls, 1);
+  }
+});
+
+test("body stream failures without an abort keep the response-contract errors", async () => {
+  for (const [status, expected] of [[200, [502, "invalid_response"]], [503, [503, "http_error"]]]) {
+    const client = new JevClient({baseURL: "http://localhost", fetch: async () =>
+      new Response(new ReadableStream({start(c) { c.error(new Error("socket reset")); }}),
+        {status, headers: {"Content-Type": "application/json"}})});
+    await assert.rejects(client.decide({model: "x", input: {text: "x"}}),
+      (e) => e instanceof JevAPIError && e.status === expected[0] && e.code === expected[1]);
+  }
+});

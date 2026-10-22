@@ -207,7 +207,8 @@ def stage_restore(
     snapshot_dir: Path, manifest_sha256: str, source: Path, destination: Path
 ) -> dict:
     manifest = verify_snapshot(snapshot_dir, manifest_sha256)
-    if source.resolve() == (snapshot_dir / "registry.sqlite3").resolve():
+    # Different paths can still name the same database through hard links.
+    if source.samefile(snapshot_dir / "registry.sqlite3"):
         raise ValueError("The source registry must be independent of the backup snapshot")
     identity = (source.stat().st_dev, source.stat().st_ino)
     with closing(connect(source, writable=True)) as original:

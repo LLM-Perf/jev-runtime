@@ -1,4 +1,5 @@
 import math
+import sys
 
 import pytest
 from pydantic import ValidationError
@@ -18,6 +19,54 @@ def test_softmax_extreme_values():
 def test_invalid_scores_are_not_uniform(values):
     with pytest.raises(JevError, match="Missing or non-finite"):
         softmax(values)
+
+
+@pytest.mark.parametrize(
+    "values,temperature,expected",
+    [
+        # ties at a common offset stay uniform at any magnitude and temperature
+        ([-1e308, -1e308], 0.01, [0.5, 0.5]),
+        ([1e308, 1e308, 1e308], 1e-300, [1 / 3, 1 / 3, 1 / 3]),
+        ([-1e308, -1e308], 5e-324, [0.5, 0.5]),
+        # extreme magnitudes whose scaled gap genuinely overflows underflow to zero
+        ([1e308], 1, [1.0]),
+        ([1e308, -1e308], 1, [1.0, 0.0]),
+        # mixed extreme signs at a large temperature: the scaled gap is finite
+        ([-1e308, 1e308], 1e308, [0.11920292202211755, 0.8807970779778823]),
+        (
+            [-1e308, 0.0, 1e308],
+            1e308,
+            [0.09003057317038046, 0.24472847105479764, 0.6652409557748218],
+        ),
+        ([-1e308, 1e308], sys.float_info.max, [0.24739822911054554, 0.7526017708894543]),
+        (
+            [-sys.float_info.max, sys.float_info.max],
+            sys.float_info.max,
+            [0.11920292202211755, 0.8807970779778823],
+        ),
+        # a tiny positive temperature sharpens to the argmax
+        ([1.0, 2.0], 5e-324, [0.0, 1.0]),
+        ([2.0, 1.0], 5e-324, [1.0, 0.0]),
+        ([5e-324, 0.0], 5e-324, [0.7310585786300049, 0.2689414213699951]),
+        # close, large scores keep their fine-grained difference
+        ([1e15, 1e15 - 0.25], 1, [0.5621765008857981, 0.4378234991142019]),
+        ([1e15, 1e15 - 0.5], 0.5, [0.7310585786300049, 0.2689414213699951]),
+    ],
+)
+def test_softmax_numerically_stable(values, temperature, expected):
+    result = softmax(values, temperature)
+    assert result == pytest.approx(expected, rel=1e-14, abs=1e-15)
+    assert all(math.isfinite(p) for p in result)
+    assert math.fsum(result) == pytest.approx(1, rel=1e-15)
+
+
+@pytest.mark.parametrize(
+    "temperature", [0, 0.0, -0.0, -1, -1e308, float("nan"), float("inf"), float("-inf")]
+)
+def test_invalid_temperatures_fail_closed(temperature):
+    with pytest.raises(JevError, match="[Tt]emperature") as error:
+        softmax([1.0, 2.0], temperature)
+    assert error.value.code == "invalid_temperature"
 
 
 def test_choice_mass_is_not_conditional_probability(compiler, bundle, question):

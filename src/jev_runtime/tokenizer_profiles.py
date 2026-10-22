@@ -8,6 +8,7 @@ import inspect
 import json
 import random
 import re
+import stat
 import tempfile
 from importlib.metadata import version
 from pathlib import Path
@@ -500,9 +501,13 @@ def verify_tokenizer_profile(directory: Path, compiler=None) -> dict | None:
             "tokenizer_profile_mismatch", "Tokenizer profile publication is incomplete", 409
         )
     path = directory / "jev-tokenizer-profile.json"
-    if not path.exists():
-        return None
     try:
+        try:
+            mode = path.lstat().st_mode
+        except FileNotFoundError:
+            return None
+        if not stat.S_ISREG(mode):
+            raise ValueError("Tokenizer profile manifest must be a regular file")
         manifest = json.loads(path.read_text())
         if manifest["schema_version"] != 1 or manifest["kind"] not in {
             "glm4-tiktoken-fast-v1",
