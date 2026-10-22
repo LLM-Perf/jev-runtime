@@ -11,9 +11,18 @@ from jev_runtime.schema import Answer, Bundle
 def softmax(values: tuple[float, ...] | list[float], temperature: float = 1) -> list[float]:
     if not values or not all(math.isfinite(v) for v in values):
         raise JevError("invalid_scores", "Missing or non-finite model scores", 502)
-    scaled = [v / temperature for v in values]
-    peak = max(scaled)
-    exps = [math.exp(v - peak) for v in scaled]
+    if not math.isfinite(temperature) or temperature <= 0:
+        raise JevError("invalid_temperature", "Temperature must be positive and finite", 502)
+    peak = max(values)
+    exps = []
+    for value in values:
+        difference = value - peak
+        if difference == -math.inf:
+            # Overflow means opposite signs, so the scaled difference cannot be inf - inf.
+            difference = value / temperature - peak / temperature
+        else:
+            difference /= temperature
+        exps.append(math.exp(difference))
     total = math.fsum(exps)
     return [v / total for v in exps]
 
