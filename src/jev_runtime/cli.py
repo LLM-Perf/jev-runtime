@@ -132,6 +132,31 @@ def registry_restore_pair(directory: Path, manifest_sha256: str, source: Path, d
     output(restore_pair(directory, manifest_sha256, source, destination))
 
 
+@registry_app.command("fence-owners")
+def registry_fence_owners(source: Path, reason: str, acknowledgement: str):
+    """Fence unknown owners after the previous deployment is confirmed stopped.
+
+    Refuses while any owner is verifiably alive. Does not delete leases or receipts.
+    The acknowledgement must be previous-deployment-stopped. Reason is lost_host,
+    container_namespace, or unverifiable_identity.
+    """
+    from jev_runtime.owner_fence import fence_stale_owners
+
+    output(fence_stale_owners(source, reason, acknowledgement))
+
+
+@registry_app.command("retire-receipts")
+def registry_retire_receipts(source: Path, namespace: str, limit: int, acknowledgement: str):
+    """Move completed, unreferenced TokenSpeed receipts into a tombstone table.
+
+    Pending receipts stay. The registry must already be stopped and drained.
+    The acknowledgement must be retire-completed-unreferenced-receipts.
+    """
+    from jev_runtime.receipt_retirement import retire_completed_receipts
+
+    output(retire_completed_receipts(source, namespace, limit, acknowledgement))
+
+
 @registry_app.command("inspect")
 def registry_inspect(source: Path):
     """Read the exact schema version and migration blockers without registering an owner."""

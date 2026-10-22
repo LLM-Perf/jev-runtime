@@ -6,6 +6,7 @@ import json
 import uuid
 
 from jev_runtime.errors import JevError
+from jev_runtime.owner_fence import gone
 
 
 class QuiescenceRegistry:
@@ -24,6 +25,7 @@ class QuiescenceRegistry:
 
     def require_backend_open(self, backend):
         with self._connection() as db:
+            self._reject_if_fenced(db)
             self._require_backend_open(db, backend)
 
     def backend_control(self, backend):
@@ -52,7 +54,7 @@ class QuiescenceRegistry:
                 if (
                     worker["state"] != "STOPPED"
                     and worker["protocol"] != 1
-                    and self._owner_status(json.loads(worker["identity"])) != "dead"
+                    and not gone(self._status(json.loads(worker["identity"])))
                 ):
                     raise JevError(
                         "quiescence_protocol_mismatch",
@@ -126,7 +128,7 @@ class QuiescenceRegistry:
             waiting = [
                 row["worker_id"]
                 for row in workers
-                if row["state"] not in {"QUIESCED", "STOPPED"} and row["owner_status"] != "dead"
+                if row["state"] not in {"QUIESCED", "STOPPED"} and not gone(row["owner_status"])
             ]
             return {
                 **control,
@@ -140,7 +142,7 @@ class QuiescenceRegistry:
             }
 
     def resume_backend(self, backend, expected_generation):
-        """Offline only: require every previous worker stopped or verifiably dead."""
+        """Offline only: require every previous worker stopped, dead, or explicitly fenced."""
         with self._transaction() as db:
             row = db.execute(
                 "SELECT * FROM backend_controls WHERE backend=?", (backend,)
@@ -156,9 +158,8 @@ class QuiescenceRegistry:
                 "WHERE w.backend=?",
                 (backend,),
             ):
-                if (
-                    worker["state"] != "STOPPED"
-                    and self._owner_status(json.loads(worker["identity"])) != "dead"
+                if worker["state"] != "STOPPED" and not gone(
+                    self._status(json.loads(worker["identity"]))
                 ):
                     raise JevError(
                         "workers_not_stopped", "Stop all previous API workers first", 409
@@ -203,12 +204,12 @@ class QuiescenceRegistry:
         result = []
         for row in rows:
             item = dict(row)
-            status = self._owner_status(json.loads(item.pop("identity")))
+            status = self._status(json.loads(item.pop("identity")))
             result.append(
                 {
                     **item,
                     "owner_status": status,
-                    "recoverable": row["phase"] == "abort_pending" or status == "dead",
+                    "recoverable": row["phase"] == "abort_pending" or gone(status),
                 }
             )
         return result
@@ -235,7 +236,7 @@ class QuiescenceRegistry:
                 "WHERE r.resource=?",
                 (resource,),
             ).fetchone()
-            if row and self._owner_status(json.loads(row["identity"])) != "dead":
+            if row and not gone(self._status(json.loads(row["identity"]))):
                 raise JevError(
                     "recovery_in_progress", "A recovery operation already owns this work", 409
                 )

@@ -14,6 +14,7 @@ from pathlib import Path
 
 from jev_runtime.adapters import AdapterArtifact, AdapterBinding
 from jev_runtime.errors import JevError
+from jev_runtime.owner_fence import gone
 from jev_runtime.quiescence import QuiescenceRegistry
 from jev_runtime.registry_schema import REGISTRY_SCHEMA_SQL as REGISTRY_SCHEMA_SQL
 from jev_runtime.registry_schema import initialize, register_owner, require_migration_publication
@@ -55,12 +56,13 @@ class Registry(QuiescenceRegistry):
         self.owner = uuid.uuid4().hex
         self._pid = os.getpid()
         self._connection_lock = threading.RLock()
+        self._fence_generation = 0
         self._db: sqlite3.Connection | None = None
         try:
             with self._connection() as db:
                 initialize(db)
                 db.execute("PRAGMA journal_mode=WAL")
-                register_owner(db, self.owner, self._process_identity())
+                self._fence_generation = register_owner(db, self.owner, self._process_identity())
         except BaseException:
             self.close()
             raise
@@ -158,11 +160,38 @@ class Registry(QuiescenceRegistry):
                 values[name] = 0
         return values
 
+    def _reject_if_fenced(self, db: sqlite3.Connection) -> None:
+        from jev_runtime.owner_fence import current_fence_generation
+
+        if current_fence_generation(db) > self._fence_generation:
+            raise JevError(
+                "owner_fenced",
+                "Deployment fence advanced; stop this process before it writes again",
+                409,
+            )
+
+    def _status(self, identity: dict) -> str:
+        """Process liveness, with an explicit fence turning unknown into fenced."""
+        status = self._owner_status(identity)
+        if status != "unknown":
+            return status
+        from jev_runtime.owner_fence import fenced_owner, observation
+
+        try:
+            observed = observation()
+        except ValueError:
+            return "unknown"
+        with self._connection() as db:
+            if fenced_owner(db, identity, observed):
+                return "fenced"
+        return "unknown"
+
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
         with self._connection() as db:
             db.execute("BEGIN IMMEDIATE")
             try:
+                self._reject_if_fenced(db)
                 yield db
             except BaseException:
                 db.rollback()
@@ -323,9 +352,8 @@ class Registry(QuiescenceRegistry):
                 "WHERE w.backend=? AND w.state!='STOPPED'",
                 (backend,),
             ).fetchall():
-                if (
-                    worker["policy"] != policy
-                    and self._owner_status(json.loads(worker["identity"])) != "dead"
+                if worker["policy"] != policy and not gone(
+                    self._status(json.loads(worker["identity"]))
                 ):
                     raise JevError(
                         "admission_policy_conflict",
@@ -403,7 +431,7 @@ class Registry(QuiescenceRegistry):
                 "worker_id": row["owner"],
                 "backend": row["backend"],
                 "state": row["state"],
-                "owner_status": self._owner_status(json.loads(row["identity"])),
+                "owner_status": self._status(json.loads(row["identity"])),
                 "prepared": sorted(
                     item["ref"] for item in prepared if item["owner"] == row["owner"]
                 ),
@@ -446,7 +474,7 @@ class Registry(QuiescenceRegistry):
                     "expected_workers": row["expected_workers"],
                     "state": row["state"],
                     "backend": row["backend"],
-                    "owner_status": self._owner_status(json.loads(row["identity"])),
+                    "owner_status": self._status(json.loads(row["identity"])),
                 }
                 for row in rows
             ],
@@ -476,7 +504,7 @@ class Registry(QuiescenceRegistry):
                 row["owner"]
                 for row in workers
                 if row["digest"] != bundle["digest"]
-                and self._owner_status(json.loads(row["identity"])) != "dead"
+                and not gone(self._status(json.loads(row["identity"])))
             ]
             if unprepared:
                 raise JevError(
@@ -718,7 +746,7 @@ class Registry(QuiescenceRegistry):
         result = []
         for row in rows:
             owner_status = (
-                self._owner_status(json.loads(row["identity"])) if row["identity"] else "unknown"
+                self._status(json.loads(row["identity"])) if row["identity"] else "unknown"
             )
             result.append(
                 {
@@ -731,7 +759,7 @@ class Registry(QuiescenceRegistry):
                     "reference": row["ref"],
                     "engine_request_ids": json.loads(row["branches"] or "[]"),
                     "recoverable": row["phase"] == "abort_pending"
-                    or (row["phase"] == "inflight" and owner_status == "dead"),
+                    or (row["phase"] == "inflight" and gone(owner_status)),
                 }
             )
         return result
@@ -843,7 +871,7 @@ class Registry(QuiescenceRegistry):
                 "WHERE backend=? AND w.owner!=? AND state!='STOPPED'",
                 (backend, self.owner),
             ):
-                if self._owner_status(json.loads(worker["identity"])) != "dead":
+                if not gone(self._status(json.loads(worker["identity"]))):
                     raise JevError(
                         "adapter_coordinator_active",
                         "Managed LoRA requires one exclusive API worker",
@@ -987,7 +1015,7 @@ class Registry(QuiescenceRegistry):
                 if (
                     not recover
                     or not owner
-                    or self._owner_status(json.loads(owner["identity"])) != "dead"
+                    or not gone(self._status(json.loads(owner["identity"])))
                 ):
                     raise JevError(
                         "adapter_operation_active",

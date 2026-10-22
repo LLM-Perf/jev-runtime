@@ -11,7 +11,6 @@ import time
 from contextlib import closing
 from pathlib import Path
 
-from jev_runtime.registry import Registry
 from jev_runtime.registry_schema import identify, schema
 
 
@@ -94,11 +93,9 @@ def blockers(db: sqlite3.Connection) -> dict[str, int]:
         count = db.execute(query).fetchone()[0]
         if count:
             result[name] = count
-    for (identity,) in db.execute("SELECT identity FROM owners"):
-        state = Registry._owner_status(json.loads(identity))
-        if state != "dead":
-            key = "owners_" + state
-            result[key] = result.get(key, 0) + 1
+    from jev_runtime.owner_fence import maintenance_owner_blockers
+
+    result.update(maintenance_owner_blockers(db))
     return result
 
 

@@ -220,16 +220,22 @@ def initialize(db: sqlite3.Connection) -> None:
         raise
 
 
-def register_owner(db: sqlite3.Connection, owner: str, identity: dict) -> None:
+def register_owner(db: sqlite3.Connection, owner: str, identity: dict) -> int:
     # This deferred FK and trigger form the client compatibility handshake.
     # Legacy constructors insert into owners directly and fail before joining
     # admission or issuing any engine work. Existing clients must be stopped
     # before migration; a database cannot revoke code already holding GPU work.
+    # The fence generation is read under the same writer lock as the insert.
+    from jev_runtime.owner_fence import current_fence_generation
+
     db.execute("BEGIN IMMEDIATE")
     try:
+        stamped = dict(identity)
+        stamped["fence_generation"] = current_fence_generation(db)
         db.execute("INSERT INTO owner_protocols VALUES(?,1)", (owner,))
-        db.execute("INSERT INTO owners VALUES(?,?,?)", (owner, json.dumps(identity), time.time()))
+        db.execute("INSERT INTO owners VALUES(?,?,?)", (owner, json.dumps(stamped), time.time()))
         db.commit()
+        return stamped["fence_generation"]
     except BaseException:
         db.rollback()
         raise

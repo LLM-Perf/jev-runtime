@@ -1,7 +1,8 @@
 """Coordinated, stopped-state registry + TokenSpeed receipt snapshots.
 
 Both SQLite writer reservations remain held while taking/verifying the pair.
-No dead-owner assumption, receipt deletion or lost-host recovery is introduced.
+Fenced owners are stopped for this purpose. Pending receipts are never deleted
+here; completed-receipt retirement is a separate explicit operation.
 """
 
 from __future__ import annotations
@@ -32,14 +33,31 @@ from jev_runtime.registry_backup import (
 def receipt_summary(db):
     if db.execute("PRAGMA user_version").fetchone()[0] != 1:
         raise ValueError("Unsupported receipt schema")
-    tables = db.execute("SELECT name FROM sqlite_schema WHERE type='table'").fetchall()
+    names = [
+        row[0]
+        for row in db.execute(
+            "SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%' "
+            "ORDER BY name"
+        )
+    ]
     columns = db.execute("PRAGMA table_info(receipts)").fetchall()
-    if tables != [("receipts",)] or [(r[1], r[2], r[3], r[5]) for r in columns] != [
+    retired = "retired_receipts" in names
+    if names not in (["receipts"], ["receipts", "retired_receipts"]) or [
+        (r[1], r[2], r[3], r[5]) for r in columns
+    ] != [
         ("namespace", "TEXT", 1, 1),
         ("request_id", "TEXT", 1, 2),
         ("state", "TEXT", 1, 0),
     ]:
         raise ValueError("Incompatible receipt database")
+    if retired:
+        retired_columns = db.execute("PRAGMA table_info(retired_receipts)").fetchall()
+        if [(r[1], r[2], r[3], r[5]) for r in retired_columns] != [
+            ("namespace", "TEXT", 1, 1),
+            ("request_id", "TEXT", 1, 2),
+            ("operation_id", "TEXT", 1, 0),
+        ]:
+            raise ValueError("Incompatible retired receipt table")
     if db.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Receipt integrity check failed")
     h, count, pending = hashlib.sha256(), 0, 0
@@ -52,7 +70,19 @@ def receipt_summary(db):
         h.update(len(data).to_bytes(8, "big") + data)
         count += 1
         pending += row[2] == "pending"
-    return {"rows": count, "pending": pending, "content_sha256": h.hexdigest()}
+    retired_count = 0
+    if retired:
+        for row in db.execute(
+            "SELECT namespace,request_id,operation_id FROM retired_receipts "
+            "ORDER BY namespace,request_id"
+        ):
+            data = canonical(row)
+            h.update(len(data).to_bytes(8, "big") + data)
+            retired_count += 1
+    summary = {"rows": count, "pending": pending, "content_sha256": h.hexdigest()}
+    if retired:
+        summary["retired"] = retired_count
+    return summary
 
 
 @contextmanager

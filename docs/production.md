@@ -180,11 +180,59 @@ the command returns; its short-lived SQL locks cannot fence a future supervisor
 restart. Start only the intended restored path with the same engine/model binding,
 then require fresh readiness before switching traffic.
 
-This is same-host stopped-state recovery. Lost-host restoration, changed PID/UTS
-namespaces, unknown-owner overrides, automatic receipt expiry and engine-epoch
-retirement are not implemented by this operation. Never delete pending receipts,
-leases or journal rows to make restore pass. These broader scenarios remain
-explicit failures in the production recovery gate until implemented and tested.
+## 4a. Fence a lost host or replaced container
+
+Same-host process death is already classified as `dead`. A reboot, a new
+container PID namespace, or a registry opened on another host leaves those
+owners `unknown`. Unknown owners continue to block recovery, restore and
+admission. Fence them only after the previous deployment is stopped and its
+supervisor cannot restart it:
+
+```sh
+jevctl registry fence-owners /data/jev/registry.db lost_host \
+  previous-deployment-stopped
+```
+
+Use `container_namespace` when the host and boot ID still match but the PID
+namespace changed, and `unverifiable_identity` when the recorded identity has
+no boot ID, PID namespace or start ticks. The command refuses a reason that
+does not match every unknown owner, and it refuses while any owner is
+verifiably alive in this PID namespace. It writes a `deployment_fence` event
+and does not delete leases, journals or receipts.
+
+A process of this runtime version that registered before that generation fails
+its next registry write with `owner_fenced` and fails `/ready`. `/live` stays
+a process-liveness signal. Repeat the command only after another boot or
+namespace change; while the same observation still covers those owners, the
+second call does not advance the generation.
+
+This is not a distributed lock. A copy of the database cannot stop a process
+that is still serving another copy, and a binary that does not perform this
+generation check will ignore the fence. Do not start traffic until explicit
+recovery has released every fenced lease and a new process reports ready.
+
+## 4b. Retire completed TokenSpeed receipts
+
+Completed receipts are idempotency records. Deleting them would let the same
+native request ID be dispatched again. Retirement moves completed,
+unreferenced IDs into `retired_receipts` in the receipt database and appends
+a `receipts_retired` audit event, in one transaction across both files.
+`reserve` of a retired ID still fails closed. `completed` stays false for a
+retired ID, so retirement is never treated as fresh completion proof.
+Pending rows are never removed. There is no time-based expiry.
+
+Stop every writer, fence or confirm every owner dead, and drain leases first.
+The registry must have no restore blockers:
+
+```sh
+jevctl registry retire-receipts /data/jev/registry.db NAMESPACE 1024 \
+  retire-completed-unreferenced-receipts
+```
+
+`NAMESPACE` is the TokenSpeed receipt namespace (a `sha256:` digest of the
+engine binding). Each call retires at most 1,024 IDs. Repeat until it reports
+that nothing completed remains. Then take a new paired snapshot; the tombstone
+table is part of that snapshot. Do not hand-delete either SQLite file.
 
 ## 5. Build images and operate probes/metrics
 
@@ -225,11 +273,13 @@ disk capacity and TokenSpeed receipt-store growth separately.
 
 ## Remaining acceptance work
 
-Implemented tools do not close the real-GPU, business-data or infrastructure gates.
-The 2026-10-14 read-only check of the existing project DSW found SM89 GPUs with
-other workloads occupying most memory; it is unsuitable for a controlled capacity
-claim and does not meet the pinned TokenSpeed profile's GPU requirements. A free
-supported GPU, business quality datasets/targets and an actual recovery/fencing
-design are still required before all three candidate profiles can qualify.
-The drafts and historical performance matrix remain unpassed until new results
-are collected. No 24-hour production soak is claimed by adding its runner.
+Fence and receipt retirement are executable and covered by CPU contracts. They
+do not close the real-GPU, business-data or infrastructure gates. The
+2026-10-14 read-only check of the existing project DSW found SM89 GPUs with
+other workloads occupying most memory; it is unsuitable for a controlled
+capacity claim and does not meet the pinned TokenSpeed profile's GPU
+requirements. A free supported GPU and business quality datasets/targets are
+still required before a candidate profile can qualify. The drafts and
+historical performance matrix remain unpassed until new results are collected.
+No 24-hour production soak is claimed by adding its runner. No cross-host
+quorum is claimed for the fence.
