@@ -20,6 +20,14 @@ jobs:
       - run: ruff format --check src tests packages deployment benchmarks
       - run: pytest -q
       - run: python -m build
+      - name: Smoke-test wheel tokenizers extra in an isolated venv
+        run: |
+          wheel=$(ls "${GITHUB_WORKSPACE}"/dist/jev_runtime_core-*.whl)
+          venv="${RUNNER_TEMP}/jev-wheel-smoke"
+          python -m venv "${venv}"
+          "${venv}/bin/python" -m pip install "${wheel}[tokenizers]"
+          cd "${RUNNER_TEMP}"
+          "${venv}/bin/python" -I "${GITHUB_WORKSPACE}/tests/integration/packaging_smoke.py"
       - run: python -m build packages/sglang
       - run: python -m build packages/vllm
       - run: python -m build packages/tokenspeed
