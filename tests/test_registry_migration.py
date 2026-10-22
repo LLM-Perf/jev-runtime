@@ -7,6 +7,7 @@ from contextlib import closing
 import pytest
 from typer.testing import CliRunner
 
+from jev_runtime import registry as registry_module
 from jev_runtime import registry_migration
 from jev_runtime.cli import app
 from jev_runtime.registry import Registry
@@ -193,6 +194,106 @@ def test_fresh_concurrent_startup_registers_every_owner_atomically(tmp_path):
             db.execute("SELECT count(*) FROM owner_protocols WHERE protocol=1").fetchone()[0] == 16
         )
         assert not db.execute("PRAGMA foreign_key_check").fetchall()
+
+
+def hold_reader_after_initialization(monkeypatch, path):
+    initialize = registry_module.initialize
+    connections = []
+
+    def initialize_with_reader(db):
+        initialize(db)
+        reader = sqlite3.connect(path, isolation_level=None)
+        reader.execute("BEGIN")
+        reader.execute("SELECT count(*) FROM owners").fetchone()
+        connections.extend((db, reader))
+
+    monkeypatch.setattr(registry_module, "initialize", initialize_with_reader)
+    return connections
+
+
+def test_startup_retries_wal_after_real_reader_releases_lock(tmp_path, monkeypatch):
+    path = tmp_path / "registry.db"
+    connections = hold_reader_after_initialization(monkeypatch, path)
+    waits = []
+
+    def release_reader(delay):
+        waits.append(delay)
+        connections[1].rollback()
+
+    monkeypatch.setattr(registry_module.time, "sleep", release_reader)
+    try:
+        registry = Registry(path)
+        try:
+            with registry._connection() as db:
+                assert db.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
+                assert db.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
+                assert db.execute("SELECT owner FROM owners").fetchone()[0] == registry.owner
+                assert db.execute("SELECT count(*) FROM owner_protocols").fetchone()[0] == 1
+                assert not db.execute("PRAGMA foreign_key_check").fetchall()
+            assert waits == [0.01]
+        finally:
+            registry.close()
+    finally:
+        if connections:
+            connections[1].close()
+
+
+def test_startup_wal_busy_deadline_closes_connection_without_owner(tmp_path, monkeypatch):
+    path = tmp_path / "registry.db"
+    connections = hold_reader_after_initialization(monkeypatch, path)
+    clock = iter((0.0, 5.0))
+    monkeypatch.setattr(registry_module.time, "monotonic", lambda: next(clock))
+    try:
+        with pytest.raises(sqlite3.OperationalError) as caught:
+            Registry(path)
+        assert caught.value.sqlite_errorcode == sqlite3.SQLITE_BUSY
+        with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+            connections[0].execute("SELECT 1")
+        reader = connections[1]
+        reader.rollback()
+        assert reader.execute("SELECT count(*) FROM owners").fetchone()[0] == 0
+        assert reader.execute("SELECT count(*) FROM owner_protocols").fetchone()[0] == 0
+    finally:
+        if connections:
+            connections[1].close()
+
+
+@pytest.mark.parametrize("code", [sqlite3.SQLITE_LOCKED, sqlite3.SQLITE_IOERR, None])
+def test_startup_propagates_nonbusy_wal_errors_without_owner(tmp_path, monkeypatch, code):
+    path = tmp_path / "registry.db"
+    failure = sqlite3.OperationalError("injected WAL failure")
+    if code is not None:
+        failure.sqlite_errorcode = code
+    connect = sqlite3.connect
+    connections = []
+
+    class FailingConnection(sqlite3.Connection):
+        def execute(self, sql, *args, **kwargs):
+            if sql == "PRAGMA journal_mode=WAL":
+                raise failure
+            return super().execute(sql, *args, **kwargs)
+
+    def failing_connect(database, *args, **kwargs):
+        if database == path:
+            kwargs["factory"] = FailingConnection
+        db = connect(database, *args, **kwargs)
+        if database == path:
+            connections.append(db)
+        return db
+
+    def unexpected_retry(delay):
+        pytest.fail("Non-BUSY errors must not be retried")
+
+    monkeypatch.setattr(registry_module.sqlite3, "connect", failing_connect)
+    monkeypatch.setattr(registry_module.time, "sleep", unexpected_retry)
+    with pytest.raises(sqlite3.OperationalError) as caught:
+        Registry(path)
+    assert caught.value is failure
+    with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+        connections[0].execute("SELECT 1")
+    with closing(connect(path)) as db:
+        assert db.execute("SELECT count(*) FROM owners").fetchone()[0] == 0
+        assert db.execute("SELECT count(*) FROM owner_protocols").fetchone()[0] == 0
 
 
 def test_stale_backup_and_wrong_transition_do_not_allocate(tmp_path, bundle, monkeypatch):

@@ -59,11 +59,34 @@ class Registry(QuiescenceRegistry):
         try:
             with self._connection() as db:
                 initialize(db)
-                db.execute("PRAGMA journal_mode=WAL")
+                self._enable_wal(db)
                 register_owner(db, self.owner, self._process_identity())
         except BaseException:
             self.close()
             raise
+
+    @staticmethod
+    def _enable_wal(db: sqlite3.Connection) -> None:
+        # Switching journal mode can return BUSY without invoking SQLite's busy
+        # handler. Use one deadline for these retries and restore normal waits
+        # before registering the owner or serving any registry transactions.
+        timeout_ms = db.execute("PRAGMA busy_timeout").fetchone()[0]
+        deadline = time.monotonic() + timeout_ms / 1000
+        db.execute("PRAGMA busy_timeout=0")
+        try:
+            while True:
+                try:
+                    db.execute("PRAGMA journal_mode=WAL")
+                    return
+                except sqlite3.OperationalError as error:
+                    if getattr(error, "sqlite_errorcode", 0) & 0xFF != sqlite3.SQLITE_BUSY:
+                        raise
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise
+                    time.sleep(min(0.01, remaining))
+        finally:
+            db.execute(f"PRAGMA busy_timeout={timeout_ms}")
 
     @staticmethod
     def _process_identity() -> dict:
