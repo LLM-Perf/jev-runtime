@@ -75,11 +75,19 @@ class ScoringHTTP:
             raise JevError("score_contract", "Invalid engine scoring response", 502) from exc
 
     async def cancel(self, request_id: str) -> None:
-        response = await self.client.post(
-            self.prefix + "/scores/cancel", json={"request_id": request_id}
-        )
-        response.raise_for_status()
-        if response.json() != {"cancelled": True}:
+        try:
+            response = await self.client.post(
+                self.prefix + "/scores/cancel", json={"request_id": request_id}
+            )
+            response.raise_for_status()
+            confirmation = response.json()
+        except (httpx.HTTPError, ValueError) as exc:
+            raise JevError("cancellation_unconfirmed", "Engine did not confirm drain", 503) from exc
+        if not (
+            isinstance(confirmation, dict)
+            and set(confirmation) == {"cancelled"}
+            and confirmation["cancelled"] is True
+        ):
             raise JevError("cancellation_unconfirmed", "Engine did not confirm drain", 503)
 
     async def close(self) -> None:
