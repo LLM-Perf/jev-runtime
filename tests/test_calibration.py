@@ -1,5 +1,6 @@
 import math
 
+import numpy as np
 import pytest
 from pydantic import ValidationError
 
@@ -23,6 +24,49 @@ def rows(prefix):
         )
         for i in range(50)
     ]
+
+
+@pytest.mark.parametrize(
+    "label", [True, False, 0.5, 1.0, "1", None, [], {}, np.int64(1), np.bool_(True)]
+)
+def test_labeled_scores_rejects_non_python_integer_labels(label):
+    sample = LabeledScores("sample", "group", (0, -1), label)
+    with pytest.raises(ValueError, match="integer"):
+        sample.validate()
+
+
+@pytest.mark.parametrize("label", [-1, 2])
+def test_labeled_scores_rejects_out_of_range_labels(label):
+    with pytest.raises(ValueError, match="target index"):
+        LabeledScores("sample", "group", (0, -1), label).validate()
+
+
+@pytest.mark.parametrize("label", [True, 1.0])
+def test_quality_metrics_rejects_non_integer_labels_before_indexing(label):
+    with pytest.raises(ValueError, match="integer"):
+        quality_metrics([LabeledScores("sample", "group", (0, -1), label)])
+
+
+@pytest.mark.parametrize("fitter", [fit_temperature, fit_platt])
+@pytest.mark.parametrize("split", ["fit", "heldout"])
+@pytest.mark.parametrize("label", [True, 1.0])
+def test_fitters_reject_non_integer_labels_in_either_split(bundle, fitter, split, label):
+    samples = {
+        "fit": [LabeledScores("fit", "fit-group", (0, -1), 0)],
+        "heldout": [LabeledScores("heldout", "heldout-group", (0, -1), 0)],
+    }
+    samples[split] = [LabeledScores(split, f"{split}-group", (0, -1), label)]
+    with pytest.raises(ValueError, match="integer"):
+        fitter(samples["fit"], samples["heldout"], bundle.scoring_contract_digest)
+
+
+@pytest.mark.parametrize("label", [0, 1])
+def test_quality_metrics_preserves_integer_label_indexing(label):
+    sample = LabeledScores("sample", "group", (math.log(0.75), math.log(0.25)), label)
+    sample.validate()
+    result = quality_metrics([sample])
+    assert result["accuracy"] == int(label == 0)
+    assert result["nll"] == pytest.approx(-sample.logprobs[label])
 
 
 def test_temperature_fit_uses_separate_groups_and_improves_heldout(bundle, question):
