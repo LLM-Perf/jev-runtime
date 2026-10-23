@@ -125,11 +125,6 @@ class Admission:
         ticket = object()
         item = (ticket, tokens, branches)
         async with self._condition:
-            if (
-                self.queued >= self.max_queue
-                or len(self._queues.get(tenant, ())) >= self.max_tenant_queue
-            ):
-                raise JevError("queue_full", "Admission queue is full", 429)
             if tenant not in self._queues:
                 self._queues[tenant] = deque()
                 self._round_robin.append(tenant)
@@ -137,6 +132,13 @@ class Admission:
             self.queued += 1
             self._condition.notify_all()
             try:
+                # Queue limits bound waiting work. Check the normal scheduler
+                # first so a full, ineligible queue cannot deny idle capacity.
+                if (
+                    self.queued > self.max_queue
+                    or len(self._queues[tenant]) > self.max_tenant_queue
+                ) and self._next_ticket() is not ticket:
+                    raise JevError("queue_full", "Admission queue is full", 429)
                 await self._condition.wait_for(lambda: self._next_ticket() is ticket)
                 self._remove(tenant, item, rotate=True)
                 self.requests += 1

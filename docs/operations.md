@@ -114,7 +114,9 @@ admission:
 The server derives the tenant from the credential; clients cannot choose an
 arbitrary tenant name in request bodies. Queues use FIFO within a tenant and
 round-robin admission between eligible tenants. Fairness is by admitted request,
-not GPU execution time. Tokens and branches count every expanded scoring sequence,
+not GPU execution time. Queue limits bound requests that must wait: a full queue
+does not reject an immediately eligible request, provided it does not pass an
+existing eligible queue head. Tokens and branches count every expanded scoring sequence,
 including branches not yet dispatched within an admitted request. This conservative
 reservation lasts until the request lease is safely released. Unknown cache hits
 do not discount token demand.

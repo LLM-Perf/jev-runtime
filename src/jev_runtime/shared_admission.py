@@ -120,11 +120,6 @@ class SharedAdmission:
             "FROM admission_tickets WHERE backend=? AND state='QUEUED'",
             (tenant, self.backend),
         ).fetchone()
-        if (
-            queued["total"] >= self._limits["max_queue"]
-            or queued["tenant_total"] >= self._limits["max_tenant_queue"]
-        ):
-            raise JevError("queue_full", "Shared admission queue is full", 429)
         # Remove idle tenant scheduling entries. Authenticated tenant names
         # are configured, but long-lived deployments need not accumulate old ones.
         db.execute(
@@ -146,7 +141,16 @@ class SharedAdmission:
             # Recovery IDs and the reservation become durable together. Neither
             # an admitted caller nor a queued waiter can dispatch before commit.
             self.registry._record_branches(db, lease_id, branch_ids)
-        return self._try_admit(db, lease_id)
+        admitted = self._try_admit(db, lease_id)
+        # Only waiting work consumes a queue slot. The normal scheduler still
+        # prevents bypassing an eligible tenant or this tenant's FIFO head.
+        if not admitted and (
+            queued["total"] >= self._limits["max_queue"]
+            or queued["tenant_total"] >= self._limits["max_tenant_queue"]
+        ):
+            # Roll back the ticket and journal together with any combined lease.
+            raise JevError("queue_full", "Shared admission queue is full", 429)
+        return admitted
 
     def _try_admit(self, db, lease_id: str) -> bool:
         usage = db.execute(
