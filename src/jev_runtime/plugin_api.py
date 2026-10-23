@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-import hmac
 import os
 from dataclasses import asdict
 
 from fastapi import APIRouter, Depends, FastAPI, Header, Request
 from pydantic import Field, model_validator
 
-from jev_runtime.api import disconnect_guard, install_routes
+from jev_runtime.api import disconnect_guard, install_routes, matches_bearer_token
 from jev_runtime.backends.base import ScoreInput
 from jev_runtime.config import load_settings, tenant_keys
 from jev_runtime.errors import JevError
@@ -50,7 +49,7 @@ def install_plugin_routes(app: FastAPI) -> None:
     install_routes(app, prefix=prefix, api_key=api_key, admin_key=admin_key, tenants=tenants)
 
     async def authorize(authorization: str | None = Header(default=None)):
-        if not api_key or not hmac.compare_digest(authorization or "", f"Bearer {api_key}"):
+        if not api_key or not matches_bearer_token(authorization, api_key):
             raise JevError("unauthorized", "Plugin scoring requires JEV_API_KEY", 401)
 
     router = APIRouter(prefix=prefix + "/v1", dependencies=[Depends(authorize)])

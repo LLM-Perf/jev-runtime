@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, ValidationError
 
 from jev_runtime.errors import JevError
 from jev_runtime.schema import (
@@ -24,6 +24,16 @@ class SystemOneRequest(Contract):
     timeout_ms: int = Field(default=30000, gt=0, le=300000)
 
     def to_decision(self) -> DecisionRequest:
+        try:
+            return self._to_decision()
+        except ValidationError as exc:
+            raise JevError(
+                "invalid_request",
+                "System One request does not satisfy the decision schema",
+                422,
+            ) from exc
+
+    def _to_decision(self) -> DecisionRequest:
         questions = []
         for qid, spec in self.questions.items():
             allowed = {"type", "instructions", "criteria", "levels", "values"}

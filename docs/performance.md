@@ -67,8 +67,9 @@ report distinguishes strict successes over the full cohort makespan from success
 completed inside the measurement window. Both intervals must be finite and positive,
 and the makespan must cover the window, including for an empty cohort. Invalid
 intervals are rejected before computing rates or drain time. A partial result never
-counts as a fully successful request. HTTP and response-contract failures remain in the denominator.
-Cache ratios use summed observed tokens; missing observations remain unknown.
+counts as a fully successful request. HTTP and response-contract failures remain in
+the denominator. Cache ratios use summed observed tokens; missing observations remain
+unknown.
 P99 is omitted below 10,000 successful samples and is descriptive even above that
 threshold. The runner never marks the release gate passed.
 
