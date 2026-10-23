@@ -1,4 +1,7 @@
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -96,3 +99,62 @@ def test_lora_profile_does_not_generalize_checkpoint_or_revision():
         with pytest.raises(JevError) as error:
             validate_lora_base(model, revision)
         assert error.value.code == "adapter_profile"
+
+
+def assert_store_rejects_promptly(store, source, artifact, action, code, status):
+    # A real FIFO regression must fail without leaving a blocked worker behind.
+    script = """
+import json
+import sys
+from jev_runtime.adapters import AdapterArtifact, AdapterStore
+from jev_runtime.errors import JevError
+
+root, source, action, artifact = sys.argv[1:]
+store = AdapterStore(root, (source,))
+try:
+    if action == "register":
+        store.register("task", source, "fixture", "a" * 40)
+    else:
+        store.verify(AdapterArtifact.model_validate_json(artifact))
+except JevError as error:
+    print(json.dumps({"code": error.code, "status": error.status_code}))
+else:
+    raise AssertionError("Invalid adapter file was accepted")
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script, str(store.root), str(source), action, artifact],
+        capture_output=True,
+        text=True,
+        timeout=5,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"code": code, "status": status}
+    assert not list(store.root.glob(".staging-*"))
+
+
+@pytest.mark.parametrize("name", AdapterStore.files)
+def test_registration_rejects_fifo_source_without_waiting(tmp_path, adapter_source, name):
+    store = AdapterStore(tmp_path / "store", (str(adapter_source.parent),))
+    path = adapter_source / name
+    path.unlink()
+    os.mkfifo(path)
+
+    assert_store_rejects_promptly(store, adapter_source, "", "register", "adapter_path", 400)
+
+
+@pytest.mark.parametrize("action", ["register", "verify"])
+@pytest.mark.parametrize("kind", ["fifo", "directory", "missing"])
+@pytest.mark.parametrize("name", AdapterStore.files)
+def test_stored_adapter_file_corruption_is_rejected(tmp_path, adapter_source, action, kind, name):
+    store = AdapterStore(tmp_path / "store", (str(adapter_source.parent),))
+    artifact = store.register("task", str(adapter_source), "fixture", "a" * 40)
+    path = Path(artifact.path) / name
+    path.unlink()
+    if kind == "fifo":
+        os.mkfifo(path)
+    elif kind == "directory":
+        path.mkdir()
+
+    assert_store_rejects_promptly(
+        store, adapter_source, artifact.model_dump_json(), action, "adapter_corrupted", 409
+    )
