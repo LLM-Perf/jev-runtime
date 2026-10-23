@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from fractions import Fraction
 
 import numpy as np
 
@@ -66,11 +67,23 @@ def _scaled_scores(row: LabeledScores, temperature: float) -> list[float]:
 
 
 def _probabilities(row: LabeledScores, temperature: float, bias: float = 0) -> np.ndarray:
-    scores = _scaled_scores(row, temperature)
     if bias:
-        if len(scores) != 2:
+        if len(row.logprobs) != 2:
             raise ValueError("Platt bias only applies to binary distributions")
-        scores[0] += float(bias)
+        # Bias can cancel a huge scaled score and expose a much smaller logit.
+        # Keep that binary margin exact until the final float conversion; either
+        # centering or scaling each term first can discard the surviving value.
+        margin = (
+            Fraction.from_float(float(row.logprobs[0]))
+            - Fraction.from_float(float(row.logprobs[1]))
+        ) / Fraction.from_float(float(temperature)) + Fraction.from_float(float(bias))
+        try:
+            value = float(margin)
+        except OverflowError:
+            value = math.inf if margin > 0 else -math.inf
+        scores = [min(value, 0.0), min(-value, 0.0)]
+    else:
+        scores = _scaled_scores(row, temperature)
     peak = max(scores)
     result = [math.exp(value - peak) for value in scores]
     return np.asarray(result) / math.fsum(result)

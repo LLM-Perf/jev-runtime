@@ -147,6 +147,10 @@ def test_temperature_upper_boundary_produces_valid_artifact(bundle):
         ((0, -1e-323), 5e-324, 0, (1 / (1 + math.exp(-2)), 1 / (1 + math.exp(2)))),
         ((1e308, -1e308), 0.01, -1e308, (1, 0)),
         ((-1e308, 1e308), 0.01, 1e308, (0, 1)),
+        ((1e100, 1e308), 1, 1e308, (1, 0)),
+        ((1e308, 1e100), 1, -1e308, (0, 1)),
+        ((1, 0), 5e-324, -100, (1, 0)),
+        ((0, 1), 5e-324, 100, (0, 1)),
     ],
 )
 def test_quality_metrics_handles_extreme_finite_scores(scores, temperature, bias, probabilities):
