@@ -264,8 +264,14 @@ export class JevClient {
   }
 
   async decide(request: DecisionRequest, options: { signal?: AbortSignal } = {}): Promise<DecisionResponse> {
-    return parseDecision(await this.call("/v1/decisions", request, options.signal,
+    // Capture before dispatch: callers may reuse or mutate the object in flight.
+    const requestId = request.request_id;
+    const response = parseDecision(await this.call("/v1/decisions", request, options.signal,
       (request.execution?.timeout_ms ?? 30000) + 10000));
+    if (requestId != null && response.request_id !== requestId) {
+      invalid("Decision response request ID does not match the submitted request");
+    }
+    return response;
   }
 
   async cancel(requestId: string, options: { signal?: AbortSignal } = {}): Promise<boolean> {
