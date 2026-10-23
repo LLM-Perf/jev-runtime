@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+from contextlib import AsyncExitStack
 from pathlib import Path
 
 import yaml
@@ -142,6 +143,15 @@ def model_identity(settings: Settings, compiler: Compiler) -> ModelIdentity:
 async def build_runtime(
     settings: Settings, native_backend=None, compiler: Compiler | None = None
 ) -> Runtime:
+    """Transfer resource ownership to Runtime only after construction succeeds."""
+    if settings.deployment_id is not None and settings.release_id is None:
+        raise ValueError("A deployment_id requires an immutable release_id")
+    if settings.adapters.enabled:
+        if native_backend is None or settings.workers != 1:
+            raise JevError(
+                "adapter_profile", "Managed LoRA requires a native single-worker plugin", 409
+            )
+        validate_lora_base(settings.model_id, settings.model_revision)
     provided_compiler = compiler is not None
     compiler = compiler or await asyncio.to_thread(load_compiler, settings)
     from jev_runtime.tokenizer_profiles import verify_tokenizer_profile
@@ -166,44 +176,46 @@ async def build_runtime(
             raise JevError(
                 "template_mismatch", "Compiler differs from configured chat template", 409
             )
-    if native_backend is not None:
-        backend = native_backend
-    else:
-        backend = create_backend(settings, os.environ.get(settings.engine_key_env))
+    expected_model = model_identity(settings, compiler)
     identity = (
         f"{settings.backend}:{settings.engine_url}:{settings.model_id}:{settings.model_revision}"
     )
     store = None
     if settings.adapters.enabled:
-        if native_backend is None or settings.workers != 1:
-            raise JevError(
-                "adapter_profile", "Managed LoRA requires a native single-worker plugin", 409
-            )
-        validate_lora_base(settings.model_id, settings.model_revision)
         store = AdapterStore(
             settings.adapters.store_path,
             settings.adapters.allowed_roots,
             settings.adapters.max_bytes,
         )
-        backend.managed_lora = True
-    registry = Registry(settings.registry_path)
-    if settings.deployment_id is not None:
-        if settings.release_id is None:
-            raise ValueError("A deployment_id requires an immutable release_id")
-        registry.tag_deployment(settings.deployment_id, settings.release_id, settings.workers)
-    return Runtime(
-        backend,
-        compiler,
-        registry,
-        identity,
-        settings.model_id,
-        admission=SharedAdmission(registry, identity, **settings.admission.model_dump()),
-        expected_model=model_identity(settings, compiler),
-        adapter_store=store,
-        adapter_timeout=settings.adapters.operation_timeout_seconds,
-        health_settings=settings.health,
-        recovery_only=settings.recovery_only,
-    )
+    async with AsyncExitStack() as cleanup:
+        if native_backend is not None:
+            backend = native_backend
+        else:
+            backend = create_backend(settings, os.environ.get(settings.engine_key_env))
+            cleanup.push_async_callback(backend.close)
+        registry = Registry(settings.registry_path)
+        cleanup.callback(registry.close)
+        if settings.deployment_id is not None:
+            registry.tag_deployment(settings.deployment_id, settings.release_id, settings.workers)
+        runtime = Runtime(
+            backend,
+            compiler,
+            registry,
+            identity,
+            settings.model_id,
+            admission=SharedAdmission(registry, identity, **settings.admission.model_dump()),
+            expected_model=expected_model,
+            adapter_store=store,
+            adapter_timeout=settings.adapters.operation_timeout_seconds,
+            health_settings=settings.health,
+            recovery_only=settings.recovery_only,
+        )
+        if store is not None:
+            backend.managed_lora = True
+        # The caller retains a provided backend until this point. Runtime.close
+        # owns successful construction; failed construction only closes ours.
+        cleanup.pop_all()
+        return runtime
 
 
 async def bootstrap(runtime: Runtime, settings: Settings) -> None:
