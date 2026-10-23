@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from urllib.parse import quote
+
 import httpx
 
 from jev_runtime.errors import JevError
@@ -44,6 +46,15 @@ def _cancelled(response: httpx.Response) -> bool:
     return value["cancelled"]
 
 
+def _cancel_path(request_id: str) -> str:
+    segment = quote(request_id, safe="")
+    # quote() leaves dots unescaped, but HTTPX normalizes these complete
+    # path segments away even though both are valid request identifiers.
+    if segment in {".", ".."}:
+        segment = segment.replace(".", "%2E")
+    return f"/v1/requests/{segment}/cancel"
+
+
 class JevClient:
     def __init__(self, base_url: str, api_key: str | None = None):
         self.http = httpx.Client(
@@ -65,9 +76,7 @@ class JevClient:
         self.http.close()
 
     def cancel(self, request_id: str) -> bool:
-        from urllib.parse import quote
-
-        response = self.http.post(f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15)
+        response = self.http.post(_cancel_path(request_id), timeout=15)
         return _cancelled(response)
 
     def __enter__(self):
@@ -98,11 +107,7 @@ class AsyncJevClient:
         await self.http.aclose()
 
     async def cancel(self, request_id: str) -> bool:
-        from urllib.parse import quote
-
-        response = await self.http.post(
-            f"/v1/requests/{quote(request_id, safe='')}/cancel", timeout=15
-        )
+        response = await self.http.post(_cancel_path(request_id), timeout=15)
         return _cancelled(response)
 
     async def __aenter__(self):
