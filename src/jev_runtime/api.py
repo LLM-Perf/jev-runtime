@@ -50,6 +50,15 @@ class AdapterRemoval(Reference):
     recover: bool = False
 
 
+def matches_bearer_token(authorization: str | None, key: str) -> bool:
+    # ASGI exposes header bytes as Latin-1 strings. Reject non-ASCII credentials
+    # without inventing a Unicode encoding or letting compare_digest raise.
+    value = authorization or ""
+    if not value.isascii() or not key.isascii():
+        return False
+    return hmac.compare_digest(value, f"Bearer {key}")
+
+
 async def disconnect_guard(request: Request, coroutine):
     work = asyncio.create_task(coroutine)
 
@@ -97,13 +106,13 @@ def install_routes(
             request.state.jev_tenant = "default"
             return
         for tenant, key in identities.items():
-            if hmac.compare_digest(authorization or "", f"Bearer {key}"):
+            if matches_bearer_token(authorization, key):
                 request.state.jev_tenant = tenant
                 return
         raise JevError("unauthorized", "A valid API key is required", 401)
 
     async def admin(authorization: str | None = Header(default=None)):
-        if not admin_key or not hmac.compare_digest(authorization or "", f"Bearer {admin_key}"):
+        if not admin_key or not matches_bearer_token(authorization, admin_key):
             raise JevError("admin_unauthorized", "A separate admin key is required", 401)
 
     def runtime(request: Request) -> Runtime:

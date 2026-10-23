@@ -94,6 +94,8 @@ do not certify a real TokenSpeed GPU deployment, crash recovery or performance.
 ## Keys, tenants and limits
 
 Read data-plane and administrative credentials from separate environment variables.
+Use ASCII keys: bearer credentials are matched exactly, without normalization or
+character-encoding conversion. Non-ASCII credentials do not authenticate and return HTTP 401.
 For authenticated tenant scheduling, map stable tenant IDs to environment names:
 
 ```yaml
