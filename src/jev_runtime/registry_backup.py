@@ -29,11 +29,16 @@ def connect(path: Path, *, writable: bool = False) -> sqlite3.Connection:
         raise ValueError("Registry must be an existing regular file, not a symlink")
     mode = "rw" if writable else "ro"
     db = sqlite3.connect(path.resolve().as_uri() + "?mode=" + mode, uri=True, timeout=5)
-    db.execute("PRAGMA trusted_schema=OFF")
-    db.execute("PRAGMA foreign_keys=ON")
-    db.execute("PRAGMA synchronous=FULL")
-    if not writable:
-        db.execute("PRAGMA query_only=ON")
+    try:
+        db.execute("PRAGMA trusted_schema=OFF")
+        db.execute("PRAGMA foreign_keys=ON")
+        db.execute("PRAGMA synchronous=FULL")
+        if not writable:
+            db.execute("PRAGMA query_only=ON")
+    except BaseException:
+        # Callers cannot close a connection that failed before being returned.
+        db.close()
+        raise
     return db
 
 
