@@ -44,6 +44,13 @@ have a reason and no selected value. This validates the response contract, not t
 model's real-world accuracy. `cancel()` accepts only an actual boolean response and
 preserves the service's status/code on errors, including non-JSON gateway errors.
 
+When `decide()` is given a `request_id`, the response must echo that exact ID or the
+client rejects it with `invalid_response` (502). The check uses the ID captured at
+submission, so changing the request object while it is in flight does not change
+the expected ID. Omitting the ID (or supplying `null` from JavaScript) allows the
+server to generate it. `parseDecision()` alone validates an unbound response and
+does not check request correlation.
+
 The opt-in `test/live.mjs` checks all four answer types, authentication errors and
 unknown-request cancellation against a real service. Build first, then set
 `JEV_BASE_URL`, `JEV_API_KEY` and a new `JEV_REPORT_FILE`; optional source-commit
