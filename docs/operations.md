@@ -96,6 +96,11 @@ do not certify a real TokenSpeed GPU deployment, crash recovery or performance.
 Read data-plane and administrative credentials from separate environment variables.
 Use ASCII keys: bearer credentials are matched exactly, without normalization or
 character-encoding conversion. Non-ASCII credentials do not authenticate and return HTTP 401.
+Jev request-validation errors containing nonfinite numbers (including overflow such as
+JSON `1e999`) return HTTP 422. Their error details encode those rejected inputs as
+`"inf"`, `"-inf"`, or `"nan"` strings so the response remains valid JSON. This applies
+to Jev decision, management and raw-scoring routes only; ordinary validation errors
+and unrelated native-engine routes retain the host's existing error handler.
 For authenticated tenant scheduling, map stable tenant IDs to environment names:
 
 ```yaml

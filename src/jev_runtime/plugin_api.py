@@ -11,6 +11,7 @@ from jev_runtime.api import disconnect_guard, install_routes, matches_bearer_tok
 from jev_runtime.backends.base import ScoreInput
 from jev_runtime.config import load_settings, tenant_keys
 from jev_runtime.errors import JevError
+from jev_runtime.http_validation import JevRoute
 from jev_runtime.schema import Contract
 
 
@@ -52,7 +53,9 @@ def install_plugin_routes(app: FastAPI) -> None:
         if not api_key or not matches_bearer_token(authorization, api_key):
             raise JevError("unauthorized", "Plugin scoring requires JEV_API_KEY", 401)
 
-    router = APIRouter(prefix=prefix + "/v1", dependencies=[Depends(authorize)])
+    router = APIRouter(
+        prefix=prefix + "/v1", dependencies=[Depends(authorize)], route_class=JevRoute
+    )
 
     def backend(request: Request):
         adapter = getattr(request.app.state, "jev_backend", None)
