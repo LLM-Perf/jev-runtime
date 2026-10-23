@@ -1,4 +1,5 @@
 import json
+import sqlite3
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -33,6 +34,23 @@ def test_one_owner_serializes_threaded_transactions(runtime):
     with ThreadPoolExecutor(max_workers=8) as pool:
         list(pool.map(operation, range(80)))
     assert not runtime.registry.list()["leases"]
+
+
+def test_read_connection_rejects_writes_and_never_waits_on_a_writer(runtime, tmp_path):
+    registry = runtime.registry
+    with registry._read() as db:
+        with pytest.raises(sqlite3.OperationalError, match="readonly"):
+            db.execute("INSERT INTO leases VALUES('x','y','z','w',0)")
+    holder = sqlite3.connect(registry.path, isolation_level=None)
+    try:
+        holder.execute("BEGIN IMMEDIATE")
+        # Pure reads keep working on their own WAL snapshot while a peer holds
+        # the writer lock; a writer transaction would busy-wait instead.
+        assert registry.list()["routes"]
+        assert registry.has_lease("missing") is False
+    finally:
+        holder.rollback()
+        holder.close()
 
 
 def test_unclosed_wal_connection_retains_committed_dispatch_after_process_exit(runtime):

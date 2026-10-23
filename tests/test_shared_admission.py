@@ -57,6 +57,70 @@ async def queued(pool, count):
             await asyncio.sleep(0.001)
 
 
+async def test_queued_waiters_poll_without_writer_transactions(tmp_path, bundle, monkeypatch):
+    a, b, first, second = setup_pair(tmp_path, bundle, max_requests=1)
+    entries = []
+    original = Registry._transaction
+
+    @contextmanager
+    def spy(self):
+        entries.append(time.monotonic())
+        with original(self) as db:
+            yield db
+
+    async def peer():
+        async with request(b, second):
+            pass
+
+    async with request(a, first):
+        work = asyncio.create_task(peer())
+        await queued(first, 1)
+        monkeypatch.setattr(Registry, "_transaction", spy)
+        await asyncio.sleep(0.25)
+        # A queued waiter only reads: polling never contends with real
+        # admissions for the shared writer lock every 20 ms.
+        assert entries == []
+        work.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await work
+    a.close()
+    b.close()
+
+
+async def test_serving_stays_responsive_while_a_peer_holds_the_writer_lock(tmp_path, bundle):
+    a, b, first, second = setup_pair(tmp_path, bundle, max_requests=4)
+    lease = b.acquire("model", uuid.uuid4().hex, None, "fixture:0", "default").lease_id
+    holder = sqlite3.connect(a.path, isolation_level=None)
+    holder.execute("BEGIN IMMEDIATE")
+    entered = asyncio.Event()
+    ticks = 0
+
+    async def waiter():
+        async with second.acquire(1, "default", branches=1, lease_id=lease):
+            entered.set()
+
+    work = asyncio.create_task(waiter())
+    try:
+        deadline = time.monotonic() + 1.0
+        while time.monotonic() < deadline:
+            # The enqueue busy-waits in its own thread; the event loop and WAL
+            # reads keep running instead of freezing behind the write lock.
+            await asyncio.sleep(0.02)
+            first.snapshot()
+            ticks += 1
+        assert not entered.is_set()
+        holder.rollback()
+        await asyncio.wait_for(work, 5)
+        assert entered.is_set()
+    finally:
+        holder.rollback()
+        holder.close()
+        b.release(lease)
+        a.close()
+        b.close()
+    assert ticks >= 20
+
+
 @pytest.mark.parametrize("binding", ["requests", "tokens", "branches"])
 async def test_shared_capacity_cannot_multiply_with_workers(tmp_path, bundle, binding):
     limits = dict(max_requests=10, max_tokens=100, max_branches=100)
