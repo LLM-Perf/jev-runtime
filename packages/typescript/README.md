@@ -27,6 +27,12 @@ and `timeoutMs` also apply while the response body is streaming: an abort after 
 have arrived rejects with the original abort reason (a `TimeoutError` DOMException for
 the client timeout), never a mislabeled `invalid_response`/`http_error`.
 
+Requests use `redirect: "manual"`: `decide()`, `cancel()` and `ready()` reject
+redirects without following `Location` or replaying a POST. Node preserves the
+original HTTP status and any structured error. Browsers hide manual redirects
+behind an opaque response, reported as `JevAPIError` with status `0` and code
+`http_error`. A custom `fetch` must honor the supplied redirect policy.
+
 Inspect `status`, `calibration_status`, and `probability_semantics`; a typed answer
 does not imply calibrated confidence. Partial/failing responses retain their status.
 Both SDKs reject malformed HTTP-200 decisions with `invalid_response` (502),

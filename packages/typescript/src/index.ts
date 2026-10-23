@@ -238,7 +238,7 @@ export class JevClient {
     if (body !== undefined) headers["Content-Type"] = "application/json";
     try {
       const response = await this.fetcher(this.baseURL + path, {
-        method: body === undefined ? "GET" : "POST", headers,
+        method: body === undefined ? "GET" : "POST", headers, redirect: "manual",
         ...(body === undefined ? {} : { body: JSON.stringify(body) }), signal: controller.signal,
       });
       let payload: unknown;
