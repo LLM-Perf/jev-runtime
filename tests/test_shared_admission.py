@@ -450,3 +450,98 @@ async def test_round_robin_is_shared_across_workers(tmp_path, bundle):
     assert order == ["a1", "b1", "a2"]
     a.close()
     b.close()
+
+
+@pytest.mark.parametrize("binding", ["requests", "tokens", "branches"])
+async def test_shared_full_queue_does_not_block_an_eligible_tenant(tmp_path, bundle, binding):
+    limits = dict(max_requests=3, max_tokens=10, max_branches=6, max_queue=1)
+    limits["max_tenant_" + binding] = {"requests": 1, "tokens": 5, "branches": 2}[binding]
+    a, b, first, second = setup_pair(tmp_path, bundle, **limits)
+
+    async def blocked():
+        async with request(a, first, "a", tokens=2):
+            pytest.fail("Tenant a must remain blocked")
+
+    try:
+        async with request(a, first, "a", tokens=4, branches=2):
+            waiter = asyncio.create_task(blocked())
+            try:
+                await queued(second, 1)
+                resolved = b.resolve("model", None, "fixture:0")
+                # Combined reservation must roll back the new lease and journal on rejection.
+                before = b.list()["leases"]
+                with b._connection() as db:
+                    journals = db.execute("SELECT * FROM lease_work ORDER BY lease_id").fetchall()
+                    tickets = db.execute("SELECT * FROM admission_tickets ORDER BY id").fetchall()
+                with pytest.raises(JevError) as exc:
+                    second.reserve(resolved, "model", "rejected", None, "a", 1, ["rejected-1"])
+                assert exc.value.code == "queue_full"
+                assert b.list()["leases"] == before
+                with b._connection() as db:
+                    assert db.execute("SELECT * FROM lease_work ORDER BY lease_id").fetchall() == (
+                        journals
+                    )
+                    assert db.execute("SELECT * FROM admission_tickets ORDER BY id").fetchall() == (
+                        tickets
+                    )
+                assert second.snapshot()["queued_requests"] == 1
+                snapshot, admitted = second.reserve(
+                    resolved, "model", "eligible", None, "b", 2, ["eligible-1"]
+                )
+                try:
+                    assert admitted
+                    async with second.wait_reserved(snapshot.lease_id, admitted):
+                        assert second.snapshot()["requests"] == 2
+                        assert second.snapshot()["expanded_tokens"] == 6
+                        assert second.snapshot()["expanded_branches"] == 3
+                        assert second.snapshot()["queued_requests"] == 1
+                finally:
+                    b.release(snapshot.lease_id)
+                assert second.snapshot()["requests"] == 1
+                assert second.snapshot()["expanded_tokens"] == 4
+                assert second.snapshot()["expanded_branches"] == 2
+            finally:
+                waiter.cancel()
+                with pytest.raises(asyncio.CancelledError):
+                    await waiter
+            assert second.snapshot()["queued_requests"] == 0
+        assert second.snapshot()["requests"] == 0
+        assert second.snapshot()["expanded_tokens"] == second.snapshot()["expanded_branches"] == 0
+        assert not b.list()["leases"]
+    finally:
+        a.close()
+        b.close()
+
+
+@pytest.mark.parametrize("new_tenant", ["waiting", "newcomer"])
+async def test_shared_full_queue_newcomer_cannot_pass_an_eligible_waiter(
+    tmp_path, bundle, new_tenant
+):
+    a, b, first, second = setup_pair(tmp_path, bundle, max_requests=1, max_queue=1)
+    waiter = None
+    admitted = []
+
+    async def waiting():
+        async with request(a, first, "waiting"):
+            admitted.append("waiting")
+
+    try:
+        async with request(a, first, "held"):
+            waiter = asyncio.create_task(waiting())
+            await queued(second, 1)
+        # The earlier ticket is now eligible, before its next polling turn.
+        with pytest.raises(JevError) as exc:
+            async with request(b, second, new_tenant):
+                admitted.append("newcomer")
+        assert exc.value.code == "queue_full"
+        assert second.snapshot()["queued_requests"] == 1
+        await asyncio.wait_for(waiter, 2)
+        assert admitted == ["waiting"]
+        assert second.snapshot()["requests"] == second.snapshot()["queued_requests"] == 0
+        assert not b.list()["leases"]
+    finally:
+        if waiter is not None:
+            waiter.cancel()
+            await asyncio.gather(waiter, return_exceptions=True)
+        a.close()
+        b.close()
