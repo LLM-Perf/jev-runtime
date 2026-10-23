@@ -221,5 +221,11 @@ class TokenSpeedNative:
         self._attempts.pop(request_id, None)
 
     async def close(self) -> None:
+        failure: BaseException | None = None
         for request_id in tuple(self._attempts):
-            await self.cancel(request_id)
+            try:
+                await self.cancel(request_id)
+            except Exception as exc:
+                failure = failure or exc
+        if failure is not None:
+            raise failure
