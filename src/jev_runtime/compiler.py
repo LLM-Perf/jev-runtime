@@ -274,6 +274,12 @@ class Compiler:
         if len(question.options) > bundle.policy.max_options:
             raise JevError("option_budget", "Question exceeds the candidate budget", 413)
         mode = bundle.template.mode
+        independent = mode == "independent-candidate" and question.type != "boolean"
+        # Every independent candidate needs at least one scoring sequence. Reject
+        # an impossible request before rendering/tokenizing any of its prompts.
+        # Runtime still checks totals across questions and single-label lowering.
+        if independent and len(question.options) > bundle.policy.max_scoring_sequences:
+            raise JevError("branch_budget", "Request expands to too many scoring sequences", 413)
         keys = (
             ("true", "false")
             if question.type == "boolean"
@@ -291,7 +297,6 @@ class Compiler:
             if question.type == "boolean"
             else [o.description for o in question.options]
         )
-        independent = mode == "independent-candidate" and question.type != "boolean"
         candidates = list(zip(keys, descriptions, strict=True)) if independent else [(None, None)]
         # SGLang aborts by prefix. Equal-length suffixes prevent a failed branch
         # from matching candidate 10 after candidate 1, or a dotted sibling ID.
