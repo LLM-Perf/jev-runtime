@@ -64,9 +64,12 @@ An unknown cache setting fails setup. No cache flush is issued to a shared engin
 Each repeat alternates which method runs first. Warmup is excluded. Dispatch stops
 at the prescribed window and outstanding calls drain before the next method. The
 report distinguishes strict successes over the full cohort makespan from successes
-completed inside the measurement window. A partial result never counts as a fully
-successful request. HTTP and response-contract failures remain in the denominator.
-Cache ratios use summed observed tokens; missing observations remain unknown.
+completed inside the measurement window. Both intervals must be finite and positive,
+and the makespan must cover the window, including for an empty cohort. Invalid
+intervals are rejected before computing rates or drain time. A partial result never
+counts as a fully successful request. HTTP and response-contract failures remain in
+the denominator. Cache ratios use summed observed tokens; missing observations remain
+unknown.
 P99 is omitted below 10,000 successful samples and is descriptive even above that
 threshold. The runner never marks the release gate passed.
 

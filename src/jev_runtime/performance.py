@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections import Counter
 from typing import Annotated, Literal
 
@@ -121,8 +122,12 @@ def summarize_cohort(
     rows: list[Measurement], window_seconds: float, makespan_seconds: float
 ) -> dict:
     """Warmup is excluded. Dispatch closes at window end; drain is counted separately."""
-    if not 0 < window_seconds <= makespan_seconds:
-        raise ValueError("Measurement window and makespan must be positive and ordered")
+    if (
+        not math.isfinite(window_seconds)
+        or not math.isfinite(makespan_seconds)
+        or not 0 < window_seconds <= makespan_seconds
+    ):
+        raise ValueError("Measurement window and makespan must be finite, positive and ordered")
     if len({row.request_id for row in rows}) != len(rows):
         raise ValueError("Each attempt needs a unique request ID; retries are separate attempts")
     if any(row.started_ms >= window_seconds * 1000 for row in rows):
