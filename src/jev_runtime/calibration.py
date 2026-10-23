@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from fractions import Fraction
 
 import numpy as np
 
@@ -51,15 +52,41 @@ def check_split(fit: list[LabeledScores], heldout: list[LabeledScores]) -> None:
             raise ValueError("Class dimension changed within the same task")
 
 
+def _scaled_difference(value: float, reference: float, scale: float) -> float:
+    difference = value - reference
+    if math.isinf(difference):
+        # Opposite signs can overflow subtraction even when the scaled result fits.
+        return value / scale - reference / scale
+    return difference / scale
+
+
+def _scaled_scores(row: LabeledScores, temperature: float) -> list[float]:
+    peak = float(max(row.logprobs))
+    temperature = float(temperature)
+    return [_scaled_difference(float(value), peak, temperature) for value in row.logprobs]
+
+
 def _probabilities(row: LabeledScores, temperature: float, bias: float = 0) -> np.ndarray:
-    scores = np.asarray(row.logprobs, dtype=np.float64) / temperature
     if bias:
-        if len(scores) != 2:
+        if len(row.logprobs) != 2:
             raise ValueError("Platt bias only applies to binary distributions")
-        scores[0] += bias
-    scores -= scores.max()
-    result = np.exp(scores)
-    return result / result.sum()
+        # Bias can cancel a huge scaled score and expose a much smaller logit.
+        # Keep that binary margin exact until the final float conversion; either
+        # centering or scaling each term first can discard the surviving value.
+        margin = (
+            Fraction.from_float(float(row.logprobs[0]))
+            - Fraction.from_float(float(row.logprobs[1]))
+        ) / Fraction.from_float(float(temperature)) + Fraction.from_float(float(bias))
+        try:
+            value = float(margin)
+        except OverflowError:
+            value = math.inf if margin > 0 else -math.inf
+        scores = [min(value, 0.0), min(-value, 0.0)]
+    else:
+        scores = _scaled_scores(row, temperature)
+    peak = max(scores)
+    result = [math.exp(value - peak) for value in scores]
+    return np.asarray(result) / math.fsum(result)
 
 
 def quality_metrics(
@@ -159,14 +186,26 @@ def fit_temperature(
     fit: list[LabeledScores], heldout: list[LabeledScores], scoring_contract_digest: str
 ) -> tuple[Calibration, dict]:
     check_split(fit, heldout)
+    # A fixed positive scaling preserves the minimizer while keeping individual
+    # losses and their sum representable. Center before scaling so a common score
+    # offset does not erase the target margin or log-partition term.
+    loss_scale = max(
+        1.0, max(float(max(row.logprobs)) - float(row.logprobs[row.label]) for row in fit)
+    )
+    if math.isinf(loss_scale):
+        loss_scale = max(abs(float(value)) for row in fit for value in row.logprobs)
+    margins = [
+        _scaled_difference(float(max(row.logprobs)), float(row.logprobs[row.label]), loss_scale)
+        for row in fit
+    ]
 
     def objective(log_temperature):
         temperature = math.exp(log_temperature)
         losses = []
-        for row in fit:
-            values = np.asarray(row.logprobs) / temperature
-            peak = values.max()
-            losses.append(float(peak + np.log(np.exp(values - peak).sum()) - values[row.label]))
+        for row, margin in zip(fit, margins, strict=True):
+            values = _scaled_scores(row, temperature)
+            log_partition = math.log(math.fsum(math.exp(value) for value in values))
+            losses.append(log_partition / loss_scale + margin / temperature)
         return math.fsum(losses) / len(losses)
 
     # Bounded scalar optimization, with endpoints and identity as explicit candidates.

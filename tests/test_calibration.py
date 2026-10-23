@@ -133,3 +133,100 @@ def test_temperature_upper_boundary_produces_valid_artifact(bundle):
     assert artifact.temperature == pytest.approx(100)
     assert artifact.temperature <= 100
     assert math.isfinite(report["heldout_calibrated"]["nll"])
+
+
+@pytest.mark.parametrize(
+    ("scores", "temperature", "bias", "probabilities"),
+    [
+        ((-1e308, -1e308), 0.01, 0, (0.5, 0.5)),
+        ((1e308, 1e308, 1e308), 0.01, 0, (1 / 3, 1 / 3, 1 / 3)),
+        ((-1e308, -1e308), 0.01, math.log(3), (0.75, 0.25)),
+        ((-1e16, -1e16 - 4), 2, -2, (0.5, 0.5)),
+        ((1e308, -1e308), 1e308, 0, (1 / (1 + math.exp(-2)), 1 / (1 + math.exp(2)))),
+        ((-1e308, 1e308), 1e308, 2, (0.5, 0.5)),
+        ((0, -1e-323), 5e-324, 0, (1 / (1 + math.exp(-2)), 1 / (1 + math.exp(2)))),
+        ((1e308, -1e308), 0.01, -1e308, (1, 0)),
+        ((-1e308, 1e308), 0.01, 1e308, (0, 1)),
+        ((1e100, 1e308), 1, 1e308, (1, 0)),
+        ((1e308, 1e100), 1, -1e308, (0, 1)),
+        ((1, 0), 5e-324, -100, (1, 0)),
+        ((0, 1), 5e-324, 100, (0, 1)),
+    ],
+)
+def test_quality_metrics_handles_extreme_finite_scores(scores, temperature, bias, probabilities):
+    import json
+    import warnings
+
+    for label in range(len(scores)):
+        sample = LabeledScores("sample", "group", scores, label)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", RuntimeWarning)
+            result = quality_metrics([sample], temperature=temperature, bias=bias)
+        # Strict JSON and complete bin/coverage accounting catch NaN reports as well
+        # as probability errors hidden by argmax or the existing NLL floor.
+        json.dumps(result, allow_nan=False)
+        expected_nll = -math.log(max(probabilities[label], np.finfo(np.float64).tiny))
+        expected_brier = sum(
+            (p - int(index == label)) ** 2 for index, p in enumerate(probabilities)
+        )
+        assert result["nll"] == pytest.approx(expected_nll)
+        assert result["brier_multiclass_sum"] == pytest.approx(expected_brier)
+        assert sum(item["count"] for item in result["ece_bins"]) == 1
+        assert result["risk_coverage"][0]["accepted"] == 1
+
+
+def test_temperature_fit_preserves_representable_common_offsets(bundle):
+    temperatures = []
+    for offset in (0.0, -1e16, 1e16):
+        fit = [
+            LabeledScores(f"fit-{i}", f"fit-{i}", (offset, offset - 4), int(i % 5 == 0))
+            for i in range(10)
+        ]
+        heldout = [
+            LabeledScores(f"heldout-{i}", f"heldout-{i}", (offset, offset - 4), int(i % 5 == 0))
+            for i in range(10)
+        ]
+        artifact, report = fit_temperature(fit, heldout, bundle.scoring_contract_digest)
+        temperatures.append(artifact.temperature)
+        # With identical margins and a 4:1 class ratio, the MLE is analytic.
+        assert artifact.temperature == pytest.approx(4 / math.log(4), rel=1e-6)
+        assert report["heldout_calibrated"]["nll"] == pytest.approx(
+            -0.8 * math.log(0.8) - 0.2 * math.log(0.2)
+        )
+    assert max(temperatures) - min(temperatures) < 1e-6
+
+
+@pytest.mark.parametrize(
+    ("scores", "label", "expected_temperature"),
+    [
+        ((-1e308, -1e308), 0, 0.01),
+        ((1e308, -1e308), 0, 0.01),
+        ((1e308, -1e308), 1, 100),
+        ((-1e308, 1e308), 0, 100),
+        ((1e308, 0), 1, 100),
+    ],
+)
+def test_temperature_fit_handles_extreme_scores_and_loss_sums(
+    bundle, scores, label, expected_temperature
+):
+    import json
+    import warnings
+
+    fit = [LabeledScores(f"fit-{i}", f"fit-{i}", scores, label) for i in range(8)]
+    heldout = [LabeledScores("heldout", "heldout", scores, label)]
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", RuntimeWarning)
+        artifact, report = fit_temperature(fit, heldout, bundle.scoring_contract_digest)
+    assert artifact.temperature == pytest.approx(expected_temperature)
+    json.dumps(report, allow_nan=False)
+    assert report["heldout_calibrated"]["samples"] == 1
+
+
+def test_temperature_fit_does_not_clip_underflowed_target_losses(bundle):
+    fit = [LabeledScores(f"fit-{i}", f"fit-{i}", (0, -4), 0) for i in range(19)]
+    fit.append(LabeledScores("fit-wrong", "fit-wrong", (0, -1e6), 1))
+    heldout = [LabeledScores("heldout", "heldout", (0, -4), 0)]
+    artifact, _ = fit_temperature(fit, heldout, bundle.scoring_contract_digest)
+    # The uncapped fit loss strictly decreases throughout [0.01, 100]. The
+    # report's probability floor would instead make 0.01 look best here.
+    assert artifact.temperature == pytest.approx(100)
