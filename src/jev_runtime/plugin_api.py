@@ -6,7 +6,7 @@ import os
 from dataclasses import asdict
 
 from fastapi import APIRouter, Depends, FastAPI, Header, Request
-from pydantic import Field, model_validator
+from pydantic import Field, StrictInt, model_validator
 
 from jev_runtime.api import disconnect_guard, install_routes
 from jev_runtime.backends.base import ScoreInput
@@ -18,8 +18,8 @@ from jev_runtime.schema import Contract
 class ScoreWire(Contract):
     request_id: str = Field(min_length=1, max_length=512)
     question_id: str = Field(min_length=1, max_length=128)
-    input_ids: tuple[int, ...] = Field(min_length=1, max_length=131072)
-    label_ids: tuple[int, ...] = Field(min_length=1, max_length=128)
+    input_ids: tuple[StrictInt, ...] = Field(min_length=1, max_length=131072)
+    label_ids: tuple[StrictInt, ...] = Field(min_length=1, max_length=128)
     candidate_id: str | None = None
     adapter_id: str | None = None
 
