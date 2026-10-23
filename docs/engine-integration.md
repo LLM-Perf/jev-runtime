@@ -43,6 +43,9 @@ engine. The endpoint prefix is `/plugins/jev-runtime`. Complete raw-label scores
 are exposed under `/v1/scores`, and typed decisions under `/v1/decisions` beneath
 that prefix. Without `JEV_CONFIG`, only the raw scoring contract is initialized.
 `JEV_API_KEY` is mandatory for loading the plugin routes.
+Raw scoring `input_ids` and `label_ids` must contain nonnegative JSON integers.
+Values such as `true`, `1.0` and `"1"` receive HTTP 422 before engine execution,
+without coercion to token IDs. Both arrays must be nonempty, and label IDs must be distinct.
 For the pinned vLLM version, zero is the native default shutdown budget and means
 immediate abort. Use a positive `--shutdown-timeout` (30 seconds above) so native
 API and engine processes have time to release resources after the

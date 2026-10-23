@@ -1,3 +1,6 @@
+import json
+import math
+
 import pytest
 from pydantic import ValidationError
 
@@ -34,6 +37,41 @@ def test_strict_success_drain_and_token_weighting_have_explicit_denominators():
     assert summary["successful_questions_including_partial"] == 3
     assert summary["cache"]["full_cohort_token_weighted_ratio"] == pytest.approx(100 / 300)
     assert summary["latency_successful_requests"]["p99_ms"] is None
+    assert summary["drain_seconds"] == pytest.approx(0.002)
+    json.dumps(summary, allow_nan=False)
+
+
+@pytest.mark.parametrize("populated", [False, True])
+@pytest.mark.parametrize(
+    ("window", "makespan"),
+    [
+        (math.inf, math.inf),
+        (1.0, math.inf),
+        (math.inf, 1.0),
+        (-math.inf, 1.0),
+        (1.0, -math.inf),
+        (math.nan, 1.0),
+        (1.0, math.nan),
+    ],
+)
+def test_cohort_rejects_nonfinite_intervals(window, makespan, populated):
+    rows = [row("a", 0, 1)] if populated else []
+    with pytest.raises(ValueError, match="Measurement window and makespan"):
+        summarize_cohort(rows, window, makespan)
+
+
+@pytest.mark.parametrize("makespan", [1.0, 2.0])
+def test_empty_cohort_retains_finite_intervals_and_zero_rates(makespan):
+    summary = summarize_cohort([], 1.0, makespan)
+    assert summary["window_seconds"] == 1.0
+    assert summary["makespan_seconds"] == makespan
+    assert summary["drain_seconds"] == makespan - 1.0
+    assert summary["dispatched_requests"] == summary["strict_success_requests"] == 0
+    assert summary["strict_success_rps_over_full_cohort"] == 0
+    assert summary["strict_success_rps_completed_in_window"] == 0
+    assert summary["successful_questions_per_second_over_full_cohort"] == 0
+    assert summary["latency_all_attempts"]["p50_ms"] is None
+    json.dumps(summary, allow_nan=False)
 
 
 def test_missing_cache_observation_does_not_become_zero_or_full_coverage():
