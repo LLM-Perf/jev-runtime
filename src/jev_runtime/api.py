@@ -14,6 +14,7 @@ from pydantic import Field
 
 from jev_runtime.config import Settings, bootstrap, build_runtime, load_settings, tenant_keys
 from jev_runtime.errors import JevError
+from jev_runtime.http_validation import JevRoute
 from jev_runtime.lifecycle import cancel_and_drain
 from jev_runtime.runtime import Runtime
 from jev_runtime.schema import Bundle, Contract, DecisionRequest, DecisionResponse, Identifier
@@ -155,10 +156,14 @@ def install_routes(
         buckets=(0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30, 60),
     )
     router = APIRouter(
-        prefix=prefix, dependencies=[Depends(authorize), Depends(recovery_write_guard)]
+        prefix=prefix,
+        dependencies=[Depends(authorize), Depends(recovery_write_guard)],
+        route_class=JevRoute,
     )
     management = APIRouter(
-        prefix=prefix + "/admin", dependencies=[Depends(admin), Depends(recovery_write_guard)]
+        prefix=prefix + "/admin",
+        dependencies=[Depends(admin), Depends(recovery_write_guard)],
+        route_class=JevRoute,
     )
 
     stages = Histogram(
