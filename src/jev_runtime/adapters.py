@@ -88,8 +88,19 @@ class AdapterStore:
 
     @staticmethod
     def _hash(path: Path) -> str:
-        with path.open("rb") as file:
-            return "sha256:" + hashlib.file_digest(file, "sha256").hexdigest()
+        try:
+            descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0))
+            try:
+                if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                    raise JevError(
+                        "adapter_corrupted", "Immutable adapter files must be regular files", 409
+                    )
+                with os.fdopen(descriptor, "rb", closefd=False) as file:
+                    return "sha256:" + hashlib.file_digest(file, "sha256").hexdigest()
+            finally:
+                os.close(descriptor)
+        except OSError as exc:
+            raise JevError("adapter_corrupted", "Cannot read immutable adapter file", 409) from exc
 
     def _validate(self, directory: Path, base_model_id: str) -> tuple[int, tuple[str, ...]]:
         from safetensors import safe_open
@@ -169,7 +180,10 @@ class AdapterStore:
                     raise JevError(
                         "adapter_path", "Adapter tensor/configuration symlinks are not allowed", 403
                     )
-                descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+                # Opening a FIFO must not wait for a writer before the type check.
+                descriptor = os.open(
+                    path, os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0)
+                )
                 with os.fdopen(descriptor, "rb") as original:
                     if not stat.S_ISREG(os.fstat(original.fileno()).st_mode):
                         raise JevError("adapter_path", "Adapter files must be regular files", 400)
